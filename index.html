@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ultraphonics</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #121212;
+      color: #ffffff;
+      text-align: center;
+    }
+
+    header {
+      position: relative;
+      width: 100%;
+      height: 300px;
+      background-image: url('header.jpg'); /* Replace with your image file name */
+      background-size: cover;
+      background-position: center;
+    }
+
+    .logo {
+      position: absolute;
+      bottom: -60px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      border: 4px solid #fff;
+      background-color: #121212;
+    }
+
+    main {
+      padding: 100px 20px 40px; /* Leaves room for logo */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 0.5rem;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      font-weight: normal;
+      color: #cccccc;
+      margin-bottom: 0.25rem;
+    }
+
+    h3 {
+      font-size: 1.2rem;
+      font-weight: lighter;
+      color: #aaaaaa;
+      margin-bottom: 2rem;
+    }
+
+    .button-container {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .button {
+      background-color: #1db954;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      font-size: 1rem;
+      border-radius: 5px;
+      text-decoration: none;
+      transition: background-color 0.3s;
+    }
+
+    .button:hover {
+      background-color: #1aa34a;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="logo.jpg" alt="Ultraphonics Logo" class="logo" />
+  </header>
+  <main>
+    <h1>Ultraphonics</h1>
+    <h2>A high-energy variety band from metro-Detroit.</h2>
+    <h3>Rock &bull; Pop &bull; Country &bull; Soul</h3>
+
+    <div class="button-container">
+      <a href="https://www.facebook.com/UltraphonicsMusic" class="button" target="_blank">Follow on Facebook</a>
+      <a href="https://venmo.com/TomHickman" class="button" target="_blank">Pay @TomHickman on Venmo</a>
+    </div>
+  </main>
+</body>
+</html>
