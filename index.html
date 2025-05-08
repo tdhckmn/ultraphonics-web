@@ -183,10 +183,10 @@
       if (isIOS || isAndroid) {
         window.location = deepLink;
         setTimeout(function() {
-          window.location = webURL;
+          window.open(webURL, '_blank');
         }, 1500);
       } else {
-        window.location = webURL;
+        window.open(webURL, '_blank');
       }
     });
   </script>
