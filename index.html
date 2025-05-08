@@ -141,7 +141,7 @@
   <script>
     document.getElementById('venmo-button').addEventListener('click', function (e) {
       e.preventDefault();
-      const deepLink = "venmo://paycharge?txn=pay&recipients=Ultraphonics&amount=10.00&note=%F0%9F%8E%B8%F0%9F%8E%A4%F0%9F%8E%BA";
+      const deepLink = "venmo://paycharge?txn=pay&recipients=Ultraphonics&amount=10.00&note=%F0%9F%8E%B8%F0%9F%8E%A4%F0%9F%8E%A3";
       const fallbackURL = "https://account.venmo.com/u/Ultraphonics";
 
       // Try opening Venmo app
@@ -149,7 +149,7 @@
 
       // Fallback after short delay
       setTimeout(function () {
-        window.location = fallbackURL;
+        window.open(fallbackURL, '_blank');
       }, 1500);
     });
   </script>
