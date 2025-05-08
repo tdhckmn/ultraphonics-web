@@ -141,16 +141,24 @@
   <script>
     document.getElementById('venmo-button').addEventListener('click', function (e) {
       e.preventDefault();
-      const deepLink = "venmo://paycharge?txn=pay&recipients=Ultraphonics&amount=10.00&note=%F0%9F%8E%B8%F0%9F%8E%A4%F0%9F%8E%A3";
+      const deepLink = "venmo://paycharge?txn=pay&recipients=Ultraphonics&amount=10.00&note=%F0%9F%8E%B8%F0%9F%8E%A4%F0%9F%8D%BA"; // 🎸🎤🍺
       const fallbackURL = "https://account.venmo.com/u/Ultraphonics";
 
-      // Try opening Venmo app
-      window.location = deepLink;
+      // Check if device is mobile
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
-      // Fallback after short delay
-      setTimeout(function () {
+      if (isMobile) {
+        // Try opening Venmo app
+        window.location = deepLink;
+
+        // Fallback after short delay
+        setTimeout(function () {
+          window.open(fallbackURL, '_blank');
+        }, 1500);
+      } else {
+        // Directly open website in new tab for desktop
         window.open(fallbackURL, '_blank');
-      }, 1500);
+      }
     });
   </script>
 </body>
