@@ -52,7 +52,7 @@ header {
   position: relative;
   width: 100%;
   height: var(--header-height);
-  background-image: url('img/header.jpg');
+  background-image: url('img/header.png');
   background-size: cover;
   background-position: center;
 }
@@ -104,7 +104,11 @@ h3 {
   gap: var(--spacing-xl);
   flex-wrap: wrap;
   justify-content: center;
-  margin-bottom: var(--spacing-xs);
+  margin-bottom: var(--spacing-xxl);
+}
+
+.dates-container {
+  display: flex;
 }
 
 .button {
