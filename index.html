@@ -47,17 +47,17 @@
   </main>
   <footer>
     <div class="social-icons">
-      <a href="https://www.facebook.com/UltraphonicsMusic" target="_blank">
+      <a href="https://www.facebook.com/UltraphonicsMusic" target="_blank" id="facebook-button">
         <img src="img/facebook.png" alt="Facebook" />
       </a>
-      <a href="https://www.instagram.com/ultraphonicsmusic" target="_blank">
+      <a href="https://www.instagram.com/ultraphonicsmusic" target="_blank" id="instagram-button">
         <img src="img/instagram.png" alt="Instagram" />
       </a>
-      <a href="https://www.youtube.com/watch?v=Z0Shpn-laTs" target="_blank">
+      <a href="https://www.youtube.com/watch?v=Z0Shpn-laTs" target="_blank" id="youtube-button">
         <img src="img/youtube.png" alt="YouTube" />
       </a>
     </div>
-    <a href="mailto:info@ultraphonicsmusic.com" class="email">info@ultraphonicsmusic.com</a>
+    <a href="mailto:info@ultraphonicsmusic.com" class="email" id="email-button">info@ultraphonicsmusic.com</a>
   </footer>
 
   <script>
@@ -79,6 +79,15 @@
       } else {
         window.open(webURL, '_blank');
       }
+    });
+    document.getElementById('facebook-button').addEventListener('click', function (e) {
+      gtag('event', 'Facebook CTA Pressed');
+    });
+    document.getElementById('instagram-button').addEventListener('click', function (e) {
+      gtag('event', 'Instagram CTA Pressed');
+    });
+    document.getElementById('youtube-button').addEventListener('click', function (e) {
+      gtag('event', 'YouTube CTA Pressed');
     });
   </script>
 </body>
