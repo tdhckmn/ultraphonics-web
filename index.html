@@ -6,6 +6,15 @@
   <title>Ultraphonics</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' style='font-family: Arial, sans-serif; font-weight: bold;'>U</text></svg>" />
   <link rel="stylesheet" href="styles.css">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-7RFPHXHGBC"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-7RFPHXHGBC');
+  </script>
 </head>
 <body>
   <header>
@@ -53,6 +62,7 @@
 
   <script>
     document.getElementById('venmo-button').addEventListener('click', function (e) {
+      gtag('event', 'Tip CTA Pressed');
       e.preventDefault();
       const deepLink = "venmo://paycharge?txn=pay&recipients=Ultraphonics&amount=10.00&note=%F0%9F%8E%B8%F0%9F%8E%A4%F0%9F%8D%BA"; // 🎸🎤🍺
       const webURL = "https://account.venmo.com/u/Ultraphonics";
