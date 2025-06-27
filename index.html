@@ -6,15 +6,37 @@
   <title>Ultraphonics</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' style='font-family: Arial, sans-serif; font-weight: bold;'>U</text></svg>" />
   <link rel="stylesheet" href="styles.css">
-  <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-7RFPHXHGBC"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-
     gtag('config', 'G-7RFPHXHGBC');
   </script>
+  <style>
+    a.venue-link {
+      color: var(--color-spotify-green);
+      text-decoration: none;
+    }
+    a.venue-link:hover {
+      color: var(--color-spotify-green-hover);
+      text-decoration: underline;
+    }
+    #shows > div {
+      margin-bottom: 0.75em;
+    }
+    #shows h2 {
+      margin-top: 2.5em;
+    }
+    @media (min-width: 600px) {
+      #shows > div {
+        font-size: 1.2rem;
+      }
+      #shows h2 {
+        margin-top: 3em;
+      }
+    }
+  </style>
 </head>
 <body>
   <header>
@@ -30,27 +52,12 @@
         Tip @Ultraphonics on Venmo
       </a>
     </div>
-    <h2>2025 SHOWS</h2><br>
-    <div class="dates-container">
-      4/5  • Riverbillies • Gibraltar, MI<br>
-      5/9  • Sandbar Grille • LaSalle, MI<br>
-      5/30 • Riverbillies • Gibraltar, MI<br>
-      6/20 • Riverbillies • Gibraltar, MI<br>
-      6/21 • Sandbar Grille • LaSalle, MI<br>
-      7/11 • Perfect Scenario • Saline, MI<br>
-      7/12 • Original Gravity Brewing • Milan, MI<br>  
-      8/1  • Riverbillies • Gibraltar, MI<br>
-      8/23 • Riverbillies • Gibraltar, MI<br>
-      9/12 • Private Event<br>
-      9/13 • Sandbar Grille • LaSalle, MI<br>
-      9/19 • Pumpkin Festival • Romulus, MI<br>
-      10/17 • Hell Saloon • Hell, MI<br>
-      10/24 • Riverbillies • Gibraltar, MI<br>
-      11/28 • Hell Saloon • Hell, MI<br>
-      12/12 • Hell Saloon • Hell, MI<br>
-      12/27 • Riverbillies • Gibraltar, MI<br>
-    </div>    
+
+    <div id="shows">
+      <p>Loading...</p>
+    </div>
   </main>
+
   <footer>
     <div class="social-icons">
       <a href="https://www.facebook.com/UltraphonicsMusic" target="_blank" id="facebook-button">
@@ -67,13 +74,91 @@
   </footer>
 
   <script>
+    const sheets = {
+      2025: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQhcvl6yAQFWffllShR5GUJzRJ6CsYPxUaj3b844y7G_3SgE2wHnapcTtZFJsL9S-CqzyNs_2vVS2U_/pub?gid=0&single=true&output=csv",
+      2026: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQhcvl6yAQFWffllShR5GUJzRJ6CsYPxUaj3b844y7G_3SgE2wHnapcTtZFJsL9S-CqzyNs_2vVS2U_/pub?gid=1480597074&single=true&output=csv"
+    };
+
+    function parseCSV(text) {
+      const lines = text.trim().split("\n");
+      const headers = lines[0].split(",").map(h => h.trim());
+      return lines.slice(1).map(line => {
+        const values = line.split(",").map(v => v.trim());
+        return headers.reduce((obj, key, i) => {
+          obj[key] = values[i];
+          return obj;
+        }, {});
+      });
+    }
+
+    function renderShows(year, data) {
+      const container = document.getElementById("shows");
+      const heading = document.createElement("h2");
+      heading.textContent = `${year} SHOWS`;
+      container.appendChild(heading);
+
+      data.forEach((row) => {
+        const date = new Date(row.date);
+        const formattedDate = date instanceof Date && !isNaN(date)
+          ? `${String(date.getMonth() + 1).padStart(2, '0')}/${String(date.getDate()).padStart(2, '0')}`
+          : "undefined/undefined";
+
+        const div = document.createElement("div");
+
+        if (row.isPrivate?.toLowerCase() === "true") {
+          div.textContent = `${formattedDate} • Private Event`;
+        } else {
+          const venueText = row.venue?.trim() || "";
+          const city = row.city || "";
+          const state = row.state || "";
+          const time = row.startTime?.endsWith(":00 PM") ? row.startTime.replace(":00 PM", " PM") : row.startTime;
+          const linkText = `${venueText}, ${city}${state ? ", " + state : ""}`;
+
+          const venueNode = row.eventLink
+            ? (() => {
+                const a = document.createElement("a");
+                a.href = row.eventLink;
+                a.textContent = linkText;
+                a.target = "_blank";
+                a.rel = "noopener noreferrer";
+                a.className = "venue-link";
+                a.addEventListener("click", () => {
+                  gtag('event', `${row.date}_${venueText}`);
+                });
+                return a;
+              })()
+            : document.createTextNode(linkText);
+
+          div.append(
+            `${formattedDate} • `,
+            venueNode,
+            time ? ` • ${time}` : ""
+          );
+        }
+        container.appendChild(div);
+      });
+    }
+
+    const container = document.getElementById("shows");
+    container.innerHTML = "";
+
+    Object.keys(sheets)
+      .sort((a, b) => b - a)
+      .forEach((year) => {
+        fetch(sheets[year])
+          .then((res) => res.text())
+          .then((csv) => parseCSV(csv))
+          .then((data) => renderShows(year, data))
+          .catch((err) => {
+            console.error(`Error loading ${year} shows:`, err);
+          });
+      });
+
     document.getElementById('venmo-button').addEventListener('click', function (e) {
       gtag('event', 'Tip CTA Pressed');
       e.preventDefault();
-      const deepLink = "venmo://paycharge?txn=pay&recipients=Ultraphonics&amount=10.00&note=%F0%9F%8E%B8%F0%9F%8E%A4%F0%9F%8D%BA"; // 🎸🎤🍺
+      const deepLink = "venmo://paycharge?txn=pay&recipients=Ultraphonics&amount=10.00&note=%F0%9F%8E%B8%F0%9F%8E%A4%F0%9F%8D%BA";
       const webURL = "https://account.venmo.com/u/Ultraphonics";
-
-      // Check if device is iOS
       const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
       const isAndroid = /Android/i.test(navigator.userAgent);
 
@@ -86,13 +171,13 @@
         window.open(webURL, '_blank');
       }
     });
-    document.getElementById('facebook-button').addEventListener('click', function (e) {
+    document.getElementById('facebook-button').addEventListener('click', function () {
       gtag('event', 'Facebook CTA Pressed');
     });
-    document.getElementById('instagram-button').addEventListener('click', function (e) {
+    document.getElementById('instagram-button').addEventListener('click', function () {
       gtag('event', 'Instagram CTA Pressed');
     });
-    document.getElementById('youtube-button').addEventListener('click', function (e) {
+    document.getElementById('youtube-button').addEventListener('click', function () {
       gtag('event', 'YouTube CTA Pressed');
     });
   </script>
