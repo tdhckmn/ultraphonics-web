@@ -28,12 +28,18 @@
     #shows h2 {
       margin-top: 2.5em;
     }
+    #shows .year-section {
+      margin-bottom: 4em;
+    }
     @media (min-width: 600px) {
       #shows > div {
         font-size: 1.2rem;
       }
       #shows h2 {
         margin-top: 3em;
+      }
+      #shows .year-section {
+        margin-bottom: 6em;
       }
     }
   </style>
@@ -93,9 +99,12 @@
 
     function renderShows(year, data) {
       const container = document.getElementById("shows");
+      const section = document.createElement("div");
+      section.className = "year-section";
+
       const heading = document.createElement("h2");
       heading.textContent = `${year} SHOWS`;
-      container.appendChild(heading);
+      section.appendChild(heading);
 
       data.forEach((row) => {
         const date = new Date(row.date);
@@ -108,10 +117,10 @@
         if (row.isPrivate?.toLowerCase() === "true") {
           div.textContent = `${formattedDate} • Private Event`;
         } else {
-          const venueText = row.venue?.trim() || "";
+          const venueText = row.venue?.trim() || "Unknown Venue";
           const city = row.city || "";
           const state = row.state || "";
-          const time = row.startTime?.endsWith(":00 PM") ? row.startTime.replace(":00 PM", " PM") : row.startTime;
+          const time = row.startTime?.endsWith(":00") ? row.startTime.replace(":00 PM", " PM") : row.startTime;
           const linkText = `${venueText}, ${city}${state ? ", " + state : ""}`;
 
           const venueNode = row.eventLink
@@ -135,24 +144,25 @@
             time ? ` • ${time}` : ""
           );
         }
-        container.appendChild(div);
+        section.appendChild(div);
       });
+      return { year, section };
     }
 
     const container = document.getElementById("shows");
     container.innerHTML = "";
 
-    Object.keys(sheets)
-      .sort((a, b) => b - a)
-      .forEach((year) => {
-        fetch(sheets[year])
-          .then((res) => res.text())
-          .then((csv) => parseCSV(csv))
-          .then((data) => renderShows(year, data))
-          .catch((err) => {
-            console.error(`Error loading ${year} shows:`, err);
-          });
-      });
+    Promise.all(Object.entries(sheets).map(([year, url]) =>
+      fetch(url)
+        .then((res) => res.text())
+        .then((csv) => renderShows(year, parseCSV(csv)))
+        .catch((err) => console.error(`Error loading ${year} shows:`, err))
+    )).then((sections) => {
+      sections
+        .filter(Boolean)
+        .sort((a, b) => Number(a.year) - Number(b.year))
+        .forEach(({ section }) => container.appendChild(section));
+    });
 
     document.getElementById('venmo-button').addEventListener('click', function (e) {
       gtag('event', 'Tip CTA Pressed');
