@@ -3,55 +3,19 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ultraphonics</title>
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' style='font-family: Arial, sans-serif; font-weight: bold;'>U</text></svg>" />
-  <link rel="stylesheet" href="styles.css">
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-7RFPHXHGBC"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-7RFPHXHGBC');
-  </script>
-  <style>
-    a.venue-link {
-      color: var(--color-spotify-green);
-      text-decoration: none;
-    }
-    a.venue-link:hover {
-      color: var(--color-spotify-green-hover);
-      text-decoration: underline;
-    }
-    #shows > div {
-      margin-bottom: 0.75em;
-    }
-    #shows h2 {
-      margin-top: 2.5em;
-    }
-    #shows .year-section {
-      margin-bottom: 4em;
-    }
-    @media (min-width: 600px) {
-      #shows > div {
-        font-size: 1.2rem;
-      }
-      #shows h2 {
-        margin-top: 3em;
-      }
-      #shows .year-section {
-        margin-bottom: 6em;
-      }
-    }
-  </style>
+  <title>Ultraphonics - High-Energy Live Band Detroit & Toledo</title>
+  <meta name="description" content="Ultraphonics is a high-energy variety band playing Rock, Pop, Country & Soul for weddings, events, and bars in metro Detroit and Toledo." />
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <header>
     <img src="img/logo.jpg" alt="Ultraphonics Logo" class="logo" />
   </header>
+
   <main>
     <h1>Ultraphonics</h1>
-    <h2>A high-energy variety band from metro-Detroit.</h2>
-    <h3>Rock &bull; Pop &bull; Country &bull; Soul</h3>
+    <h2>High-Energy Live Band for Events, Weddings & Bars</h2>
+    <h3>Rock • Pop • Country • Soul</h3>
 
     <div class="button-container">
       <a href="https://account.venmo.com/u/Ultraphonics" class="button" id="venmo-button">
@@ -59,137 +23,91 @@
       </a>
     </div>
 
-    <div id="shows">
+    <section class="content-section">
+      <div class="services">
+        <h4>Book Us for Your Next Event</h4>
+        <p class="lead-text">
+          Ultraphonics delivers high-energy live music to weddings, private parties, corporate events, bars, and music venues throughout Detroit and Toledo.
+        </p>
+        <p class="service-area">Serving Detroit, Toledo & Southeast Michigan</p>
+        <ul class="services-grid">
+          <li>Weddings & Private Events</li>
+          <li>Corporate Parties & Holiday Events</li>
+          <li>Bar & Brewery Sets</li>
+          <li>Music Halls & Festivals</li>
+        </ul>
+        <p style="text-align:center; margin-top: 1.5rem;">
+          Full sound and lighting available — indoor or outdoor.
+        </p>
+        <div class="cta-container">
+          <a href="mailto:info@ultraphonicsmusic.com" class="button contact-button" id="contact-button">
+            Contact Us
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section id="shows" aria-label="Upcoming Shows">
       <p>Loading...</p>
-    </div>
+    </section>
   </main>
 
   <footer>
     <div class="social-icons">
-      <a href="https://www.facebook.com/UltraphonicsMusic" target="_blank" id="facebook-button">
+      <a href="https://www.facebook.com/UltraphonicsMusic" target="_blank" rel="noopener noreferrer">
         <img src="img/facebook.png" alt="Facebook" />
       </a>
-      <a href="https://www.instagram.com/ultraphonicsmusic" target="_blank" id="instagram-button">
+      <a href="https://www.instagram.com/ultraphonicsmusic" target="_blank" rel="noopener noreferrer">
         <img src="img/instagram.png" alt="Instagram" />
       </a>
-      <a href="https://www.youtube.com/watch?v=Z0Shpn-laTs" target="_blank" id="youtube-button">
+      <a href="https://www.youtube.com/watch?v=Z0Shpn-laTs" target="_blank" rel="noopener noreferrer">
         <img src="img/youtube.png" alt="YouTube" />
       </a>
     </div>
-    <a href="mailto:info@ultraphonicsmusic.com" class="email" id="email-button">info@ultraphonicsmusic.com</a>
+    <a href="mailto:info@ultraphonicsmusic.com" class="email">info@ultraphonicsmusic.com</a>
   </footer>
 
   <script>
-    const sheets = {
-      2025: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQhcvl6yAQFWffllShR5GUJzRJ6CsYPxUaj3b844y7G_3SgE2wHnapcTtZFJsL9S-CqzyNs_2vVS2U_/pub?gid=0&single=true&output=csv",
-      2026: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQhcvl6yAQFWffllShR5GUJzRJ6CsYPxUaj3b844y7G_3SgE2wHnapcTtZFJsL9S-CqzyNs_2vVS2U_/pub?gid=1480597074&single=true&output=csv"
-    };
-
-    function parseCSV(text) {
-      const lines = text.trim().split("\n");
-      const headers = lines[0].split(",").map(h => h.trim());
-      return lines.slice(1).map(line => {
-        const values = line.split(",").map(v => v.trim());
-        return headers.reduce((obj, key, i) => {
-          obj[key] = values[i];
-          return obj;
-        }, {});
-      });
-    }
-
-    function renderShows(year, data) {
-      const container = document.getElementById("shows");
-      const section = document.createElement("div");
-      section.className = "year-section";
-
-      const heading = document.createElement("h2");
-      heading.textContent = `${year} SHOWS`;
-      section.appendChild(heading);
-
-      data.forEach((row) => {
-        const date = new Date(row.date);
-        const formattedDate = date instanceof Date && !isNaN(date)
-          ? `${String(date.getMonth() + 1).padStart(2, '0')}/${String(date.getDate()).padStart(2, '0')}`
-          : "undefined/undefined";
-
-        const div = document.createElement("div");
-
-        if (row.isPrivate?.toLowerCase() === "true") {
-          div.textContent = `${formattedDate} • Private Event`;
-        } else {
-          const venueText = row.venue?.trim() || "Unknown Venue";
-          const city = row.city || "";
-          const state = row.state || "";
-          const time = row.startTime?.endsWith(":00 PM") ? row.startTime.replace(":00 PM", " PM") : row.startTime;
-          const linkText = `${venueText}, ${city}${state ? ", " + state : ""}`;
-
-          const venueNode = row.eventLink
-            ? (() => {
-                const a = document.createElement("a");
-                a.href = row.eventLink;
-                a.textContent = linkText;
-                a.target = "_blank";
-                a.rel = "noopener noreferrer";
-                a.className = "venue-link";
-                a.addEventListener("click", () => {
-                  gtag('event', `${row.date}_${venueText}`);
-                });
-                return a;
-              })()
-            : document.createTextNode(linkText);
-
-          div.append(
-            `${formattedDate} • `,
-            venueNode,
-            time ? ` • ${time}` : ""
-          );
-        }
-        section.appendChild(div);
-      });
-      return { year, section };
-    }
-
-    const container = document.getElementById("shows");
-    container.innerHTML = "";
-
-    Promise.all(Object.entries(sheets).map(([year, url]) =>
-      fetch(url)
-        .then((res) => res.text())
-        .then((csv) => renderShows(year, parseCSV(csv)))
-        .catch((err) => console.error(`Error loading ${year} shows:`, err))
-    )).then((sections) => {
-      sections
-        .filter(Boolean)
-        .sort((a, b) => Number(a.year) - Number(b.year))
-        .forEach(({ section }) => container.appendChild(section));
-    });
-
-    document.getElementById('venmo-button').addEventListener('click', function (e) {
-      gtag('event', 'Tip CTA Pressed');
-      e.preventDefault();
-      const deepLink = "venmo://paycharge?txn=pay&recipients=Ultraphonics&amount=10.00&note=%F0%9F%8E%B8%F0%9F%8E%A4%F0%9F%8D%BA";
-      const webURL = "https://account.venmo.com/u/Ultraphonics";
-      const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
-      const isAndroid = /Android/i.test(navigator.userAgent);
-
-      if (isIOS) {
-        window.location = deepLink;
-        setTimeout(function() {
-          window.open(webURL, '_blank');
-        }, 1500);
-      } else {
-        window.open(webURL, '_blank');
+    // Contact button analytics
+    document.getElementById('contact-button').addEventListener('click', function (e) {
+      // Track the contact CTA click
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'Contact CTA Pressed');
       }
+      // The mailto: link will open the email client
     });
-    document.getElementById('facebook-button').addEventListener('click', function () {
-      gtag('event', 'Facebook CTA Pressed');
+
+    // Venmo button analytics (if you want to keep tracking)
+    document.getElementById('venmo-button').addEventListener('click', function (e) {
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'Venmo CTA Pressed');
+      }
+      // Your existing Venmo logic can go here if needed
     });
-    document.getElementById('instagram-button').addEventListener('click', function () {
-      gtag('event', 'Instagram CTA Pressed');
-    });
-    document.getElementById('youtube-button').addEventListener('click', function () {
-      gtag('event', 'YouTube CTA Pressed');
-    });
+
+    // Parallax header effect
+    const header = document.querySelector('header');
+
+    console.log('Header element:', header);
+
+    function updateParallax() {
+      const scrollY = window.scrollY;
+
+      // Move header background up at 1/3 the scroll speed (parallax effect)
+      const backgroundY = scrollY * 0.33;
+
+      if (header) {
+        header.style.backgroundPositionY = `${backgroundY}px`;
+      }
+
+      console.log('Scroll Y:', scrollY, 'Background Y:', backgroundY);
+    }
+
+    // Simple scroll event listener
+    window.addEventListener('scroll', updateParallax, { passive: true });
+
+    // Initialize on page load
+    updateParallax();
   </script>
 </body>
 </html>
