@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="styles.css" />
 
   <!-- Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-7RFPHXHGBC"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
@@ -135,12 +135,18 @@
     document.getElementById('contact-button').addEventListener('click', function () {
       if (typeof gtag !== 'undefined') {
         gtag('event', 'Contact CTA Pressed');
+        console.log('Contact button clicked - event sent to GA');
+      } else {
+        console.log('gtag not available - GA not loaded');
       }
     });
 
     document.getElementById('venmo-button').addEventListener('click', function () {
       if (typeof gtag !== 'undefined') {
         gtag('event', 'Venmo CTA Pressed');
+        console.log('Venmo button clicked - event sent to GA');
+      } else {
+        console.log('gtag not available - GA not loaded');
       }
     });
 
@@ -205,8 +211,9 @@
                 a.target = "_blank";
                 a.rel = "noopener noreferrer";
                 a.className = "venue-link";
-                a.addEventListener("click", () => {
+                a.addEventListener('click', () => {
                   gtag('event', `${row.date}_${venueText}`);
+                  console.log(`Venue link clicked: ${row.date}_${venueText} - event sent to GA`);
                 });
                 return a;
               })()
@@ -225,17 +232,26 @@
     const container = document.getElementById("shows");
     container.innerHTML = "";
 
-    Object.keys(sheets)
-      .sort((a, b) => b - a)
-      .forEach((year) => {
+    // Sort years in ascending order and fetch all data first
+    const sortedYears = Object.keys(sheets).sort((a, b) => a - b);
+
+    // Fetch all years first, then render in order
+    Promise.all(
+      sortedYears.map(year =>
         fetch(sheets[year])
-          .then((res) => res.text())
-          .then((csv) => parseCSV(csv))
-          .then((data) => renderShows(year, data))
-          .catch((err) => {
+          .then(res => res.text())
+          .then(csv => ({ year, data: parseCSV(csv) }))
+          .catch(err => {
             console.error(`Error loading ${year} shows:`, err);
-          });
+            return { year, data: [] };
+          })
+      )
+    ).then(results => {
+      // Render each year in the correct order
+      results.forEach(({ year, data }) => {
+        renderShows(year, data);
       });
+    });
   </script>
 </body>
 </html>
