@@ -3,9 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ultraphonics</title>
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' style='font-family: Arial, sans-serif; font-weight: bold;'>U</text></svg>" />
-  <link rel="stylesheet" href="styles.css">
+  <title>Ultraphonics - High-Energy Live Band Detroit & Toledo</title>
+  <meta name="description" content="Ultraphonics is a high-energy variety band playing Rock, Pop, Country & Soul for weddings, events, and bars in metro Detroit and Toledo." />
+  <link rel="stylesheet" href="styles.css" />
+
+  <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-7RFPHXHGBC"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -13,6 +15,27 @@
     gtag('js', new Date());
     gtag('config', 'G-7RFPHXHGBC');
   </script>
+
+  <!-- Email Source Tracking -->
+  <script>
+    // Track email traffic source
+    function trackEmailSource() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const source = urlParams.get('src');
+
+      if (source === 'email') {
+        gtag('event', 'page_view', {
+          'custom_parameter': 'email_traffic',
+          'source': 'email'
+        });
+        console.log('Email traffic detected and logged to Google Analytics');
+      }
+    }
+
+    // Run tracking when page loads
+    document.addEventListener('DOMContentLoaded', trackEmailSource);
+  </script>
+
   <style>
     a.venue-link {
       color: var(--color-spotify-green);
@@ -26,60 +49,143 @@
       margin-bottom: 0.75em;
     }
     #shows h2 {
+      color: var(--color-text-secondary);
+      margin-bottom: var(--spacing-md);
+      font-size: var(--font-size-lg);
+      font-weight: bold;
       margin-top: 2.5em;
     }
-    #shows .year-section {
-      margin-bottom: 4em;
+
+    /* Loading Spinner Styles */
+    .loading-spinner {
+      text-align: center;
+      padding: 2rem;
+      color: var(--color-text-secondary);
     }
+
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid var(--color-spotify-green);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 1rem;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
     @media (min-width: 600px) {
       #shows > div {
         font-size: 1.2rem;
       }
       #shows h2 {
         margin-top: 3em;
-      }
-      #shows .year-section {
-        margin-bottom: 6em;
+        font-size: var(--font-size-lg);
+        font-weight: bold;
       }
     }
   </style>
 </head>
 <body>
-  <header>
+  <header class="site-header">
     <img src="img/logo.jpg" alt="Ultraphonics Logo" class="logo" />
   </header>
-  <main>
-    <h1>Ultraphonics</h1>
-    <h2>A high-energy variety band from metro-Detroit.</h2>
-    <h3>Rock &bull; Pop &bull; Country &bull; Soul</h3>
 
-    <div class="button-container">
-      <a href="https://account.venmo.com/u/Ultraphonics" class="button" id="venmo-button">
-        Tip @Ultraphonics on Venmo
-      </a>
-    </div>
+  <main>
+    <section class="hero">
+      <h1 class="band-name">Ultraphonics</h1>
+      <h2 class="tagline">High-Energy Live Band for Events, Weddings & Bars</h2>
+      <h3 class="genres">Rock • Pop • Country • Soul</h3>
+
+      <div class="button-container">
+        <a href="https://account.venmo.com/u/Ultraphonics" class="button" id="venmo-button">
+          Tip @Ultraphonics on Venmo
+        </a>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <div class="services">
+        <h4 class="section-heading">Book Us for Your Next Event</h4>
+        <p class="lead-text">
+          Ultraphonics delivers high-energy live music to weddings, private parties, corporate events, bars, and music venues in the Detroit, MI and Toledo, OH metro areas.
+        </p>
+
+        <ul class="services-grid">
+          <li class="service-card">Weddings & Private Events</li>
+          <li class="service-card">Corporate Parties & Holiday Events</li>
+          <li class="service-card">Bar & Brewery Sets</li>
+          <li class="service-card">Music Halls & Festivals</li>
+        </ul>
+
+        <p class="equipment-note">
+          Full sound and lighting available — indoor or outdoor.
+        </p>
+
+        <div class="cta-container">
+          <a href="mailto:info@ultraphonicsmusic.com" class="button contact-button" id="contact-button">
+            Contact Us
+          </a>
+        </div>
+      </div>
+    </section>
 
     <div id="shows">
-      <p>Loading...</p>
+      <div class="loading-spinner">
+        <div class="spinner"></div>
+        <p>Loading events...</p>
+      </div>
     </div>
   </main>
 
   <footer>
     <div class="social-icons">
-      <a href="https://www.facebook.com/UltraphonicsMusic" target="_blank" id="facebook-button">
+      <a href="https://www.facebook.com/UltraphonicsMusic" target="_blank" rel="noopener noreferrer">
         <img src="img/facebook.png" alt="Facebook" />
       </a>
-      <a href="https://www.instagram.com/ultraphonicsmusic" target="_blank" id="instagram-button">
+      <a href="https://www.instagram.com/ultraphonicsmusic" target="_blank" rel="noopener noreferrer">
         <img src="img/instagram.png" alt="Instagram" />
       </a>
-      <a href="https://www.youtube.com/watch?v=Z0Shpn-laTs" target="_blank" id="youtube-button">
-        <img src="img/youtube.png" alt="YouTube" />
-      </a>
     </div>
-    <a href="mailto:info@ultraphonicsmusic.com" class="email" id="email-button">info@ultraphonicsmusic.com</a>
+    <a href="mailto:info@ultraphonicsmusic.com" class="email">info@ultraphonicsmusic.com</a>
   </footer>
 
   <script>
+    document.getElementById('contact-button').addEventListener('click', function () {
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'Contact CTA Pressed');
+        console.log('Contact button clicked - event sent to GA');
+      } else {
+        console.log('gtag not available - GA not loaded');
+      }
+    });
+
+    document.getElementById('venmo-button').addEventListener('click', function () {
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'Venmo CTA Pressed');
+        console.log('Venmo button clicked - event sent to GA');
+      } else {
+        console.log('gtag not available - GA not loaded');
+      }
+    });
+
+    const header = document.querySelector('header');
+    function updateParallax() {
+      const scrollY = window.scrollY;
+      const backgroundY = scrollY * 0.33;
+      if (header) {
+        header.style.backgroundPositionY = `${backgroundY}px`;
+      }
+    }
+    window.addEventListener('scroll', updateParallax, { passive: true });
+    updateParallax();
+  </script>
+
+    <script>
     const sheets = {
       2025: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQhcvl6yAQFWffllShR5GUJzRJ6CsYPxUaj3b844y7G_3SgE2wHnapcTtZFJsL9S-CqzyNs_2vVS2U_/pub?gid=0&single=true&output=csv",
       2026: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQhcvl6yAQFWffllShR5GUJzRJ6CsYPxUaj3b844y7G_3SgE2wHnapcTtZFJsL9S-CqzyNs_2vVS2U_/pub?gid=1480597074&single=true&output=csv"
@@ -99,12 +205,9 @@
 
     function renderShows(year, data) {
       const container = document.getElementById("shows");
-      const section = document.createElement("div");
-      section.className = "year-section";
-
       const heading = document.createElement("h2");
-      heading.textContent = `${year} SHOWS`;
-      section.appendChild(heading);
+      heading.textContent = `${year} EVENTS`;
+      container.appendChild(heading);
 
       data.forEach((row) => {
         const date = new Date(row.date);
@@ -117,7 +220,7 @@
         if (row.isPrivate?.toLowerCase() === "true") {
           div.textContent = `${formattedDate} • Private Event`;
         } else {
-          const venueText = row.venue?.trim() || "Unknown Venue";
+          const venueText = row.venue?.trim() || "";
           const city = row.city || "";
           const state = row.state || "";
           const time = row.startTime?.endsWith(":00 PM") ? row.startTime.replace(":00 PM", " PM") : row.startTime;
@@ -131,8 +234,9 @@
                 a.target = "_blank";
                 a.rel = "noopener noreferrer";
                 a.className = "venue-link";
-                a.addEventListener("click", () => {
+                a.addEventListener('click', () => {
                   gtag('event', `${row.date}_${venueText}`);
+                  console.log(`Venue link clicked: ${row.date}_${venueText} - event sent to GA`);
                 });
                 return a;
               })()
@@ -144,51 +248,34 @@
             time ? ` • ${time}` : ""
           );
         }
-        section.appendChild(div);
+        container.appendChild(div);
       });
-      return { year, section };
     }
 
-    const container = document.getElementById("shows");
-    container.innerHTML = "";
+        const container = document.getElementById("shows");
 
-    Promise.all(Object.entries(sheets).map(([year, url]) =>
-      fetch(url)
-        .then((res) => res.text())
-        .then((csv) => renderShows(year, parseCSV(csv)))
-        .catch((err) => console.error(`Error loading ${year} shows:`, err))
-    )).then((sections) => {
-      sections
-        .filter(Boolean)
-        .sort((a, b) => Number(a.year) - Number(b.year))
-        .forEach(({ section }) => container.appendChild(section));
-    });
+    // Sort years in ascending order and fetch all data first
+    const sortedYears = Object.keys(sheets).sort((a, b) => a - b);
 
-    document.getElementById('venmo-button').addEventListener('click', function (e) {
-      gtag('event', 'Tip CTA Pressed');
-      e.preventDefault();
-      const deepLink = "venmo://paycharge?txn=pay&recipients=Ultraphonics&amount=10.00&note=%F0%9F%8E%B8%F0%9F%8E%A4%F0%9F%8D%BA";
-      const webURL = "https://account.venmo.com/u/Ultraphonics";
-      const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
-      const isAndroid = /Android/i.test(navigator.userAgent);
+    // Fetch all years first, then render in order
+    Promise.all(
+      sortedYears.map(year =>
+        fetch(sheets[year])
+          .then(res => res.text())
+          .then(csv => ({ year, data: parseCSV(csv) }))
+          .catch(err => {
+            console.error(`Error loading ${year} shows:`, err);
+            return { year, data: [] };
+          })
+      )
+    ).then(results => {
+      // Clear loading spinner and render all events at once
+      container.innerHTML = "";
 
-      if (isIOS) {
-        window.location = deepLink;
-        setTimeout(function() {
-          window.open(webURL, '_blank');
-        }, 1500);
-      } else {
-        window.open(webURL, '_blank');
-      }
-    });
-    document.getElementById('facebook-button').addEventListener('click', function () {
-      gtag('event', 'Facebook CTA Pressed');
-    });
-    document.getElementById('instagram-button').addEventListener('click', function () {
-      gtag('event', 'Instagram CTA Pressed');
-    });
-    document.getElementById('youtube-button').addEventListener('click', function () {
-      gtag('event', 'YouTube CTA Pressed');
+      // Render each year in the correct order
+      results.forEach(({ year, data }) => {
+        renderShows(year, data);
+      });
     });
   </script>
 </body>
