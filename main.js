@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (isMobile) {
       const { username, tipAmount, note } = config.venmo;
       const encodedNote = encodeURIComponent(note);
-      venmoButton.href = `venmo://paycharge?txn=pay&recipients=${username}&amount=${tipAmount}&note=${encodedNote}`;
+      venmoButton.href = `venmo://paycharge?txn=pay&recipient=${username}&amount=${tipAmount}&note=${encodedNote}`;
     }
   }
 
