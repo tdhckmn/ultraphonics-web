@@ -1,0 +1,7 @@
+# This robots.txt file allows all search engine crawlers full access to the site.
+# This is the most common and SEO-friendly configuration for most websites.
+
+User-agent: *
+Disallow:
+
+Sitemap: https://www.ultraphonicsmusic.com/sitemap.xml
