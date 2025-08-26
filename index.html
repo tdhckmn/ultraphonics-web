@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <!-- Open Graph Meta Tags for Social Sharing -->
   <meta property="og:title" content="Ultraphonics - High-Energy Live Band - Detroit, Ann Arbor, Toledo" />
   <meta property="og:description" content="Ultraphonics is a high-energy variety band playing Rock, Pop, Country & Soul for weddings, events, and bars in Detroit, Ann Arbor, and Toledo." />
   <meta property="og:image" content="https://www.ultraphonicsmusic.com/img/logo.jpg" />
@@ -13,7 +12,6 @@
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="img/favicon.ico" type="image/x-icon" />
 
-  <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-7RFPHXHGBC"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -29,9 +27,9 @@
 
   <main>
     <section class="hero">
-      <h1 class="band-name">Ultraphonics</h1>
-      <h2 class="tagline">High-Energy Live Band for Events, Weddings & Bars</h2>
-      <h3 class="genres">Rock • Pop • Country • Soul</h3>
+      <h1 class="band-name" id="band-name"></h1>
+      <h2 class="tagline" id="tagline"></h2>
+      <h3 class="genres" id="genres"></h3>
 
       <div class="button-container">
         <a href="https://account.venmo.com/u/Ultraphonics" target="_blank" class="button" id="venmo-button">
@@ -42,21 +40,12 @@
 
     <section class="content-section">
       <div class="services">
-        <h4 class="section-heading">Book Us for Your Next Event</h4>
-        <p class="lead-text">
-          Ultraphonics delivers high-energy live music to weddings, private parties, corporate events, bars, and music venues in Detroit, Ann Arbor, and Toledo.
-        </p>
+        <h4 class="section-heading" id="services-heading"></h4>
+        <p class="lead-text" id="services-lead-text"></p>
 
-        <ul class="services-grid">
-          <li class="service-card">Weddings & Private Events</li>
-          <li class="service-card">Corporate Parties & Holiday Events</li>
-          <li class="service-card">Bar & Brewery Sets</li>
-          <li class="service-card">Music Halls & Festivals</li>
-        </ul>
+        <ul class="services-grid" id="services-grid"></ul>
 
-        <p class="equipment-note">
-          Full sound and lighting available — indoor or outdoor.
-        </p>
+        <p class="equipment-note" id="equipment-note"></p>
 
         <div class="cta-container">
           <a href="mailto:info@ultraphonicsmusic.com" class="button contact-button" id="contact-button">
@@ -66,28 +55,21 @@
       </div>
     </section>
 
-    <div id="shows">
-      <div class="loading-spinner">
-        <div class="spinner"></div>
-        <p>Loading events...</p>
-      </div>
-    </div>
+    <div id="shows" class="content-section"></div>
   </main>
 
   <footer>
     <div class="social-icons">
       <a href="https://www.facebook.com/UltraphonicsMusic" target="_blank" rel="noopener noreferrer">
-        <img src="img/facebook.png" alt="Facebook" />
+        <img src="img/facebook-white.png" alt="Facebook" />
       </a>
       <a href="https://www.instagram.com/ultraphonicsmusic" target="_blank" rel="noopener noreferrer">
-        <img src="img/instagram.png" alt="Instagram" />
+        <img src="img/instagram-white.png" alt="Instagram" />
       </a>
     </div>
     <a href="mailto:info@ultraphonicsmusic.com" class="email">info@ultraphonicsmusic.com</a>
   </footer>
 
-  <!-- All custom scripts have been moved to main.js -->
-  <!-- The 'defer' attribute ensures the script runs after the HTML is parsed -->
-  <script src="main.js" defer></script>
+  <script type="module" src="main.js" defer></script>
 </body>
 </html>

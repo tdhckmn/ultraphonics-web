@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultraphonics Admin</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body { text-align: left; }
+        main { max-width: 600px; }
+        .admin-section { background-color: #282828; padding: 2rem; border-radius: 8px; margin-top: 4rem; }
+        .admin-section h2 { margin-top: 0; border-bottom: 1px solid #1db954; padding-bottom: 1rem; }
+        input, textarea { width: 100%; padding: 12px; margin-bottom: 1.5rem; border-radius: 5px; border: 1px solid #555; background-color: #333; color: #fff; font-size: 1rem; }
+        label { display: block; margin-bottom: 0.5rem; font-weight: bold; }
+        textarea { min-height: 120px; resize: vertical; }
+    </style>
+</head>
+<body>
+    <main>
+        <section id="login-section" class="admin-section">
+            <h2>Admin Login</h2>
+            <form id="login-form">
+                <label for="password">Password</label>
+                <input type="password" id="password" required>
+                <button type="submit" class="button">Login</button>
+            </form>
+        </section>
+
+        <section id="dashboard-section" class="admin-section" style="display: none;">
+            <h2>Admin Dashboard</h2>
+            <div id="email-generator-tile" class="services-grid" style="grid-template-columns: 1fr;">
+                <li class="service-card">Generate an email for a client</li>
+            </div>
+
+            <form id="generator-form" style="display: none; margin-top: 2rem;">
+                <label for="client-name">Client Name</label>
+                <input type="text" id="client-name" placeholder="e.g., John Smith" required>
+
+                <label for="casual-name">Casual Intro Name</label>
+                <input type="text" id="casual-name" placeholder="e.g., Alex" required>
+
+                <label for="signature-name">Full Name (for signature)</label>
+                <input type="text" id="signature-name" placeholder="e.g., Alex Johnson" required>
+
+                <label for="your-phone">Phone Number</label>
+                <input type="tel" id="your-phone" placeholder="e.g., (555) 123-4567" required>
+
+                <label for="message">Message</label>
+                <textarea id="message" required></textarea>
+
+                <button type="submit" class="button">Generate Email</button>
+            </form>
+        </section>
+    </main>
+    <script src="admin.js"></script>
+</body>
+</html>
