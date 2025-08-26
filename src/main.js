@@ -1,4 +1,4 @@
-import { siteContent } from './content/index.js';
+import { siteContent } from '../content/index.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const { shows, venmo, selectors, hero, services } = siteContent;
