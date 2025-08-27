@@ -53,40 +53,23 @@ body {
   flex-direction: column;
 }
 
-header {
-  position: relative;
-  width: 100%;
-  height: var(--header-height);
-  background-image: url('img/header.png');
-  background-size: cover;
-  background-position: center;
-  overflow: visible;
-}
-
 .logo {
-  position: absolute;
-  bottom: -60px;
-  left: 50%;
-  transform: translateX(-50%);
   width: var(--logo-size);
   height: var(--logo-size);
   border-radius: 50%;
   border: var(--logo-border) solid var(--color-white);
   background-color: var(--color-background-dark);
   box-shadow: var(--shadow-glow);
-  z-index: 100;
+  margin-bottom: var(--spacing-lg);
 }
 
 main {
-  padding: 100px 20px 40px;
+  padding: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  max-width: 960px;
-  margin: 0 auto;
+  width: 100%;
   flex: 1;
-  position: relative;
-  z-index: 10;
 }
 
 h1 {
@@ -108,6 +91,43 @@ h3 {
   color: var(--color-text-tertiary);
   margin-bottom: var(--spacing-xxl);
 }
+
+/* === Hero Video Background === */
+.hero {
+  position: relative;
+  overflow: hidden;
+  height: 100vh; /* Make the hero section fill the viewport height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.hero-video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  filter: blur(8px); /* This blurs the entire video */
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: var(--spacing-xxl);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  max-width: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 
 /* === Button Styles === */
 .button-container {
