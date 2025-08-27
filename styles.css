@@ -179,8 +179,9 @@ h3 {
 .lead-text {
   font-size: var(--font-size-lg);
   color: var(--color-text-secondary);
-  margin-bottom: var(--spacing-lg);
   line-height: 1.6;
+  max-width: 700px; /* Constrains line length for readability */
+  margin: 0 auto var(--spacing-lg); /* Centers the text block */
 }
 
 .service-area {
@@ -342,5 +343,47 @@ footer {
     margin-top: 3em;
     font-size: var(--font-size-lg);
     font-weight: bold;
+  }
+}
+
+/* --- Mobile Styles --- */
+@media (max-width: 768px) {
+  /* Hide video and use a simplified, tinted background image */
+  .hero-video {
+    display: none;
+  }
+
+  .hero {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('img/header.png');
+    background-size: cover;
+    background-position: center;
+    height: auto;
+    padding: 5rem var(--spacing-lg);
+  }
+  
+  /* Remove the floating box effect from the hero content */
+  .hero-content {
+    background-color: transparent;
+    border: none;
+    padding: 0;
+  }
+
+  h1 {
+    font-size: 2.2rem;
+  }
+
+  h2 {
+    font-size: 1.3rem;
+  }
+
+  /* Make services grid single-column and add side padding */
+  .services-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .content-section {
+    padding-left: var(--spacing-lg);
+    padding-right: var(--spacing-lg);
+    box-sizing: border-box; /* Ensures padding is included in the width */
   }
 }
