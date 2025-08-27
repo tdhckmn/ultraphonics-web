@@ -4,20 +4,73 @@ document.addEventListener('DOMContentLoaded', () => {
   const { shows, venmo, selectors, hero, services } = siteContent;
 
   /**
-   * Populates the website's text content from the config file.
+   * Builds and injects a JSON-LD script tag for Structured Data (SEO).
    */
+  function injectStructuredData() {
+    const eventData = shows
+      // Filter out private events and events without a start time
+      .filter(show => !show.isPrivate && show.startTime)
+      .map(show => {
+        // Convert date and time to ISO 8601 format (e.g., 2025-04-05T20:00)
+        const date = new Date(show.date);
+        const [time, modifier] = show.startTime.split(' ');
+        let [hours, minutes] = time.split(':');
+        if (modifier === 'PM' && hours !== '12') {
+          hours = parseInt(hours, 10) + 12;
+        }
+        date.setHours(hours, minutes || '00');
+        const isoDate = date.toISOString().slice(0, 16);
+
+        return {
+          "@type": "Event",
+          "name": `Ultraphonics at ${show.venue}`,
+          "startDate": isoDate,
+          "location": {
+            "@type": "Place",
+            "name": show.venue,
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": show.city,
+              "addressRegion": show.state
+            }
+          },
+          "url": show.eventLink || "https://www.ultraphonicsmusic.com/#shows"
+        };
+      });
+
+    const schema = {
+      "@context": "https://schema.org",
+      "@type": "MusicGroup",
+      "name": "Ultraphonics",
+      "url": "https://www.ultraphonicsmusic.com/",
+      "logo": "https://www.ultraphonicsmusic.com/img/logo.jpg",
+      "description": "Ultraphonics is a high-energy variety band playing Rock, Pop, Country & Soul for weddings, events, and bars in Detroit, Ann Arbor, and Toledo.",
+      "genre": ["Rock", "Pop", "Country", "Soul"],
+      "sameAs": [
+        "https://www.facebook.com/UltraphonicsMusic",
+        "https://www.instagram.com/ultraphonicsmusic"
+      ],
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "email": "info@ultraphonicsmusic.com",
+        "contactType": "booking"
+      },
+      "event": eventData
+    };
+
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.textContent = JSON.stringify(schema);
+    document.head.appendChild(script);
+  }
+
   function populateTextContent() {
-    // Hero Section
     document.querySelector(selectors.bandName).textContent = hero.bandName;
     document.querySelector(selectors.tagline).textContent = hero.tagline;
     document.querySelector(selectors.genres).textContent = hero.genres;
-
-    // Services Section
     document.querySelector(selectors.servicesHeading).textContent = services.heading;
     document.querySelector(selectors.servicesLeadText).textContent = services.leadText;
     document.querySelector(selectors.equipmentNote).textContent = services.equipmentNote;
-
-    // Services Grid
     const servicesGrid = document.querySelector(selectors.servicesGrid);
     services.gridItems.forEach(itemText => {
       const listItem = document.createElement('li');
@@ -28,7 +81,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function initialize() {
-    populateTextContent(); // Populate text first
+    injectStructuredData(); // Add SEO data
+    populateTextContent();
     setupEventListeners();
     setupVenmoLink();
     setupParallaxEffect();
@@ -53,7 +107,6 @@ document.addEventListener('DOMContentLoaded', () => {
   function setupVenmoLink() {
     const venmoButton = document.querySelector(selectors.venmoButton);
     if (!venmoButton) return;
-
     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     if (isMobile) {
       const { username, tipAmount, note } = venmo;
@@ -65,7 +118,6 @@ document.addEventListener('DOMContentLoaded', () => {
   function setupParallaxEffect() {
     const header = document.querySelector(selectors.header);
     if (!header) return;
-
     const updateParallax = () => {
       const scrollY = window.scrollY;
       header.style.backgroundPositionY = `${scrollY * 0.33}px`;
@@ -77,14 +129,12 @@ document.addEventListener('DOMContentLoaded', () => {
   function loadShowSchedule() {
     const showsContainer = document.querySelector(selectors.showsContainer);
     if (!showsContainer) return;
-
     const eventsByYear = shows.reduce((acc, event) => {
       const year = new Date(event.date).getFullYear();
       if (!acc[year]) acc[year] = [];
       acc[year].push(event);
       return acc;
     }, {});
-
     for (const year in eventsByYear) {
       renderShows(year, eventsByYear[year], showsContainer);
     }
@@ -102,12 +152,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const heading = document.createElement('h2');
     heading.textContent = `${year} EVENTS`;
     container.appendChild(heading);
-
     data.forEach((row) => {
       const date = new Date(row.date);
-      const formattedDate = !isNaN(date)
-        ? `${String(date.getMonth() + 1).padStart(2, '0')}/${String(date.getDate()).padStart(2, '0')}`
-        : 'Date TBD';
+      const formattedDate = !isNaN(date) ? `${String(date.getMonth() + 1).padStart(2, '0')}/${String(date.getDate()).padStart(2, '0')}` : 'Date TBD';
       const div = document.createElement('div');
       if (row.isPrivate) {
         div.textContent = `${formattedDate} • Private Event`;
