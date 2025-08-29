@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Generate Setlist - Ultraphonics Admin</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .setlist-container {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background-color: var(--color-background);
+      border-radius: 8px;
+      box-shadow: var(--shadow-md);
+    }
+
+    .setlist-header {
+      text-align: center;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid var(--color-spotify-green);
+    }
+
+    .setlist-section {
+      margin-bottom: 2rem;
+      padding: 1.5rem;
+      background-color: var(--color-background-dark);
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .setlist-section h3 {
+      color: var(--color-spotify-green);
+      margin-bottom: 1rem;
+    }
+
+    .back-button {
+      display: inline-block;
+      background-color: var(--color-spotify-green);
+      color: var(--color-white);
+      padding: 12px 24px;
+      text-decoration: none;
+      border-radius: 5px;
+      transition: all 0.3s ease;
+      margin-top: 1rem;
+    }
+
+    .back-button:hover {
+      background-color: var(--color-spotify-green-hover);
+      transform: translateY(-2px);
+    }
+
+    .upload-area {
+      border: 2px dashed var(--color-spotify-green);
+      border-radius: 8px;
+      padding: 2rem;
+      text-align: center;
+      margin: 1rem 0;
+      background-color: rgba(29, 185, 84, 0.1);
+    }
+
+    .upload-area:hover {
+      background-color: rgba(29, 185, 84, 0.2);
+      border-color: var(--color-spotify-green-hover);
+    }
+
+    .file-input {
+      display: none;
+    }
+
+    .upload-label {
+      cursor: pointer;
+      color: var(--color-spotify-green);
+      font-weight: bold;
+    }
+
+    .upload-label:hover {
+      color: var(--color-spotify-green-hover);
+    }
+
+    .setlist-output {
+      margin-top: 2rem;
+      padding: 1.5rem;
+      background-color: rgba(255, 255, 255, 0.05);
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .setlist-columns {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .setlist-column {
+      background-color: rgba(0, 0, 0, 0.3);
+      padding: 1rem;
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .setlist-column h4 {
+      color: var(--color-spotify-green);
+      margin-top: 0;
+      text-align: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      padding-bottom: 0.5rem;
+    }
+
+    .setlist-column ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .setlist-column li {
+      padding: 0.25rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .setlist-column li:last-child {
+      border-bottom: none;
+    }
+
+    .print-button {
+      background-color: var(--color-spotify-green);
+      color: var(--color-white);
+      border: none;
+      padding: 12px 24px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+      margin-top: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .print-button:hover {
+      background-color: var(--color-spotify-green-hover);
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="setlist-container">
+      <div class="setlist-header">
+        <h1>Generate Setlist</h1>
+        <p>Create custom setlists for your events</p>
+      </div>
+
+      <div class="setlist-section">
+        <h3>Step 1: Download Trello Data</h3>
+        <p>Click the link below to download your Trello board data as a JSON file:</p>
+        <a href="https://trello.com/b/oatz1C1E.json" target="_blank" class="back-button">Download Trello JSON</a>
+      </div>
+
+      <div class="setlist-section">
+        <h3>Step 2: Upload JSON File</h3>
+        <p>Upload the JSON file you just downloaded to generate your setlist:</p>
+
+        <div class="upload-area">
+          <label for="json-upload" class="upload-label">
+            📁 Click here to upload JSON file
+          </label>
+          <input type="file" id="json-upload" class="file-input" accept=".json">
+        </div>
+
+        <div id="upload-status"></div>
+      </div>
+
+      <div id="setlist-output" class="setlist-output" style="display: none;">
+        <h3>Setlist Preview</h3>
+        <div id="setlist-content"></div>
+
+        <div style="text-align: center; margin-top: 2rem;">
+          <button id="print-btn" class="print-button">🖨️ Print Setlist</button>
+        </div>
+      </div>
+
+      <div class="setlist-section">
+        <h3>Navigation</h3>
+        <a href="admin.html" class="back-button">← Back to Admin</a>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // File upload handling
+    const fileInput = document.getElementById('json-upload');
+    const uploadStatus = document.getElementById('upload-status');
+    const setlistOutput = document.getElementById('setlist-output');
+    const setlistContent = document.getElementById('setlist-content');
+    const printBtn = document.getElementById('print-btn');
+
+    fileInput.addEventListener('change', handleFileUpload);
+    printBtn.addEventListener('click', printSetlist);
+
+    function handleFileUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const data = JSON.parse(e.target.result);
+          generateSetlist(data);
+          setlistOutput.style.display = 'block';
+          uploadStatus.innerHTML = '<p style="color: var(--color-spotify-green);">✅ File uploaded successfully!</p>';
+        } catch (error) {
+          uploadStatus.innerHTML = '<p style="color: #ff6b6b;">❌ Error parsing JSON file</p>';
+          console.error('Error parsing JSON:', error);
+        }
+      };
+      reader.readAsText(file);
+    }
+
+        function generateSetlist(data) {
+      const cards = data.cards || [];
+      const lists = data.lists || [];
+
+      // Only take the first 4 lists from Trello
+      const firstFourLists = lists.slice(0, 4);
+
+      // Generate HTML with Set 1, Set 2, Set 3, Set 4
+      let html = '<div class="setlist-columns">';
+
+      firstFourLists.forEach((list, index) => {
+        const setName = `Set ${index + 1}`;
+        const listCards = cards.filter(card => card.idList === list.id);
+        const songNames = listCards.map(card => card.name);
+
+        html += `
+          <div class="setlist-column">
+            <h4>${setName}</h4>
+            <ul>
+              ${songNames.length > 0 ? songNames.map(song => `<li>${song}</li>`).join('') : '<li>No songs in this set</li>'}
+            </ul>
+          </div>
+        `;
+      });
+
+      html += '</div>';
+      setlistContent.innerHTML = html;
+    }
+
+    function printSetlist() {
+      // Open a clean setlist page in a new window for printing
+      const newWindow = window.open('printable-setlist.html', '_blank', 'width=800,height=600');
+
+      // Wait for the new window to load, then populate it with the current setlist
+      newWindow.onload = function() {
+        const setlistContent = document.getElementById('setlist-content').innerHTML;
+        newWindow.document.getElementById('printable-setlist').innerHTML = setlistContent;
+      };
+    }
+  </script>
+</body>
+</html>

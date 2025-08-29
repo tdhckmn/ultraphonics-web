@@ -87,6 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setupVenmoLink();
     setupParallaxEffect();
     loadShowSchedule();
+    setupAdminCode();
   }
 
   function setupEventListeners() {
@@ -180,6 +181,31 @@ document.addEventListener('DOMContentLoaded', () => {
     a.className = 'venue-link';
     a.addEventListener('click', () => trackEvent(`${row.date}_${row.venue?.trim()}`));
     return a;
+  }
+
+  function setupAdminCode() {
+    const code = [
+      'ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown',
+      'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight',
+      'KeyB', 'KeyA'
+    ];
+
+    let i = 0;
+
+    document.addEventListener('keydown', (event) => {
+      const expectedKey = code[i];
+
+      if (event.code === expectedKey) {
+        i++;
+
+        if (i === code.length) {
+          window.location.href = '/admin.html';
+          i = 0;
+        }
+      } else {
+        i = 0;
+      }
+    });
   }
 
   initialize();

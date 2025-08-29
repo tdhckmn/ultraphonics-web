@@ -1,20 +1,164 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Generated Email</title>
-    <style>
-        /* Ensures the email template is the only thing visible */
-        body, html {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #f4f4f4; /* A neutral background */
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Generated Email - Ultraphonics</title>
+      <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      color: #ffffff;
+      background-color: #1a1a1a;
+      margin: 0;
+      padding: 80px 40px 40px 40px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .email-header {
+      text-align: center;
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 2px solid #1db954;
+    }
+
+    .email-header img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: 3px solid #1db954;
+      margin-bottom: 15px;
+    }
+
+    .email-header h1 {
+      color: #1db954;
+      margin: 0;
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .email-content {
+      background-color: #282828;
+      padding: 30px;
+      border-radius: 8px;
+      border: 1px solid #1db954;
+      box-shadow: 0 4px 20px rgba(29, 185, 84, 0.2);
+    }
+
+    .email-content p {
+      margin: 0 0 20px 0;
+      color: #ffffff;
+    }
+
+    .email-content p:last-child {
+      margin-bottom: 0;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid #333;
+      color: #cccccc;
+      font-size: 14px;
+    }
+
+    .footer a {
+      color: #1db954;
+      text-decoration: none;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+
+    .social-icons {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin-bottom: 20px;
+    }
+
+    .social-icons a {
+      display: inline-block;
+      transition: transform 0.3s;
+    }
+
+    .social-icons a:hover {
+      transform: scale(1.1);
+    }
+
+    .social-icons img {
+      width: 40px;
+      height: 40px;
+      filter: brightness(0) invert(1);
+      transition: transform 0.3s, filter 0.3s;
+    }
+
+    .social-icons a:hover img {
+      transform: scale(1.1);
+      filter: brightness(0) saturate(100%) invert(48%) sepia(79%) saturate(2476%) hue-rotate(118deg) brightness(118%) contrast(119%);
+    }
+  </style>
 </head>
 <body>
-    <script src="src/generated-email.js"></script>
+  <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #1a1a1a;">
+    <tr>
+      <td align="center" style="padding: 80px 40px 40px 40px;">
+        <table width="600" cellpadding="0" cellspacing="0" style="max-width: 600px;">
+                    <!-- Header -->
+          <tr>
+            <td align="center" style="padding-bottom: 30px;">
+              <img src="assets/logo.jpg" alt="Ultraphonics Logo" width="80" height="80" style="border-radius: 50%; border: 3px solid #1db954; margin-bottom: 15px;">
+              <h1 style="color: #1db954; margin: 0; font-size: 24px; font-weight: bold;">Ultraphonics</h1>
+              <p style="color: #cccccc; margin: 0;">High-Energy Live Band</p>
+              <p style="color: #cccccc; margin: 0;">Rock • Pop • Country • Soul</p>
+            </td>
+          </tr>
+
+          <!-- Email Content -->
+          <tr>
+            <td style="padding: 30px 0;">
+              <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #282828; border-radius: 8px; border: 1px solid #1db954;">
+                <tr>
+                  <td style="padding: 30px;">
+                    <div id="email-content" style="color: #ffffff; line-height: 1.6;">
+                      <!-- Email content will be populated here -->
+                    </div>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td align="center" style="padding-top: 30px;">
+              <table cellpadding="0" cellspacing="0">
+                <tr>
+                  <td align="center" style="padding-bottom: 20px;">
+                    <a href="https://www.facebook.com/UltraphonicsMusic" target="_blank" style="display: inline-block; margin: 0 15px;">
+                      <img src="assets/facebook-white.png" alt="Facebook" width="40" height="40" style="filter: brightness(0) invert(1);">
+                    </a>
+                    <a href="https://www.instagram.com/ultraphonicsmusic" target="_blank" style="display: inline-block; margin: 0 15px;">
+                      <img src="assets/instagram-white.png" alt="Instagram" width="40" height="40" style="filter: brightness(0) invert(1);">
+                    </a>
+                  </td>
+                </tr>
+                <tr>
+                  <td align="center">
+                    <p style="color: #cccccc; margin: 0;">
+                      <a href="mailto:info@ultraphonicsmusic.com" style="color: #cccccc;">info@ultraphonicsmusic.com</a>
+                    </p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
 </body>
 </html>
