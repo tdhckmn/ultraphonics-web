@@ -103,12 +103,10 @@ h3 {
   width: 100%;
 }
 
-
-
 .hero-content {
   position: relative;
   z-index: 2;
-  background-color: rgba(0, 0, 0, 0.8); /* Match mobile opacity */
+  background-color: rgba(0, 0, 0, 0.2); /* Match mobile opacity */
   padding: var(--spacing-xxl);
   border-radius: 0; /* Remove rounded corners to match mobile */
   border: none; /* Remove border to match mobile */
@@ -382,7 +380,7 @@ footer {
 
   /* Mobile content styling - fill entire hero area */
   .hero-content {
-    background-color: rgba(0, 0, 0, 0.8); /* Dark background to cover video */
+    background-color: rgba(0, 0, 0, 0.2); /* Dark background to cover video */
     border: none;
     border-radius: 0;
     padding: 2rem var(--spacing-lg);
