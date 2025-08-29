@@ -4,6 +4,54 @@ document.addEventListener('DOMContentLoaded', () => {
   const { shows, venmo, selectors, hero, services } = siteContent;
 
   /**
+   * Ensures mobile videos autoplay by handling mobile browser restrictions
+   */
+  function ensureMobileVideoAutoplay() {
+    const mobileVideo = document.querySelector('.hero-video-mobile');
+    const desktopVideo = document.querySelector('.hero-video-desktop');
+
+    if (!mobileVideo || !desktopVideo) return;
+
+    // Force play on mobile devices
+    const playVideo = (video) => {
+      if (video.paused) {
+        const playPromise = video.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(error => {
+            console.log('Video autoplay failed:', error);
+            // Try again after user interaction
+            document.addEventListener('touchstart', () => {
+              video.play().catch(e => console.log('Still failed:', e));
+            }, { once: true });
+          });
+        }
+      }
+    };
+
+    // Check if we're on mobile
+    const isMobile = window.innerWidth <= 768;
+
+    if (isMobile) {
+      // Ensure mobile video plays
+      playVideo(mobileVideo);
+
+      // Also try to preload and play
+      mobileVideo.load();
+      setTimeout(() => playVideo(mobileVideo), 100);
+
+      // Listen for visibility changes to restart video if needed
+      document.addEventListener('visibilitychange', () => {
+        if (!document.hidden && mobileVideo.paused) {
+          playVideo(mobileVideo);
+        }
+      });
+    } else {
+      // Ensure desktop video plays
+      playVideo(desktopVideo);
+    }
+  }
+
+  /**
    * Builds and injects a JSON-LD script tag for Structured Data (SEO).
    */
   function injectStructuredData() {
@@ -88,6 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setupParallaxEffect();
     loadShowSchedule();
     setupAdminCode();
+    ensureMobileVideoAutoplay(); // Ensure mobile videos autoplay
   }
 
   function setupEventListeners() {
