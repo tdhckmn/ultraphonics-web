@@ -136,11 +136,88 @@
       transition: all 0.3s ease;
     }
 
-    .print-button:hover {
-      background-color: var(--color-spotify-green-hover);
-      transform: translateY(-2px);
-    }
-  </style>
+         .print-button:hover {
+       background-color: var(--color-spotify-green-hover);
+       transform: translateY(-2px);
+     }
+
+     /* Print styles for setlist */
+     @media print {
+               .setlist-container {
+          margin: 0 !important;
+          padding: 0 !important;
+          background: white;
+          color: black;
+          box-shadow: none;
+        }
+
+       .setlist-section {
+         background: white;
+         border: 1px solid #ccc;
+         color: black;
+       }
+
+                       .setlist-column {
+          border: 1px solid #000 !important;
+          background: white !important;
+          color: black !important;
+          min-height: 150px !important;
+        }
+
+        .setlist-column h3 {
+          color: #1db954 !important;
+          border-bottom: 1px solid #000 !important;
+          font-size: 16px !important;
+          margin: 0 0 0.5rem 0 !important;
+          padding-bottom: 0.25rem !important;
+        }
+
+        .setlist-column li {
+          border-bottom: 1px solid #ccc !important;
+          color: black !important;
+          font-size: 12px !important;
+          padding: 0.15rem 0 !important;
+        }
+
+        .setlist-column li:last-child {
+          border-bottom: none !important;
+        }
+
+        .back-button, .print-button, .upload-area, .setlist-header, .setlist-section {
+          display: none !important;
+          height: 0 !important;
+          margin: 0 !important;
+          padding: 0 !important;
+          overflow: hidden !important;
+        }
+
+        .setlist-row {
+          page-break-inside: avoid;
+          margin-bottom: 0.25rem !important;
+        }
+
+                                /* Simple page break */
+        .setlist-row:nth-child(2) {
+          page-break-before: always;
+        }
+
+        /* Basic spacing */
+        .setlist-row:first-child {
+          margin-top: 0.25rem;
+        }
+
+        #setlist-output-container h3 {
+          font-size: 16px;
+          margin: 0 0 0.5rem 0;
+          text-align: center;
+        }
+
+        #setlist-output-container {
+          margin: 0;
+          padding: 0.25rem;
+        }
+     }
+   </style>
 </head>
 <body>
   <main>
@@ -160,24 +237,22 @@
         <h3>Step 2: Upload JSON File</h3>
         <p>Upload the JSON file you just downloaded to generate your setlist:</p>
 
-        <div class="upload-area">
-          <label for="json-upload" class="upload-label">
-            📁 Click here to upload JSON file
-          </label>
-          <input type="file" id="json-upload" class="file-input" accept=".json">
-        </div>
-
-        <div id="upload-status"></div>
+                 <div class="upload-area">
+           <label for="json-upload-input" class="upload-label">
+             📁 Click here to upload JSON file
+           </label>
+           <input type="file" id="json-upload-input" class="file-input" accept=".json">
+         </div>
       </div>
 
-      <div id="setlist-output" class="setlist-output" style="display: none;">
-        <h3>Setlist Preview</h3>
-        <div id="setlist-content"></div>
+             <div id="setlist-output-container" class="setlist-output" style="display: none;">
+         <h3>Setlist Preview</h3>
+         <div id="setlist-output"></div>
 
-        <div style="text-align: center; margin-top: 2rem;">
-          <button id="print-btn" class="print-button">🖨️ Print Setlist</button>
-        </div>
-      </div>
+         <div style="text-align: center; margin-top: 2rem;">
+           <button id="print-btn" class="print-button">🖨️ Print Setlist</button>
+         </div>
+       </div>
 
       <div class="setlist-section">
         <h3>Navigation</h3>
@@ -186,75 +261,6 @@
     </div>
   </main>
 
-  <script>
-    // File upload handling
-    const fileInput = document.getElementById('json-upload');
-    const uploadStatus = document.getElementById('upload-status');
-    const setlistOutput = document.getElementById('setlist-output');
-    const setlistContent = document.getElementById('setlist-content');
-    const printBtn = document.getElementById('print-btn');
-
-    fileInput.addEventListener('change', handleFileUpload);
-    printBtn.addEventListener('click', printSetlist);
-
-    function handleFileUpload(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        try {
-          const data = JSON.parse(e.target.result);
-          generateSetlist(data);
-          setlistOutput.style.display = 'block';
-          uploadStatus.innerHTML = '<p style="color: var(--color-spotify-green);">✅ File uploaded successfully!</p>';
-        } catch (error) {
-          uploadStatus.innerHTML = '<p style="color: #ff6b6b;">❌ Error parsing JSON file</p>';
-          console.error('Error parsing JSON:', error);
-        }
-      };
-      reader.readAsText(file);
-    }
-
-        function generateSetlist(data) {
-      const cards = data.cards || [];
-      const lists = data.lists || [];
-
-      // Only take the first 4 lists from Trello
-      const firstFourLists = lists.slice(0, 4);
-
-      // Generate HTML with Set 1, Set 2, Set 3, Set 4
-      let html = '<div class="setlist-columns">';
-
-      firstFourLists.forEach((list, index) => {
-        const setName = `Set ${index + 1}`;
-        const listCards = cards.filter(card => card.idList === list.id);
-        const songNames = listCards.map(card => card.name);
-
-        html += `
-          <div class="setlist-column">
-            <h4>${setName}</h4>
-            <ul>
-              ${songNames.length > 0 ? songNames.map(song => `<li>${song}</li>`).join('') : '<li>No songs in this set</li>'}
-            </ul>
-          </div>
-        `;
-      });
-
-      html += '</div>';
-      setlistContent.innerHTML = html;
-    }
-
-    function printSetlist() {
-      // Open a clean setlist page in a new window for printing
-      const newWindow = window.open('printable-setlist.html', '_blank', 'width=800,height=600');
-
-      // Wait for the new window to load, then populate it with the current setlist
-      newWindow.onload = function() {
-        const setlistContent = document.getElementById('setlist-content').innerHTML;
-        newWindow.document.getElementById('printable-setlist').innerHTML = setlistContent;
-      };
-    }
-  </script>
+  <script src="src/setlist.js"></script>
 </body>
 </html>

@@ -84,52 +84,69 @@ document.addEventListener('DOMContentLoaded', () => {
         const emojiRegex = /^\p{Emoji}/u;
 
         try {
-            const data = JSON.parse(jsonContent);
-            const desiredSetlists = ["SET 1", "SET 2", "SET 3", "SET 4"];
-            
-            output.innerHTML = '';
-            let currentPage;
-            desiredSetlists.forEach((setName, index) => {
-                if (index === 0 || index === 2) {
-                    currentPage = document.createElement('div');
-                    currentPage.className = 'print-page setlist-output-page';
-                    output.appendChild(currentPage);
-                }
+          const data = JSON.parse(jsonContent);
+          const desiredSetlists = ["set_1", "set_2", "set_3", "set_4"]; // match exactly
 
-                const list = data.lists.find(l => !l.closed && l.name.toUpperCase() === setName);
-                const column = document.createElement('div');
-                column.className = 'setlist-column';
-                const title = document.createElement('h3');
-                title.textContent = setName.replace("SET ", "Set ");
-                column.appendChild(title);
-                const songList = document.createElement('ul');
+          // Build lookup for lists
+          const listsById = Object.fromEntries(data.lists.map(l => [l.id, l]));
 
-                if (list) {
-                    const songs = data.cards.filter(card => card.idList === list.id && !card.closed);
-                    let songCounter = 1;
-                    songs.forEach(song => {
-                        const li = document.createElement('li');
-                        if (emojiRegex.test(song.name)) {
-                            li.className = 'setlist-note';
-                            li.textContent = song.name;
-                        } else {
-                            li.textContent = `${songCounter}. ${song.name}`;
-                            songCounter++;
-                        }
-                        songList.appendChild(li);
-                    });
-                }
-                
-                column.appendChild(songList);
-                if (currentPage) {
-                    currentPage.appendChild(column);
-                }
-            });
-            outputContainer.style.display = 'block';
+          // Only open lists
+          const openLists = data.lists.filter(l => !l.closed);
 
+          // Only open cards that ALSO belong to an open list
+          const validCards = data.cards.filter(
+            c => !c.closed && listsById[c.idList] && !listsById[c.idList].closed
+          );
+
+          output.innerHTML = '';
+          let currentPage;
+
+          desiredSetlists.forEach((setNameLower, index) => {
+            if (index === 0 || index === 2) {
+              currentPage = document.createElement('div');
+              currentPage.className = 'print-page setlist-output-page';
+              output.appendChild(currentPage);
+            }
+
+            // Find matching list by name (exact match, ignoring case + whitespace)
+            const list = openLists.find(
+              l => l.name.trim().toLowerCase() === setNameLower
+            );
+
+            const column = document.createElement('div');
+            column.className = 'setlist-column';
+            const title = document.createElement('h3');
+            title.textContent = setNameLower.replace('set_', 'Set ');
+            column.appendChild(title);
+
+            const songList = document.createElement('ul');
+
+            if (list) {
+              // Only valid cards from THIS list
+              const songs = validCards.filter(card => card.idList === list.id);
+
+              let counter = 1;
+              songs.forEach(song => {
+                const li = document.createElement('li');
+                if (emojiRegex.test(song.name)) {
+                  li.className = 'setlist-note';
+                  li.textContent = song.name;
+                } else {
+                  li.textContent = `${counter}. ${song.name}`;
+                  counter++;
+                }
+                songList.appendChild(li);
+              });
+            }
+
+            column.appendChild(songList);
+            if (currentPage) currentPage.appendChild(column);
+          });
+
+          outputContainer.style.display = 'block';
         } catch (error) {
-            alert(`Failed to process JSON file.\nError: ${error.message}`);
-            console.error('Error processing Trello JSON:', error);
+          alert(`Failed to process JSON file.\nError: ${error.message}`);
+          console.error('Error processing Trello JSON:', error);
         }
-    }
+      }
 });
