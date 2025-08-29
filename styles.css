@@ -347,43 +347,29 @@ footer {
 }
 
 /* --- Mobile Styles --- */
+
+/* Desktop video - visible on desktop, hidden on mobile */
+.hero-video-desktop {
+  display: block;
+}
+
+/* Mobile video - hidden on desktop, visible on mobile */
+.hero-video-mobile {
+  display: none;
+}
 @media (max-width: 768px) {
-  /* Hide video and use a simplified, tinted background image */
-  .hero-video {
+  .hero-video-desktop {
     display: none;
   }
-
-  .hero {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('img/header.png');
-    background-size: cover;
-    background-position: center;
-    height: auto;
-    padding: 5rem var(--spacing-lg);
+  
+  .hero-video-mobile {
+    display: block;
   }
   
-  /* Remove the floating box effect from the hero content */
-  .hero-content {
-    background-color: transparent;
-    border: none;
-    padding: 0;
-  }
-
-  h1 {
-    font-size: 2.2rem;
-  }
-
-  h2 {
-    font-size: 1.3rem;
-  }
-
-  /* Make services grid single-column and add side padding */
-  .services-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .content-section {
-    padding-left: var(--spacing-lg);
-    padding-right: var(--spacing-lg);
-    box-sizing: border-box; /* Ensures padding is included in the width */
+  .hero {
+    /* Remove static background - mobile video will be the background */
+    background: none;
+    height: auto;
+    padding: 5rem var(--spacing-lg);
   }
 }
