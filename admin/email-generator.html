@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Generate Email - Ultraphonics Admin</title>
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="../assets/css/styles.css" />
   <style>
     .email-container {
       max-width: 800px;
@@ -140,6 +140,7 @@
   <main>
     <div class="email-container">
       <div class="email-header">
+
         <h1>Generate Email for Client</h1>
         <p>Create personalized emails for potential clients</p>
       </div>
@@ -149,17 +150,17 @@
         <form id="email-form">
           <div class="form-group">
             <label for="client-name">Client Name:</label>
-            <input type="text" id="client-name" placeholder="e.g., John Smith" required>
+            <input type="text" id="client-name" placeholder="e.g., Billy O'Rivers" required>
           </div>
 
           <div class="form-group">
             <label for="casual-name">Your Casual Name:</label>
-            <input type="text" id="casual-name" placeholder="e.g., Alex" required>
+            <input type="text" id="casual-name" placeholder="e.g., Anthony" required>
           </div>
 
           <div class="form-group">
             <label for="signature-name">Your Full Name (for signature):</label>
-            <input type="text" id="signature-name" placeholder="e.g., Alex Johnson" required>
+            <input type="text" id="signature-name" placeholder="e.g., Anthonester Buriolek" required>
           </div>
 
           <div class="form-group">
@@ -168,13 +169,16 @@
           </div>
 
           <div class="form-group">
-            <label for="available-dates">Available Dates:</label>
+            <label for="available-dates">Body Content:</label>
             <textarea id="available-dates" placeholder="List the dates you're available to book..." required>We're currently looking to book the following dates:</textarea>
           </div>
 
-          <div class="button-group">
-            <button type="submit" class="generate-button">Generate Email</button>
-          </div>
+          <p>
+            CNTRL/CMD + A to select all rendered content in the popup window.<br/>
+            Compose a new email and paste the content directly in the message body.
+          </p>
+
+          <button type="submit" class="generate-button">Generate Email</button>
         </form>
       </div>
 
@@ -182,7 +186,7 @@
 
       <div class="email-section">
         <h3>Navigation</h3>
-        <a href="admin.html" class="back-button">← Back to Admin</a>
+        <a href="index.html" class="back-button">← Back to Admin</a>
       </div>
     </div>
   </main>

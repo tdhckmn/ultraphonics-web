@@ -1,4 +1,4 @@
-import { siteContent } from '../content/index.js';
+import { siteContent } from '../../content/index.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const { shows, venmo, selectors, hero, services } = siteContent;
@@ -248,7 +248,7 @@ document.addEventListener('DOMContentLoaded', () => {
         i++;
 
         if (i === code.length) {
-          window.location.href = '/admin.html';
+          window.location.href = '/admin/index.html';
           i = 0;
         }
       } else {

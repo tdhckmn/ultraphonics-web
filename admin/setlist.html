@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Generate Setlist - Ultraphonics Admin</title>
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="../assets/css/styles.css" />
   <style>
     .setlist-container {
       max-width: 800px;
@@ -224,7 +224,7 @@
     <div class="setlist-container">
       <div class="setlist-header">
         <h1>Generate Setlist</h1>
-        <p>Create custom setlists for your events</p>
+        <p>Create custom setlists for events</p>
       </div>
 
       <div class="setlist-section">
@@ -237,18 +237,16 @@
         <h3>Step 2: Upload JSON File</h3>
         <p>Upload the JSON file you just downloaded to generate your setlist:</p>
 
-                 <div class="upload-area">
-           <label for="json-upload-input" class="upload-label">
+        <div class="upload-area">
+          <label for="json-upload-input" class="upload-label">
              📁 Click here to upload JSON file
-           </label>
-           <input type="file" id="json-upload-input" class="file-input" accept=".json">
-         </div>
+          </label>
+          <input type="file" id="json-upload-input" class="file-input" accept=".json">
+        </div>
       </div>
 
-             <div id="setlist-output-container" class="setlist-output" style="display: none;">
-         <h3>Setlist Preview</h3>
+        <div id="setlist-output-container" class="setlist-output" style="display: none;">
          <div id="setlist-output"></div>
-
          <div style="text-align: center; margin-top: 2rem;">
            <button id="print-btn" class="print-button">🖨️ Print Setlist</button>
          </div>
@@ -256,11 +254,11 @@
 
       <div class="setlist-section">
         <h3>Navigation</h3>
-        <a href="admin.html" class="back-button">← Back to Admin</a>
+        <a href="index.html" class="back-button">← Back to Admin</a>
       </div>
     </div>
   </main>
 
-  <script src="src/setlist.js"></script>
+  <script src="../../src/setlist.js"></script>
 </body>
 </html>
