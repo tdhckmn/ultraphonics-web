@@ -72,6 +72,9 @@
       border-radius: 50%;
       margin-right: 5px;
     }
+    #hide {
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -85,11 +88,14 @@
       <div class="admin-section">
         <h3>Quick Actions</h3>
         <div class="admin-grid">
-          <div class="admin-card">
+          <!-- Doodle Polls -->
+          <div class="admin-card" id="hide">
             <h4><span class="alert-dot"></span>Doodle</h4>
             <p>Vote for meeting and rehearsal times. <b>Week of Sep 7, 2025</b></p>
             <a href="https://doodle.com/meeting/organize/id/dRBL6VVd" class="back-button" target="_blank">Vote on Doodle</a>
           </div>
+
+          <!-- Admin Content -->
           <div class="admin-card">
             <h4>Generate Email for Client</h4>
             <p>Create personalized emails for potential clients</p>
@@ -104,6 +110,11 @@
             <h4>CRM</h4>
             <p>View or edit the Client Relationship Manager</p>
             <a href="https://docs.google.com/spreadsheets/d/1csJb56jnisEb_37pYMVTOY6kSt6J-HqN5X7IYYRgH20/edit" class="back-button" target="_blank">Go to Google Sheets</a>
+          </div>
+          <div class="admin-card">
+            <h4>Google Search Console</h4>
+            <p>View the Google Search Console</p>
+            <a href="https://search.google.com/u/1/search-console?resource_id=sc-domain%3Aultraphonicsmusic.com" class="back-button" target="_blank">Go to Search Console</a>
           </div>
         </div>
       </div>
