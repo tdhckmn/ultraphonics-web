@@ -313,12 +313,112 @@ footer {
   filter: brightness(0) saturate(100%) invert(48%) sepia(79%) saturate(2476%) hue-rotate(118deg) brightness(118%) contrast(119%);
 }
 
+/* === START: MAILING LIST STYLES === */
+.mailing-list-section {
+  max-width: 450px;
+  margin: 40px auto; /* This replaces the 50px top margin on the email link */
+  padding: 0 var(--spacing-lg);
+  text-align: center;
+}
+
+/* Remove MailerLite default padding and background */
+.mailing-list-section .ml-form-embedWrapper {
+  background-color: transparent !important;
+  padding: 0 !important;
+}
+
+.mailing-list-section .ml-form-embedBody {
+  padding: 0 !important;
+}
+
+/* Style the "SIGN UP..." Header */
+.mailing-list-section .ml-form-embedContent h4 {
+  font-size: var(--font-size-lg) !important;
+  color: var(--color-text) !important;
+  margin: 0 0 var(--spacing-lg) 0 !important;
+  font-weight: bold !important;
+  text-transform: uppercase !important;
+  letter-spacing: 1px !important;
+  text-align: center !important; /* Center the header */
+}
+
+/* Style the "Email (required)" Label */
+.mailing-list-section .ml-field-group label {
+  display: block !important;
+  text-align: left !important;
+  margin-bottom: var(--spacing-sm) !important;
+  font-size: var(--font-size-sm) !important;
+  color: var(--color-text-secondary) !important;
+  font-weight: normal !important; /* Override MailerLite's bold */
+  text-transform: none !important;
+  letter-spacing: normal !important;
+}
+
+/* Style the Email Input Box */
+.mailing-list-section .ml-field-group input[type="email"] {
+  width: 100% !important;
+  padding: 14px !important;
+  border-radius: 5px !important;
+  border: 1px solid var(--color-white) !important;
+  background-color: var(--color-white) !important;
+  color: var(--color-background-dark) !important;
+  font-size: var(--font-size-base) !important;
+  box-sizing: border-box !important;
+  margin-bottom: var(--spacing-md) !important; /* Add space before button */
+  height: auto !important; /* Override MailerLite's default height */
+}
+
+/* Style the "SIGN UP!" Button */
+.mailing-list-section .ml-form-embedSubmit button.primary {
+  background-color: transparent !important;
+  color: var(--color-white) !important;
+  border: 2px solid var(--color-white) !important;
+  padding: 12px 30px !important;
+  font-size: var(--font-size-base) !important;
+  border-radius: 5px !important;
+  transition: all 0.3s ease !important;
+  cursor: pointer !important;
+  font-weight: bold !important;
+  text-transform: uppercase !important;
+  letter-spacing: 1px !important;
+  width: auto !important; /* Don't force full width */
+  display: inline-block !important;
+  height: auto !important; /* Override MailerLite's default height */
+  box-shadow: none !important;
+}
+
+/* Style the Button on Hover */
+.mailing-list-section .ml-form-embedSubmit button.primary:hover {
+  background-color: var(--color-white) !important;
+  color: var(--color-background-dark) !important;
+}
+
+/* Style the Success Message */
+.mailing-list-section .ml-form-successContent h4 {
+  color: var(--color-spotify-green) !important;
+  font-size: var(--font-size-xl) !important;
+  font-weight: bold !important;
+  text-align: center !important;
+  text-transform: none !important; /* Keep "Thank you!" normal case */
+  letter-spacing: normal !important;
+}
+
+.mailing-list-section .ml-form-successContent p {
+  color: var(--color-text-secondary) !important;
+  font-size: var(--font-size-lg) !important;
+  text-align: center !important;
+  line-height: 1.6 !important;
+}
+/* === END: MAILING LIST STYLES === */
+
 .email {
-  margin-top: 50px;
+  /* This margin is much smaller to sit nicely under the new form */
+  margin-top: var(--spacing-xl);
   color: var(--color-text-tertiary);
   font-size: var(--font-size-sm);
   text-decoration: none;
   transition: color 0.3s;
+  display: inline-block; /* Ensures margin-top works */
 }
 
 .email:hover {
