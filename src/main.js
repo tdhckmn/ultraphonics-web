@@ -3,6 +3,19 @@ import { siteContent } from '../../content/index.js';
 document.addEventListener('DOMContentLoaded', () => {
   const { shows, venmo, selectors, hero, services } = siteContent;
 
+  /** First non-empty string (or undefined) */
+  function firstUrl(...candidates) {
+    return candidates.find(u => typeof u === "string" && u.trim().length > 0);
+  }
+
+  /** Join city/state safely, e.g., "Gibraltar, MI" (or "" if neither) */
+  function formatCityState(city, state) {
+    const c = (city || "").trim();
+    const s = (state || "").trim();
+    if (c && s) return `${c}, ${s}`;
+    return c || s || "";
+  }
+
   /**
    * Ensures mobile videos autoplay by handling mobile browser restrictions
    */
@@ -51,49 +64,87 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  /**
-   * Builds and injects a JSON-LD script tag for Structured Data (SEO).
-   */
+  /** Parse "M/D/YYYY" or "YYYY-MM-DD" into a local Date (no UTC shift). */
+  function parseLocalDateOnly(dateStr) {
+    if (!dateStr) return null;
+
+    // Try YYYY-MM-DD first
+    const iso = dateStr.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    if (iso) {
+      const [, y, m, d] = iso.map(Number);
+      return new Date(y, m - 1, d, 0, 0, 0, 0); // local
+    }
+
+    // Fallback: M/D/YYYY or MM/DD/YYYY
+    const us = dateStr.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+    if (us) {
+      const [, m, d, y] = us.map(Number);
+      return new Date(y, m - 1, d, 0, 0, 0, 0); // local
+    }
+
+    // As a last resort, let Date try—but this can be UTC-shifted in some browsers
+    return new Date(dateStr);
+  }
+
+  /** Parse "8 PM", "8:30 PM", or "20:30" -> {hours, minutes} in 24h local. */
+  function parseTimeToHM(timeStr) {
+    if (!timeStr) return { hours: 0, minutes: 0, isAM: false, isPM: false };
+    const parts = timeStr.trim().split(/\s+/); // ["8:30","PM"] or ["20:30"]
+    const [hStr, mStr = "00"] = parts[0].split(":");
+    let h = parseInt(hStr, 10);
+    const ampm = (parts[1] || "").toUpperCase();
+    const isAM = ampm === "AM";
+    const isPM = ampm === "PM";
+
+    if (isPM && h !== 12) h += 12;
+    if (isAM && h === 12) h = 0;
+
+    return { hours: h, minutes: parseInt(mStr, 10), isAM, isPM };
+  }
+
+  /** Format local Date -> "YYYY-MM-DDTHH:mm:ss±HH:MM" */
+  function dateToIsoWithLocalTz(dLocal) {
+    const pad = n => String(n).padStart(2, "0");
+    const y = dLocal.getFullYear();
+    const mo = pad(dLocal.getMonth() + 1);
+    const da = pad(dLocal.getDate());
+    const H = pad(dLocal.getHours());
+    const M = pad(dLocal.getMinutes());
+    const S = pad(dLocal.getSeconds());
+    const tzMinutes = -dLocal.getTimezoneOffset(); // EDT => -240
+    const sign = tzMinutes >= 0 ? "+" : "-";
+    const offAbs = Math.abs(tzMinutes);
+    const offH = pad(Math.floor(offAbs / 60));
+    const offM = pad(offAbs % 60);
+    return `${y}-${mo}-${da}T${H}:${M}:${S}${sign}${offH}:${offM}`;
+  }
+
+  /** Build ISO string from date string + time string, in local TZ. */
+  function toIsoWithTz(dateStr, timeStr) {
+    const base = parseLocalDateOnly(dateStr);
+    if (!base || isNaN(base)) return null;
+
+    const { hours, minutes } = parseTimeToHM(timeStr);
+    base.setHours(hours, minutes, 0, 0);
+    return dateToIsoWithLocalTz(base);
+  }
+
+  /** Builds and injects JSON-LD for MusicGroup + Events (rich, Google-friendly) */
   function injectStructuredData() {
-    const eventData = shows
-      // Filter out private events and events without a start time
-      .filter(show => !show.isPrivate && show.startTime)
-      .map(show => {
-        // Convert date and time to ISO 8601 format (e.g., 2025-04-05T20:00)
-        const date = new Date(show.date);
-        const [time, modifier] = show.startTime.split(' ');
-        let [hours, minutes] = time.split(':');
-        if (modifier === 'PM' && hours !== '12') {
-          hours = parseInt(hours, 10) + 12;
-        }
-        date.setHours(hours, minutes || '00');
-        const isoDate = date.toISOString().slice(0, 16);
+    const SITE = "https://www.ultraphonicsmusic.com/";
+    const DEFAULT_IMAGE = SITE + "img/logo.jpg";
 
-        return {
-          "@type": "Event",
-          "name": `Ultraphonics at ${show.venue}`,
-          "startDate": isoDate,
-          "location": {
-            "@type": "Place",
-            "name": show.venue,
-            "address": {
-              "@type": "PostalAddress",
-              "addressLocality": show.city,
-              "addressRegion": show.state
-            }
-          },
-          "url": show.eventLink || "https://www.ultraphonicsmusic.com/#shows"
-        };
-      });
-
-    const schema = {
-      "@context": "https://schema.org",
+    // MusicGroup entity (anchor it with @id so events can reference it)
+    const musicGroup = {
+      "@id": SITE + "#musicgroup",
       "@type": "MusicGroup",
       "name": "Ultraphonics",
-      "url": "https://www.ultraphonicsmusic.com/",
-      "logo": "https://www.ultraphonicsmusic.com/img/logo.jpg",
-      "description": "Ultraphonics is a high-energy variety band playing Rock, Pop, Country & Soul for weddings, events, and bars in Detroit, Ann Arbor, and Toledo.",
+      "alternateName": "Ultraphonics Music",
+      "url": SITE,
+      "image": DEFAULT_IMAGE,
+      "logo": DEFAULT_IMAGE,
       "genre": ["Rock", "Pop", "Country", "Soul"],
+      "description": "Ultraphonics is a high-energy variety band playing Rock, Pop, Country & Soul for weddings, events, and bars in Detroit, Ann Arbor, and Toledo.",
       "sameAs": [
         "https://www.facebook.com/UltraphonicsMusic",
         "https://www.instagram.com/ultraphonicsmusic"
@@ -102,13 +153,100 @@ document.addEventListener('DOMContentLoaded', () => {
         "@type": "ContactPoint",
         "email": "info@ultraphonicsmusic.com",
         "contactType": "booking"
-      },
-      "event": eventData
+      }
     };
 
-    const script = document.createElement('script');
-    script.type = 'application/ld+json';
-    script.textContent = JSON.stringify(schema);
+    // Events (fill optional fields when available)
+    const events = (siteContent.shows || [])
+      .filter(s => !s.isPrivate && s.startTime) // only public shows with a start time
+      .map(s => {
+        // Start
+        const startDateIso = toIsoWithTz(s.date, s.startTime);
+        if (!startDateIso) return null;
+
+        // End (may be next day if it crosses midnight)
+        let endDateIso;
+        if (s.endTime) {
+          const startBase = parseLocalDateOnly(s.date);
+          const { hours: sh, minutes: sm } = parseTimeToHM(s.startTime);
+          const { hours: eh, minutes: em } = parseTimeToHM(s.endTime);
+
+          const endBase = new Date(startBase.getTime());
+          endBase.setHours(eh, em, 0, 0);
+
+          // If end time is logically before start time, roll to next day
+          if (endBase <= new Date(startBase.getFullYear(), startBase.getMonth(), startBase.getDate(), sh, sm, 0, 0)) {
+            endBase.setDate(endBase.getDate() + 1);
+          }
+          endDateIso = dateToIsoWithLocalTz(endBase);
+        }
+
+        // Build address with only present fields
+        const address = { "@type": "PostalAddress", addressCountry: "US" };
+        if (s.streetAddress) address.streetAddress = s.streetAddress;
+        if (s.city)          address.addressLocality = s.city;
+        if (s.state)         address.addressRegion  = s.state;
+        if (s.postalCode)    address.postalCode     = s.postalCode;
+
+        const location = {
+          "@type": "Place",
+          "name": s.venue?.trim() || "Venue TBD",
+          "address": address
+        };
+
+        const cityState = formatCityState(s.city, s.state);
+        const description = s.description
+          || (cityState
+              ? `Live performance by Ultraphonics at ${s.venue || "venue TBD"} in ${cityState}.`
+              : `Live performance by Ultraphonics at ${s.venue || "venue TBD"}.`);
+
+
+        // Optional offers (only if real data)
+        let offers;
+        const offerUrl = firstUrl(s.ticketUrl, s.eventLink);
+        const hasPrice = typeof s.price === "number";
+        if (offerUrl || hasPrice) {
+          offers = {
+            "@type": "Offer",
+            "url": offerUrl || (SITE + "#shows"),
+            ...(hasPrice ? { "price": s.price } : {}),
+            "priceCurrency": s.currency || "USD",
+            "availability": "https://schema.org/InStock"
+          };
+        }
+        
+        const eventObj = {
+          "@type": "Event",
+          "name": `Ultraphonics at ${s.venue?.trim() || "TBD"}`,
+          "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+          "eventStatus": "https://schema.org/EventScheduled",
+          "startDate": startDateIso,
+          ...(endDateIso ? { "endDate": endDateIso } : {}),
+          "location": location,
+          "image": s.image || DEFAULT_IMAGE,
+          "description": description,
+          "organizer": { "@type": "Organization", "name": s.organizerName || s.venue || "Ultraphonics" },
+          "performer": { "@id": SITE + "#musicgroup" },
+          ...(offers ? { "offers": offers } : {}),
+          "url": eventUrl
+        };
+      })
+      .filter(Boolean);
+
+    // Inject as a single @graph
+    const graph = {
+      "@context": "https://schema.org",
+      "@graph": [musicGroup, ...events]
+    };
+
+    // Replace any previous LD script we injected
+    const existing = document.getElementById("ld-json-ultraphonics");
+    if (existing) existing.remove();
+
+    const script = document.createElement("script");
+    script.id = "ld-json-ultraphonics";
+    script.type = "application/ld+json";
+    script.textContent = JSON.stringify(graph);
     document.head.appendChild(script);
   }
 
