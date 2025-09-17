@@ -214,7 +214,8 @@ document.addEventListener('DOMContentLoaded', () => {
             "availability": "https://schema.org/InStock"
           };
         }
-        
+
+        const eventUrl = firstUrl(s.eventLink, s.ticketUrl, SITE + "#shows");
         const eventObj = {
           "@type": "Event",
           "name": `Ultraphonics at ${s.venue?.trim() || "TBD"}`,
@@ -230,6 +231,7 @@ document.addEventListener('DOMContentLoaded', () => {
           ...(offers ? { "offers": offers } : {}),
           "url": eventUrl
         };
+        return eventObj;
       })
       .filter(Boolean);
 
