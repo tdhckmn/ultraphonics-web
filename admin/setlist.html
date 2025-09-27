@@ -14,14 +14,12 @@
       border-radius: 8px;
       box-shadow: var(--shadow-md);
     }
-
     .setlist-header {
       text-align: center;
       margin-bottom: 2rem;
       padding-bottom: 1rem;
       border-bottom: 2px solid var(--color-spotify-green);
     }
-
     .setlist-section {
       margin-bottom: 2rem;
       padding: 1.5rem;
@@ -29,12 +27,6 @@
       border-radius: 6px;
       border: 1px solid rgba(255, 255, 255, 0.1);
     }
-
-    .setlist-section h3 {
-      color: var(--color-spotify-green);
-      margin-bottom: 1rem;
-    }
-
     .back-button {
       display: inline-block;
       background-color: var(--color-spotify-green);
@@ -45,85 +37,6 @@
       transition: all 0.3s ease;
       margin-top: 1rem;
     }
-
-    .back-button:hover {
-      background-color: var(--color-spotify-green-hover);
-      transform: translateY(-2px);
-    }
-
-    .upload-area {
-      border: 2px dashed var(--color-spotify-green);
-      border-radius: 8px;
-      padding: 2rem;
-      text-align: center;
-      margin: 1rem 0;
-      background-color: rgba(29, 185, 84, 0.1);
-    }
-
-    .upload-area:hover {
-      background-color: rgba(29, 185, 84, 0.2);
-      border-color: var(--color-spotify-green-hover);
-    }
-
-    .file-input {
-      display: none;
-    }
-
-    .upload-label {
-      cursor: pointer;
-      color: var(--color-spotify-green);
-      font-weight: bold;
-    }
-
-    .upload-label:hover {
-      color: var(--color-spotify-green-hover);
-    }
-
-    .setlist-output {
-      margin-top: 2rem;
-      padding: 1.5rem;
-      background-color: rgba(255, 255, 255, 0.05);
-      border-radius: 6px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .setlist-columns {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1rem;
-      margin-top: 1rem;
-    }
-
-    .setlist-column {
-      background-color: rgba(0, 0, 0, 0.3);
-      padding: 1rem;
-      border-radius: 6px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .setlist-column h4 {
-      color: var(--color-spotify-green);
-      margin-top: 0;
-      text-align: center;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-      padding-bottom: 0.5rem;
-    }
-
-    .setlist-column ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    .setlist-column li {
-      padding: 0.25rem 0;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .setlist-column li:last-child {
-      border-bottom: none;
-    }
-
     .print-button {
       background-color: var(--color-spotify-green);
       color: var(--color-white);
@@ -135,119 +48,21 @@
       margin-top: 1rem;
       transition: all 0.3s ease;
     }
-
-         .print-button:hover {
-       background-color: var(--color-spotify-green-hover);
-       transform: translateY(-2px);
-     }
-
-     /* Print styles for setlist */
-     @media print {
-               .setlist-container {
-          margin: 0 !important;
-          padding: 0 !important;
-          background: white;
-          color: black;
-          box-shadow: none;
-        }
-
-       .setlist-section {
-         background: white;
-         border: 1px solid #ccc;
-         color: black;
-       }
-
-                       .setlist-column {
-          border: 1px solid #000 !important;
-          background: white !important;
-          color: black !important;
-          min-height: 150px !important;
-        }
-
-        .setlist-column h3 {
-          color: #1db954 !important;
-          border-bottom: 1px solid #000 !important;
-          font-size: 16px !important;
-          margin: 0 0 0.5rem 0 !important;
-          padding-bottom: 0.25rem !important;
-        }
-
-        .setlist-column li {
-          border-bottom: 1px solid #ccc !important;
-          color: black !important;
-          font-size: 12px !important;
-          padding: 0.15rem 0 !important;
-        }
-
-        .setlist-column li:last-child {
-          border-bottom: none !important;
-        }
-
-        .back-button, .print-button, .upload-area, .setlist-header, .setlist-section {
-          display: none !important;
-          height: 0 !important;
-          margin: 0 !important;
-          padding: 0 !important;
-          overflow: hidden !important;
-        }
-
-        .setlist-row {
-          page-break-inside: avoid;
-          margin-bottom: 0.25rem !important;
-        }
-
-                                /* Simple page break */
-        .setlist-row:nth-child(2) {
-          page-break-before: always;
-        }
-
-        /* Basic spacing */
-        .setlist-row:first-child {
-          margin-top: 0.25rem;
-        }
-
-        #setlist-output-container h3 {
-          font-size: 16px;
-          margin: 0 0 0.5rem 0;
-          text-align: center;
-        }
-
-        #setlist-output-container {
-          margin: 0;
-          padding: 0.25rem;
-        }
-     }
-   </style>
+  </style>
 </head>
 <body>
   <main>
     <div class="setlist-container">
       <div class="setlist-header">
-        <h1>Generate Setlist</h1>
-        <p>Create custom setlists for events</p>
+        <h1>Band Setlist</h1>
+        <p>This setlist is automatically updated from Trello.</p>
       </div>
 
-      <div class="setlist-section">
-        <h3>Step 1: Download Trello Data</h3>
-        <p>Click the link below to download your Trello board data as a JSON file:</p>
-        <a href="https://trello.com/b/oatz1C1E.json" target="_blank" class="back-button">Download Trello JSON</a>
-      </div>
-
-      <div class="setlist-section">
-        <h3>Step 2: Upload JSON File</h3>
-        <p>Upload the JSON file you just downloaded to generate your setlist:</p>
-
-        <div class="upload-area">
-          <label for="json-upload-input" class="upload-label">
-             📁 Click here to upload JSON file
-          </label>
-          <input type="file" id="json-upload-input" class="file-input" accept=".json">
-        </div>
-      </div>
-
-        <div id="setlist-output-container" class="setlist-output" style="display: none;">
-         <div id="setlist-output"></div>
-         <div style="text-align: center; margin-top: 2rem;">
+      <div id="setlist-output-container" class="setlist-output">
+         <div id="setlist-output">
+           <p>Loading setlist...</p>
+         </div>
+         <div style="text-align: center; margin-top: 2rem; display: none;" id="print-button-container">
            <button id="print-btn" class="print-button">🖨️ Print Setlist</button>
          </div>
        </div>
@@ -258,7 +73,6 @@
       </div>
     </div>
   </main>
-
   <script src="../../src/setlist.js"></script>
 </body>
 </html>

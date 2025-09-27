@@ -1,0 +1,64 @@
+name: Fetch Trello Setlist Data
+
+on:
+  schedule:
+    # Runs every hour
+    - cron: "0 * * * *"
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  fetch-and-commit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Fetch Trello Data and Save as JSON
+        run: |
+          # The node script will fetch data and place it in api/setlist.json
+          node -e "
+            const fs = require('fs');
+            const path = require('path');
+            const https = require('https');
+
+            const apiKey = '${{ secrets.TRELLO_API_KEY }}';
+            const apiToken = '${{ secrets.TRELLO_API_TOKEN }}';
+            const boardId = 'oatz1C1E';
+            const url = \`https://api.trello.com/1/boards/\${boardId}?key=\${apiKey}&token=\${apiToken}&lists=open&cards=open\`;
+
+            https.get(url, (res) => {
+              let body = '';
+              res.on('data', (chunk) => body += chunk);
+              res.on('end', () => {
+                if (res.statusCode === 200) {
+                  const data = JSON.parse(body);
+                  const outputPath = path.join(__dirname, 'api', 'setlist.json');
+                  fs.mkdirSync(path.dirname(outputPath), { recursive: true });
+                  fs.writeFileSync(outputPath, JSON.stringify(data, null, 2));
+                  console.log('Successfully fetched and saved Trello data.');
+                } else {
+                  console.error(\`Trello API error: \${res.statusCode}\`);
+                  process.exit(1);
+                }
+              });
+            }).on('error', (e) => {
+              console.error(\`Fetch error: \${e.message}\`);
+              process.exit(1);
+            });
+          "
+
+      - name: Commit and push if there are changes
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git add api/setlist.json
+          # Check for changes and commit only if there are any
+          git diff --staged --quiet || git commit -m "Automated: Update Trello setlist data"
+          git push
