@@ -6,6 +6,7 @@
   <title>Generate Setlist - Ultraphonics Admin</title>
   <link rel="stylesheet" href="../assets/css/styles.css" />
   <style>
+    /* --- Base Page Styles --- */
     .setlist-container {
       max-width: 800px;
       margin: 2rem auto;
@@ -48,6 +49,64 @@
       margin-top: 1rem;
       transition: all 0.3s ease;
     }
+    .setlist-output {
+        margin-top: 2rem;
+        padding: 1.5rem;
+        background-color: rgba(255, 255, 255, 0.05);
+        border-radius: 6px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    /* --- End Base Page Styles --- */
+
+    /* --- NEW PRINT STYLES --- */
+    @media print {
+      body {
+        background-color: #fff !important;
+        color: #000 !important;
+        margin: 1in;
+        padding: 0;
+      }
+
+      /* Hide everything that is not the setlist output */
+      .setlist-header,
+      .setlist-section,
+      #print-button-container,
+      main > .setlist-container > p {
+        display: none !important;
+      }
+
+      /* Reset container styles for printing */
+      .setlist-container,
+      .setlist-output {
+        margin: 0 !important;
+        padding: 0 !important;
+        border: none !important;
+        box-shadow: none !important;
+        background-color: transparent !important;
+      }
+
+      /* Ensure the setlist output is the only thing visible */
+      #setlist-output-container {
+        display: block !important;
+      }
+      
+      .setlist-row, .setlist-column {
+        page-break-inside: avoid;
+      }
+      
+      .setlist-column {
+        border: 1px solid #000 !important;
+      }
+
+      .setlist-column h3 {
+        color: #000 !important;
+      }
+
+      .setlist-column li {
+        border-bottom-color: #ccc !important;
+      }
+    }
+    /* --- END NEW PRINT STYLES --- */
   </style>
 </head>
 <body>
