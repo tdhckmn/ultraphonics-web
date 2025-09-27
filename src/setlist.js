@@ -31,9 +31,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function generateSetlistFromData(data) {
         const emojiRegex = /^\p{Emoji}/u;
-        const desiredSetlists = ["set_1", "set_2", "set_3", "set_4"];
+        const setlistIdentifier = '📋';
+
+        // Find all open lists that start with the clipboard emoji
+        const desiredSetlists = data.lists.filter(list => 
+            !list.closed && list.name.trim().startsWith(setlistIdentifier)
+        );
 
         setlistOutput.innerHTML = ''; // Clear "Loading..." message
+
+        if (desiredSetlists.length === 0) {
+            setlistOutput.innerHTML = `<p>No setlists found. Make sure your Trello list titles start with the 📋 emoji.</p>`;
+            return;
+        }
 
         const topRow = document.createElement('div');
         topRow.className = 'setlist-row setlist-row-top';
@@ -43,49 +53,42 @@ document.addEventListener('DOMContentLoaded', () => {
         bottomRow.className = 'setlist-row setlist-row-bottom';
         bottomRow.style.cssText = 'display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;';
 
-        desiredSetlists.forEach((setNameLower, index) => {
-            const list = data.lists.find(
-                l => l.name.trim().toLowerCase() === setNameLower
-            );
-
+        // Display up to the first 4 setlists found
+        desiredSetlists.slice(0, 4).forEach((list, index) => {
             const column = document.createElement('div');
             column.className = 'setlist-column';
             column.style.cssText = 'border: 1px solid #000; padding: 1rem; min-height: 200px;';
 
             const title = document.createElement('h3');
-            title.textContent = setNameLower.replace('set_', 'Set ');
+            // --- NEW LOGIC ---
+            // Clean the title by removing the identifier emoji and trimming whitespace
+            title.textContent = list.name.replace(setlistIdentifier, '').trim();
+            // --- END NEW LOGIC ---
             title.style.cssText = 'margin: 0 0 1rem 0; text-align: center; color: var(--color-spotify-green); border-bottom: 1px solid rgba(255,255,255,.2); padding-bottom: 0.5rem;';
             column.appendChild(title);
 
             const songList = document.createElement('ul');
             songList.style.cssText = 'list-style: none; padding: 0; margin: 0;';
 
-            if (list) {
-                const songs = data.cards.filter(card => card.idList === list.id);
+            const songs = data.cards.filter(card => card.idList === list.id && !card.closed);
 
-                let counter = 1;
-                songs.forEach(song => {
-                    const li = document.createElement('li');
-                    li.style.cssText = 'padding: 0.25rem 0; border-bottom: 1px solid rgba(255,255,255,.08);';
-                    if (emojiRegex.test(song.name)) {
-                        li.className = 'setlist-note';
-                        li.textContent = song.name;
-                    } else {
-                        li.textContent = `${counter}. ${song.name}`;
-                        counter++;
-                    }
-                    songList.appendChild(li);
-                });
-
-                if (songs.length === 0) {
-                    const emptyLi = document.createElement('li');
-                    emptyLi.textContent = 'No songs in this set';
-                    emptyLi.style.cssText = 'padding: 0.25rem 0; color: rgba(255,255,255,.5); font-style: italic;';
-                    songList.appendChild(emptyLi);
+            let counter = 1;
+            songs.forEach(song => {
+                const li = document.createElement('li');
+                li.style.cssText = 'padding: 0.25rem 0; border-bottom: 1px solid rgba(255,255,255,.08);';
+                if (emojiRegex.test(song.name)) {
+                    li.className = 'setlist-note';
+                    li.textContent = song.name;
+                } else {
+                    li.textContent = `${counter}. ${song.name}`;
+                    counter++;
                 }
-            } else {
+                songList.appendChild(li);
+            });
+
+            if (songs.length === 0) {
                 const emptyLi = document.createElement('li');
-                emptyLi.textContent = 'Set not found in Trello';
+                emptyLi.textContent = 'No songs in this set';
                 emptyLi.style.cssText = 'padding: 0.25rem 0; color: rgba(255,255,255,.5); font-style: italic;';
                 songList.appendChild(emptyLi);
             }
