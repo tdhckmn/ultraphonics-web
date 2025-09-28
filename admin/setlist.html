@@ -3,10 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Generate Setlist - Ultraphonics Admin</title>
+  <title>Setlist - Ultraphonics Admin</title>
   <link rel="stylesheet" href="../assets/css/styles.css" />
   <style>
-    /* --- Base Page Styles --- */
     .setlist-container {
       max-width: 800px;
       margin: 2rem auto;
@@ -56,9 +55,25 @@
         border-radius: 6px;
         border: 1px solid rgba(255, 255, 255, 0.1);
     }
-    /* --- End Base Page Styles --- */
+    .setlist-column {
+        margin-bottom: 1rem;
+    }
 
-    /* --- NEW PRINT STYLES --- */
+    @media (min-width: 768px) {
+      .setlist-row-top,
+      .setlist-row-bottom {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+      }
+      .setlist-row-top {
+        margin-bottom: 4rem; /* Increased from 1rem to 2rem */
+      }
+      .setlist-column {
+        margin-bottom: 0;
+      }
+    }
+    
     @media print {
       body {
         background-color: #fff !important;
@@ -66,16 +81,12 @@
         margin: 1in;
         padding: 0;
       }
-
-      /* Hide everything that is not the setlist output */
       .setlist-header,
       .setlist-section,
       #print-button-container,
       main > .setlist-container > p {
         display: none !important;
       }
-
-      /* Reset container styles for printing */
       .setlist-container,
       .setlist-output {
         margin: 0 !important;
@@ -84,29 +95,30 @@
         box-shadow: none !important;
         background-color: transparent !important;
       }
-
-      /* Ensure the setlist output is the only thing visible */
       #setlist-output-container {
         display: block !important;
       }
-      
       .setlist-row, .setlist-column {
         page-break-inside: avoid;
       }
-      
       .setlist-column {
         border: 1px solid #000 !important;
+        margin-bottom: 1rem;
       }
-
+      .setlist-row-top,
+      .setlist-row-bottom {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+      }
+      .setlist-row-top { margin-bottom: 2rem; } /* Increased from 1rem to 2rem */
       .setlist-column h3 {
         color: #000 !important;
       }
-
       .setlist-column li {
         border-bottom-color: #ccc !important;
       }
     }
-    /* --- END NEW PRINT STYLES --- */
   </style>
 </head>
 <body>
