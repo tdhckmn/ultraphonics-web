@@ -8557,6 +8557,127 @@
       "mirrorSourceId": null
     },
     {
+      "id": "68e3e3ddcca7554b03ec3c2b",
+      "badges": {
+        "attachments": 1,
+        "fogbugz": "",
+        "checkItems": 0,
+        "checkItemsChecked": 0,
+        "checkItemsEarliestDue": null,
+        "comments": 0,
+        "description": true,
+        "due": null,
+        "dueComplete": false,
+        "lastUpdatedByAi": false,
+        "start": null,
+        "externalSource": null,
+        "attachmentsByType": {
+          "trello": {
+            "board": 0,
+            "card": 0
+          }
+        },
+        "location": false,
+        "votes": 0,
+        "maliciousAttachments": 0,
+        "viewingMemberVoted": false,
+        "subscribed": false
+      },
+      "checkItemStates": [],
+      "closed": false,
+      "dueComplete": false,
+      "dateLastActivity": "2025-10-06T16:00:32.809Z",
+      "desc": "### Lyrics\n\nIsn't she lovely?\nIsn't she wonderful?\nIsn't she precious?\nLess than one minute old\nI never thought through love we'd be\nMaking one as lovely as she\nBut isn't she lovely made from love?\n\nIsn't she pretty?\nTruly the angel's best\nBoy, I'm so happy\nWe have been Heaven-blessed\nI can't believe what God has done\nThrough us, He's given life to one\nBut isn't she lovely made from love?\n\nIsn't she lovely?\nLife and love are the same\nLife is Aisha\nThe meaning of her name\nLondie, it could have not been done\nWithout you who conceived the one\nThat's so very lovely made from love\nHey!",
+      "descData": {
+        "emoji": {}
+      },
+      "due": null,
+      "dueReminder": null,
+      "email": null,
+      "idBoard": "65c6c6c763388d45f95e4f9b",
+      "idChecklists": [],
+      "idList": "68e3e3dccca7554b03ec3538",
+      "idMembers": [],
+      "idMembersVoted": [],
+      "idShort": 537,
+      "idAttachmentCover": null,
+      "labels": [
+        {
+          "id": "68069521ec94ac6fce6175ff",
+          "idBoard": "65c6c6c763388d45f95e4f9b",
+          "idOrganization": "65c6c6c763388d45f95e4bf8",
+          "name": "Backing",
+          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/68069521ec94ac6fce6175ff",
+          "color": "black_light",
+          "uses": 158
+        },
+        {
+          "id": "67d235486ce0fcfc7719ce99",
+          "idBoard": "65c6c6c763388d45f95e4f9b",
+          "idOrganization": "65c6c6c763388d45f95e4bf8",
+          "name": "Soul",
+          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/67d235486ce0fcfc7719ce99",
+          "color": "pink_light",
+          "uses": 12
+        },
+        {
+          "id": "66ea21483da0a04cc35a1b81",
+          "idBoard": "65c6c6c763388d45f95e4f9b",
+          "idOrganization": "65c6c6c763388d45f95e4bf8",
+          "name": "Capo 2",
+          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/66ea21483da0a04cc35a1b81",
+          "color": "blue",
+          "uses": 14
+        },
+        {
+          "id": "67d234e4799e697e92ddbc4c",
+          "idBoard": "65c6c6c763388d45f95e4f9b",
+          "idOrganization": "65c6c6c763388d45f95e4bf8",
+          "name": "Classic Rock",
+          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/67d234e4799e697e92ddbc4c",
+          "color": "green",
+          "uses": 36
+        },
+        {
+          "id": "68c228e51959c34c807f4bad",
+          "idBoard": "65c6c6c763388d45f95e4f9b",
+          "idOrganization": "65c6c6c763388d45f95e4bf8",
+          "name": "Shelley",
+          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/68c228e51959c34c807f4bad",
+          "color": "purple_light",
+          "uses": 48
+        }
+      ],
+      "idLabels": [
+        "68069521ec94ac6fce6175ff",
+        "67d235486ce0fcfc7719ce99",
+        "66ea21483da0a04cc35a1b81",
+        "67d234e4799e697e92ddbc4c",
+        "68c228e51959c34c807f4bad"
+      ],
+      "manualCoverAttachment": false,
+      "name": "Isn't She Lovely",
+      "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/68e3e3ddcca7554b03ec3c2b",
+      "pinned": false,
+      "pos": 117281240257891,
+      "shortLink": "6nWmuY2s",
+      "shortUrl": "https://trello.com/c/6nWmuY2s",
+      "start": null,
+      "subscribed": false,
+      "url": "https://trello.com/c/6nWmuY2s/537-isnt-she-lovely",
+      "cover": {
+        "idAttachment": null,
+        "color": null,
+        "idUploadedBackground": null,
+        "size": "normal",
+        "brightness": "dark",
+        "idPlugin": null
+      },
+      "isTemplate": false,
+      "cardRole": null,
+      "mirrorSourceId": null
+    },
+    {
       "id": "68e3e3ddcca7554b03ec3be7",
       "badges": {
         "attachments": 0,
@@ -9937,6 +10058,97 @@
       "mirrorSourceId": null
     },
     {
+      "id": "68e3e3fbbc6aefd7492a5946",
+      "badges": {
+        "attachments": 3,
+        "fogbugz": "",
+        "checkItems": 0,
+        "checkItemsChecked": 0,
+        "checkItemsEarliestDue": null,
+        "comments": 0,
+        "description": true,
+        "due": null,
+        "dueComplete": false,
+        "lastUpdatedByAi": false,
+        "start": null,
+        "externalSource": null,
+        "attachmentsByType": {
+          "trello": {
+            "board": 0,
+            "card": 0
+          }
+        },
+        "location": false,
+        "votes": 0,
+        "maliciousAttachments": 0,
+        "viewingMemberVoted": false,
+        "subscribed": false
+      },
+      "checkItemStates": [],
+      "closed": false,
+      "dueComplete": false,
+      "dateLastActivity": "2025-10-06T16:00:20.617Z",
+      "desc": "Well, sometimes I go out by myself\nAnd I look across the water\nAnd I think of all the things, what you do\nAnd in my head, I make a picture\n\n'Cause since I've come on home\nWell, my body's been a mess\nAnd I've missed your ginger hair\nAnd the way you like to dress\n\nWon't you come on over?\nAnd stop makin' a fool out of me\nWhy don't you come on over Valerie?\nValerie\n\nDid you have to go to jail?\nPut your house up on for sale\nDid you get a good lawyer?\nI hope you didn't catch a tan\nI hope you'll find the right man\nWho'll fix it for ya\n\nAre you shoppin' anywhere?\nChanged the color of you hair, are you busy?\nAnd did you have to pay the fine\nYou were dodging all the time, are you still dizzy?\n\nYeah, 'cause since I've come on home\nWell, my body's been a mess\nAnd I've missed your ginger hair\nAnd the way you like to dress\n\nWon't you come on over?\nAnd stop makin' a fool out of me\nWhy don't you come on over Valerie?\nValerie\nValerie\nValerie\n\nWell, sometimes I go out by myself\nAnd I look across the water\nAnd I think of all the things, what you're doin'\nAnd in my head I make a picture\n\n'Cause since I've come on home\nWell, my body's been a mess\nAnd I've missed your ginger hair\nAnd the way you like to dress\n\nWon't you come on over?\nAnd stop makin' a fool out of me\nWhy don't you come on over Valerie?\nValerie\nValerie\nValerie\n\nYeah, Valerie",
+      "descData": {
+        "emoji": {}
+      },
+      "due": null,
+      "dueReminder": null,
+      "email": null,
+      "idBoard": "65c6c6c763388d45f95e4f9b",
+      "idChecklists": [],
+      "idList": "68e3e3dccca7554b03ec3538",
+      "idMembers": [],
+      "idMembersVoted": [],
+      "idShort": 559,
+      "idAttachmentCover": null,
+      "labels": [
+        {
+          "id": "66ea211e3d545d3dfa1145a9",
+          "idBoard": "65c6c6c763388d45f95e4f9b",
+          "idOrganization": "65c6c6c763388d45f95e4bf8",
+          "name": "Alt Rock",
+          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/66ea211e3d545d3dfa1145a9",
+          "color": "green_dark",
+          "uses": 65
+        },
+        {
+          "id": "68069521ec94ac6fce6175ff",
+          "idBoard": "65c6c6c763388d45f95e4f9b",
+          "idOrganization": "65c6c6c763388d45f95e4bf8",
+          "name": "Backing",
+          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/68069521ec94ac6fce6175ff",
+          "color": "black_light",
+          "uses": 158
+        }
+      ],
+      "idLabels": [
+        "66ea211e3d545d3dfa1145a9",
+        "68069521ec94ac6fce6175ff"
+      ],
+      "manualCoverAttachment": false,
+      "name": "Valerie",
+      "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/68e3e3fbbc6aefd7492a5946",
+      "pinned": false,
+      "pos": 140737488344140.66,
+      "shortLink": "j2sz7ZUD",
+      "shortUrl": "https://trello.com/c/j2sz7ZUD",
+      "start": null,
+      "subscribed": false,
+      "url": "https://trello.com/c/j2sz7ZUD/559-valerie",
+      "cover": {
+        "idAttachment": null,
+        "color": null,
+        "idUploadedBackground": null,
+        "size": "normal",
+        "brightness": "dark",
+        "idPlugin": null
+      },
+      "isTemplate": false,
+      "cardRole": null,
+      "mirrorSourceId": null
+    },
+    {
       "id": "68e3e3fabc6aefd7492a538b",
       "badges": {
         "attachments": 0,
@@ -10015,6 +10227,198 @@
       "start": null,
       "subscribed": false,
       "url": "https://trello.com/c/Huk8LjxR/548-watermelon-sugar",
+      "cover": {
+        "idAttachment": null,
+        "color": null,
+        "idUploadedBackground": null,
+        "size": "normal",
+        "brightness": "dark",
+        "idPlugin": null
+      },
+      "isTemplate": false,
+      "cardRole": null,
+      "mirrorSourceId": null
+    },
+    {
+      "id": "65c6ccef69d99557dfb1e2fd",
+      "badges": {
+        "fogbugz": "",
+        "checkItems": 0,
+        "checkItemsChecked": 0,
+        "checkItemsEarliestDue": null,
+        "comments": 0,
+        "attachments": 2,
+        "description": true,
+        "due": null,
+        "dueComplete": false,
+        "start": null,
+        "lastUpdatedByAi": false,
+        "attachmentsByType": {
+          "trello": {
+            "board": 0,
+            "card": 0
+          }
+        },
+        "externalSource": null,
+        "location": false,
+        "votes": 0,
+        "maliciousAttachments": 0,
+        "viewingMemberVoted": false,
+        "subscribed": false
+      },
+      "checkItemStates": [],
+      "closed": false,
+      "dueComplete": false,
+      "dateLastActivity": "2025-10-06T15:59:51.985Z",
+      "desc": "Early in the morning, risin' to the street\nLight me up that cigarette, and I'll strap shoes on my feet\nGot to find the reason, reason things went wrong\nGot to find a reason why my money's all gone\nI got a Dalmatian and I can still get high\nI can play the guitar like a motherfuckin' riot\n\nWell, life is too short, so love the one you got\n'Cause you might get run over, or you might get shot\nNever start no static, I just get it off my chest\nNever had to battle with no bulletproof vest\nTake a small example, take a tip from me\nTake all of your money, give it all to charity\n\nLove is what I got, it's within my reach\nAnd the Sublime style's still straight from Long Beach\nIt all comes back to you, you're bound to get what you deserve\nTry and test that, you're bound to get served\nLoves what I got, don't start a riot\nYou'll feel it when the dance gets hot\n\nLovin' is what I got\nI said, remember that\nLovin' is what I got\nAnd remember that\nLovin' is what I got\nI said, remember that\nLovin' is what I got\n(I got, I got, I got)\n\nWhy I don't cry when my dog runs away\nI don't get angry at the bills I have to pay\nI don't get angry when my mom smokes pot\nHits the bottle and goes right to the rock\nFuckin' and fightin', it's all the same\nLiving with Louie Dog's the only way to stay sane\nLet the lovin', let the lovin' come back to me\n\nLovin' is what I got\nI said, remember that\nLovin' is what I got\nAnd remember that\nLovin' is what I got\nI said remember that\nLovin' is what I got\n(I got, I got, I got)\n\nWe're not that far off\nSo, that's the\nSee, but\nWe're done, man is",
+      "descData": {
+        "emoji": {}
+      },
+      "due": null,
+      "dueReminder": null,
+      "email": null,
+      "idBoard": "65c6c6c763388d45f95e4f9b",
+      "idChecklists": [],
+      "idList": "68e3e3dccca7554b03ec3538",
+      "idMembers": [],
+      "idMembersVoted": [],
+      "idShort": 40,
+      "idAttachmentCover": null,
+      "labels": [
+        {
+          "id": "66ea211e3d545d3dfa1145a9",
+          "idBoard": "65c6c6c763388d45f95e4f9b",
+          "idOrganization": "65c6c6c763388d45f95e4bf8",
+          "name": "Alt Rock",
+          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/66ea211e3d545d3dfa1145a9",
+          "color": "green_dark",
+          "uses": 65
+        },
+        {
+          "id": "66fd74e7bd8067faeb365c05",
+          "idBoard": "65c6c6c763388d45f95e4f9b",
+          "idOrganization": "65c6c6c763388d45f95e4bf8",
+          "name": "Pop",
+          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/66fd74e7bd8067faeb365c05",
+          "color": "pink",
+          "uses": 95
+        },
+        {
+          "id": "68190b913284f11eeeac2d94",
+          "idBoard": "65c6c6c763388d45f95e4f9b",
+          "idOrganization": "65c6c6c763388d45f95e4bf8",
+          "name": "Tom Vox",
+          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/68190b913284f11eeeac2d94",
+          "color": "lime",
+          "uses": 23
+        }
+      ],
+      "idLabels": [
+        "66ea211e3d545d3dfa1145a9",
+        "66fd74e7bd8067faeb365c05",
+        "68190b913284f11eeeac2d94"
+      ],
+      "manualCoverAttachment": false,
+      "name": "What I Got",
+      "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/65c6ccef69d99557dfb1e2fd",
+      "pinned": false,
+      "pos": 140737488740352,
+      "shortLink": "aP52wY6W",
+      "shortUrl": "https://trello.com/c/aP52wY6W",
+      "start": null,
+      "subscribed": false,
+      "url": "https://trello.com/c/aP52wY6W/40-what-i-got",
+      "cover": {
+        "idAttachment": null,
+        "color": null,
+        "idUploadedBackground": null,
+        "size": "normal",
+        "brightness": "dark",
+        "idPlugin": null
+      },
+      "isTemplate": false,
+      "cardRole": null,
+      "mirrorSourceId": null
+    },
+    {
+      "id": "68e3e3fabc6aefd7492a5382",
+      "badges": {
+        "attachments": 0,
+        "fogbugz": "",
+        "checkItems": 0,
+        "checkItemsChecked": 0,
+        "checkItemsEarliestDue": null,
+        "comments": 0,
+        "description": true,
+        "due": null,
+        "dueComplete": false,
+        "lastUpdatedByAi": false,
+        "start": null,
+        "externalSource": null,
+        "attachmentsByType": {
+          "trello": {
+            "board": 0,
+            "card": 0
+          }
+        },
+        "location": false,
+        "votes": 0,
+        "maliciousAttachments": 0,
+        "viewingMemberVoted": false,
+        "subscribed": false
+      },
+      "checkItemStates": [],
+      "closed": false,
+      "dueComplete": false,
+      "dateLastActivity": "2025-10-06T15:59:53.885Z",
+      "desc": "pull back on tempo at end",
+      "descData": {
+        "emoji": {}
+      },
+      "due": null,
+      "dueReminder": null,
+      "email": null,
+      "idBoard": "65c6c6c763388d45f95e4f9b",
+      "idChecklists": [],
+      "idList": "68e3e3dccca7554b03ec3538",
+      "idMembers": [],
+      "idMembersVoted": [],
+      "idShort": 542,
+      "idAttachmentCover": null,
+      "labels": [
+        {
+          "id": "66ea211e3d545d3dfa1145a9",
+          "idBoard": "65c6c6c763388d45f95e4f9b",
+          "idOrganization": "65c6c6c763388d45f95e4bf8",
+          "name": "Alt Rock",
+          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/66ea211e3d545d3dfa1145a9",
+          "color": "green_dark",
+          "uses": 65
+        },
+        {
+          "id": "68069521ec94ac6fce6175ff",
+          "idBoard": "65c6c6c763388d45f95e4f9b",
+          "idOrganization": "65c6c6c763388d45f95e4bf8",
+          "name": "Backing",
+          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/68069521ec94ac6fce6175ff",
+          "color": "black_light",
+          "uses": 158
+        }
+      ],
+      "idLabels": [
+        "66ea211e3d545d3dfa1145a9",
+        "68069521ec94ac6fce6175ff"
+      ],
+      "manualCoverAttachment": false,
+      "name": "Wish I Knew You",
+      "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/68e3e3fabc6aefd7492a5382",
+      "pinned": false,
+      "pos": 140737488748544,
+      "shortLink": "WWSIkj4o",
+      "shortUrl": "https://trello.com/c/WWSIkj4o",
+      "start": null,
+      "subscribed": false,
+      "url": "https://trello.com/c/WWSIkj4o/542-wish-i-knew-you",
       "cover": {
         "idAttachment": null,
         "color": null,
@@ -11368,7 +11772,7 @@
       "checkItemStates": [],
       "closed": false,
       "dueComplete": false,
-      "dateLastActivity": "2025-10-06T15:44:59.221Z",
+      "dateLastActivity": "2025-10-06T15:59:39.846Z",
       "desc": "",
       "descData": {
         "emoji": {}
@@ -11421,7 +11825,7 @@
       "name": "Brown Eyed Lover",
       "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/68e3e3fabc6aefd7492a538d",
       "pinned": false,
-      "pos": 140737488433152,
+      "pos": 140737488423594.66,
       "shortLink": "RTL8URKI",
       "shortUrl": "https://trello.com/c/RTL8URKI",
       "start": null,
@@ -11811,127 +12215,6 @@
       "start": null,
       "subscribed": false,
       "url": "https://trello.com/c/38ja93yc/560-interstate-love-song",
-      "cover": {
-        "idAttachment": null,
-        "color": null,
-        "idUploadedBackground": null,
-        "size": "normal",
-        "brightness": "dark",
-        "idPlugin": null
-      },
-      "isTemplate": false,
-      "cardRole": null,
-      "mirrorSourceId": null
-    },
-    {
-      "id": "68e3e3ddcca7554b03ec3c2b",
-      "badges": {
-        "attachments": 1,
-        "fogbugz": "",
-        "checkItems": 0,
-        "checkItemsChecked": 0,
-        "checkItemsEarliestDue": null,
-        "comments": 0,
-        "description": true,
-        "due": null,
-        "dueComplete": false,
-        "lastUpdatedByAi": false,
-        "start": null,
-        "externalSource": null,
-        "attachmentsByType": {
-          "trello": {
-            "board": 0,
-            "card": 0
-          }
-        },
-        "location": false,
-        "votes": 0,
-        "maliciousAttachments": 0,
-        "viewingMemberVoted": false,
-        "subscribed": false
-      },
-      "checkItemStates": [],
-      "closed": false,
-      "dueComplete": false,
-      "dateLastActivity": "2025-10-06T15:52:05.987Z",
-      "desc": "### Lyrics\n\nIsn't she lovely?\nIsn't she wonderful?\nIsn't she precious?\nLess than one minute old\nI never thought through love we'd be\nMaking one as lovely as she\nBut isn't she lovely made from love?\n\nIsn't she pretty?\nTruly the angel's best\nBoy, I'm so happy\nWe have been Heaven-blessed\nI can't believe what God has done\nThrough us, He's given life to one\nBut isn't she lovely made from love?\n\nIsn't she lovely?\nLife and love are the same\nLife is Aisha\nThe meaning of her name\nLondie, it could have not been done\nWithout you who conceived the one\nThat's so very lovely made from love\nHey!",
-      "descData": {
-        "emoji": {}
-      },
-      "due": null,
-      "dueReminder": null,
-      "email": null,
-      "idBoard": "65c6c6c763388d45f95e4f9b",
-      "idChecklists": [],
-      "idList": "68e3e3fabc6aefd7492a5288",
-      "idMembers": [],
-      "idMembersVoted": [],
-      "idShort": 537,
-      "idAttachmentCover": null,
-      "labels": [
-        {
-          "id": "68069521ec94ac6fce6175ff",
-          "idBoard": "65c6c6c763388d45f95e4f9b",
-          "idOrganization": "65c6c6c763388d45f95e4bf8",
-          "name": "Backing",
-          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/68069521ec94ac6fce6175ff",
-          "color": "black_light",
-          "uses": 158
-        },
-        {
-          "id": "67d235486ce0fcfc7719ce99",
-          "idBoard": "65c6c6c763388d45f95e4f9b",
-          "idOrganization": "65c6c6c763388d45f95e4bf8",
-          "name": "Soul",
-          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/67d235486ce0fcfc7719ce99",
-          "color": "pink_light",
-          "uses": 12
-        },
-        {
-          "id": "66ea21483da0a04cc35a1b81",
-          "idBoard": "65c6c6c763388d45f95e4f9b",
-          "idOrganization": "65c6c6c763388d45f95e4bf8",
-          "name": "Capo 2",
-          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/66ea21483da0a04cc35a1b81",
-          "color": "blue",
-          "uses": 14
-        },
-        {
-          "id": "67d234e4799e697e92ddbc4c",
-          "idBoard": "65c6c6c763388d45f95e4f9b",
-          "idOrganization": "65c6c6c763388d45f95e4bf8",
-          "name": "Classic Rock",
-          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/67d234e4799e697e92ddbc4c",
-          "color": "green",
-          "uses": 36
-        },
-        {
-          "id": "68c228e51959c34c807f4bad",
-          "idBoard": "65c6c6c763388d45f95e4f9b",
-          "idOrganization": "65c6c6c763388d45f95e4bf8",
-          "name": "Shelley",
-          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/68c228e51959c34c807f4bad",
-          "color": "purple_light",
-          "uses": 48
-        }
-      ],
-      "idLabels": [
-        "68069521ec94ac6fce6175ff",
-        "67d235486ce0fcfc7719ce99",
-        "66ea21483da0a04cc35a1b81",
-        "67d234e4799e697e92ddbc4c",
-        "68c228e51959c34c807f4bad"
-      ],
-      "manualCoverAttachment": false,
-      "name": "Isn't She Lovely",
-      "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/68e3e3ddcca7554b03ec3c2b",
-      "pinned": false,
-      "pos": 140737488510976,
-      "shortLink": "6nWmuY2s",
-      "shortUrl": "https://trello.com/c/6nWmuY2s",
-      "start": null,
-      "subscribed": false,
-      "url": "https://trello.com/c/6nWmuY2s/537-isnt-she-lovely",
       "cover": {
         "idAttachment": null,
         "color": null,
@@ -12690,289 +12973,6 @@
       "start": null,
       "subscribed": false,
       "url": "https://trello.com/c/kxmvhRXv/529-sweetness",
-      "cover": {
-        "idAttachment": null,
-        "color": null,
-        "idUploadedBackground": null,
-        "size": "normal",
-        "brightness": "dark",
-        "idPlugin": null
-      },
-      "isTemplate": false,
-      "cardRole": null,
-      "mirrorSourceId": null
-    },
-    {
-      "id": "68e3e3fbbc6aefd7492a5946",
-      "badges": {
-        "attachments": 3,
-        "fogbugz": "",
-        "checkItems": 0,
-        "checkItemsChecked": 0,
-        "checkItemsEarliestDue": null,
-        "comments": 0,
-        "description": true,
-        "due": null,
-        "dueComplete": false,
-        "lastUpdatedByAi": false,
-        "start": null,
-        "externalSource": null,
-        "attachmentsByType": {
-          "trello": {
-            "board": 0,
-            "card": 0
-          }
-        },
-        "location": false,
-        "votes": 0,
-        "maliciousAttachments": 0,
-        "viewingMemberVoted": false,
-        "subscribed": false
-      },
-      "checkItemStates": [],
-      "closed": false,
-      "dueComplete": false,
-      "dateLastActivity": "2025-10-06T15:45:00.826Z",
-      "desc": "Well, sometimes I go out by myself\nAnd I look across the water\nAnd I think of all the things, what you do\nAnd in my head, I make a picture\n\n'Cause since I've come on home\nWell, my body's been a mess\nAnd I've missed your ginger hair\nAnd the way you like to dress\n\nWon't you come on over?\nAnd stop makin' a fool out of me\nWhy don't you come on over Valerie?\nValerie\n\nDid you have to go to jail?\nPut your house up on for sale\nDid you get a good lawyer?\nI hope you didn't catch a tan\nI hope you'll find the right man\nWho'll fix it for ya\n\nAre you shoppin' anywhere?\nChanged the color of you hair, are you busy?\nAnd did you have to pay the fine\nYou were dodging all the time, are you still dizzy?\n\nYeah, 'cause since I've come on home\nWell, my body's been a mess\nAnd I've missed your ginger hair\nAnd the way you like to dress\n\nWon't you come on over?\nAnd stop makin' a fool out of me\nWhy don't you come on over Valerie?\nValerie\nValerie\nValerie\n\nWell, sometimes I go out by myself\nAnd I look across the water\nAnd I think of all the things, what you're doin'\nAnd in my head I make a picture\n\n'Cause since I've come on home\nWell, my body's been a mess\nAnd I've missed your ginger hair\nAnd the way you like to dress\n\nWon't you come on over?\nAnd stop makin' a fool out of me\nWhy don't you come on over Valerie?\nValerie\nValerie\nValerie\n\nYeah, Valerie",
-      "descData": {
-        "emoji": {}
-      },
-      "due": null,
-      "dueReminder": null,
-      "email": null,
-      "idBoard": "65c6c6c763388d45f95e4f9b",
-      "idChecklists": [],
-      "idList": "68e3e3fabc6aefd7492a5288",
-      "idMembers": [],
-      "idMembersVoted": [],
-      "idShort": 559,
-      "idAttachmentCover": null,
-      "labels": [
-        {
-          "id": "66ea211e3d545d3dfa1145a9",
-          "idBoard": "65c6c6c763388d45f95e4f9b",
-          "idOrganization": "65c6c6c763388d45f95e4bf8",
-          "name": "Alt Rock",
-          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/66ea211e3d545d3dfa1145a9",
-          "color": "green_dark",
-          "uses": 65
-        },
-        {
-          "id": "68069521ec94ac6fce6175ff",
-          "idBoard": "65c6c6c763388d45f95e4f9b",
-          "idOrganization": "65c6c6c763388d45f95e4bf8",
-          "name": "Backing",
-          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/68069521ec94ac6fce6175ff",
-          "color": "black_light",
-          "uses": 158
-        }
-      ],
-      "idLabels": [
-        "66ea211e3d545d3dfa1145a9",
-        "68069521ec94ac6fce6175ff"
-      ],
-      "manualCoverAttachment": false,
-      "name": "Valerie",
-      "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/68e3e3fbbc6aefd7492a5946",
-      "pinned": false,
-      "pos": 140737488732160,
-      "shortLink": "j2sz7ZUD",
-      "shortUrl": "https://trello.com/c/j2sz7ZUD",
-      "start": null,
-      "subscribed": false,
-      "url": "https://trello.com/c/j2sz7ZUD/559-valerie",
-      "cover": {
-        "idAttachment": null,
-        "color": null,
-        "idUploadedBackground": null,
-        "size": "normal",
-        "brightness": "dark",
-        "idPlugin": null
-      },
-      "isTemplate": false,
-      "cardRole": null,
-      "mirrorSourceId": null
-    },
-    {
-      "id": "65c6ccef69d99557dfb1e2fd",
-      "badges": {
-        "fogbugz": "",
-        "checkItems": 0,
-        "checkItemsChecked": 0,
-        "checkItemsEarliestDue": null,
-        "comments": 0,
-        "attachments": 2,
-        "description": true,
-        "due": null,
-        "dueComplete": false,
-        "start": null,
-        "lastUpdatedByAi": false,
-        "attachmentsByType": {
-          "trello": {
-            "board": 0,
-            "card": 0
-          }
-        },
-        "externalSource": null,
-        "location": false,
-        "votes": 0,
-        "maliciousAttachments": 0,
-        "viewingMemberVoted": false,
-        "subscribed": false
-      },
-      "checkItemStates": [],
-      "closed": false,
-      "dueComplete": false,
-      "dateLastActivity": "2025-10-06T15:55:12.279Z",
-      "desc": "Early in the morning, risin' to the street\nLight me up that cigarette, and I'll strap shoes on my feet\nGot to find the reason, reason things went wrong\nGot to find a reason why my money's all gone\nI got a Dalmatian and I can still get high\nI can play the guitar like a motherfuckin' riot\n\nWell, life is too short, so love the one you got\n'Cause you might get run over, or you might get shot\nNever start no static, I just get it off my chest\nNever had to battle with no bulletproof vest\nTake a small example, take a tip from me\nTake all of your money, give it all to charity\n\nLove is what I got, it's within my reach\nAnd the Sublime style's still straight from Long Beach\nIt all comes back to you, you're bound to get what you deserve\nTry and test that, you're bound to get served\nLoves what I got, don't start a riot\nYou'll feel it when the dance gets hot\n\nLovin' is what I got\nI said, remember that\nLovin' is what I got\nAnd remember that\nLovin' is what I got\nI said, remember that\nLovin' is what I got\n(I got, I got, I got)\n\nWhy I don't cry when my dog runs away\nI don't get angry at the bills I have to pay\nI don't get angry when my mom smokes pot\nHits the bottle and goes right to the rock\nFuckin' and fightin', it's all the same\nLiving with Louie Dog's the only way to stay sane\nLet the lovin', let the lovin' come back to me\n\nLovin' is what I got\nI said, remember that\nLovin' is what I got\nAnd remember that\nLovin' is what I got\nI said remember that\nLovin' is what I got\n(I got, I got, I got)\n\nWe're not that far off\nSo, that's the\nSee, but\nWe're done, man is",
-      "descData": {
-        "emoji": {}
-      },
-      "due": null,
-      "dueReminder": null,
-      "email": null,
-      "idBoard": "65c6c6c763388d45f95e4f9b",
-      "idChecklists": [],
-      "idList": "68e3e3fabc6aefd7492a5288",
-      "idMembers": [],
-      "idMembersVoted": [],
-      "idShort": 40,
-      "idAttachmentCover": null,
-      "labels": [
-        {
-          "id": "66ea211e3d545d3dfa1145a9",
-          "idBoard": "65c6c6c763388d45f95e4f9b",
-          "idOrganization": "65c6c6c763388d45f95e4bf8",
-          "name": "Alt Rock",
-          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/66ea211e3d545d3dfa1145a9",
-          "color": "green_dark",
-          "uses": 65
-        },
-        {
-          "id": "66fd74e7bd8067faeb365c05",
-          "idBoard": "65c6c6c763388d45f95e4f9b",
-          "idOrganization": "65c6c6c763388d45f95e4bf8",
-          "name": "Pop",
-          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/66fd74e7bd8067faeb365c05",
-          "color": "pink",
-          "uses": 95
-        },
-        {
-          "id": "68190b913284f11eeeac2d94",
-          "idBoard": "65c6c6c763388d45f95e4f9b",
-          "idOrganization": "65c6c6c763388d45f95e4bf8",
-          "name": "Tom Vox",
-          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/68190b913284f11eeeac2d94",
-          "color": "lime",
-          "uses": 23
-        }
-      ],
-      "idLabels": [
-        "66ea211e3d545d3dfa1145a9",
-        "66fd74e7bd8067faeb365c05",
-        "68190b913284f11eeeac2d94"
-      ],
-      "manualCoverAttachment": false,
-      "name": "What I Got",
-      "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/65c6ccef69d99557dfb1e2fd",
-      "pinned": false,
-      "pos": 140737488740352,
-      "shortLink": "aP52wY6W",
-      "shortUrl": "https://trello.com/c/aP52wY6W",
-      "start": null,
-      "subscribed": false,
-      "url": "https://trello.com/c/aP52wY6W/40-what-i-got",
-      "cover": {
-        "idAttachment": null,
-        "color": null,
-        "idUploadedBackground": null,
-        "size": "normal",
-        "brightness": "dark",
-        "idPlugin": null
-      },
-      "isTemplate": false,
-      "cardRole": null,
-      "mirrorSourceId": null
-    },
-    {
-      "id": "68e3e3fabc6aefd7492a5382",
-      "badges": {
-        "attachments": 0,
-        "fogbugz": "",
-        "checkItems": 0,
-        "checkItemsChecked": 0,
-        "checkItemsEarliestDue": null,
-        "comments": 0,
-        "description": true,
-        "due": null,
-        "dueComplete": false,
-        "lastUpdatedByAi": false,
-        "start": null,
-        "externalSource": null,
-        "attachmentsByType": {
-          "trello": {
-            "board": 0,
-            "card": 0
-          }
-        },
-        "location": false,
-        "votes": 0,
-        "maliciousAttachments": 0,
-        "viewingMemberVoted": false,
-        "subscribed": false
-      },
-      "checkItemStates": [],
-      "closed": false,
-      "dueComplete": false,
-      "dateLastActivity": "2025-10-06T15:52:05.987Z",
-      "desc": "pull back on tempo at end",
-      "descData": {
-        "emoji": {}
-      },
-      "due": null,
-      "dueReminder": null,
-      "email": null,
-      "idBoard": "65c6c6c763388d45f95e4f9b",
-      "idChecklists": [],
-      "idList": "68e3e3fabc6aefd7492a5288",
-      "idMembers": [],
-      "idMembersVoted": [],
-      "idShort": 542,
-      "idAttachmentCover": null,
-      "labels": [
-        {
-          "id": "66ea211e3d545d3dfa1145a9",
-          "idBoard": "65c6c6c763388d45f95e4f9b",
-          "idOrganization": "65c6c6c763388d45f95e4bf8",
-          "name": "Alt Rock",
-          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/66ea211e3d545d3dfa1145a9",
-          "color": "green_dark",
-          "uses": 65
-        },
-        {
-          "id": "68069521ec94ac6fce6175ff",
-          "idBoard": "65c6c6c763388d45f95e4f9b",
-          "idOrganization": "65c6c6c763388d45f95e4bf8",
-          "name": "Backing",
-          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/68069521ec94ac6fce6175ff",
-          "color": "black_light",
-          "uses": 158
-        }
-      ],
-      "idLabels": [
-        "66ea211e3d545d3dfa1145a9",
-        "68069521ec94ac6fce6175ff"
-      ],
-      "manualCoverAttachment": false,
-      "name": "Wish I Knew You",
-      "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/68e3e3fabc6aefd7492a5382",
-      "pinned": false,
-      "pos": 140737488748544,
-      "shortLink": "WWSIkj4o",
-      "shortUrl": "https://trello.com/c/WWSIkj4o",
-      "start": null,
-      "subscribed": false,
-      "url": "https://trello.com/c/WWSIkj4o/542-wish-i-knew-you",
       "cover": {
         "idAttachment": null,
         "color": null,
