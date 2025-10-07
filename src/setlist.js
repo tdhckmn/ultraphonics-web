@@ -5,18 +5,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     printBtn.addEventListener('click', () => window.print());
 
-    const avatarColors = [
-        '#ff5722', '#673ab7', '#03a9f4', '#4caf50',
-        '#ffc107', '#f44336', '#9c27b0', '#00bcd4'
-    ];
-
     function getColorForUser(username) {
-        let hash = 0;
-        for (let i = 0; i < username.length; i++) {
-            hash = username.charCodeAt(i) + ((hash << 5) - hash);
+        const initial = username.charAt(0).toUpperCase();
+        switch (initial) {
+            case 'D': return '#673ab7'; // Purple
+            case 'T': return '#4caf50'; // Green
+            case 'K': return '#03a9f4'; // Blue
+            case 'S': return '#ff9800'; // Orange
+            default:  return '#9e9e9e'; // Gray
         }
-        const index = Math.abs(hash % avatarColors.length);
-        return avatarColors[index];
     }
 
     async function loadSetlist() {
@@ -39,7 +36,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const emojiRegex = /^\p{Emoji}/u;
         const setlistIdentifier = '📋';
 
-        // Prevent crash if members array is missing from the JSON data
         if (!data.members) {
             console.error("Member data is missing from 'api/setlist.json'. Please re-run the 'Fetch Trello Setlist Data' action in your GitHub repository.");
         }
