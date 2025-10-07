@@ -1,11 +1,23 @@
-// FILE: src/setlist.js
-
 document.addEventListener('DOMContentLoaded', () => {
     const setlistOutput = document.getElementById('setlist-output');
     const printBtn = document.getElementById('print-btn');
     const printButtonContainer = document.getElementById('print-button-container');
 
     printBtn.addEventListener('click', () => window.print());
+
+    const avatarColors = [
+        '#ff5722', '#673ab7', '#03a9f4', '#4caf50',
+        '#ffc107', '#f44336', '#9c27b0', '#00bcd4'
+    ];
+
+    function getColorForUser(username) {
+        let hash = 0;
+        for (let i = 0; i < username.length; i++) {
+            hash = username.charCodeAt(i) + ((hash << 5) - hash);
+        }
+        const index = Math.abs(hash % avatarColors.length);
+        return avatarColors[index];
+    }
 
     async function loadSetlist() {
         const url = `../api/setlist.json`;
@@ -26,6 +38,12 @@ document.addEventListener('DOMContentLoaded', () => {
     function generateSetlistFromData(data) {
         const emojiRegex = /^\p{Emoji}/u;
         const setlistIdentifier = '📋';
+
+        // Prevent crash if members array is missing from the JSON data
+        if (!data.members) {
+            console.error("Member data is missing from 'api/setlist.json'. Please re-run the 'Fetch Trello Setlist Data' action in your GitHub repository.");
+        }
+        const memberMap = new Map((data.members || []).map(m => [m.id, m]));
 
         const desiredSetlists = data.lists.filter(list => 
             !list.closed && list.name.trim().startsWith(setlistIdentifier)
@@ -62,13 +80,37 @@ document.addEventListener('DOMContentLoaded', () => {
             songs.forEach(song => {
                 const li = document.createElement('li');
                 li.style.cssText = 'padding: 0.25rem 0; border-bottom: 1px solid rgba(255,255,255,.08);';
+                
+                const songTitle = document.createElement('span');
+                songTitle.className = 'song-title';
+
                 if (emojiRegex.test(song.name)) {
                     li.className = 'setlist-note';
-                    li.textContent = song.name;
+                    songTitle.textContent = song.name;
                 } else {
-                    li.textContent = `${counter}. ${song.name}`;
+                    songTitle.textContent = `${counter}. ${song.name}`;
                     counter++;
                 }
+                
+                li.appendChild(songTitle);
+
+                if (song.idMembers && song.idMembers.length > 0) {
+                    const avatarContainer = document.createElement('div');
+                    avatarContainer.className = 'avatar-container';
+
+                    song.idMembers.forEach(memberId => {
+                        const member = memberMap.get(memberId);
+                        if (member) {
+                            const avatar = document.createElement('span');
+                            avatar.className = 'avatar';
+                            avatar.textContent = member.username.charAt(0).toUpperCase();
+                            avatar.style.backgroundColor = getColorForUser(member.username);
+                            avatarContainer.appendChild(avatar);
+                        }
+                    });
+                    li.appendChild(avatarContainer);
+                }
+
                 songList.appendChild(li);
             });
 

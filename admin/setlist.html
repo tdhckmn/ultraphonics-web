@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Setlist - Ultraphonics Admin</title>
+  <title>Generate Setlist - Ultraphonics Admin</title>
   <link rel="stylesheet" href="../assets/css/styles.css" />
   <style>
     .setlist-container {
@@ -58,6 +58,30 @@
     .setlist-column {
         margin-bottom: 1rem;
     }
+    .setlist-column li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .song-title {
+      flex-grow: 1;
+    }
+    .avatar-container {
+      display: flex;
+      gap: 6px;
+    }
+    .avatar {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      color: white;
+      font-size: 12px;
+      font-weight: bold;
+      vertical-align: middle;
+    }
 
     @media (min-width: 768px) {
       .setlist-row-top,
@@ -67,7 +91,7 @@
         gap: 1rem;
       }
       .setlist-row-top {
-        margin-bottom: 4rem; /* Increased from 1rem to 2rem */
+        margin-bottom: 2rem;
       }
       .setlist-column {
         margin-bottom: 0;
@@ -83,8 +107,7 @@
       }
       .setlist-header,
       .setlist-section,
-      #print-button-container,
-      main > .setlist-container > p {
+      #print-button-container {
         display: none !important;
       }
       .setlist-container,
@@ -111,12 +134,18 @@
         grid-template-columns: 1fr 1fr;
         gap: 1rem;
       }
-      .setlist-row-top { margin-bottom: 2rem; } /* Increased from 1rem to 2rem */
+      .setlist-row-top { margin-bottom: 2rem; }
       .setlist-column h3 {
         color: #000 !important;
       }
       .setlist-column li {
         border-bottom-color: #ccc !important;
+      }
+      .avatar {
+        -webkit-print-color-adjust: exact;
+        color-adjust: exact;
+        border: 1px solid #ddd;
+        color: #000 !important;
       }
     }
   </style>
@@ -127,6 +156,7 @@
       <div class="setlist-header">
         <h1>Band Setlist</h1>
         <p>This setlist is automatically updated from Trello.</p>
+        <a href="https://trello.com/b/oatz1C1E" target="_blank" class="back-button">Go to Trello</a>
       </div>
 
       <div id="setlist-output-container" class="setlist-output">
