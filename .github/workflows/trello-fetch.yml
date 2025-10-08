@@ -41,30 +41,30 @@ jobs:
                     if (res.statusCode === 200) {
                       resolve(JSON.parse(body));
                     } else {
-                      reject(`Trello API error: ${res.statusCode}`);
+                      reject(`Trello API error: \${res.statusCode}`);
                     }
                   });
-                }).on('error', (e) => reject(`Fetch error: ${e.message}`));
+                }).on('error', (e) => reject(`Fetch error: \${e.message}`));
               });
             }
 
             async function fetchAllData() {
               try {
-                // Fetch Setlist Data (existing functionality)
-                const setlistUrl = `https://api.trello.com/1/boards/${boardId}?key=${apiKey}&token=${apiToken}&lists=open&cards=open&members=all`;
+                // Fetch Setlist Data
+                const setlistUrl = `https://api.trello.com/1/boards/\${boardId}?key=\${apiKey}&token=\${apiToken}&lists=open&cards=open&members=all`;
                 const setlistData = await httpsGet(setlistUrl);
                 const setlistOutputPath = path.join(__dirname, 'api', 'setlist.json');
                 fs.mkdirSync(path.dirname(setlistOutputPath), { recursive: true });
                 fs.writeFileSync(setlistOutputPath, JSON.stringify(setlistData, null, 2));
                 console.log('Successfully fetched and saved Setlist data.');
 
-                // Fetch and Process Shows Data (new functionality)
-                const showsUrl = `https://api.trello.com/1/lists/${showsListId}/cards?key=${apiKey}&token=${apiToken}&fields=name,due,desc`;
+                // Fetch and Process Shows Data
+                const showsUrl = `https://api.trello.com/1/lists/\${showsListId}/cards?key=\${apiKey}&token=\${apiToken}&fields=name,due,desc`;
                 const showsCards = await httpsGet(showsUrl);
 
                 const shows = showsCards.map(card => {
                   const details = {};
-                  const lines = (card.desc || '').split('\n');
+                  const lines = (card.desc || '').split('\\n');
                   for (const line of lines) {
                       const parts = line.split(':');
                       if (parts.length >= 2) {
@@ -80,7 +80,7 @@ jobs:
                   
                   const showDate = new Date(card.due);
                   return {
-                    date: `${showDate.getMonth() + 1}/${showDate.getDate()}/${showDate.getFullYear()}`,
+                    date: `\${showDate.getMonth() + 1}/\${showDate.getDate()}/\${showDate.getFullYear()}`,
                     venue: card.name,
                     city: details.city || '',
                     state: details.state || '',
