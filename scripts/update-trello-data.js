@@ -27,6 +27,13 @@ function httpsGet(url) {
   });
 }
 
+// Extracts a clean URL from Trello's markdown link format
+function parseLink(text) {
+    if (!text) return '';
+    const match = text.match(/\[(.*?)\]\((.*?)\)/);
+    return match ? match[2] : text;
+}
+
 // --- Main function to fetch and process all data ---
 async function fetchAllData() {
   if (!API_KEY || !API_TOKEN) {
@@ -35,7 +42,7 @@ async function fetchAllData() {
   }
 
   try {
-    // 1. Fetch Setlist Data (from the entire board)
+    // 1. Fetch Setlist Data
     const setlistUrl = `https://api.trello.com/1/boards/${BOARD_ID}?key=${API_KEY}&token=${API_TOKEN}&lists=open&cards=open&members=all`;
     const setlistData = await httpsGet(setlistUrl);
     const setlistOutputPath = path.join(__dirname, '..', 'api', 'setlist.json');
@@ -43,7 +50,7 @@ async function fetchAllData() {
     fs.writeFileSync(setlistOutputPath, JSON.stringify(setlistData, null, 2));
     console.log('✅ Successfully fetched and saved Setlist data.');
 
-    // 2. Fetch and Process Shows Data (from the specific list)
+    // 2. Fetch and Process Shows Data
     const showsUrl = `https://api.trello.com/1/lists/${SHOWS_LIST_ID}/cards?key=${API_KEY}&token=${API_TOKEN}&fields=name,due,desc`;
     const showsCards = await httpsGet(showsUrl);
 
@@ -59,17 +66,26 @@ async function fetchAllData() {
           if (key === 'State') details.state = value;
           if (key === 'End Time') details.endTime = value;
           if (key === 'Is Private') details.isPrivate = value.toLowerCase() === 'true';
-          if (key === 'Event Link') details.eventLink = value;
+          if (key === 'Event Link') details.eventLink = parseLink(value);
         }
       }
       
       const showDate = new Date(card.due);
+      // Use UTC methods to construct the date and time to avoid timezone shifts
+      const date = `${showDate.getUTCMonth() + 1}/${showDate.getUTCDate()}/${showDate.getUTCFullYear()}`;
+      const startTime = showDate.toLocaleTimeString('en-US', {
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true,
+        timeZone: 'UTC' // Specify UTC to match the server's interpretation
+      });
+
       return {
-        date: `${showDate.getMonth() + 1}/${showDate.getDate()}/${showDate.getFullYear()}`,
+        date: date,
         venue: card.name,
         city: details.city || '',
         state: details.state || '',
-        startTime: showDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }),
+        startTime: startTime,
         endTime: details.endTime || '',
         isPrivate: details.isPrivate || false,
         eventLink: details.eventLink || '',
