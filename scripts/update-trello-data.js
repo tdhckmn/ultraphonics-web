@@ -4,11 +4,13 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 
+// --- Configuration ---
 const API_KEY = process.env.TRELLO_API_KEY;
 const API_TOKEN = process.env.TRELLO_API_TOKEN;
-const BOARD_ID = 'oatz1C1E';
-const SHOWS_LIST_ID = '68e6806e872f2fbfb6fa7f56';
+const BOARD_ID = 'oatz1C1E'; // Board for Setlists
+const SHOWS_LIST_ID = '68e6806e872f2fbfb6fa7f56'; // List for Upcoming Shows
 
+// --- Helper function to make HTTPS requests ---
 function httpsGet(url) {
   return new Promise((resolve, reject) => {
     https.get(url, (res) => {
@@ -25,12 +27,14 @@ function httpsGet(url) {
   });
 }
 
+// Extracts a clean URL from Trello's markdown link format
 function parseLink(text) {
     if (!text) return '';
     const match = text.match(/\((.*?)\s*(".*")?\)/);
     return match ? match[1] : text;
 }
 
+// --- Main function to fetch and process all data ---
 async function fetchAllData() {
   if (!API_KEY || !API_TOKEN) {
     console.error('Error: TRELLO_API_KEY and TRELLO_API_TOKEN environment variables are required.');
@@ -38,6 +42,7 @@ async function fetchAllData() {
   }
 
   try {
+    // 1. Fetch Setlist Data
     const setlistUrl = `https://api.trello.com/1/boards/${BOARD_ID}?key=${API_KEY}&token=${API_TOKEN}&lists=open&cards=open&members=all`;
     const setlistData = await httpsGet(setlistUrl);
     const setlistOutputPath = path.join(__dirname, '..', 'api', 'setlist.json');
@@ -45,6 +50,7 @@ async function fetchAllData() {
     fs.writeFileSync(setlistOutputPath, JSON.stringify(setlistData, null, 2));
     console.log('✅ Successfully fetched and saved Setlist data.');
 
+    // 2. Fetch and Process Shows Data
     const showsUrl = `https://api.trello.com/1/lists/${SHOWS_LIST_ID}/cards?key=${API_KEY}&token=${API_TOKEN}&fields=name,due,desc`;
     const showsCards = await httpsGet(showsUrl);
 
@@ -65,12 +71,19 @@ async function fetchAllData() {
       }
       
       const showDate = new Date(card.due);
-      const date = `${showDate.getUTCMonth() + 1}/${showDate.getUTCDate()}/${showDate.getUTCFullYear()}`;
+      
+      const date = showDate.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric',
+        timeZone: 'America/New_York'
+      });
+
       const startTime = showDate.toLocaleTimeString('en-US', {
         hour: 'numeric',
         minute: '2-digit',
         hour12: true,
-        timeZone: 'America/New_York' // Correct timezone
+        timeZone: 'America/New_York'
       });
 
       return {
