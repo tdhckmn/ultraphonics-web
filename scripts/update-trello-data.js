@@ -30,8 +30,9 @@ function httpsGet(url) {
 // Extracts a clean URL from Trello's markdown link format
 function parseLink(text) {
     if (!text) return '';
-    const match = text.match(/\[(.*?)\]\((.*?)\)/);
-    return match ? match[2] : text;
+    // This regex specifically looks for the URL inside the parentheses
+    const match = text.match(/\((.*?)\s*(".*")?\)/);
+    return match ? match[1] : text;
 }
 
 // --- Main function to fetch and process all data ---
@@ -71,13 +72,13 @@ async function fetchAllData() {
       }
       
       const showDate = new Date(card.due);
-      // Use UTC methods to construct the date and time to avoid timezone shifts
+      // Use UTC methods to read the date components to avoid timezone shifts
       const date = `${showDate.getUTCMonth() + 1}/${showDate.getUTCDate()}/${showDate.getUTCFullYear()}`;
       const startTime = showDate.toLocaleTimeString('en-US', {
         hour: 'numeric',
         minute: '2-digit',
         hour12: true,
-        timeZone: 'UTC' // Specify UTC to match the server's interpretation
+        timeZone: 'UTC' // Interpret the time as UTC to match how the server sees it
       });
 
       return {
