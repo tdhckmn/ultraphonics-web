@@ -7,8 +7,8 @@ const https = require('https');
 // --- Configuration ---
 const API_KEY = process.env.TRELLO_API_KEY;
 const API_TOKEN = process.env.TRELLO_API_TOKEN;
-const BOARD_ID = 'oatz1C1E'; // Board for Setlists
-const SHOWS_LIST_ID = '68e6806e872f2fbfb6fa7f56'; // List for Upcoming Shows
+const BOARD_ID = 'oatz1C1E';
+const SHOWS_LIST_ID = '68e6806e872f2fbfb6fa7f56';
 
 // --- Helper function to make HTTPS requests ---
 function httpsGet(url) {
@@ -54,49 +54,49 @@ async function fetchAllData() {
     const showsUrl = `https://api.trello.com/1/lists/${SHOWS_LIST_ID}/cards?key=${API_KEY}&token=${API_TOKEN}&fields=name,due,desc`;
     const showsCards = await httpsGet(showsUrl);
 
-    const shows = showsCards.map(card => {
-      const details = {};
-      const lines = (card.desc || '').split('\n');
-      for (const line of lines) {
-        const parts = line.split(':');
-        if (parts.length >= 2) {
-          const key = parts[0].trim();
-          const value = parts.slice(1).join(':').trim();
-          if (key === 'City') details.city = value;
-          if (key === 'State') details.state = value;
-          if (key === 'End Time') details.endTime = value;
-          if (key === 'Is Private') details.isPrivate = value.toLowerCase() === 'true';
-          if (key === 'Event Link') details.eventLink = parseLink(value);
+    const shows = showsCards
+      .filter(card => card.due) // Filter out cards with no due date
+      .map(card => {
+        const details = {};
+        const lines = (card.desc || '').split('\n');
+        for (const line of lines) {
+          const parts = line.split(':');
+          if (parts.length >= 2) {
+            const key = parts[0].trim();
+            const value = parts.slice(1).join(':').trim();
+            if (key === 'City') details.city = value;
+            if (key === 'State') details.state = value;
+            if (key === 'End Time') details.endTime = value;
+            if (key === 'Is Private') details.isPrivate = value.toLowerCase() === 'true';
+            if (key === 'Event Link') details.eventLink = parseLink(value);
+          }
         }
-      }
-      
-      const showDate = new Date(card.due);
-      
-      const date = showDate.toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'numeric',
-        day: 'numeric',
-        timeZone: 'America/New_York'
-      });
+        
+        const showDate = new Date(card.due);
+        const date = showDate.toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'numeric',
+          day: 'numeric',
+          timeZone: 'America/New_York'
+        });
+        const startTime = showDate.toLocaleTimeString('en-US', {
+          hour: 'numeric',
+          minute: '2-digit',
+          hour12: true,
+          timeZone: 'America/New_York'
+        });
 
-      const startTime = showDate.toLocaleTimeString('en-US', {
-        hour: 'numeric',
-        minute: '2-digit',
-        hour12: true,
-        timeZone: 'America/New_York'
+        return {
+          date: date,
+          venue: card.name,
+          city: details.city || '',
+          state: details.state || '',
+          startTime: startTime,
+          endTime: details.endTime || '',
+          isPrivate: details.isPrivate || false,
+          eventLink: details.eventLink || '',
+        };
       });
-
-      return {
-        date: date,
-        venue: card.name,
-        city: details.city || '',
-        state: details.state || '',
-        startTime: startTime,
-        endTime: details.endTime || '',
-        isPrivate: details.isPrivate || false,
-        eventLink: details.eventLink || '',
-      };
-    });
     
     const showsOutputPath = path.join(__dirname, '..', 'api', 'shows.json');
     fs.writeFileSync(showsOutputPath, JSON.stringify(shows, null, 2));
