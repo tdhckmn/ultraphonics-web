@@ -158,7 +158,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
-    function setupTippingModal() {
+  function setupTippingModal() {
     const tipButton = document.querySelector(selectors.tipButton);
     const modal = document.getElementById('tip-modal');
     const closeModal = document.querySelector('.close-modal');
@@ -186,12 +186,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     tipButton.addEventListener('click', () => {
       trackEvent('Tip Button Pressed');
       modal.style.display = 'flex';
-      document.body.classList.add('modal-open'); // Add class to body
+      document.body.classList.add('modal-open');
     });
 
     const hideModal = () => {
       modal.style.display = 'none';
-      document.body.classList.remove('modal-open'); // Remove class from body
+      document.body.classList.remove('modal-open');
     };
 
     closeModal.addEventListener('click', hideModal);
@@ -201,6 +201,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         hideModal();
       }
     });
+
+    // Add analytics to each payment button
+    venmoLink.addEventListener('click', () => trackEvent('Tip with Venmo'));
+    cashappLink.addEventListener('click', () => trackEvent('Tip with Cash App'));
+    paypalLink.addEventListener('click', () => trackEvent('Tip with PayPal'));
   }
 
   function loadShowSchedule() {
