@@ -1,6 +1,7 @@
 import { config } from '../../content/config.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
+  // --- 1. Fetch Data First ---
   let shows = [];
   try {
     const response = await fetch('../api/shows.json');
@@ -18,6 +19,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   };
 
   const { tipping, selectors, hero, services } = siteContent;
+
+  // --- 2. Define All Functions ---
 
   function firstUrl(...candidates) {
     return candidates.find(u => typeof u === "string" && u.trim().length > 0);
@@ -168,13 +171,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const { venmo, cashApp, payPal, tipAmount, note } = tipping;
     const encodedNote = encodeURIComponent(note);
-
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    if (isMobile) {
-        venmoLink.href = `venmo://paycharge?txn=pay&recipients=${venmo}&amount=${tipAmount}&note=${encodedNote}`;
-    } else {
-        venmoLink.href = `https://account.venmo.com/u/${venmo}?txn=pay&amount=${tipAmount}&note=${encodedNote}`;
-    }
+    
+    venmoLink.href = `https://account.venmo.com/u/${venmo}?txn=pay&amount=${tipAmount}&note=${encodedNote}`;
     cashappLink.href = `https://cash.app/\$${cashApp}/${tipAmount}`;
     paypalLink.href = `https://paypal.me/${payPal}/${tipAmount}`;
 
