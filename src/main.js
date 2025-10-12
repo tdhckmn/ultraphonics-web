@@ -172,7 +172,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     const { venmo, cashApp, payPal, tipAmount, note } = tipping;
     const encodedNote = encodeURIComponent(note);
     
-    venmoLink.href = `https://account.venmo.com/u/${venmo}?txn=pay&amount=${tipAmount}&note=${encodedNote}`;
+    const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+    
+    if (isIOS) {
+        venmoLink.href = `venmo://paycharge?txn=pay&recipients=${venmo}&amount=${tipAmount}&note=${encodedNote}`;
+    } else {
+        venmoLink.href = `https://account.venmo.com/u/${venmo}?txn=pay&amount=${tipAmount}&note=${encodedNote}`;
+    }
     cashappLink.href = `https://cash.app/\$${cashApp}/${tipAmount}`;
     paypalLink.href = `https://paypal.me/${payPal}/${tipAmount}`;
 
