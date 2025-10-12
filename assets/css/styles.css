@@ -53,6 +53,10 @@ body {
   flex-direction: column;
 }
 
+body.modal-open {
+  overflow: hidden;
+}
+
 .logo {
   width: var(--logo-size);
   height: var(--logo-size);
@@ -70,6 +74,8 @@ main {
   align-items: center;
   width: 100%;
   flex: 1;
+  position: relative; /* Add this */
+  z-index: 1;        /* And this */
 }
 
 h1 {
@@ -96,7 +102,7 @@ h3 {
 .hero {
   position: relative;
   overflow: hidden;
-  height: 100vh; /* Make the hero section fill the viewport height */
+  height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -106,16 +112,16 @@ h3 {
 .hero-content {
   position: relative;
   z-index: 2;
-  background-color: rgba(0, 0, 0, 0.2); /* Match mobile opacity */
+  background-color: rgba(0, 0, 0, 0.2);
   padding: var(--spacing-xxl);
-  border-radius: 0; /* Remove rounded corners to match mobile */
-  border: none; /* Remove border to match mobile */
-  width: 100%; /* Full width */
-  max-width: 100%; /* Ensure no max-width constraints */
-  height: 100%; /* Fill full height like mobile */
+  border-radius: 0;
+  border: none;
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center; /* Center content vertically like mobile */
+  justify-content: center;
   align-items: center;
 }
 
@@ -171,8 +177,8 @@ h3 {
   font-size: var(--font-size-lg);
   color: var(--color-text-secondary);
   line-height: 1.6;
-  max-width: 700px; /* Constrains line length for readability */
-  margin: 0 auto var(--spacing-lg); /* Centers the text block */
+  max-width: 700px;
+  margin: 0 auto var(--spacing-lg);
 }
 
 .service-area {
@@ -186,7 +192,7 @@ h3 {
   padding: 0;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* forces 2 columns */
+  grid-template-columns: repeat(2, 1fr);
   gap: var(--spacing-lg);
   max-width: 600px;
 }
@@ -289,7 +295,7 @@ a.venue-link:hover {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  z-index: 9999;
   backdrop-filter: blur(5px);
 }
 
@@ -335,6 +341,17 @@ a.venue-link:hover {
 .modal-buttons .button {
   width: 100%;
   box-sizing: border-box;
+  display: flex; /* Make the button a flex container */
+  align-items: center; /* Vertically center items */
+  justify-content: center; /* Horizontally center items */
+}
+
+.button-logo {
+  height: 1.2em; /* Adjust size relative to font-size */
+  width: auto;
+  margin-right: var(--spacing-sm); /* Space between logo and text */
+  vertical-align: middle; /* Align with text baseline */
+  filter: brightness(0) invert(1); /* Ensure logos are white if they aren't already */
 }
 
 /* === Footer === */
@@ -375,12 +392,11 @@ footer {
 /* === START: MAILING LIST STYLES === */
 .mailing-list-section {
   max-width: 450px;
-  margin: 40px auto; /* This replaces the 50px top margin on the email link */
+  margin: 40px auto;
   padding: 0 var(--spacing-lg);
   text-align: center;
 }
 
-/* Remove MailerLite default padding and background */
 .mailing-list-section .ml-form-embedWrapper {
   background-color: transparent !important;
   padding: 0 !important;
@@ -390,7 +406,6 @@ footer {
   padding: 0 !important;
 }
 
-/* Style the "SIGN UP..." Header */
 .mailing-list-section .ml-form-embedContent h4 {
   font-size: var(--font-size-lg) !important;
   color: var(--color-text) !important;
@@ -398,22 +413,20 @@ footer {
   font-weight: bold !important;
   text-transform: uppercase !important;
   letter-spacing: 1px !important;
-  text-align: center !important; /* Center the header */
+  text-align: center !important;
 }
 
-/* Style the "Email (required)" Label */
 .mailing-list-section .ml-field-group label {
   display: block !important;
   text-align: left !important;
   margin-bottom: var(--spacing-sm) !important;
   font-size: var(--font-size-sm) !important;
   color: var(--color-text-secondary) !important;
-  font-weight: normal !important; /* Override MailerLite's bold */
+  font-weight: normal !important;
   text-transform: none !important;
   letter-spacing: normal !important;
 }
 
-/* Style the Email Input Box */
 .mailing-list-section .ml-field-group input[type="email"] {
   width: 100% !important;
   padding: 14px !important;
@@ -423,11 +436,10 @@ footer {
   color: var(--color-background-dark) !important;
   font-size: var(--font-size-base) !important;
   box-sizing: border-box !important;
-  margin-bottom: var(--spacing-md) !important; /* Add space before button */
-  height: auto !important; /* Override MailerLite's default height */
+  margin-bottom: var(--spacing-md) !important;
+  height: auto !important;
 }
 
-/* Style the "SIGN UP!" Button */
 .mailing-list-section .ml-form-embedSubmit button.primary {
   background-color: transparent !important;
   color: var(--color-white) !important;
@@ -440,25 +452,23 @@ footer {
   font-weight: bold !important;
   text-transform: uppercase !important;
   letter-spacing: 1px !important;
-  width: auto !important; /* Don't force full width */
+  width: auto !important;
   display: inline-block !important;
-  height: auto !important; /* Override MailerLite's default height */
+  height: auto !important;
   box-shadow: none !important;
 }
 
-/* Style the Button on Hover */
 .mailing-list-section .ml-form-embedSubmit button.primary:hover {
   background-color: var(--color-white) !important;
   color: var(--color-background-dark) !important;
 }
 
-/* Style the Success Message */
 .mailing-list-section .ml-form-successContent h4 {
   color: var(--color-spotify-green) !important;
   font-size: var(--font-size-xl) !important;
   font-weight: bold !important;
   text-align: center !important;
-  text-transform: none !important; /* Keep "Thank you!" normal case */
+  text-transform: none !important;
   letter-spacing: normal !important;
 }
 
@@ -471,13 +481,12 @@ footer {
 /* === END: MAILING LIST STYLES === */
 
 .email {
-  /* This margin is much smaller to sit nicely under the new form */
   margin-top: var(--spacing-xl);
   color: var(--color-text-tertiary);
   font-size: var(--font-size-sm);
   text-decoration: none;
   transition: color 0.3s;
-  display: inline-block; /* Ensures margin-top works */
+  display: inline-block;
 }
 
 .email:hover {
@@ -498,17 +507,14 @@ footer {
 
 /* --- Mobile Styles --- */
 
-/* Desktop video - visible on desktop, hidden on mobile */
 .hero-video-desktop {
   display: block;
 }
 
-/* Mobile video - hidden on desktop, visible on mobile */
 .hero-video-mobile {
   display: none;
 }
 
-/* Ensure both videos have proper positioning */
 .hero-video-desktop,
 .hero-video-mobile {
   position: absolute;
@@ -531,33 +537,29 @@ footer {
   }
 
   .hero {
-    /* Mobile video will be the background */
     background: none;
-    height: 100vh; /* Keep full viewport height on mobile */
-    padding: 0; /* Remove padding so content can fill entire area */
+    height: 100vh;
+    padding: 0;
   }
 
-  /* Mobile content styling - fill entire hero area */
   .hero-content {
-    background-color: rgba(0, 0, 0, 0.2); /* Dark background to cover video */
+    background-color: rgba(0, 0, 0, 0.2);
     border: none;
     border-radius: 0;
     padding: 2rem var(--spacing-lg);
     max-width: 100%;
-    height: 100%; /* Fill entire hero height */
+    height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
   }
 
-  /* Mobile services section padding */
   .content-section {
-    padding: 0 var(--spacing-lg); /* Add left and right padding */
+    padding: 0 var(--spacing-lg);
   }
 
-  /* Mobile services grid padding */
   .services-grid {
-    padding: 0 var(--spacing-md); /* Add padding to service buttons */
+    padding: 0 var(--spacing-md);
   }
 }

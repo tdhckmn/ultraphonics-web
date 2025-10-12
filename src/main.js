@@ -158,7 +158,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
-  function setupTippingModal() {
+    function setupTippingModal() {
     const tipButton = document.querySelector(selectors.tipButton);
     const modal = document.getElementById('tip-modal');
     const closeModal = document.querySelector('.close-modal');
@@ -179,21 +179,26 @@ document.addEventListener('DOMContentLoaded', async () => {
     } else {
         venmoLink.href = `https://account.venmo.com/u/${venmo}?txn=pay&amount=${tipAmount}&note=${encodedNote}`;
     }
+    
     cashappLink.href = `https://cash.app/\$${cashApp}/${tipAmount}`;
     paypalLink.href = `https://paypal.me/${payPal}/${tipAmount}`;
 
     tipButton.addEventListener('click', () => {
       trackEvent('Tip Button Pressed');
       modal.style.display = 'flex';
+      document.body.classList.add('modal-open'); // Add class to body
     });
 
-    closeModal.addEventListener('click', () => {
+    const hideModal = () => {
       modal.style.display = 'none';
-    });
+      document.body.classList.remove('modal-open'); // Remove class from body
+    };
+
+    closeModal.addEventListener('click', hideModal);
 
     modal.addEventListener('click', (event) => {
       if (event.target === modal) {
-        modal.style.display = 'none';
+        hideModal();
       }
     });
   }
