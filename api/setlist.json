@@ -11924,7 +11924,7 @@
       "checkItemStates": [],
       "closed": false,
       "dueComplete": false,
-      "dateLastActivity": "2025-10-08T00:06:56.977Z",
+      "dateLastActivity": "2025-10-11T18:44:17.245Z",
       "desc": "",
       "descData": {
         "emoji": {}
@@ -11936,7 +11936,8 @@
       "idChecklists": [],
       "idList": "68e3e42307d031c944c17413",
       "idMembers": [
-        "67f5b87d0808e92f09399bb6"
+        "67f5b87d0808e92f09399bb6",
+        "65c6e648fbf884e8b262e4ea"
       ],
       "idMembersVoted": [],
       "idShort": 552,
@@ -27415,6 +27416,75 @@
       "start": null,
       "subscribed": false,
       "url": "https://trello.com/c/HUNgXFDE/582-exs-and-ohs-ella-king",
+      "cover": {
+        "idAttachment": null,
+        "color": null,
+        "idUploadedBackground": null,
+        "size": "normal",
+        "brightness": "dark",
+        "idPlugin": null
+      },
+      "isTemplate": false,
+      "cardRole": null,
+      "mirrorSourceId": null
+    },
+    {
+      "id": "68ea8e724148d83e83822032",
+      "badges": {
+        "attachments": 0,
+        "fogbugz": "",
+        "checkItems": 0,
+        "checkItemsChecked": 0,
+        "checkItemsEarliestDue": null,
+        "comments": 0,
+        "description": false,
+        "due": null,
+        "dueComplete": false,
+        "lastUpdatedByAi": false,
+        "start": null,
+        "externalSource": null,
+        "attachmentsByType": {
+          "trello": {
+            "board": 0,
+            "card": 0
+          }
+        },
+        "location": false,
+        "votes": 0,
+        "maliciousAttachments": 0,
+        "viewingMemberVoted": false,
+        "subscribed": false
+      },
+      "checkItemStates": [],
+      "closed": false,
+      "dueComplete": false,
+      "dateLastActivity": "2025-10-11T17:05:54.064Z",
+      "desc": "",
+      "descData": {
+        "emoji": {}
+      },
+      "due": null,
+      "dueReminder": null,
+      "email": null,
+      "idBoard": "65c6c6c763388d45f95e4f9b",
+      "idChecklists": [],
+      "idList": "6859620b0441f274db6602c3",
+      "idMembers": [],
+      "idMembersVoted": [],
+      "idShort": 583,
+      "idAttachmentCover": null,
+      "labels": [],
+      "idLabels": [],
+      "manualCoverAttachment": false,
+      "name": "Take me out - Franz Ferdinand",
+      "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/68ea8e724148d83e83822032",
+      "pinned": false,
+      "pos": 140737489862656,
+      "shortLink": "M1otaPUY",
+      "shortUrl": "https://trello.com/c/M1otaPUY",
+      "start": null,
+      "subscribed": false,
+      "url": "https://trello.com/c/M1otaPUY/583-take-me-out-franz-ferdinand",
       "cover": {
         "idAttachment": null,
         "color": null,
