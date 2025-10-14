@@ -158,5 +158,45 @@
     "endTime": "11:59 PM",
     "isPrivate": false,
     "eventLink": "https://fb.me/e/38NuvVM0w"
+  },
+  {
+    "date": "1/17/2026",
+    "venue": "Riverbillies",
+    "city": "Gibraltar",
+    "state": "MI",
+    "startTime": "9:45 AM",
+    "endTime": "11:00 PM",
+    "isPrivate": false,
+    "eventLink": ""
+  },
+  {
+    "date": "2/20/2026",
+    "venue": "Riverbillies",
+    "city": "Gibraltar",
+    "state": "MI",
+    "startTime": "9:45 AM",
+    "endTime": "11:00 PM",
+    "isPrivate": false,
+    "eventLink": ""
+  },
+  {
+    "date": "3/14/2026",
+    "venue": "Riverbillies",
+    "city": "Gibraltar",
+    "state": "MI",
+    "startTime": "9:45 AM",
+    "endTime": "11:00 PM",
+    "isPrivate": false,
+    "eventLink": ""
+  },
+  {
+    "date": "6/14/2026",
+    "venue": "[HOLD] Graduation Party",
+    "city": "",
+    "state": "",
+    "startTime": "12:00 AM",
+    "endTime": "",
+    "isPrivate": true,
+    "eventLink": ""
   }
 ]
