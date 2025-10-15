@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     ...config,
   };
 
-  const { venmo, selectors, hero, services } = siteContent;
+  const { tipping, selectors, hero, services } = siteContent;
 
   // --- 2. Define All Functions ---
 
@@ -156,21 +156,56 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (contactButton) {
       contactButton.addEventListener('click', () => trackEvent('Contact CTA Pressed'));
     }
-    const venmoButton = document.querySelector(selectors.venmoButton);
-    if (venmoButton) {
-      venmoButton.addEventListener('click', () => trackEvent('Venmo CTA Pressed'));
-    }
   }
 
-  function setupVenmoLink() {
-    const venmoButton = document.querySelector(selectors.venmoButton);
-    if (!venmoButton) return;
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    if (isMobile) {
-      const { username, tipAmount, note } = venmo;
-      const encodedNote = encodeURIComponent(note);
-      venmoButton.href = `venmo://paycharge?txn=pay&recipient=${username}&amount=${tipAmount}&note=${encodedNote}`;
+  function setupTippingModal() {
+    const tipButton = document.querySelector(selectors.tipButton);
+    const modal = document.getElementById('tip-modal');
+    const closeModal = document.querySelector('.close-modal');
+    
+    if (!tipButton || !modal) return;
+
+    const venmoLink = document.getElementById('venmo-link');
+    const cashappLink = document.getElementById('cashapp-link');
+    const paypalLink = document.getElementById('paypal-link');
+
+    const { venmo, cashApp, payPal, tipAmount, note } = tipping;
+    const encodedNote = encodeURIComponent(note);
+    
+    const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+    
+    if (isIOS) {
+        venmoLink.href = `venmo://paycharge?txn=pay&recipients=${venmo}&amount=${tipAmount}&note=${encodedNote}`;
+    } else {
+        venmoLink.href = `https://account.venmo.com/u/${venmo}?txn=pay&amount=${tipAmount}&note=${encodedNote}`;
     }
+    
+    cashappLink.href = `https://cash.app/\$${cashApp}/${tipAmount}`;
+    paypalLink.href = `https://paypal.me/${payPal}/${tipAmount}`;
+
+    tipButton.addEventListener('click', () => {
+      trackEvent('Tip Button Pressed');
+      modal.style.display = 'flex';
+      document.body.classList.add('modal-open');
+    });
+
+    const hideModal = () => {
+      modal.style.display = 'none';
+      document.body.classList.remove('modal-open');
+    };
+
+    closeModal.addEventListener('click', hideModal);
+
+    modal.addEventListener('click', (event) => {
+      if (event.target === modal) {
+        hideModal();
+      }
+    });
+
+    // Add analytics to each payment button
+    venmoLink.addEventListener('click', () => trackEvent('Tip with Venmo'));
+    cashappLink.addEventListener('click', () => trackEvent('Tip with Cash App'));
+    paypalLink.addEventListener('click', () => trackEvent('Tip with PayPal'));
   }
 
   function loadShowSchedule() {
@@ -181,7 +216,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     const showsForCurrentYear = siteContent.shows
       .filter(show => new Date(show.date).getFullYear() === currentYear)
-      .sort((a, b) => new Date(a.date) - new Date(b.date)); // Sort shows chronologically
+      .sort((a, b) => new Date(a.date) - new Date(b.date));
 
     if (showsForCurrentYear.length === 0) {
       const noShowsMessage = document.createElement('p');
@@ -208,7 +243,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     data.forEach((row) => {
       const date = new Date(row.date);
-      // Use UTC methods to avoid timezone issues when formatting the date string
       const formattedDate = !isNaN(date) ? `${String(date.getUTCMonth() + 1).padStart(2, '0')}/${String(date.getUTCDate()).padStart(2, '0')}` : 'Date TBD';
       const div = document.createElement('div');
       if (row.isPrivate) {
@@ -257,7 +291,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   injectStructuredData();
   populateTextContent();
   setupEventListeners();
-  setupVenmoLink();
+  setupTippingModal();
   loadShowSchedule();
   setupAdminCode();
   ensureMobileVideoAutoplay();

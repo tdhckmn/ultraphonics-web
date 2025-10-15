@@ -21,9 +21,10 @@ export const config = {
     equipmentNote: "Full sound and lighting available — indoor or outdoor.",
   },
 
-  // Venmo Configuration
-  venmo: {
-    username: "Ultraphonics",
+  tipping: {
+    venmo: "Ultraphonics",
+    cashApp: "tomhickman25", // Replace with your Cash App $cashtag
+    payPal: "lesterburton17",  // Replace with your PayPal.me username
     tipAmount: 10,
     note: "🤘",
   },
@@ -43,7 +44,7 @@ export const config = {
     showsContainer: "#shows",
     // Buttons & Header
     contactButton: "#contact-button",
-    venmoButton: "#venmo-button",
+    tipButton: "#tip-button",
     header: "header",
   },
 };

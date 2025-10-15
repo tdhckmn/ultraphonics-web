@@ -1,19 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Basic -->
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- Canonical + robots -->
   <link rel="canonical" href="https://www.ultraphonicsmusic.com/" />
   <meta name="robots" content="index,follow" />
 
-  <!-- SEO -->
   <title>Ultraphonics | Official Band Website – Detroit, Ann Arbor & Toledo</title>
   <meta name="description" content="Ultraphonics is a high-energy variety band for weddings, events, and bars in Detroit, Ann Arbor, and Toledo. Rock, Pop, Country & Soul. Official website: music, calendar, videos, and booking." />
 
-  <!-- Open Graph -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Ultraphonics" />
   <meta property="og:locale" content="en_US" />
@@ -23,18 +19,15 @@
   <meta property="og:image" content="https://www.ultraphonicsmusic.com/img/logo-color.png" />
   <meta property="og:image:alt" content="Ultraphonics band logo" />
 
-  <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Ultraphonics | Official Band Website" />
   <meta name="twitter:description" content="High-energy Rock, Pop, Country & Soul. Official Ultraphonics site." />
   <meta name="twitter:image" content="https://www.ultraphonicsmusic.com/img/logo-color.png" />
 
-  <!-- Styles & Icons -->
   <link rel="stylesheet" href="assets/css/styles.css" />
   <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon" />
   <link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png" />
 
-  <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-7RFPHXHGBC"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -61,9 +54,9 @@
         <h3 class="genres" id="genres"></h3>
 
         <div class="button-container">
-          <a href="https://account.venmo.com/u/Ultraphonics" target="_blank" class="button" id="venmo-button">
-            Tip @Ultraphonics on Venmo
-          </a>
+          <button class="button" id="tip-button">
+            Tip the Band
+          </button>
         </div>
       </div>
     </section>
@@ -145,6 +138,28 @@
     </section>
     <a href="mailto:info@ultraphonicsmusic.com" class="email">info@ultraphonicsmusic.com</a>
   </footer>
+
+  <div id="tip-modal" class="modal-overlay" style="display: none;">
+    <div class="modal-content">
+      <span class="close-modal">&times;</span>
+      <h2>Tip the Band</h2>
+      <p>Choose your preferred payment method:</p>
+      <div class="modal-buttons">
+        <a id="cashapp-link" href="#" target="_blank" class="button">
+          <img src="assets/images/cashapp-icon.svg" alt="Cash App Logo" class="button-logo"/>
+          Cash App
+        </a>
+        <a id="venmo-link" href="#" target="_blank" class="button">
+          <img src="assets/images/venmo-icon.svg" alt="Venmo Logo" class="button-logo"/>
+          Venmo
+        </a>
+        <a id="paypal-link" href="#" target="_blank" class="button">
+          <img src="assets/images/paypal-icon.svg" alt="PayPal Logo" class="button-logo"/>
+          PayPal
+        </a>
+      </div>
+    </div>
+  </div>
 
   <script type="module" src="src/main.js" defer></script>
 </body>
