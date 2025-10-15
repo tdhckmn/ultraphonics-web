@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const title = document.createElement('h3');
             title.textContent = list.name.replace(setlistIdentifier, '').trim();
-            title.style.cssText = 'margin: 0 0 1rem 0; text-align: center; color: var(--color-spotify-green); border-bottom: 1px solid rgba(255,255,255,.2); padding-bottom: 0.5rem;';
+            title.style.cssText = 'margin: 0 0 1rem 0; text-align: center; color: var(--color-accent); border-bottom: 1px solid rgba(255,255,255,.2); padding-bottom: 0.5rem;';
             column.appendChild(title);
 
             const songList = document.createElement('ul');
