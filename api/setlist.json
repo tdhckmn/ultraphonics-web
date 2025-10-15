@@ -5592,7 +5592,7 @@
         "checkItemsChecked": 0,
         "checkItemsEarliestDue": null,
         "comments": 0,
-        "description": true,
+        "description": false,
         "due": null,
         "dueComplete": false,
         "lastUpdatedByAi": false,
@@ -5613,8 +5613,8 @@
       "checkItemStates": [],
       "closed": false,
       "dueComplete": false,
-      "dateLastActivity": "2025-10-08T00:03:53.712Z",
-      "desc": "Down whole step",
+      "dateLastActivity": "2025-10-14T16:58:22.537Z",
+      "desc": "",
       "descData": {
         "emoji": {}
       },
@@ -27595,12 +27595,12 @@
         "votes": 0,
         "maliciousAttachments": 0,
         "viewingMemberVoted": false,
-        "subscribed": true
+        "subscribed": false
       },
       "checkItemStates": [],
       "closed": false,
       "dueComplete": true,
-      "dateLastActivity": "2025-10-08T23:46:41.440Z",
+      "dateLastActivity": "2025-10-14T18:48:44.081Z",
       "desc": "City: LaSalle\n\nState: MI\n\nEnd Time: 11:59 PM\n\nIs Private: false\n\nEvent Link: [https://www.facebook.com/events/3785871661726015/](https://www.facebook.com/events/3785871661726015/ \"smartCard-inline\")",
       "descData": {
         "emoji": {}
@@ -27630,7 +27630,7 @@
       "shortLink": "A7lCG0y7",
       "shortUrl": "https://trello.com/c/A7lCG0y7",
       "start": null,
-      "subscribed": true,
+      "subscribed": false,
       "url": "https://trello.com/c/A7lCG0y7/579-sandbar-grille",
       "cover": {
         "idAttachment": null,
@@ -27743,7 +27743,7 @@
         "votes": 0,
         "maliciousAttachments": 0,
         "viewingMemberVoted": false,
-        "subscribed": true
+        "subscribed": false
       },
       "checkItemStates": [],
       "closed": false,
@@ -27778,7 +27778,7 @@
       "shortLink": "lywiiOrT",
       "shortUrl": "https://trello.com/c/lywiiOrT",
       "start": null,
-      "subscribed": true,
+      "subscribed": false,
       "url": "https://trello.com/c/lywiiOrT/577-riverbillies",
       "cover": {
         "idAttachment": null,
@@ -27822,7 +27822,7 @@
       "checkItemStates": [],
       "closed": false,
       "dueComplete": true,
-      "dateLastActivity": "2025-10-08T23:46:59.284Z",
+      "dateLastActivity": "2025-10-14T18:48:34.926Z",
       "desc": "City: LaSalle\n\nState: MI\n\nEnd Time: 11:59 PM\n\nIs Private: false\n\nEvent Link: [https://www.facebook.com/events/731665099543941/](https://www.facebook.com/events/731665099543941/ \"smartCard-inline\")",
       "descData": {
         "emoji": {}
@@ -27856,7 +27856,7 @@
       "url": "https://trello.com/c/MJiEowhB/576-sandbar-grille",
       "cover": {
         "idAttachment": null,
-        "color": "orange",
+        "color": "yellow",
         "idUploadedBackground": null,
         "size": "normal",
         "brightness": "light",
@@ -27965,7 +27965,7 @@
         "votes": 0,
         "maliciousAttachments": 0,
         "viewingMemberVoted": false,
-        "subscribed": true
+        "subscribed": false
       },
       "checkItemStates": [],
       "closed": false,
@@ -27999,7 +27999,7 @@
       "shortLink": "z1wUHyIr",
       "shortUrl": "https://trello.com/c/z1wUHyIr",
       "start": null,
-      "subscribed": true,
+      "subscribed": false,
       "url": "https://trello.com/c/z1wUHyIr/574-timothy-graduation-party-vfw-brownstown",
       "cover": {
         "idAttachment": null,
@@ -28260,7 +28260,7 @@
         "votes": 0,
         "maliciousAttachments": 0,
         "viewingMemberVoted": false,
-        "subscribed": true
+        "subscribed": false
       },
       "checkItemStates": [],
       "closed": false,
@@ -28295,7 +28295,7 @@
       "shortLink": "hrbmlNsq",
       "shortUrl": "https://trello.com/c/hrbmlNsq",
       "start": null,
-      "subscribed": true,
+      "subscribed": false,
       "url": "https://trello.com/c/hrbmlNsq/570-sandbar-grille",
       "cover": {
         "idAttachment": null,
@@ -28610,7 +28610,7 @@
       "mirrorSourceId": null
     },
     {
-      "id": "68e6cd74853b0f36d503cbaf",
+      "id": "68ee7b45e8d3b36e5a5a973a",
       "badges": {
         "attachments": 0,
         "fogbugz": "",
@@ -28639,7 +28639,7 @@
       "checkItemStates": [],
       "closed": false,
       "dueComplete": false,
-      "dateLastActivity": "2025-10-08T23:48:01.079Z",
+      "dateLastActivity": "2025-10-14T16:33:10.101Z",
       "desc": "City: Hell\n\nState: MI\n\nEnd Time: 11:59 PM\n\nIs Private: false\n\nEvent Link: [https://fb.me/e/38NuvVM0w](https://fb.me/e/38NuvVM0w \"‌\")",
       "descData": {
         "emoji": {}
@@ -28658,20 +28658,20 @@
         "68c6e53f55781e4307364366"
       ],
       "idMembersVoted": [],
-      "idShort": 568,
+      "idShort": 588,
       "idAttachmentCover": null,
       "labels": [],
       "idLabels": [],
       "manualCoverAttachment": true,
       "name": "Hell Saloon",
-      "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/68e6cd74853b0f36d503cbaf",
+      "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/68ee7b45e8d3b36e5a5a973a",
       "pinned": false,
-      "pos": 140737488404480,
-      "shortLink": "jgaFmava",
-      "shortUrl": "https://trello.com/c/jgaFmava",
+      "pos": 140737488396288,
+      "shortLink": "BMgrmRcq",
+      "shortUrl": "https://trello.com/c/BMgrmRcq",
       "start": null,
       "subscribed": false,
-      "url": "https://trello.com/c/jgaFmava/568-hell-saloon",
+      "url": "https://trello.com/c/BMgrmRcq/588-hell-saloon",
       "cover": {
         "idAttachment": null,
         "color": "red",
@@ -28823,6 +28823,81 @@
       "mirrorSourceId": null
     },
     {
+      "id": "68ee94e4d18b7fe0a9711205",
+      "badges": {
+        "attachments": 0,
+        "fogbugz": "",
+        "checkItems": 0,
+        "checkItemsChecked": 0,
+        "checkItemsEarliestDue": null,
+        "comments": 0,
+        "description": true,
+        "due": "2026-03-01T01:00:00.000Z",
+        "dueComplete": false,
+        "lastUpdatedByAi": false,
+        "start": null,
+        "externalSource": null,
+        "attachmentsByType": {
+          "trello": {
+            "board": 0,
+            "card": 0
+          }
+        },
+        "location": false,
+        "votes": 0,
+        "maliciousAttachments": 0,
+        "viewingMemberVoted": false,
+        "subscribed": false
+      },
+      "checkItemStates": [],
+      "closed": false,
+      "dueComplete": false,
+      "dateLastActivity": "2025-10-14T18:22:28.794Z",
+      "desc": "City: Hell\n\nState: MI\n\nEnd Time: 11:59 PM\n\nIs Private: false\n\nEvent Link: [https://fb.me/e/38NuvVM0w](https://fb.me/e/38NuvVM0w \"‌\")",
+      "descData": {
+        "emoji": {}
+      },
+      "due": "2026-03-01T01:00:00.000Z",
+      "dueReminder": -1,
+      "email": null,
+      "idBoard": "65c6c6c763388d45f95e4f9b",
+      "idChecklists": [],
+      "idList": "68e6806e872f2fbfb6fa7f56",
+      "idMembers": [
+        "65c6c6631376a25cbe977732",
+        "65c6daedddd05e8c2554e673",
+        "67f5b87d0808e92f09399bb6",
+        "65c6e648fbf884e8b262e4ea",
+        "68c6e53f55781e4307364366"
+      ],
+      "idMembersVoted": [],
+      "idShort": 589,
+      "idAttachmentCover": null,
+      "labels": [],
+      "idLabels": [],
+      "manualCoverAttachment": true,
+      "name": "Hell Saloon",
+      "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/68ee94e4d18b7fe0a9711205",
+      "pinned": false,
+      "pos": 140737488441344,
+      "shortLink": "67ua9C4p",
+      "shortUrl": "https://trello.com/c/67ua9C4p",
+      "start": null,
+      "subscribed": false,
+      "url": "https://trello.com/c/67ua9C4p/589-hell-saloon",
+      "cover": {
+        "idAttachment": null,
+        "color": "red",
+        "idUploadedBackground": null,
+        "size": "normal",
+        "brightness": "light",
+        "idPlugin": null
+      },
+      "isTemplate": false,
+      "cardRole": null,
+      "mirrorSourceId": null
+    },
+    {
       "id": "68ee54413ef34d45ccba2235",
       "badges": {
         "attachments": 0,
@@ -28892,6 +28967,81 @@
       "mirrorSourceId": null
     },
     {
+      "id": "68e6cd74853b0f36d503cbaf",
+      "badges": {
+        "attachments": 0,
+        "fogbugz": "",
+        "checkItems": 0,
+        "checkItemsChecked": 0,
+        "checkItemsEarliestDue": null,
+        "comments": 0,
+        "description": true,
+        "due": "2026-04-19T00:00:00.000Z",
+        "dueComplete": false,
+        "lastUpdatedByAi": false,
+        "start": null,
+        "externalSource": null,
+        "attachmentsByType": {
+          "trello": {
+            "board": 0,
+            "card": 0
+          }
+        },
+        "location": false,
+        "votes": 0,
+        "maliciousAttachments": 0,
+        "viewingMemberVoted": false,
+        "subscribed": false
+      },
+      "checkItemStates": [],
+      "closed": false,
+      "dueComplete": false,
+      "dateLastActivity": "2025-10-14T18:22:44.007Z",
+      "desc": "City: Hell\n\nState: MI\n\nEnd Time: 11:59 PM\n\nIs Private: false\n\nEvent Link: [https://fb.me/e/38NuvVM0w](https://fb.me/e/38NuvVM0w \"‌\")",
+      "descData": {
+        "emoji": {}
+      },
+      "due": "2026-04-19T00:00:00.000Z",
+      "dueReminder": -1,
+      "email": null,
+      "idBoard": "65c6c6c763388d45f95e4f9b",
+      "idChecklists": [],
+      "idList": "68e6806e872f2fbfb6fa7f56",
+      "idMembers": [
+        "65c6c6631376a25cbe977732",
+        "65c6daedddd05e8c2554e673",
+        "67f5b87d0808e92f09399bb6",
+        "65c6e648fbf884e8b262e4ea",
+        "68c6e53f55781e4307364366"
+      ],
+      "idMembersVoted": [],
+      "idShort": 568,
+      "idAttachmentCover": null,
+      "labels": [],
+      "idLabels": [],
+      "manualCoverAttachment": true,
+      "name": "Hell Saloon",
+      "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/68e6cd74853b0f36d503cbaf",
+      "pinned": false,
+      "pos": 140737488461824,
+      "shortLink": "jgaFmava",
+      "shortUrl": "https://trello.com/c/jgaFmava",
+      "start": null,
+      "subscribed": false,
+      "url": "https://trello.com/c/jgaFmava/568-hell-saloon",
+      "cover": {
+        "idAttachment": null,
+        "color": "red",
+        "idUploadedBackground": null,
+        "size": "normal",
+        "brightness": "light",
+        "idPlugin": null
+      },
+      "isTemplate": false,
+      "cardRole": null,
+      "mirrorSourceId": null
+    },
+    {
       "id": "68ee54796a63f7c2b40f1722",
       "badges": {
         "attachments": 0,
@@ -28951,6 +29101,154 @@
       "cover": {
         "idAttachment": null,
         "color": "pink",
+        "idUploadedBackground": null,
+        "size": "normal",
+        "brightness": "light",
+        "idPlugin": null
+      },
+      "isTemplate": false,
+      "cardRole": null,
+      "mirrorSourceId": null
+    },
+    {
+      "id": "68eea112abea2b445bda93a0",
+      "badges": {
+        "attachments": 0,
+        "fogbugz": "",
+        "checkItems": 0,
+        "checkItemsChecked": 0,
+        "checkItemsEarliestDue": null,
+        "comments": 0,
+        "description": true,
+        "due": "2026-07-18T00:30:00.000Z",
+        "dueComplete": false,
+        "lastUpdatedByAi": false,
+        "start": null,
+        "externalSource": null,
+        "attachmentsByType": {
+          "trello": {
+            "board": 0,
+            "card": 0
+          }
+        },
+        "location": false,
+        "votes": 0,
+        "maliciousAttachments": 0,
+        "viewingMemberVoted": false,
+        "subscribed": false
+      },
+      "checkItemStates": [],
+      "closed": false,
+      "dueComplete": false,
+      "dateLastActivity": "2025-10-14T19:14:54.093Z",
+      "desc": "City: LaSalle\n\nState: MI\n\nEnd Time: 11:59 PM\n\nIs Private: false\n\nEvent Link:",
+      "descData": {
+        "emoji": {}
+      },
+      "due": "2026-07-18T00:30:00.000Z",
+      "dueReminder": -1,
+      "email": null,
+      "idBoard": "65c6c6c763388d45f95e4f9b",
+      "idChecklists": [],
+      "idList": "68e6806e872f2fbfb6fa7f56",
+      "idMembers": [
+        "65c6c6631376a25cbe977732",
+        "65c6daedddd05e8c2554e673",
+        "67f5b87d0808e92f09399bb6",
+        "65c6e648fbf884e8b262e4ea"
+      ],
+      "idMembersVoted": [],
+      "idShort": 591,
+      "idAttachmentCover": null,
+      "labels": [],
+      "idLabels": [],
+      "manualCoverAttachment": true,
+      "name": "Sandbar Grille",
+      "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/68eea112abea2b445bda93a0",
+      "pinned": false,
+      "pos": 140737488478208,
+      "shortLink": "pNwraerI",
+      "shortUrl": "https://trello.com/c/pNwraerI",
+      "start": null,
+      "subscribed": false,
+      "url": "https://trello.com/c/pNwraerI/591-sandbar-grille",
+      "cover": {
+        "idAttachment": null,
+        "color": "yellow",
+        "idUploadedBackground": null,
+        "size": "normal",
+        "brightness": "light",
+        "idPlugin": null
+      },
+      "isTemplate": false,
+      "cardRole": null,
+      "mirrorSourceId": null
+    },
+    {
+      "id": "68ee9ffd02f81b0c029e2915",
+      "badges": {
+        "attachments": 0,
+        "fogbugz": "",
+        "checkItems": 0,
+        "checkItemsChecked": 0,
+        "checkItemsEarliestDue": null,
+        "comments": 0,
+        "description": true,
+        "due": "2026-08-29T00:30:00.000Z",
+        "dueComplete": false,
+        "lastUpdatedByAi": false,
+        "start": null,
+        "externalSource": null,
+        "attachmentsByType": {
+          "trello": {
+            "board": 0,
+            "card": 0
+          }
+        },
+        "location": false,
+        "votes": 0,
+        "maliciousAttachments": 0,
+        "viewingMemberVoted": false,
+        "subscribed": false
+      },
+      "checkItemStates": [],
+      "closed": false,
+      "dueComplete": false,
+      "dateLastActivity": "2025-10-14T19:14:40.199Z",
+      "desc": "City: LaSalle\n\nState: MI\n\nEnd Time: 11:59 PM\n\nIs Private: false\n\nEvent Link:",
+      "descData": {
+        "emoji": {}
+      },
+      "due": "2026-08-29T00:30:00.000Z",
+      "dueReminder": -1,
+      "email": null,
+      "idBoard": "65c6c6c763388d45f95e4f9b",
+      "idChecklists": [],
+      "idList": "68e6806e872f2fbfb6fa7f56",
+      "idMembers": [
+        "65c6c6631376a25cbe977732",
+        "65c6daedddd05e8c2554e673",
+        "67f5b87d0808e92f09399bb6",
+        "65c6e648fbf884e8b262e4ea"
+      ],
+      "idMembersVoted": [],
+      "idShort": 590,
+      "idAttachmentCover": null,
+      "labels": [],
+      "idLabels": [],
+      "manualCoverAttachment": true,
+      "name": "Sandbar Grille",
+      "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/68ee9ffd02f81b0c029e2915",
+      "pinned": false,
+      "pos": 140737488486400,
+      "shortLink": "muMET9Q8",
+      "shortUrl": "https://trello.com/c/muMET9Q8",
+      "start": null,
+      "subscribed": false,
+      "url": "https://trello.com/c/muMET9Q8/590-sandbar-grille",
+      "cover": {
+        "idAttachment": null,
+        "color": "yellow",
         "idUploadedBackground": null,
         "size": "normal",
         "brightness": "light",
