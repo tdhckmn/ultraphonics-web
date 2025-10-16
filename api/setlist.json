@@ -5130,6 +5130,285 @@
       "mirrorSourceId": null
     },
     {
+      "id": "68e3e3dccca7554b03ec362d",
+      "badges": {
+        "attachments": 0,
+        "fogbugz": "",
+        "checkItems": 0,
+        "checkItemsChecked": 0,
+        "checkItemsEarliestDue": null,
+        "comments": 0,
+        "description": false,
+        "due": null,
+        "dueComplete": false,
+        "lastUpdatedByAi": false,
+        "start": null,
+        "externalSource": null,
+        "attachmentsByType": {
+          "trello": {
+            "board": 0,
+            "card": 0
+          }
+        },
+        "location": false,
+        "votes": 0,
+        "maliciousAttachments": 0,
+        "viewingMemberVoted": false,
+        "subscribed": false
+      },
+      "checkItemStates": [],
+      "closed": false,
+      "dueComplete": false,
+      "dateLastActivity": "2025-10-16T01:24:59.683Z",
+      "desc": "",
+      "descData": {
+        "emoji": {}
+      },
+      "due": null,
+      "dueReminder": null,
+      "email": null,
+      "idBoard": "65c6c6c763388d45f95e4f9b",
+      "idChecklists": [],
+      "idList": "68e3e4497e06974a9913bd15",
+      "idMembers": [
+        "67f5b87d0808e92f09399bb6"
+      ],
+      "idMembersVoted": [],
+      "idShort": 524,
+      "idAttachmentCover": null,
+      "labels": [
+        {
+          "id": "66fd74e7bd8067faeb365c05",
+          "idBoard": "65c6c6c763388d45f95e4f9b",
+          "idOrganization": "65c6c6c763388d45f95e4bf8",
+          "name": "Pop",
+          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/66fd74e7bd8067faeb365c05",
+          "color": "pink_dark",
+          "uses": 89
+        },
+        {
+          "id": "68069521ec94ac6fce6175ff",
+          "idBoard": "65c6c6c763388d45f95e4f9b",
+          "idOrganization": "65c6c6c763388d45f95e4bf8",
+          "name": "Backing",
+          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/68069521ec94ac6fce6175ff",
+          "color": "black_light",
+          "uses": 158
+        }
+      ],
+      "idLabels": [
+        "66fd74e7bd8067faeb365c05",
+        "68069521ec94ac6fce6175ff"
+      ],
+      "manualCoverAttachment": false,
+      "name": "Twenty-4K Magic",
+      "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/68e3e3dccca7554b03ec362d",
+      "pinned": false,
+      "pos": 11728123995477.33,
+      "shortLink": "CzAqJYaf",
+      "shortUrl": "https://trello.com/c/CzAqJYaf",
+      "start": null,
+      "subscribed": false,
+      "url": "https://trello.com/c/CzAqJYaf/524-twenty-4k-magic",
+      "cover": {
+        "idAttachment": null,
+        "color": null,
+        "idUploadedBackground": null,
+        "size": "normal",
+        "brightness": "dark",
+        "idPlugin": null
+      },
+      "isTemplate": false,
+      "cardRole": null,
+      "mirrorSourceId": null
+    },
+    {
+      "id": "68e3e3fabc6aefd7492a538b",
+      "badges": {
+        "attachments": 0,
+        "fogbugz": "",
+        "checkItems": 0,
+        "checkItemsChecked": 0,
+        "checkItemsEarliestDue": null,
+        "comments": 0,
+        "description": false,
+        "due": null,
+        "dueComplete": false,
+        "lastUpdatedByAi": false,
+        "start": null,
+        "externalSource": null,
+        "attachmentsByType": {
+          "trello": {
+            "board": 0,
+            "card": 0
+          }
+        },
+        "location": false,
+        "votes": 0,
+        "maliciousAttachments": 0,
+        "viewingMemberVoted": false,
+        "subscribed": false
+      },
+      "checkItemStates": [],
+      "closed": false,
+      "dueComplete": false,
+      "dateLastActivity": "2025-10-16T01:27:49.411Z",
+      "desc": "",
+      "descData": {
+        "emoji": {}
+      },
+      "due": null,
+      "dueReminder": null,
+      "email": null,
+      "idBoard": "65c6c6c763388d45f95e4f9b",
+      "idChecklists": [],
+      "idList": "68e3e4497e06974a9913bd15",
+      "idMembers": [
+        "67f5b87d0808e92f09399bb6"
+      ],
+      "idMembersVoted": [],
+      "idShort": 548,
+      "idAttachmentCover": null,
+      "labels": [
+        {
+          "id": "66fd74e7bd8067faeb365c05",
+          "idBoard": "65c6c6c763388d45f95e4f9b",
+          "idOrganization": "65c6c6c763388d45f95e4bf8",
+          "name": "Pop",
+          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/66fd74e7bd8067faeb365c05",
+          "color": "pink_dark",
+          "uses": 89
+        },
+        {
+          "id": "68069521ec94ac6fce6175ff",
+          "idBoard": "65c6c6c763388d45f95e4f9b",
+          "idOrganization": "65c6c6c763388d45f95e4bf8",
+          "name": "Backing",
+          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/68069521ec94ac6fce6175ff",
+          "color": "black_light",
+          "uses": 158
+        }
+      ],
+      "idLabels": [
+        "66fd74e7bd8067faeb365c05",
+        "68069521ec94ac6fce6175ff"
+      ],
+      "manualCoverAttachment": false,
+      "name": "Watermelon Sugar",
+      "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/68e3e3fabc6aefd7492a538b",
+      "pinned": false,
+      "pos": 11728124003669.33,
+      "shortLink": "Huk8LjxR",
+      "shortUrl": "https://trello.com/c/Huk8LjxR",
+      "start": null,
+      "subscribed": false,
+      "url": "https://trello.com/c/Huk8LjxR/548-watermelon-sugar",
+      "cover": {
+        "idAttachment": null,
+        "color": null,
+        "idUploadedBackground": null,
+        "size": "normal",
+        "brightness": "dark",
+        "idPlugin": null
+      },
+      "isTemplate": false,
+      "cardRole": null,
+      "mirrorSourceId": null
+    },
+    {
+      "id": "68043605a1b4865ea2f92b8e",
+      "badges": {
+        "attachments": 0,
+        "fogbugz": "",
+        "checkItems": 0,
+        "checkItemsChecked": 0,
+        "checkItemsEarliestDue": null,
+        "comments": 0,
+        "description": false,
+        "due": null,
+        "dueComplete": false,
+        "lastUpdatedByAi": false,
+        "start": null,
+        "externalSource": null,
+        "attachmentsByType": {
+          "trello": {
+            "board": 0,
+            "card": 0
+          }
+        },
+        "location": false,
+        "votes": 0,
+        "maliciousAttachments": 0,
+        "viewingMemberVoted": false,
+        "subscribed": false
+      },
+      "checkItemStates": [],
+      "closed": false,
+      "dueComplete": false,
+      "dateLastActivity": "2025-10-16T01:27:55.424Z",
+      "desc": "",
+      "descData": {
+        "emoji": {}
+      },
+      "due": null,
+      "dueReminder": -1,
+      "email": null,
+      "idBoard": "65c6c6c763388d45f95e4f9b",
+      "idChecklists": [],
+      "idList": "68e3e4497e06974a9913bd15",
+      "idMembers": [
+        "67f5b87d0808e92f09399bb6"
+      ],
+      "idMembersVoted": [],
+      "idShort": 217,
+      "idAttachmentCover": null,
+      "labels": [
+        {
+          "id": "66fd74e7bd8067faeb365c05",
+          "idBoard": "65c6c6c763388d45f95e4f9b",
+          "idOrganization": "65c6c6c763388d45f95e4bf8",
+          "name": "Pop",
+          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/66fd74e7bd8067faeb365c05",
+          "color": "pink_dark",
+          "uses": 89
+        },
+        {
+          "id": "68069521ec94ac6fce6175ff",
+          "idBoard": "65c6c6c763388d45f95e4f9b",
+          "idOrganization": "65c6c6c763388d45f95e4bf8",
+          "name": "Backing",
+          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/68069521ec94ac6fce6175ff",
+          "color": "black_light",
+          "uses": 158
+        }
+      ],
+      "idLabels": [
+        "66fd74e7bd8067faeb365c05",
+        "68069521ec94ac6fce6175ff"
+      ],
+      "manualCoverAttachment": false,
+      "name": "Pony",
+      "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/68043605a1b4865ea2f92b8e",
+      "pinned": false,
+      "pos": 11728124007765.33,
+      "shortLink": "qIrGVtF0",
+      "shortUrl": "https://trello.com/c/qIrGVtF0",
+      "start": null,
+      "subscribed": false,
+      "url": "https://trello.com/c/qIrGVtF0/217-pony",
+      "cover": {
+        "idAttachment": null,
+        "color": null,
+        "idUploadedBackground": null,
+        "size": "normal",
+        "brightness": "dark",
+        "idPlugin": null
+      },
+      "isTemplate": false,
+      "cardRole": null,
+      "mirrorSourceId": null
+    },
+    {
       "id": "68e3e3ddcca7554b03ec3b95",
       "badges": {
         "attachments": 0,
@@ -5201,101 +5480,6 @@
       "start": null,
       "subscribed": false,
       "url": "https://trello.com/c/wCFZ3eCX/530-any-man-of-mine",
-      "cover": {
-        "idAttachment": null,
-        "color": null,
-        "idUploadedBackground": null,
-        "size": "normal",
-        "brightness": "dark",
-        "idPlugin": null
-      },
-      "isTemplate": false,
-      "cardRole": null,
-      "mirrorSourceId": null
-    },
-    {
-      "id": "65c6cc4886b91776d6cb2b77",
-      "badges": {
-        "fogbugz": "",
-        "checkItems": 0,
-        "checkItemsChecked": 0,
-        "checkItemsEarliestDue": null,
-        "comments": 0,
-        "attachments": 0,
-        "description": false,
-        "due": null,
-        "dueComplete": false,
-        "start": null,
-        "lastUpdatedByAi": false,
-        "attachmentsByType": {
-          "trello": {
-            "board": 0,
-            "card": 0
-          }
-        },
-        "externalSource": null,
-        "location": false,
-        "votes": 0,
-        "maliciousAttachments": 0,
-        "viewingMemberVoted": false,
-        "subscribed": false
-      },
-      "checkItemStates": [],
-      "closed": false,
-      "dueComplete": false,
-      "dateLastActivity": "2025-10-07T17:12:20.168Z",
-      "desc": "",
-      "descData": {
-        "emoji": {}
-      },
-      "due": null,
-      "dueReminder": null,
-      "email": null,
-      "idBoard": "65c6c6c763388d45f95e4f9b",
-      "idChecklists": [
-        "65c701b2295a0102fad77e88"
-      ],
-      "idList": "68e3e4497e06974a9913bd15",
-      "idMembers": [
-        "67f5b87d0808e92f09399bb6"
-      ],
-      "idMembersVoted": [],
-      "idShort": 17,
-      "idAttachmentCover": null,
-      "labels": [
-        {
-          "id": "68069521ec94ac6fce6175ff",
-          "idBoard": "65c6c6c763388d45f95e4f9b",
-          "idOrganization": "65c6c6c763388d45f95e4bf8",
-          "name": "Backing",
-          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/68069521ec94ac6fce6175ff",
-          "color": "black_light",
-          "uses": 158
-        },
-        {
-          "id": "67d235486ce0fcfc7719ce99",
-          "idBoard": "65c6c6c763388d45f95e4f9b",
-          "idOrganization": "65c6c6c763388d45f95e4bf8",
-          "name": "Soul",
-          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/67d235486ce0fcfc7719ce99",
-          "color": "blue_dark",
-          "uses": 12
-        }
-      ],
-      "idLabels": [
-        "68069521ec94ac6fce6175ff",
-        "67d235486ce0fcfc7719ce99"
-      ],
-      "manualCoverAttachment": false,
-      "name": "Aint No Sunshine",
-      "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/65c6cc4886b91776d6cb2b77",
-      "pinned": false,
-      "pos": 11728124028245.334,
-      "shortLink": "K4x21ZQH",
-      "shortUrl": "https://trello.com/c/K4x21ZQH",
-      "start": null,
-      "subscribed": false,
-      "url": "https://trello.com/c/K4x21ZQH/17-aint-no-sunshine",
       "cover": {
         "idAttachment": null,
         "color": null,
@@ -5491,9 +5675,9 @@
       "mirrorSourceId": null
     },
     {
-      "id": "68e3e3fabc6aefd7492a538b",
+      "id": "68e3e3dccca7554b03ec362e",
       "badges": {
-        "attachments": 0,
+        "attachments": 1,
         "fogbugz": "",
         "checkItems": 0,
         "checkItemsChecked": 0,
@@ -5520,7 +5704,7 @@
       "checkItemStates": [],
       "closed": false,
       "dueComplete": false,
-      "dateLastActivity": "2025-10-07T19:24:35.429Z",
+      "dateLastActivity": "2025-10-16T01:24:39.783Z",
       "desc": "",
       "descData": {
         "emoji": {}
@@ -5535,7 +5719,7 @@
         "67f5b87d0808e92f09399bb6"
       ],
       "idMembersVoted": [],
-      "idShort": 548,
+      "idShort": 525,
       "idAttachmentCover": null,
       "labels": [
         {
@@ -5562,15 +5746,110 @@
         "68069521ec94ac6fce6175ff"
       ],
       "manualCoverAttachment": false,
-      "name": "Watermelon Sugar",
-      "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/68e3e3fabc6aefd7492a538b",
+      "name": "Treasure",
+      "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/68e3e3dccca7554b03ec362e",
       "pinned": false,
-      "pos": 23456248040519,
-      "shortLink": "Huk8LjxR",
-      "shortUrl": "https://trello.com/c/Huk8LjxR",
+      "pos": 23456248007751,
+      "shortLink": "kO5AaMEa",
+      "shortUrl": "https://trello.com/c/kO5AaMEa",
       "start": null,
       "subscribed": false,
-      "url": "https://trello.com/c/Huk8LjxR/548-watermelon-sugar",
+      "url": "https://trello.com/c/kO5AaMEa/525-treasure",
+      "cover": {
+        "idAttachment": null,
+        "color": null,
+        "idUploadedBackground": null,
+        "size": "normal",
+        "brightness": "dark",
+        "idPlugin": null
+      },
+      "isTemplate": false,
+      "cardRole": null,
+      "mirrorSourceId": null
+    },
+    {
+      "id": "65c6cc4886b91776d6cb2b77",
+      "badges": {
+        "fogbugz": "",
+        "checkItems": 0,
+        "checkItemsChecked": 0,
+        "checkItemsEarliestDue": null,
+        "comments": 0,
+        "attachments": 0,
+        "description": false,
+        "due": null,
+        "dueComplete": false,
+        "start": null,
+        "lastUpdatedByAi": false,
+        "attachmentsByType": {
+          "trello": {
+            "board": 0,
+            "card": 0
+          }
+        },
+        "externalSource": null,
+        "location": false,
+        "votes": 0,
+        "maliciousAttachments": 0,
+        "viewingMemberVoted": false,
+        "subscribed": false
+      },
+      "checkItemStates": [],
+      "closed": false,
+      "dueComplete": false,
+      "dateLastActivity": "2025-10-16T01:19:19.610Z",
+      "desc": "",
+      "descData": {
+        "emoji": {}
+      },
+      "due": null,
+      "dueReminder": null,
+      "email": null,
+      "idBoard": "65c6c6c763388d45f95e4f9b",
+      "idChecklists": [
+        "65c701b2295a0102fad77e88"
+      ],
+      "idList": "68e3e3dccca7554b03ec3538",
+      "idMembers": [
+        "67f5b87d0808e92f09399bb6"
+      ],
+      "idMembersVoted": [],
+      "idShort": 17,
+      "idAttachmentCover": null,
+      "labels": [
+        {
+          "id": "68069521ec94ac6fce6175ff",
+          "idBoard": "65c6c6c763388d45f95e4f9b",
+          "idOrganization": "65c6c6c763388d45f95e4bf8",
+          "name": "Backing",
+          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/68069521ec94ac6fce6175ff",
+          "color": "black_light",
+          "uses": 158
+        },
+        {
+          "id": "67d235486ce0fcfc7719ce99",
+          "idBoard": "65c6c6c763388d45f95e4f9b",
+          "idOrganization": "65c6c6c763388d45f95e4bf8",
+          "name": "Soul",
+          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/67d235486ce0fcfc7719ce99",
+          "color": "blue_dark",
+          "uses": 12
+        }
+      ],
+      "idLabels": [
+        "68069521ec94ac6fce6175ff",
+        "67d235486ce0fcfc7719ce99"
+      ],
+      "manualCoverAttachment": false,
+      "name": "Aint No Sunshine",
+      "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/65c6cc4886b91776d6cb2b77",
+      "pinned": false,
+      "pos": 23456248040775,
+      "shortLink": "K4x21ZQH",
+      "shortUrl": "https://trello.com/c/K4x21ZQH",
+      "start": null,
+      "subscribed": false,
+      "url": "https://trello.com/c/K4x21ZQH/17-aint-no-sunshine",
       "cover": {
         "idAttachment": null,
         "color": null,
@@ -5957,9 +6236,103 @@
       "mirrorSourceId": null
     },
     {
-      "id": "68e3e3fbbc6aefd7492a5945",
+      "id": "68e3e3fbbc6aefd7492a5946",
       "badges": {
-        "attachments": 1,
+        "attachments": 0,
+        "fogbugz": "",
+        "checkItems": 0,
+        "checkItemsChecked": 0,
+        "checkItemsEarliestDue": null,
+        "comments": 0,
+        "description": true,
+        "due": null,
+        "dueComplete": false,
+        "lastUpdatedByAi": false,
+        "start": null,
+        "externalSource": null,
+        "attachmentsByType": {
+          "trello": {
+            "board": 0,
+            "card": 0
+          }
+        },
+        "location": false,
+        "votes": 0,
+        "maliciousAttachments": 0,
+        "viewingMemberVoted": false,
+        "subscribed": false
+      },
+      "checkItemStates": [],
+      "closed": false,
+      "dueComplete": false,
+      "dateLastActivity": "2025-10-16T01:17:33.063Z",
+      "desc": "Well, sometimes I go out by myself\nAnd I look across the water\nAnd I think of all the things, what you do\nAnd in my head, I make a picture\n\n'Cause since I've come on home\nWell, my body's been a mess\nAnd I've missed your ginger hair\nAnd the way you like to dress\n\nWon't you come on over?\nAnd stop makin' a fool out of me\nWhy don't you come on over Valerie?\nValerie\n\nDid you have to go to jail?\nPut your house up on for sale\nDid you get a good lawyer?\nI hope you didn't catch a tan\nI hope you'll find the right man\nWho'll fix it for ya\n\nAre you shoppin' anywhere?\nChanged the color of you hair, are you busy?\nAnd did you have to pay the fine\nYou were dodging all the time, are you still dizzy?\n\nYeah, 'cause since I've come on home\nWell, my body's been a mess\nAnd I've missed your ginger hair\nAnd the way you like to dress\n\nWon't you come on over?\nAnd stop makin' a fool out of me\nWhy don't you come on over Valerie?\nValerie\nValerie\nValerie\n\nWell, sometimes I go out by myself\nAnd I look across the water\nAnd I think of all the things, what you're doin'\nAnd in my head I make a picture\n\n'Cause since I've come on home\nWell, my body's been a mess\nAnd I've missed your ginger hair\nAnd the way you like to dress\n\nWon't you come on over?\nAnd stop makin' a fool out of me\nWhy don't you come on over Valerie?\nValerie\nValerie\nValerie\n\nYeah, Valerie",
+      "descData": {
+        "emoji": {}
+      },
+      "due": null,
+      "dueReminder": null,
+      "email": null,
+      "idBoard": "65c6c6c763388d45f95e4f9b",
+      "idChecklists": [],
+      "idList": "68e3e3dccca7554b03ec3538",
+      "idMembers": [
+        "68c6e53f55781e4307364366",
+        "68e40783b04c8f0627ebea70"
+      ],
+      "idMembersVoted": [],
+      "idShort": 559,
+      "idAttachmentCover": null,
+      "labels": [
+        {
+          "id": "66ea211e3d545d3dfa1145a9",
+          "idBoard": "65c6c6c763388d45f95e4f9b",
+          "idOrganization": "65c6c6c763388d45f95e4bf8",
+          "name": "Rock",
+          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/66ea211e3d545d3dfa1145a9",
+          "color": "green_dark",
+          "uses": 69
+        },
+        {
+          "id": "68069521ec94ac6fce6175ff",
+          "idBoard": "65c6c6c763388d45f95e4f9b",
+          "idOrganization": "65c6c6c763388d45f95e4bf8",
+          "name": "Backing",
+          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/68069521ec94ac6fce6175ff",
+          "color": "black_light",
+          "uses": 158
+        }
+      ],
+      "idLabels": [
+        "66ea211e3d545d3dfa1145a9",
+        "68069521ec94ac6fce6175ff"
+      ],
+      "manualCoverAttachment": false,
+      "name": "Valerie",
+      "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/68e3e3fbbc6aefd7492a5946",
+      "pinned": false,
+      "pos": 23456248054379,
+      "shortLink": "j2sz7ZUD",
+      "shortUrl": "https://trello.com/c/j2sz7ZUD",
+      "start": null,
+      "subscribed": false,
+      "url": "https://trello.com/c/j2sz7ZUD/559-valerie",
+      "cover": {
+        "idAttachment": null,
+        "color": null,
+        "idUploadedBackground": null,
+        "size": "normal",
+        "brightness": "dark",
+        "idPlugin": null
+      },
+      "isTemplate": false,
+      "cardRole": null,
+      "mirrorSourceId": null
+    },
+    {
+      "id": "68d69361767a465bf6b42301",
+      "badges": {
+        "attachments": 0,
         "fogbugz": "",
         "checkItems": 0,
         "checkItemsChecked": 0,
@@ -5986,7 +6359,7 @@
       "checkItemStates": [],
       "closed": false,
       "dueComplete": false,
-      "dateLastActivity": "2025-10-07T19:38:32.147Z",
+      "dateLastActivity": "2025-10-16T01:20:25.336Z",
       "desc": "",
       "descData": {
         "emoji": {}
@@ -5998,10 +6371,11 @@
       "idChecklists": [],
       "idList": "68e3e3dccca7554b03ec3538",
       "idMembers": [
-        "67f5b87d0808e92f09399bb6"
+        "68c6e53f55781e4307364366",
+        "68e40783b04c8f0627ebea70"
       ],
       "idMembersVoted": [],
-      "idShort": 558,
+      "idShort": 489,
       "idAttachmentCover": null,
       "labels": [
         {
@@ -6018,109 +6392,15 @@
         "66fd74389dc4d91a2bf8c098"
       ],
       "manualCoverAttachment": false,
-      "name": "Beer Never Broke My Heart",
-      "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/68e3e3fbbc6aefd7492a5945",
+      "name": "Redneck Woman",
+      "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/68d69361767a465bf6b42301",
       "pinned": false,
-      "pos": 23456248054375,
-      "shortLink": "srI1rtgX",
-      "shortUrl": "https://trello.com/c/srI1rtgX",
+      "pos": 23456248054399,
+      "shortLink": "DwLxpHXh",
+      "shortUrl": "https://trello.com/c/DwLxpHXh",
       "start": null,
       "subscribed": false,
-      "url": "https://trello.com/c/srI1rtgX/558-beer-never-broke-my-heart",
-      "cover": {
-        "idAttachment": null,
-        "color": null,
-        "idUploadedBackground": null,
-        "size": "normal",
-        "brightness": "dark",
-        "idPlugin": null
-      },
-      "isTemplate": false,
-      "cardRole": null,
-      "mirrorSourceId": null
-    },
-    {
-      "id": "68e3e3dccca7554b03ec3625",
-      "badges": {
-        "attachments": 1,
-        "fogbugz": "",
-        "checkItems": 0,
-        "checkItemsChecked": 0,
-        "checkItemsEarliestDue": null,
-        "comments": 0,
-        "description": false,
-        "due": null,
-        "dueComplete": false,
-        "lastUpdatedByAi": false,
-        "start": null,
-        "externalSource": null,
-        "attachmentsByType": {
-          "trello": {
-            "board": 0,
-            "card": 0
-          }
-        },
-        "location": false,
-        "votes": 0,
-        "maliciousAttachments": 0,
-        "viewingMemberVoted": false,
-        "subscribed": false
-      },
-      "checkItemStates": [],
-      "closed": false,
-      "dueComplete": false,
-      "dateLastActivity": "2025-10-08T00:02:17.123Z",
-      "desc": "",
-      "descData": {
-        "emoji": {}
-      },
-      "due": null,
-      "dueReminder": null,
-      "email": null,
-      "idBoard": "65c6c6c763388d45f95e4f9b",
-      "idChecklists": [],
-      "idList": "68e3e3dccca7554b03ec3538",
-      "idMembers": [
-        "68c6e53f55781e4307364366",
-        "68e40783b04c8f0627ebea70"
-      ],
-      "idMembersVoted": [],
-      "idShort": 520,
-      "idAttachmentCover": null,
-      "labels": [
-        {
-          "id": "66fd74389dc4d91a2bf8c098",
-          "idBoard": "65c6c6c763388d45f95e4f9b",
-          "idOrganization": "65c6c6c763388d45f95e4bf8",
-          "name": "Country",
-          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/66fd74389dc4d91a2bf8c098",
-          "color": "orange_dark",
-          "uses": 84
-        },
-        {
-          "id": "68069521ec94ac6fce6175ff",
-          "idBoard": "65c6c6c763388d45f95e4f9b",
-          "idOrganization": "65c6c6c763388d45f95e4bf8",
-          "name": "Backing",
-          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/68069521ec94ac6fce6175ff",
-          "color": "black_light",
-          "uses": 158
-        }
-      ],
-      "idLabels": [
-        "66fd74389dc4d91a2bf8c098",
-        "68069521ec94ac6fce6175ff"
-      ],
-      "manualCoverAttachment": false,
-      "name": "Sparks Fly",
-      "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/68e3e3dccca7554b03ec3625",
-      "pinned": false,
-      "pos": 23456248054391,
-      "shortLink": "MuWIvNAB",
-      "shortUrl": "https://trello.com/c/MuWIvNAB",
-      "start": null,
-      "subscribed": false,
-      "url": "https://trello.com/c/MuWIvNAB/520-sparks-fly",
+      "url": "https://trello.com/c/DwLxpHXh/489-redneck-woman",
       "cover": {
         "idAttachment": null,
         "color": null,
@@ -6227,100 +6507,7 @@
       "mirrorSourceId": null
     },
     {
-      "id": "68e3e3dccca7554b03ec362e",
-      "badges": {
-        "attachments": 1,
-        "fogbugz": "",
-        "checkItems": 0,
-        "checkItemsChecked": 0,
-        "checkItemsEarliestDue": null,
-        "comments": 0,
-        "description": false,
-        "due": null,
-        "dueComplete": false,
-        "lastUpdatedByAi": false,
-        "start": null,
-        "externalSource": null,
-        "attachmentsByType": {
-          "trello": {
-            "board": 0,
-            "card": 0
-          }
-        },
-        "location": false,
-        "votes": 0,
-        "maliciousAttachments": 0,
-        "viewingMemberVoted": false,
-        "subscribed": false
-      },
-      "checkItemStates": [],
-      "closed": false,
-      "dueComplete": false,
-      "dateLastActivity": "2025-10-07T19:26:26.620Z",
-      "desc": "",
-      "descData": {
-        "emoji": {}
-      },
-      "due": null,
-      "dueReminder": null,
-      "email": null,
-      "idBoard": "65c6c6c763388d45f95e4f9b",
-      "idChecklists": [],
-      "idList": "68e3e3dccca7554b03ec3538",
-      "idMembers": [
-        "67f5b87d0808e92f09399bb6"
-      ],
-      "idMembersVoted": [],
-      "idShort": 525,
-      "idAttachmentCover": null,
-      "labels": [
-        {
-          "id": "66fd74e7bd8067faeb365c05",
-          "idBoard": "65c6c6c763388d45f95e4f9b",
-          "idOrganization": "65c6c6c763388d45f95e4bf8",
-          "name": "Pop",
-          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/66fd74e7bd8067faeb365c05",
-          "color": "pink_dark",
-          "uses": 89
-        },
-        {
-          "id": "68069521ec94ac6fce6175ff",
-          "idBoard": "65c6c6c763388d45f95e4f9b",
-          "idOrganization": "65c6c6c763388d45f95e4bf8",
-          "name": "Backing",
-          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/68069521ec94ac6fce6175ff",
-          "color": "black_light",
-          "uses": 158
-        }
-      ],
-      "idLabels": [
-        "66fd74e7bd8067faeb365c05",
-        "68069521ec94ac6fce6175ff"
-      ],
-      "manualCoverAttachment": false,
-      "name": "Treasure",
-      "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/68e3e3dccca7554b03ec362e",
-      "pinned": false,
-      "pos": 23456248054439,
-      "shortLink": "kO5AaMEa",
-      "shortUrl": "https://trello.com/c/kO5AaMEa",
-      "start": null,
-      "subscribed": false,
-      "url": "https://trello.com/c/kO5AaMEa/525-treasure",
-      "cover": {
-        "idAttachment": null,
-        "color": null,
-        "idUploadedBackground": null,
-        "size": "normal",
-        "brightness": "dark",
-        "idPlugin": null
-      },
-      "isTemplate": false,
-      "cardRole": null,
-      "mirrorSourceId": null
-    },
-    {
-      "id": "68e3e3ddcca7554b03ec3be7",
+      "id": "68e3e3dfcca7554b03ec40e2",
       "badges": {
         "attachments": 0,
         "fogbugz": "",
@@ -6349,195 +6536,7 @@
       "checkItemStates": [],
       "closed": false,
       "dueComplete": false,
-      "dateLastActivity": "2025-10-07T19:26:35.899Z",
-      "desc": "",
-      "descData": {
-        "emoji": {}
-      },
-      "due": null,
-      "dueReminder": null,
-      "email": null,
-      "idBoard": "65c6c6c763388d45f95e4f9b",
-      "idChecklists": [],
-      "idList": "68e3e3dccca7554b03ec3538",
-      "idMembers": [
-        "67f5b87d0808e92f09399bb6",
-        "65c6c6631376a25cbe977732"
-      ],
-      "idMembersVoted": [],
-      "idShort": 531,
-      "idAttachmentCover": null,
-      "labels": [
-        {
-          "id": "66fd74e7bd8067faeb365c05",
-          "idBoard": "65c6c6c763388d45f95e4f9b",
-          "idOrganization": "65c6c6c763388d45f95e4bf8",
-          "name": "Pop",
-          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/66fd74e7bd8067faeb365c05",
-          "color": "pink_dark",
-          "uses": 89
-        },
-        {
-          "id": "68069521ec94ac6fce6175ff",
-          "idBoard": "65c6c6c763388d45f95e4f9b",
-          "idOrganization": "65c6c6c763388d45f95e4bf8",
-          "name": "Backing",
-          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/68069521ec94ac6fce6175ff",
-          "color": "black_light",
-          "uses": 158
-        }
-      ],
-      "idLabels": [
-        "66fd74e7bd8067faeb365c05",
-        "68069521ec94ac6fce6175ff"
-      ],
-      "manualCoverAttachment": false,
-      "name": "I Want It That Way",
-      "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/68e3e3ddcca7554b03ec3be7",
-      "pinned": false,
-      "pos": 23456248054455,
-      "shortLink": "CaHOvlQj",
-      "shortUrl": "https://trello.com/c/CaHOvlQj",
-      "start": null,
-      "subscribed": false,
-      "url": "https://trello.com/c/CaHOvlQj/531-i-want-it-that-way",
-      "cover": {
-        "idAttachment": null,
-        "color": null,
-        "idUploadedBackground": null,
-        "size": "normal",
-        "brightness": "dark",
-        "idPlugin": null
-      },
-      "isTemplate": false,
-      "cardRole": null,
-      "mirrorSourceId": null
-    },
-    {
-      "id": "68e3e3decca7554b03ec3e14",
-      "badges": {
-        "attachments": 1,
-        "fogbugz": "",
-        "checkItems": 0,
-        "checkItemsChecked": 0,
-        "checkItemsEarliestDue": null,
-        "comments": 2,
-        "description": true,
-        "due": null,
-        "dueComplete": false,
-        "lastUpdatedByAi": false,
-        "start": null,
-        "externalSource": null,
-        "attachmentsByType": {
-          "trello": {
-            "board": 0,
-            "card": 0
-          }
-        },
-        "location": false,
-        "votes": 0,
-        "maliciousAttachments": 0,
-        "viewingMemberVoted": false,
-        "subscribed": false
-      },
-      "checkItemStates": [],
-      "closed": false,
-      "dueComplete": false,
-      "dateLastActivity": "2025-10-06T18:19:26.749Z",
-      "desc": "If you don't wanna see me\n\nDid a full 180, crazy\nThinking 'bout the way I was\nDid the heartbreak change me? Maybe\nBut look at where I ended up\nI'm all good already\nSo moved on, it's scary\nI'm not where you left me at all, so\n\nIf you don't wanna see me dancing with somebody\nIf you wanna believe that anything could stop me\n\nDon't show up, don't come out\nDon't start caring about me now\nWalk away, you know how\nDon't start caring about me now\n\nAren't you the guy who tried to\nHurt me with the word \"goodbye\"?\nThough it took some time to survive you\nI'm better on the other side\nI'm all good already\nSo moved on, it's scary\nI'm not where you left me at all, so\n\nIf you don't wanna see me dancing with somebody\nIf you wanna believe that anything could stop me\n\nDon't show up, don't come out\nDon't start caring about me now\nWalk away, you know how\nDon't start caring about me now ('bout me now, 'bout me)\n\nOh, oh\nDon't come out, out, out\nDon't show up, up, up\nDon't start now (oh)\nOh, oh\nDon't come out, out\nI'm not where you left me at all, so\n\nIf you don't wanna see me dancing with somebody\nIf you wanna believe that anything could stop me\n\nDon't show up (don't show up), don't come out (don't come out)\nDon't start caring about me now ('bout me now)\nWalk away (walk away), you know how (you know how)\nDon't start caring about me now (so)\n\nOh, oh\nDon't come out, out, out\nDon't show up, up, up\nWalk away, walk away (so)\nOh, oh\nDon't come out, out, out\nDon't show up, up, up\nWalk away, walk away, oh",
-      "descData": {
-        "emoji": {}
-      },
-      "due": null,
-      "dueReminder": null,
-      "email": null,
-      "idBoard": "65c6c6c763388d45f95e4f9b",
-      "idChecklists": [],
-      "idList": "68e3e3dccca7554b03ec3538",
-      "idMembers": [
-        "68c6e53f55781e4307364366",
-        "68e40783b04c8f0627ebea70"
-      ],
-      "idMembersVoted": [],
-      "idShort": 539,
-      "idAttachmentCover": null,
-      "labels": [
-        {
-          "id": "68069521ec94ac6fce6175ff",
-          "idBoard": "65c6c6c763388d45f95e4f9b",
-          "idOrganization": "65c6c6c763388d45f95e4bf8",
-          "name": "Backing",
-          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/68069521ec94ac6fce6175ff",
-          "color": "black_light",
-          "uses": 158
-        },
-        {
-          "id": "66fd74e7bd8067faeb365c05",
-          "idBoard": "65c6c6c763388d45f95e4f9b",
-          "idOrganization": "65c6c6c763388d45f95e4bf8",
-          "name": "Pop",
-          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/66fd74e7bd8067faeb365c05",
-          "color": "pink_dark",
-          "uses": 89
-        }
-      ],
-      "idLabels": [
-        "68069521ec94ac6fce6175ff",
-        "66fd74e7bd8067faeb365c05"
-      ],
-      "manualCoverAttachment": false,
-      "name": "Don't Start Now",
-      "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/68e3e3decca7554b03ec3e14",
-      "pinned": false,
-      "pos": 23456248054855,
-      "shortLink": "CinwrxVy",
-      "shortUrl": "https://trello.com/c/CinwrxVy",
-      "start": null,
-      "subscribed": false,
-      "url": "https://trello.com/c/CinwrxVy/539-dont-start-now",
-      "cover": {
-        "idAttachment": null,
-        "color": null,
-        "idUploadedBackground": null,
-        "size": "normal",
-        "brightness": "dark",
-        "idPlugin": null
-      },
-      "isTemplate": false,
-      "cardRole": null,
-      "mirrorSourceId": null
-    },
-    {
-      "id": "68e3e3fabc6aefd7492a538d",
-      "badges": {
-        "attachments": 0,
-        "fogbugz": "",
-        "checkItems": 0,
-        "checkItemsChecked": 0,
-        "checkItemsEarliestDue": null,
-        "comments": 0,
-        "description": false,
-        "due": null,
-        "dueComplete": false,
-        "lastUpdatedByAi": false,
-        "start": null,
-        "externalSource": null,
-        "attachmentsByType": {
-          "trello": {
-            "board": 0,
-            "card": 0
-          }
-        },
-        "location": false,
-        "votes": 0,
-        "maliciousAttachments": 0,
-        "viewingMemberVoted": false,
-        "subscribed": false
-      },
-      "checkItemStates": [],
-      "closed": false,
-      "dueComplete": false,
-      "dateLastActivity": "2025-10-08T00:04:30.436Z",
+      "dateLastActivity": "2025-10-16T01:23:54.275Z",
       "desc": "",
       "descData": {
         "emoji": {}
@@ -6552,42 +6551,32 @@
         "67f5b87d0808e92f09399bb6"
       ],
       "idMembersVoted": [],
-      "idShort": 547,
+      "idShort": 540,
       "idAttachmentCover": null,
       "labels": [
         {
-          "id": "67d235486ce0fcfc7719ce99",
+          "id": "66ea211e3d545d3dfa1145a9",
           "idBoard": "65c6c6c763388d45f95e4f9b",
           "idOrganization": "65c6c6c763388d45f95e4bf8",
-          "name": "Soul",
-          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/67d235486ce0fcfc7719ce99",
-          "color": "blue_dark",
-          "uses": 12
-        },
-        {
-          "id": "68069521ec94ac6fce6175ff",
-          "idBoard": "65c6c6c763388d45f95e4f9b",
-          "idOrganization": "65c6c6c763388d45f95e4bf8",
-          "name": "Backing",
-          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/68069521ec94ac6fce6175ff",
-          "color": "black_light",
-          "uses": 158
+          "name": "Rock",
+          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/66ea211e3d545d3dfa1145a9",
+          "color": "green_dark",
+          "uses": 69
         }
       ],
       "idLabels": [
-        "67d235486ce0fcfc7719ce99",
-        "68069521ec94ac6fce6175ff"
+        "66ea211e3d545d3dfa1145a9"
       ],
-      "manualCoverAttachment": true,
-      "name": "Brown Eyed Lover",
-      "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/68e3e3fabc6aefd7492a538d",
+      "manualCoverAttachment": false,
+      "name": "My Own Worst Enemy",
+      "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/68e3e3dfcca7554b03ec40e2",
       "pinned": false,
       "pos": 23456248034375,
-      "shortLink": "RTL8URKI",
-      "shortUrl": "https://trello.com/c/RTL8URKI",
+      "shortLink": "IVPthaLJ",
+      "shortUrl": "https://trello.com/c/IVPthaLJ",
       "start": null,
       "subscribed": false,
-      "url": "https://trello.com/c/RTL8URKI/547-brown-eyed-lover",
+      "url": "https://trello.com/c/IVPthaLJ/540-my-own-worst-enemy",
       "cover": {
         "idAttachment": null,
         "color": null,
@@ -6682,89 +6671,6 @@
       "start": null,
       "subscribed": false,
       "url": "https://trello.com/c/EVXjtZrO/532-espresso",
-      "cover": {
-        "idAttachment": null,
-        "color": null,
-        "idUploadedBackground": null,
-        "size": "normal",
-        "brightness": "dark",
-        "idPlugin": null
-      },
-      "isTemplate": false,
-      "cardRole": null,
-      "mirrorSourceId": null
-    },
-    {
-      "id": "68e3e3fbbc6aefd7492a593e",
-      "badges": {
-        "attachments": 0,
-        "fogbugz": "",
-        "checkItems": 0,
-        "checkItemsChecked": 0,
-        "checkItemsEarliestDue": null,
-        "comments": 0,
-        "description": true,
-        "due": null,
-        "dueComplete": false,
-        "lastUpdatedByAi": false,
-        "start": null,
-        "externalSource": null,
-        "attachmentsByType": {
-          "trello": {
-            "board": 0,
-            "card": 0
-          }
-        },
-        "location": false,
-        "votes": 0,
-        "maliciousAttachments": 0,
-        "viewingMemberVoted": false,
-        "subscribed": true
-      },
-      "checkItemStates": [],
-      "closed": false,
-      "dueComplete": false,
-      "dateLastActivity": "2025-10-07T17:12:20.168Z",
-      "desc": "[Verse 1]\n\nWell, I built me a raft, and she's ready for floating\nOld Mississippi, she's calling my name\nCatfish are jumping, that paddle wheel thumping\nBlack water keep rolling on past just the same\n\n‌\n\n[Chorus 1]\n\n**Old black water, keep on rolling**\nMississippi moon, won't you keep on shining on me?\n**Old black water, keep on rolling**\nMississippi moon, won't you keep on shining on me?\n**Old black water, keep on rolling**\nMississippi moon, won't you keep on shining on me?\n\nYeah, keep on shining your light\nGonna make everything\nPretty Mama gonna make everything all right\nAnd I ain't got no worries, 'cause I ain't in no hurry **at all**\n\n‌\n\n[Verse 2]\n\nWell, if it rains, I don't care, don't make no difference to me\nJust take that streetcar that's going up town\nYeah, I'd like to hear some funky Dixieland\nAnd dance a honky tonk\nAnd I'll be buying everybody drinks all 'round\n\n‌\n\n[Chorus 2]\n\n**Old black water, keep on rolling**\nMississippi moon, won't you keep on shining on me?\n**Old black water, keep on rolling**\nMississippi moon, won't you keep on shining on me?\n**Old black water, keep on rolling**\nMississippi moon, won't you keep on shining on me?\n\nYeah, keep on shining your light\nGonna make everything\nPretty Mama gonna make everything all right\nAnd I ain't got no worries, 'cause I ain't in no hurry **at all**\n\n[Outro]\n\nI'd like to hear some funky Dixieland\nPretty Mama come and take me by the hand\nBy the hand (hand), take me by the hand pretty Mama\nCome and dance with your daddy all night long\nI'd like to hear some funky Dixieland\nPretty Mama come and take me by the hand",
-      "descData": {
-        "emoji": {}
-      },
-      "due": null,
-      "dueReminder": null,
-      "email": null,
-      "idBoard": "65c6c6c763388d45f95e4f9b",
-      "idChecklists": [],
-      "idList": "68e3e4497e06974a9913bd15",
-      "idMembers": [
-        "65c6c6631376a25cbe977732"
-      ],
-      "idMembersVoted": [],
-      "idShort": 557,
-      "idAttachmentCover": null,
-      "labels": [
-        {
-          "id": "66ea211e3d545d3dfa1145a9",
-          "idBoard": "65c6c6c763388d45f95e4f9b",
-          "idOrganization": "65c6c6c763388d45f95e4bf8",
-          "name": "Rock",
-          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/66ea211e3d545d3dfa1145a9",
-          "color": "green_dark",
-          "uses": 69
-        }
-      ],
-      "idLabels": [
-        "66ea211e3d545d3dfa1145a9"
-      ],
-      "manualCoverAttachment": false,
-      "name": "Black Water",
-      "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/68e3e3fbbc6aefd7492a593e",
-      "pinned": false,
-      "pos": 23456248056490.668,
-      "shortLink": "DyN6ISko",
-      "shortUrl": "https://trello.com/c/DyN6ISko",
-      "start": null,
-      "subscribed": true,
-      "url": "https://trello.com/c/DyN6ISko/557-black-water",
       "cover": {
         "idAttachment": null,
         "color": null,
@@ -6938,183 +6844,6 @@
       "mirrorSourceId": null
     },
     {
-      "id": "68e3e3ddcca7554b03ec3bea",
-      "badges": {
-        "attachments": 1,
-        "fogbugz": "",
-        "checkItems": 0,
-        "checkItemsChecked": 0,
-        "checkItemsEarliestDue": null,
-        "comments": 0,
-        "description": false,
-        "due": null,
-        "dueComplete": false,
-        "lastUpdatedByAi": false,
-        "start": null,
-        "externalSource": null,
-        "attachmentsByType": {
-          "trello": {
-            "board": 0,
-            "card": 0
-          }
-        },
-        "location": false,
-        "votes": 0,
-        "maliciousAttachments": 0,
-        "viewingMemberVoted": false,
-        "subscribed": false
-      },
-      "checkItemStates": [],
-      "closed": false,
-      "dueComplete": false,
-      "dateLastActivity": "2025-10-08T00:06:28.625Z",
-      "desc": "",
-      "descData": {
-        "emoji": {}
-      },
-      "due": null,
-      "dueReminder": null,
-      "email": null,
-      "idBoard": "65c6c6c763388d45f95e4f9b",
-      "idChecklists": [],
-      "idList": "68e3e42307d031c944c17413",
-      "idMembers": [
-        "68c6e53f55781e4307364366",
-        "68e40783b04c8f0627ebea70"
-      ],
-      "idMembersVoted": [],
-      "idShort": 533,
-      "idAttachmentCover": null,
-      "labels": [
-        {
-          "id": "66fd74e7bd8067faeb365c05",
-          "idBoard": "65c6c6c763388d45f95e4f9b",
-          "idOrganization": "65c6c6c763388d45f95e4bf8",
-          "name": "Pop",
-          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/66fd74e7bd8067faeb365c05",
-          "color": "pink_dark",
-          "uses": 89
-        },
-        {
-          "id": "68069521ec94ac6fce6175ff",
-          "idBoard": "65c6c6c763388d45f95e4f9b",
-          "idOrganization": "65c6c6c763388d45f95e4bf8",
-          "name": "Backing",
-          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/68069521ec94ac6fce6175ff",
-          "color": "black_light",
-          "uses": 158
-        }
-      ],
-      "idLabels": [
-        "66fd74e7bd8067faeb365c05",
-        "68069521ec94ac6fce6175ff"
-      ],
-      "manualCoverAttachment": false,
-      "name": "Flowers",
-      "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/68e3e3ddcca7554b03ec3bea",
-      "pinned": false,
-      "pos": 35184372098371.5,
-      "shortLink": "RcbpOOz7",
-      "shortUrl": "https://trello.com/c/RcbpOOz7",
-      "start": null,
-      "subscribed": false,
-      "url": "https://trello.com/c/RcbpOOz7/533-flowers",
-      "cover": {
-        "idAttachment": null,
-        "color": null,
-        "idUploadedBackground": null,
-        "size": "normal",
-        "brightness": "dark",
-        "idPlugin": null
-      },
-      "isTemplate": false,
-      "cardRole": null,
-      "mirrorSourceId": null
-    },
-    {
-      "id": "68e3e3fcbc6aefd7492a5ad1",
-      "badges": {
-        "attachments": 0,
-        "fogbugz": "",
-        "checkItems": 0,
-        "checkItemsChecked": 0,
-        "checkItemsEarliestDue": null,
-        "comments": 0,
-        "description": true,
-        "due": null,
-        "dueComplete": false,
-        "lastUpdatedByAi": false,
-        "start": null,
-        "externalSource": null,
-        "attachmentsByType": {
-          "trello": {
-            "board": 0,
-            "card": 0
-          }
-        },
-        "location": false,
-        "votes": 0,
-        "maliciousAttachments": 0,
-        "viewingMemberVoted": false,
-        "subscribed": true
-      },
-      "checkItemStates": [],
-      "closed": false,
-      "dueComplete": false,
-      "dateLastActivity": "2025-10-07T17:12:20.168Z",
-      "desc": "\n[Verse 1]\nWaitin' on a Sunday afternoon\nFor what I've read between the lines\nYour lies\nFeelin' like a hand in rusted shame\nSo do you laugh or does it cry?\nReply?\n\n[Chorus]\nLeavin' on a southern train\nOnly yesterday you lied\nPromises of what I seemed to be\nOnly watched the time go by\nAll of these things you said to me\n\n[Verse 2]\nBreathin' is the hardest thing to do\nWith all I've said and all that's dead for you\nYou lied, goodbye\n\n[Chorus]\nLeavin' on a southern train\nOnly yesterday you lied\nPromises of what I seemed to be\nOnly watched the time go by\nAll of these things I said to you",
-      "descData": {
-        "emoji": {}
-      },
-      "due": null,
-      "dueReminder": null,
-      "email": null,
-      "idBoard": "65c6c6c763388d45f95e4f9b",
-      "idChecklists": [],
-      "idList": "68e3e4497e06974a9913bd15",
-      "idMembers": [
-        "65c6c6631376a25cbe977732"
-      ],
-      "idMembersVoted": [],
-      "idShort": 560,
-      "idAttachmentCover": null,
-      "labels": [
-        {
-          "id": "66ea211e3d545d3dfa1145a9",
-          "idBoard": "65c6c6c763388d45f95e4f9b",
-          "idOrganization": "65c6c6c763388d45f95e4bf8",
-          "name": "Rock",
-          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/66ea211e3d545d3dfa1145a9",
-          "color": "green_dark",
-          "uses": 69
-        }
-      ],
-      "idLabels": [
-        "66ea211e3d545d3dfa1145a9"
-      ],
-      "manualCoverAttachment": false,
-      "name": "Interstate Love Song",
-      "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/68e3e3fcbc6aefd7492a5ad1",
-      "pinned": false,
-      "pos": 35184372084736,
-      "shortLink": "38ja93yc",
-      "shortUrl": "https://trello.com/c/38ja93yc",
-      "start": null,
-      "subscribed": true,
-      "url": "https://trello.com/c/38ja93yc/560-interstate-love-song",
-      "cover": {
-        "idAttachment": null,
-        "color": null,
-        "idUploadedBackground": null,
-        "size": "normal",
-        "brightness": "dark",
-        "idPlugin": null
-      },
-      "isTemplate": false,
-      "cardRole": null,
-      "mirrorSourceId": null
-    },
-    {
       "id": "68478dd1d0d47b8442616546",
       "badges": {
         "attachments": 1,
@@ -7183,99 +6912,6 @@
       "start": null,
       "subscribed": false,
       "url": "https://trello.com/c/f41jsT9h/274-dont-stop-believin",
-      "cover": {
-        "idAttachment": null,
-        "color": null,
-        "idUploadedBackground": null,
-        "size": "normal",
-        "brightness": "dark",
-        "idPlugin": null
-      },
-      "isTemplate": false,
-      "cardRole": null,
-      "mirrorSourceId": null
-    },
-    {
-      "id": "68e3e3fabc6aefd7492a5389",
-      "badges": {
-        "attachments": 1,
-        "fogbugz": "",
-        "checkItems": 0,
-        "checkItemsChecked": 0,
-        "checkItemsEarliestDue": null,
-        "comments": 0,
-        "description": false,
-        "due": null,
-        "dueComplete": false,
-        "lastUpdatedByAi": false,
-        "start": null,
-        "externalSource": null,
-        "attachmentsByType": {
-          "trello": {
-            "board": 0,
-            "card": 0
-          }
-        },
-        "location": false,
-        "votes": 0,
-        "maliciousAttachments": 0,
-        "viewingMemberVoted": false,
-        "subscribed": false
-      },
-      "checkItemStates": [],
-      "closed": false,
-      "dueComplete": false,
-      "dateLastActivity": "2025-10-07T19:28:11.287Z",
-      "desc": "",
-      "descData": {
-        "emoji": {}
-      },
-      "due": null,
-      "dueReminder": null,
-      "email": null,
-      "idBoard": "65c6c6c763388d45f95e4f9b",
-      "idChecklists": [],
-      "idList": "68e3e3fabc6aefd7492a5288",
-      "idMembers": [
-        "67f5b87d0808e92f09399bb6"
-      ],
-      "idMembersVoted": [],
-      "idShort": 546,
-      "idAttachmentCover": null,
-      "labels": [
-        {
-          "id": "68069521ec94ac6fce6175ff",
-          "idBoard": "65c6c6c763388d45f95e4f9b",
-          "idOrganization": "65c6c6c763388d45f95e4bf8",
-          "name": "Backing",
-          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/68069521ec94ac6fce6175ff",
-          "color": "black_light",
-          "uses": 158
-        },
-        {
-          "id": "67d235486ce0fcfc7719ce99",
-          "idBoard": "65c6c6c763388d45f95e4f9b",
-          "idOrganization": "65c6c6c763388d45f95e4bf8",
-          "name": "Soul",
-          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/67d235486ce0fcfc7719ce99",
-          "color": "blue_dark",
-          "uses": 12
-        }
-      ],
-      "idLabels": [
-        "68069521ec94ac6fce6175ff",
-        "67d235486ce0fcfc7719ce99"
-      ],
-      "manualCoverAttachment": false,
-      "name": "Lose Control",
-      "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/68e3e3fabc6aefd7492a5389",
-      "pinned": false,
-      "pos": 46912496140288,
-      "shortLink": "WLYfsGE2",
-      "shortUrl": "https://trello.com/c/WLYfsGE2",
-      "start": null,
-      "subscribed": false,
-      "url": "https://trello.com/c/WLYfsGE2/546-lose-control",
       "cover": {
         "idAttachment": null,
         "color": null,
@@ -7371,89 +7007,6 @@
       "start": null,
       "subscribed": false,
       "url": "https://trello.com/c/sNQ4VcxP/541-neon-moon",
-      "cover": {
-        "idAttachment": null,
-        "color": null,
-        "idUploadedBackground": null,
-        "size": "normal",
-        "brightness": "dark",
-        "idPlugin": null
-      },
-      "isTemplate": false,
-      "cardRole": null,
-      "mirrorSourceId": null
-    },
-    {
-      "id": "65c6ccf5e8113884d1abae49",
-      "badges": {
-        "fogbugz": "",
-        "checkItems": 0,
-        "checkItemsChecked": 0,
-        "checkItemsEarliestDue": null,
-        "comments": 0,
-        "attachments": 0,
-        "description": true,
-        "due": null,
-        "dueComplete": false,
-        "start": null,
-        "lastUpdatedByAi": false,
-        "attachmentsByType": {
-          "trello": {
-            "board": 0,
-            "card": 0
-          }
-        },
-        "externalSource": null,
-        "location": false,
-        "votes": 0,
-        "maliciousAttachments": 0,
-        "viewingMemberVoted": false,
-        "subscribed": false
-      },
-      "checkItemStates": [],
-      "closed": false,
-      "dueComplete": false,
-      "dateLastActivity": "2025-10-06T18:49:05.061Z",
-      "desc": "[Verse 1]\n\nFor all the times that you rained on my parade\n\nAnd all the clubs you get in using my name\n\nYou think you broke my heart, oh girl, for goodness' sake\n\nYou think I'm cryin' on my own, well, I ain't\n\n‌\n\n[Refrain]\n\nAnd I didn't wanna write a song\n\n'Cause I didn't want anyone thinking I still care\n\nI don't, but you still hit my phone up\n\nAnd baby, I'll be movin' on\n\nAnd I think you should be somethin' I don't wanna hold back\n\nMaybe you should know that\n\n‌\n\n[Pre-Chorus]\n\nMy mama don't like you and she likes everyone\n\nAnd I never like to admit that I was wrong\n\nAnd I've been so caught up in my job, didn't see what's going on\n\nBut now I know, I'm better sleeping on my own\n\n‌\n\n[Chorus]\n\n'Cause if you like the way you look that much\n\nOh baby, you should go and love yourself\n\nAnd if you think that I'm still holdin' on to somethin'\n\nYou should go and love yourself\n\nSee upcoming pop shows\n\nGet tickets for your favorite artists\n\n‌\n\n[Verse 2]\n\nBut when you told me that you hated my friends\n\nThe only problem was with you and not them\n\nAnd every time you told me my opinion was wrong\n\nAnd tried to make me forget where I came from\n\n‌\n\n[Refrain]\n\nAnd I didn't wanna write a song\n\n'Cause I didn't want anyone thinking I still care\n\nI don't, but you still hit my phone up\n\nAnd baby, I'll be movin' on\n\nAnd I think you should be somethin' I don't wanna hold back\n\nMaybe you should know that\n\n‌\n\n[Pre-Chorus]\n\nMy mama don't like you and she likes everyone\n\nAnd I never like to admit that I was wrong\n\nAnd I've been so caught up in my job, didn't see what's going on\n\nBut now I know, I'm better sleeping on my own\n\n‌\n\n[Chorus]\n\n'Cause if you like the way you look that much\n\nOh baby, you should go and love yourself\n\nAnd if you think that I'm still holdin' on to somethin'\n\nYou should go and love yourself\n\n‌\n\n[Trumpet, vocal feature]\n\n‌\n\n[Bridge]\n\nFor all the times that you made me feel small\n\nI fell in love, now I feel nothin' at all\n\nI never felt so low and I was vulnerable\n\nWas I a fool to let you break down my walls?\n\n‌\n\n[Chorus]\n\n'Cause if you like the way you look that much\n\nOh baby, you should go and love yourself\n\nAnd if you think that I'm still holdin' on to somethin'\n\nYou should go and love yourself\n\n'Cause if you like the way you look that much\n\nOh baby, you should go and love yourself\n\nAnd if you think that I'm still holdin' on to somethin'\n\nYou should go and love yourself",
-      "descData": {
-        "emoji": {}
-      },
-      "due": null,
-      "dueReminder": null,
-      "email": null,
-      "idBoard": "65c6c6c763388d45f95e4f9b",
-      "idChecklists": [],
-      "idList": "68e3e4497e06974a9913bd15",
-      "idMembers": [
-        "67f5b87d0808e92f09399bb6"
-      ],
-      "idMembersVoted": [],
-      "idShort": 41,
-      "idAttachmentCover": null,
-      "labels": [
-        {
-          "id": "66fd74e7bd8067faeb365c05",
-          "idBoard": "65c6c6c763388d45f95e4f9b",
-          "idOrganization": "65c6c6c763388d45f95e4bf8",
-          "name": "Pop",
-          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/66fd74e7bd8067faeb365c05",
-          "color": "pink_dark",
-          "uses": 89
-        }
-      ],
-      "idLabels": [
-        "66fd74e7bd8067faeb365c05"
-      ],
-      "manualCoverAttachment": false,
-      "name": "Love Yourself",
-      "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/65c6ccf5e8113884d1abae49",
-      "pinned": false,
-      "pos": 46912496112981.336,
-      "shortLink": "CVUAmBRP",
-      "shortUrl": "https://trello.com/c/CVUAmBRP",
-      "start": null,
-      "subscribed": false,
-      "url": "https://trello.com/c/CVUAmBRP/41-love-yourself",
       "cover": {
         "idAttachment": null,
         "color": null,
@@ -8153,89 +7706,6 @@
       "mirrorSourceId": null
     },
     {
-      "id": "68e3e3ddcca7554b03ec3d78",
-      "badges": {
-        "attachments": 1,
-        "fogbugz": "",
-        "checkItems": 0,
-        "checkItemsChecked": 0,
-        "checkItemsEarliestDue": null,
-        "comments": 0,
-        "description": true,
-        "due": null,
-        "dueComplete": false,
-        "lastUpdatedByAi": false,
-        "start": null,
-        "externalSource": null,
-        "attachmentsByType": {
-          "trello": {
-            "board": 0,
-            "card": 0
-          }
-        },
-        "location": false,
-        "votes": 0,
-        "maliciousAttachments": 0,
-        "viewingMemberVoted": false,
-        "subscribed": false
-      },
-      "checkItemStates": [],
-      "closed": false,
-      "dueComplete": false,
-      "dateLastActivity": "2025-10-07T17:12:20.168Z",
-      "desc": "[Verse 1]\nShe grew up in an Indiana town\nHad a good lookin' mama who never was around\nBut she grew up tall and she grew up right\nWith them Indiana boys on them Indiana nights\n\nWell, she moved down here at the age of eighteen\nShe blew the boys away, was more than they'd seen\nI was introduced and we both started groovin'\nShe said, \"I dig you baby, but I got to keep movin' on\nKeep movin' on\"\n\n[Chorus]\nLast dance with Mary Jane, one more time to kill the pain\nI feel summer creepin' in and I'm tired of this town again\n\n[Verse 2]\nWell, I don't know, but I've been told\nYou never slow down, you never grow old\nI'm tired of screwin' up, tired of going down\nTired of myself, tired of this town\n\n[Refrain]\nOh, my, my, oh, hell yes\nHoney, put on that party dress\nBuy me a drink, sing me a song\nTake me as I come 'cause I can't stay long\n\n[Chorus]\nLast dance with Mary Jane, one more time to kill the pain\nI feel summer creepin' in and I'm tired of this town again\n\nDouble stop guitar lick into simple guitar solo\n\n[Verse 3]\nThere's pigeons down on Market Square\nShe's standin' in her underwear\nLookin' down from a hotel room\nThe nightfall will be comin' soon\n\n[Refrain]\nOh, my, my, oh, hell yes\nYou got to put on that party dress\nIt was too cold to cry when I woke up alone\nI hit my last number and walked to the road\n\n[Chorus]\nLast dance with Mary Jane, one more time to kill the pain\nI feel summer creepin' in and I'm tired of this town again\n\nKeyboard solo\n\nSprinkle double stop guitar lick with high-hoots\n\nHarmonica cue to outro",
-      "descData": {
-        "emoji": {}
-      },
-      "due": null,
-      "dueReminder": null,
-      "email": null,
-      "idBoard": "65c6c6c763388d45f95e4f9b",
-      "idChecklists": [],
-      "idList": "68e3e4497e06974a9913bd15",
-      "idMembers": [
-        "65c6c6631376a25cbe977732"
-      ],
-      "idMembersVoted": [],
-      "idShort": 538,
-      "idAttachmentCover": null,
-      "labels": [
-        {
-          "id": "66ea211e3d545d3dfa1145a9",
-          "idBoard": "65c6c6c763388d45f95e4f9b",
-          "idOrganization": "65c6c6c763388d45f95e4bf8",
-          "name": "Rock",
-          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/66ea211e3d545d3dfa1145a9",
-          "color": "green_dark",
-          "uses": 69
-        }
-      ],
-      "idLabels": [
-        "66ea211e3d545d3dfa1145a9"
-      ],
-      "manualCoverAttachment": false,
-      "name": "Mary Jane's Last Dance",
-      "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/68e3e3ddcca7554b03ec3d78",
-      "pinned": false,
-      "pos": 78187493521635.56,
-      "shortLink": "LGu5jG2v",
-      "shortUrl": "https://trello.com/c/LGu5jG2v",
-      "start": null,
-      "subscribed": false,
-      "url": "https://trello.com/c/LGu5jG2v/538-mary-janes-last-dance",
-      "cover": {
-        "idAttachment": null,
-        "color": null,
-        "idUploadedBackground": null,
-        "size": "normal",
-        "brightness": "dark",
-        "idPlugin": null
-      },
-      "isTemplate": false,
-      "cardRole": null,
-      "mirrorSourceId": null
-    },
-    {
       "id": "6818ef86530377c46d63542b",
       "badges": {
         "attachments": 0,
@@ -8649,9 +8119,9 @@
       "mirrorSourceId": null
     },
     {
-      "id": "68043605a1b4865ea2f92b8e",
+      "id": "68e3e3dccca7554b03ec3625",
       "badges": {
-        "attachments": 0,
+        "attachments": 1,
         "fogbugz": "",
         "checkItems": 0,
         "checkItemsChecked": 0,
@@ -8678,32 +8148,33 @@
       "checkItemStates": [],
       "closed": false,
       "dueComplete": false,
-      "dateLastActivity": "2025-10-07T17:12:20.168Z",
+      "dateLastActivity": "2025-10-16T01:22:04.176Z",
       "desc": "",
       "descData": {
         "emoji": {}
       },
       "due": null,
-      "dueReminder": -1,
+      "dueReminder": null,
       "email": null,
       "idBoard": "65c6c6c763388d45f95e4f9b",
       "idChecklists": [],
       "idList": "68e3e4497e06974a9913bd15",
       "idMembers": [
-        "67f5b87d0808e92f09399bb6"
+        "68c6e53f55781e4307364366",
+        "68e40783b04c8f0627ebea70"
       ],
       "idMembersVoted": [],
-      "idShort": 217,
+      "idShort": 520,
       "idAttachmentCover": null,
       "labels": [
         {
-          "id": "66fd74e7bd8067faeb365c05",
+          "id": "66fd74389dc4d91a2bf8c098",
           "idBoard": "65c6c6c763388d45f95e4f9b",
           "idOrganization": "65c6c6c763388d45f95e4bf8",
-          "name": "Pop",
-          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/66fd74e7bd8067faeb365c05",
-          "color": "pink_dark",
-          "uses": 89
+          "name": "Country",
+          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/66fd74389dc4d91a2bf8c098",
+          "color": "orange_dark",
+          "uses": 84
         },
         {
           "id": "68069521ec94ac6fce6175ff",
@@ -8716,19 +8187,19 @@
         }
       ],
       "idLabels": [
-        "66fd74e7bd8067faeb365c05",
+        "66fd74389dc4d91a2bf8c098",
         "68069521ec94ac6fce6175ff"
       ],
       "manualCoverAttachment": false,
-      "name": "Pony",
-      "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/68043605a1b4865ea2f92b8e",
+      "name": "Sparks Fly",
+      "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/68e3e3dccca7554b03ec3625",
       "pinned": false,
-      "pos": 109462490930289.78,
-      "shortLink": "qIrGVtF0",
-      "shortUrl": "https://trello.com/c/qIrGVtF0",
+      "pos": 109462490946673.8,
+      "shortLink": "MuWIvNAB",
+      "shortUrl": "https://trello.com/c/MuWIvNAB",
       "start": null,
       "subscribed": false,
-      "url": "https://trello.com/c/qIrGVtF0/217-pony",
+      "url": "https://trello.com/c/MuWIvNAB/520-sparks-fly",
       "cover": {
         "idAttachment": null,
         "color": null,
@@ -9690,7 +9161,101 @@
       "mirrorSourceId": null
     },
     {
-      "id": "68e3e3fcbc6aefd7492a5b91",
+      "id": "68e3e3decca7554b03ec3e14",
+      "badges": {
+        "attachments": 1,
+        "fogbugz": "",
+        "checkItems": 0,
+        "checkItemsChecked": 0,
+        "checkItemsEarliestDue": null,
+        "comments": 2,
+        "description": true,
+        "due": null,
+        "dueComplete": false,
+        "lastUpdatedByAi": false,
+        "start": null,
+        "externalSource": null,
+        "attachmentsByType": {
+          "trello": {
+            "board": 0,
+            "card": 0
+          }
+        },
+        "location": false,
+        "votes": 0,
+        "maliciousAttachments": 0,
+        "viewingMemberVoted": false,
+        "subscribed": false
+      },
+      "checkItemStates": [],
+      "closed": false,
+      "dueComplete": false,
+      "dateLastActivity": "2025-10-16T01:18:07.333Z",
+      "desc": "If you don't wanna see me\n\nDid a full 180, crazy\nThinking 'bout the way I was\nDid the heartbreak change me? Maybe\nBut look at where I ended up\nI'm all good already\nSo moved on, it's scary\nI'm not where you left me at all, so\n\nIf you don't wanna see me dancing with somebody\nIf you wanna believe that anything could stop me\n\nDon't show up, don't come out\nDon't start caring about me now\nWalk away, you know how\nDon't start caring about me now\n\nAren't you the guy who tried to\nHurt me with the word \"goodbye\"?\nThough it took some time to survive you\nI'm better on the other side\nI'm all good already\nSo moved on, it's scary\nI'm not where you left me at all, so\n\nIf you don't wanna see me dancing with somebody\nIf you wanna believe that anything could stop me\n\nDon't show up, don't come out\nDon't start caring about me now\nWalk away, you know how\nDon't start caring about me now ('bout me now, 'bout me)\n\nOh, oh\nDon't come out, out, out\nDon't show up, up, up\nDon't start now (oh)\nOh, oh\nDon't come out, out\nI'm not where you left me at all, so\n\nIf you don't wanna see me dancing with somebody\nIf you wanna believe that anything could stop me\n\nDon't show up (don't show up), don't come out (don't come out)\nDon't start caring about me now ('bout me now)\nWalk away (walk away), you know how (you know how)\nDon't start caring about me now (so)\n\nOh, oh\nDon't come out, out, out\nDon't show up, up, up\nWalk away, walk away (so)\nOh, oh\nDon't come out, out, out\nDon't show up, up, up\nWalk away, walk away, oh",
+      "descData": {
+        "emoji": {}
+      },
+      "due": null,
+      "dueReminder": null,
+      "email": null,
+      "idBoard": "65c6c6c763388d45f95e4f9b",
+      "idChecklists": [],
+      "idList": "68e3e3dccca7554b03ec3538",
+      "idMembers": [
+        "68c6e53f55781e4307364366",
+        "68e40783b04c8f0627ebea70"
+      ],
+      "idMembersVoted": [],
+      "idShort": 539,
+      "idAttachmentCover": null,
+      "labels": [
+        {
+          "id": "68069521ec94ac6fce6175ff",
+          "idBoard": "65c6c6c763388d45f95e4f9b",
+          "idOrganization": "65c6c6c763388d45f95e4bf8",
+          "name": "Backing",
+          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/68069521ec94ac6fce6175ff",
+          "color": "black_light",
+          "uses": 158
+        },
+        {
+          "id": "66fd74e7bd8067faeb365c05",
+          "idBoard": "65c6c6c763388d45f95e4f9b",
+          "idOrganization": "65c6c6c763388d45f95e4bf8",
+          "name": "Pop",
+          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/66fd74e7bd8067faeb365c05",
+          "color": "pink_dark",
+          "uses": 89
+        }
+      ],
+      "idLabels": [
+        "68069521ec94ac6fce6175ff",
+        "66fd74e7bd8067faeb365c05"
+      ],
+      "manualCoverAttachment": false,
+      "name": "Don't Start Now",
+      "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/68e3e3decca7554b03ec3e14",
+      "pinned": false,
+      "pos": 140737488446122.7,
+      "shortLink": "CinwrxVy",
+      "shortUrl": "https://trello.com/c/CinwrxVy",
+      "start": null,
+      "subscribed": false,
+      "url": "https://trello.com/c/CinwrxVy/539-dont-start-now",
+      "cover": {
+        "idAttachment": null,
+        "color": null,
+        "idUploadedBackground": null,
+        "size": "normal",
+        "brightness": "dark",
+        "idPlugin": null
+      },
+      "isTemplate": false,
+      "cardRole": null,
+      "mirrorSourceId": null
+    },
+    {
+      "id": "68e3e3ddcca7554b03ec3be7",
       "badges": {
         "attachments": 0,
         "fogbugz": "",
@@ -9719,7 +9284,7 @@
       "checkItemStates": [],
       "closed": false,
       "dueComplete": false,
-      "dateLastActivity": "2025-10-07T19:38:57.051Z",
+      "dateLastActivity": "2025-10-16T01:18:03.289Z",
       "desc": "",
       "descData": {
         "emoji": {}
@@ -9731,20 +9296,21 @@
       "idChecklists": [],
       "idList": "68e3e3dccca7554b03ec3538",
       "idMembers": [
-        "67f5b87d0808e92f09399bb6"
+        "67f5b87d0808e92f09399bb6",
+        "65c6c6631376a25cbe977732"
       ],
       "idMembersVoted": [],
-      "idShort": 561,
+      "idShort": 531,
       "idAttachmentCover": null,
       "labels": [
         {
-          "id": "66ea211e3d545d3dfa1145a9",
+          "id": "66fd74e7bd8067faeb365c05",
           "idBoard": "65c6c6c763388d45f95e4f9b",
           "idOrganization": "65c6c6c763388d45f95e4bf8",
-          "name": "Rock",
-          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/66ea211e3d545d3dfa1145a9",
-          "color": "green_dark",
-          "uses": 69
+          "name": "Pop",
+          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/66fd74e7bd8067faeb365c05",
+          "color": "pink_dark",
+          "uses": 89
         },
         {
           "id": "68069521ec94ac6fce6175ff",
@@ -9757,19 +9323,19 @@
         }
       ],
       "idLabels": [
-        "66ea211e3d545d3dfa1145a9",
+        "66fd74e7bd8067faeb365c05",
         "68069521ec94ac6fce6175ff"
       ],
       "manualCoverAttachment": false,
-      "name": "Sex on fire",
-      "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/68e3e3fcbc6aefd7492a5b91",
+      "name": "I Want It That Way",
+      "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/68e3e3ddcca7554b03ec3be7",
       "pinned": false,
-      "pos": 140737488756736,
-      "shortLink": "Idw3PGH4",
-      "shortUrl": "https://trello.com/c/Idw3PGH4",
+      "pos": 140737488454314.7,
+      "shortLink": "CaHOvlQj",
+      "shortUrl": "https://trello.com/c/CaHOvlQj",
       "start": null,
       "subscribed": false,
-      "url": "https://trello.com/c/Idw3PGH4/561-sex-on-fire",
+      "url": "https://trello.com/c/CaHOvlQj/531-i-want-it-that-way",
       "cover": {
         "idAttachment": null,
         "color": null,
@@ -11218,7 +10784,7 @@
       "checkItemStates": [],
       "closed": false,
       "dueComplete": false,
-      "dateLastActivity": "2025-10-08T15:10:31.590Z",
+      "dateLastActivity": "2025-10-16T01:15:06.036Z",
       "desc": "[Verse 2]\n\nYou thought I'd take the blame for us a-crumbling\n\nGo 'round like you ain't guilty of somethin'\n\nAlready lost the game that you been runnin'\n\nGuess it's catchin' up to you, huh\n\nYou think that you're so innocent\n\nAfter all the shit you did\n\nI ain't an angel, you ain't heaven-sent\n\nCan't wash our hands of this",
       "descData": {
         "emoji": {}
@@ -11264,188 +10830,12 @@
       "name": "I Had Some Help",
       "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/68e3e3fdbc6aefd7492a5dfb",
       "pinned": false,
-      "pos": 140737488427690.66,
+      "pos": 140737488438762.7,
       "shortLink": "eGLgW0aX",
       "shortUrl": "https://trello.com/c/eGLgW0aX",
       "start": null,
       "subscribed": false,
       "url": "https://trello.com/c/eGLgW0aX/562-i-had-some-help",
-      "cover": {
-        "idAttachment": null,
-        "color": null,
-        "idUploadedBackground": null,
-        "size": "normal",
-        "brightness": "dark",
-        "idPlugin": null
-      },
-      "isTemplate": false,
-      "cardRole": null,
-      "mirrorSourceId": null
-    },
-    {
-      "id": "68e3e3fbbc6aefd7492a593c",
-      "badges": {
-        "attachments": 0,
-        "fogbugz": "",
-        "checkItems": 0,
-        "checkItemsChecked": 0,
-        "checkItemsEarliestDue": null,
-        "comments": 0,
-        "description": false,
-        "due": null,
-        "dueComplete": false,
-        "lastUpdatedByAi": false,
-        "start": null,
-        "externalSource": null,
-        "attachmentsByType": {
-          "trello": {
-            "board": 0,
-            "card": 0
-          }
-        },
-        "location": false,
-        "votes": 0,
-        "maliciousAttachments": 0,
-        "viewingMemberVoted": false,
-        "subscribed": false
-      },
-      "checkItemStates": [],
-      "closed": false,
-      "dueComplete": false,
-      "dateLastActivity": "2025-10-08T00:03:19.382Z",
-      "desc": "",
-      "descData": {
-        "emoji": {}
-      },
-      "due": null,
-      "dueReminder": null,
-      "email": null,
-      "idBoard": "65c6c6c763388d45f95e4f9b",
-      "idChecklists": [],
-      "idList": "68e3e3fabc6aefd7492a5288",
-      "idMembers": [
-        "67f5b87d0808e92f09399bb6"
-      ],
-      "idMembersVoted": [],
-      "idShort": 556,
-      "idAttachmentCover": null,
-      "labels": [
-        {
-          "id": "66fd74389dc4d91a2bf8c098",
-          "idBoard": "65c6c6c763388d45f95e4f9b",
-          "idOrganization": "65c6c6c763388d45f95e4bf8",
-          "name": "Country",
-          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/66fd74389dc4d91a2bf8c098",
-          "color": "orange_dark",
-          "uses": 84
-        },
-        {
-          "id": "68069521ec94ac6fce6175ff",
-          "idBoard": "65c6c6c763388d45f95e4f9b",
-          "idOrganization": "65c6c6c763388d45f95e4bf8",
-          "name": "Backing",
-          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/68069521ec94ac6fce6175ff",
-          "color": "black_light",
-          "uses": 158
-        }
-      ],
-      "idLabels": [
-        "66fd74389dc4d91a2bf8c098",
-        "68069521ec94ac6fce6175ff"
-      ],
-      "manualCoverAttachment": false,
-      "name": "Friends In Low Places",
-      "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/68e3e3fbbc6aefd7492a593c",
-      "pinned": false,
-      "pos": 140737488437674.7,
-      "shortLink": "dVUFlXhD",
-      "shortUrl": "https://trello.com/c/dVUFlXhD",
-      "start": null,
-      "subscribed": false,
-      "url": "https://trello.com/c/dVUFlXhD/556-friends-in-low-places",
-      "cover": {
-        "idAttachment": null,
-        "color": null,
-        "idUploadedBackground": null,
-        "size": "normal",
-        "brightness": "dark",
-        "idPlugin": null
-      },
-      "isTemplate": false,
-      "cardRole": null,
-      "mirrorSourceId": null
-    },
-    {
-      "id": "68e3e3fabc6aefd7492a5388",
-      "badges": {
-        "attachments": 0,
-        "fogbugz": "",
-        "checkItems": 0,
-        "checkItemsChecked": 0,
-        "checkItemsEarliestDue": null,
-        "comments": 0,
-        "description": true,
-        "due": null,
-        "dueComplete": false,
-        "lastUpdatedByAi": false,
-        "start": null,
-        "externalSource": null,
-        "attachmentsByType": {
-          "trello": {
-            "board": 0,
-            "card": 0
-          }
-        },
-        "location": false,
-        "votes": 0,
-        "maliciousAttachments": 0,
-        "viewingMemberVoted": false,
-        "subscribed": false
-      },
-      "checkItemStates": [],
-      "closed": false,
-      "dueComplete": false,
-      "dateLastActivity": "2025-10-08T15:12:03.527Z",
-      "desc": "Looking in my own eyes\nHey lord\nI can't find the love I want\nSomeone better slap me\nBefore I start to rust\nBefore I start to decompose\nLooking in my rear view mirror\nLooking in my rear view mirror\nI can make it disappear\n\nI can make it disappear Have no fear!\n\n\nI like pleasure spiked with pain\nAnd music is my aeroplane\nIt's my aeroplane\nSongbird sweet and sour Jane\nAnd music is my aeroplane\n\nIt's my aeroplane\nPleasure spiked with pain\n\nThat motherfucker's always spiked with pain\nSitting in my kitchen, hey girl\n\nI'm turning into dust again\nMy melancholy baby\nThe star of mazzy must\n\nPush her voice inside of me\nI'm overcoming gravity\nI'm overcoming gravity\n\nIt's easy when you're sad to be\nIt's easy when you're sad, sad like me\n\n\nI like pleasure spiked with pain And music is my aeroplane\n\nIt's my aeroplane\nSongbird sweet and sour Jane And music is my aeroplane\nIt's my aeroplane\nPleasure spiked with pain\n\n\nJust one note could make me float Could make me float away\n\nOne note from The song she wrote Could fuck me where I lay\nJust one note Could make me choke One note that's not a lie\nJust one note Could cut my throat One note could make me die!\nI like pleasure spiked with pain And music is my aeroplane\nIt's my aeroplane\nSongbird sweet and sour Jane And music is my aeroplane\nIt's my aeroplane\nPleasure spiked with pain",
-      "descData": {
-        "emoji": {}
-      },
-      "due": null,
-      "dueReminder": null,
-      "email": null,
-      "idBoard": "65c6c6c763388d45f95e4f9b",
-      "idChecklists": [],
-      "idList": "68e3e3fabc6aefd7492a5288",
-      "idMembers": [
-        "65c6c6631376a25cbe977732"
-      ],
-      "idMembersVoted": [],
-      "idShort": 545,
-      "idAttachmentCover": null,
-      "labels": [
-        {
-          "id": "66ea211e3d545d3dfa1145a9",
-          "idBoard": "65c6c6c763388d45f95e4f9b",
-          "idOrganization": "65c6c6c763388d45f95e4bf8",
-          "name": "Rock",
-          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/66ea211e3d545d3dfa1145a9",
-          "color": "green_dark",
-          "uses": 69
-        }
-      ],
-      "idLabels": [
-        "66ea211e3d545d3dfa1145a9"
-      ],
-      "manualCoverAttachment": false,
-      "name": "Aeroplane",
-      "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/68e3e3fabc6aefd7492a5388",
-      "pinned": false,
-      "pos": 140737488438186.7,
-      "shortLink": "EK2IrP3F",
-      "shortUrl": "https://trello.com/c/EK2IrP3F",
-      "start": null,
-      "subscribed": false,
-      "url": "https://trello.com/c/EK2IrP3F/545-aeroplane",
       "cover": {
         "idAttachment": null,
         "color": null,
@@ -11488,7 +10878,7 @@
       "checkItemStates": [],
       "closed": false,
       "dueComplete": false,
-      "dateLastActivity": "2025-10-08T00:05:35.235Z",
+      "dateLastActivity": "2025-10-16T01:18:55.639Z",
       "desc": "If you're listening (whoa oh-oh-oh-oh)\nSing it back (whoa oh-oh-oh-oh)\nString from your tether unwinds\n(String from your tether unwinds)\n(Whoa oh, whoa oh)\nUp and outward to bind\n(Up and outward to bind)\n(Whoa oh, whoa oh)\n\nI was spinning free (whoa oh-oh-oh-oh)\nWith a little sweet and simple numbing me\n\nAre you listening? (Whoa oh-oh-oh-oh)\nSing it back (whoa oh-oh-oh-oh)\nSo tell me what do I need?\n(Tell me what do I need?)\n(Whoa oh, whoa oh)\nWhen words lose their meaning\n(When words lose their meaning)\n(Whoa oh, whoa oh)\n\nI was spinning free (whoa oh-oh-oh-oh)\nWith a little sweet and simple numbing me, yeah\nStumble 'til you crawl (whoa oh-oh-oh-oh)\nSinking into sweet uncertainty\n\n(Are you listening? Are you listening?)\nIf you're listening (whoa oh-oh-oh-oh)\n(If you're listening, are you listening?)\nSing it back (whoa oh-oh-oh-oh)\n(If you're listening, are you listening?)\n\nAnd I'm still running away\n(I'm still running away)\nWhoa oh (whoa oh)\nWhoa oh (whoa oh)\nI won't play your hide and seek game\n(Your hide and seek game)\nWhoa oh (whoa oh)\nWhoa oh\n\nI was spinning free (whoa oh-oh-oh-oh)\nWith a little sweet and simple numbing me\nWhat a dizzy dance (whoa oh-oh-oh-oh)\n\nThis sweetness will not be concerned with me\nNo, the sweetness will not be concerned with me\nNo, the sweetness will not be concerned with me",
       "descData": {
         "emoji": {}
@@ -11523,12 +10913,188 @@
       "name": "Sweetness",
       "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/68e3e3dccca7554b03ec370f",
       "pinned": false,
-      "pos": 140737488438698.7,
+      "pos": 140737488438858.7,
       "shortLink": "kxmvhRXv",
       "shortUrl": "https://trello.com/c/kxmvhRXv",
       "start": null,
       "subscribed": true,
       "url": "https://trello.com/c/kxmvhRXv/529-sweetness",
+      "cover": {
+        "idAttachment": null,
+        "color": null,
+        "idUploadedBackground": null,
+        "size": "normal",
+        "brightness": "dark",
+        "idPlugin": null
+      },
+      "isTemplate": false,
+      "cardRole": null,
+      "mirrorSourceId": null
+    },
+    {
+      "id": "68e3e3fabc6aefd7492a5388",
+      "badges": {
+        "attachments": 0,
+        "fogbugz": "",
+        "checkItems": 0,
+        "checkItemsChecked": 0,
+        "checkItemsEarliestDue": null,
+        "comments": 0,
+        "description": true,
+        "due": null,
+        "dueComplete": false,
+        "lastUpdatedByAi": false,
+        "start": null,
+        "externalSource": null,
+        "attachmentsByType": {
+          "trello": {
+            "board": 0,
+            "card": 0
+          }
+        },
+        "location": false,
+        "votes": 0,
+        "maliciousAttachments": 0,
+        "viewingMemberVoted": false,
+        "subscribed": false
+      },
+      "checkItemStates": [],
+      "closed": false,
+      "dueComplete": false,
+      "dateLastActivity": "2025-10-16T01:18:53.331Z",
+      "desc": "Looking in my own eyes\nHey lord\nI can't find the love I want\nSomeone better slap me\nBefore I start to rust\nBefore I start to decompose\nLooking in my rear view mirror\nLooking in my rear view mirror\nI can make it disappear\n\nI can make it disappear Have no fear!\n\n\nI like pleasure spiked with pain\nAnd music is my aeroplane\nIt's my aeroplane\nSongbird sweet and sour Jane\nAnd music is my aeroplane\n\nIt's my aeroplane\nPleasure spiked with pain\n\nThat motherfucker's always spiked with pain\nSitting in my kitchen, hey girl\n\nI'm turning into dust again\nMy melancholy baby\nThe star of mazzy must\n\nPush her voice inside of me\nI'm overcoming gravity\nI'm overcoming gravity\n\nIt's easy when you're sad to be\nIt's easy when you're sad, sad like me\n\n\nI like pleasure spiked with pain And music is my aeroplane\n\nIt's my aeroplane\nSongbird sweet and sour Jane And music is my aeroplane\nIt's my aeroplane\nPleasure spiked with pain\n\n\nJust one note could make me float Could make me float away\n\nOne note from The song she wrote Could fuck me where I lay\nJust one note Could make me choke One note that's not a lie\nJust one note Could cut my throat One note could make me die!\nI like pleasure spiked with pain And music is my aeroplane\nIt's my aeroplane\nSongbird sweet and sour Jane And music is my aeroplane\nIt's my aeroplane\nPleasure spiked with pain",
+      "descData": {
+        "emoji": {}
+      },
+      "due": null,
+      "dueReminder": null,
+      "email": null,
+      "idBoard": "65c6c6c763388d45f95e4f9b",
+      "idChecklists": [],
+      "idList": "68e3e3fabc6aefd7492a5288",
+      "idMembers": [
+        "65c6c6631376a25cbe977732"
+      ],
+      "idMembersVoted": [],
+      "idShort": 545,
+      "idAttachmentCover": null,
+      "labels": [
+        {
+          "id": "66ea211e3d545d3dfa1145a9",
+          "idBoard": "65c6c6c763388d45f95e4f9b",
+          "idOrganization": "65c6c6c763388d45f95e4bf8",
+          "name": "Rock",
+          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/66ea211e3d545d3dfa1145a9",
+          "color": "green_dark",
+          "uses": 69
+        }
+      ],
+      "idLabels": [
+        "66ea211e3d545d3dfa1145a9"
+      ],
+      "manualCoverAttachment": false,
+      "name": "Aeroplane",
+      "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/68e3e3fabc6aefd7492a5388",
+      "pinned": false,
+      "pos": 140737488438890.7,
+      "shortLink": "EK2IrP3F",
+      "shortUrl": "https://trello.com/c/EK2IrP3F",
+      "start": null,
+      "subscribed": false,
+      "url": "https://trello.com/c/EK2IrP3F/545-aeroplane",
+      "cover": {
+        "idAttachment": null,
+        "color": null,
+        "idUploadedBackground": null,
+        "size": "normal",
+        "brightness": "dark",
+        "idPlugin": null
+      },
+      "isTemplate": false,
+      "cardRole": null,
+      "mirrorSourceId": null
+    },
+    {
+      "id": "68e3e3fcbc6aefd7492a5b91",
+      "badges": {
+        "attachments": 0,
+        "fogbugz": "",
+        "checkItems": 0,
+        "checkItemsChecked": 0,
+        "checkItemsEarliestDue": null,
+        "comments": 0,
+        "description": false,
+        "due": null,
+        "dueComplete": false,
+        "lastUpdatedByAi": false,
+        "start": null,
+        "externalSource": null,
+        "attachmentsByType": {
+          "trello": {
+            "board": 0,
+            "card": 0
+          }
+        },
+        "location": false,
+        "votes": 0,
+        "maliciousAttachments": 0,
+        "viewingMemberVoted": false,
+        "subscribed": false
+      },
+      "checkItemStates": [],
+      "closed": false,
+      "dueComplete": false,
+      "dateLastActivity": "2025-10-16T01:14:58.193Z",
+      "desc": "",
+      "descData": {
+        "emoji": {}
+      },
+      "due": null,
+      "dueReminder": null,
+      "email": null,
+      "idBoard": "65c6c6c763388d45f95e4f9b",
+      "idChecklists": [],
+      "idList": "68e3e3fabc6aefd7492a5288",
+      "idMembers": [
+        "67f5b87d0808e92f09399bb6"
+      ],
+      "idMembersVoted": [],
+      "idShort": 561,
+      "idAttachmentCover": null,
+      "labels": [
+        {
+          "id": "66ea211e3d545d3dfa1145a9",
+          "idBoard": "65c6c6c763388d45f95e4f9b",
+          "idOrganization": "65c6c6c763388d45f95e4bf8",
+          "name": "Rock",
+          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/66ea211e3d545d3dfa1145a9",
+          "color": "green_dark",
+          "uses": 69
+        },
+        {
+          "id": "68069521ec94ac6fce6175ff",
+          "idBoard": "65c6c6c763388d45f95e4f9b",
+          "idOrganization": "65c6c6c763388d45f95e4bf8",
+          "name": "Backing",
+          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/68069521ec94ac6fce6175ff",
+          "color": "black_light",
+          "uses": 158
+        }
+      ],
+      "idLabels": [
+        "66ea211e3d545d3dfa1145a9",
+        "68069521ec94ac6fce6175ff"
+      ],
+      "manualCoverAttachment": false,
+      "name": "Sex on fire",
+      "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/68e3e3fcbc6aefd7492a5b91",
+      "pinned": false,
+      "pos": 140737488438954.7,
+      "shortLink": "Idw3PGH4",
+      "shortUrl": "https://trello.com/c/Idw3PGH4",
+      "start": null,
+      "subscribed": false,
+      "url": "https://trello.com/c/Idw3PGH4/561-sex-on-fire",
       "cover": {
         "idAttachment": null,
         "color": null,
@@ -11635,7 +11201,7 @@
       "mirrorSourceId": null
     },
     {
-      "id": "68e3e3dfcca7554b03ec40e2",
+      "id": "68e3e3fabc6aefd7492a538d",
       "badges": {
         "attachments": 0,
         "fogbugz": "",
@@ -11664,7 +11230,7 @@
       "checkItemStates": [],
       "closed": false,
       "dueComplete": false,
-      "dateLastActivity": "2025-10-07T19:37:09.350Z",
+      "dateLastActivity": "2025-10-16T01:24:50.542Z",
       "desc": "",
       "descData": {
         "emoji": {}
@@ -11679,7 +11245,194 @@
         "67f5b87d0808e92f09399bb6"
       ],
       "idMembersVoted": [],
-      "idShort": 540,
+      "idShort": 547,
+      "idAttachmentCover": null,
+      "labels": [
+        {
+          "id": "67d235486ce0fcfc7719ce99",
+          "idBoard": "65c6c6c763388d45f95e4f9b",
+          "idOrganization": "65c6c6c763388d45f95e4bf8",
+          "name": "Soul",
+          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/67d235486ce0fcfc7719ce99",
+          "color": "blue_dark",
+          "uses": 12
+        },
+        {
+          "id": "68069521ec94ac6fce6175ff",
+          "idBoard": "65c6c6c763388d45f95e4f9b",
+          "idOrganization": "65c6c6c763388d45f95e4bf8",
+          "name": "Backing",
+          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/68069521ec94ac6fce6175ff",
+          "color": "black_light",
+          "uses": 158
+        }
+      ],
+      "idLabels": [
+        "67d235486ce0fcfc7719ce99",
+        "68069521ec94ac6fce6175ff"
+      ],
+      "manualCoverAttachment": true,
+      "name": "Brown Eyed Lover",
+      "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/68e3e3fabc6aefd7492a538d",
+      "pinned": false,
+      "pos": 140737488372288,
+      "shortLink": "RTL8URKI",
+      "shortUrl": "https://trello.com/c/RTL8URKI",
+      "start": null,
+      "subscribed": false,
+      "url": "https://trello.com/c/RTL8URKI/547-brown-eyed-lover",
+      "cover": {
+        "idAttachment": null,
+        "color": null,
+        "idUploadedBackground": null,
+        "size": "normal",
+        "brightness": "dark",
+        "idPlugin": null
+      },
+      "isTemplate": false,
+      "cardRole": null,
+      "mirrorSourceId": null
+    },
+    {
+      "id": "68e3e3ddcca7554b03ec3bea",
+      "badges": {
+        "attachments": 1,
+        "fogbugz": "",
+        "checkItems": 0,
+        "checkItemsChecked": 0,
+        "checkItemsEarliestDue": null,
+        "comments": 0,
+        "description": false,
+        "due": null,
+        "dueComplete": false,
+        "lastUpdatedByAi": false,
+        "start": null,
+        "externalSource": null,
+        "attachmentsByType": {
+          "trello": {
+            "board": 0,
+            "card": 0
+          }
+        },
+        "location": false,
+        "votes": 0,
+        "maliciousAttachments": 0,
+        "viewingMemberVoted": false,
+        "subscribed": false
+      },
+      "checkItemStates": [],
+      "closed": false,
+      "dueComplete": false,
+      "dateLastActivity": "2025-10-16T01:15:26.268Z",
+      "desc": "",
+      "descData": {
+        "emoji": {}
+      },
+      "due": null,
+      "dueReminder": null,
+      "email": null,
+      "idBoard": "65c6c6c763388d45f95e4f9b",
+      "idChecklists": [],
+      "idList": "68e3e42307d031c944c17413",
+      "idMembers": [
+        "68c6e53f55781e4307364366",
+        "68e40783b04c8f0627ebea70"
+      ],
+      "idMembersVoted": [],
+      "idShort": 533,
+      "idAttachmentCover": null,
+      "labels": [
+        {
+          "id": "66fd74e7bd8067faeb365c05",
+          "idBoard": "65c6c6c763388d45f95e4f9b",
+          "idOrganization": "65c6c6c763388d45f95e4bf8",
+          "name": "Pop",
+          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/66fd74e7bd8067faeb365c05",
+          "color": "pink_dark",
+          "uses": 89
+        },
+        {
+          "id": "68069521ec94ac6fce6175ff",
+          "idBoard": "65c6c6c763388d45f95e4f9b",
+          "idOrganization": "65c6c6c763388d45f95e4bf8",
+          "name": "Backing",
+          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/68069521ec94ac6fce6175ff",
+          "color": "black_light",
+          "uses": 158
+        }
+      ],
+      "idLabels": [
+        "66fd74e7bd8067faeb365c05",
+        "68069521ec94ac6fce6175ff"
+      ],
+      "manualCoverAttachment": false,
+      "name": "Flowers",
+      "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/68e3e3ddcca7554b03ec3bea",
+      "pinned": false,
+      "pos": 140737488406080,
+      "shortLink": "RcbpOOz7",
+      "shortUrl": "https://trello.com/c/RcbpOOz7",
+      "start": null,
+      "subscribed": false,
+      "url": "https://trello.com/c/RcbpOOz7/533-flowers",
+      "cover": {
+        "idAttachment": null,
+        "color": null,
+        "idUploadedBackground": null,
+        "size": "normal",
+        "brightness": "dark",
+        "idPlugin": null
+      },
+      "isTemplate": false,
+      "cardRole": null,
+      "mirrorSourceId": null
+    },
+    {
+      "id": "65c6ccef69d99557dfb1e2fd",
+      "badges": {
+        "fogbugz": "",
+        "checkItems": 0,
+        "checkItemsChecked": 0,
+        "checkItemsEarliestDue": null,
+        "comments": 0,
+        "attachments": 0,
+        "description": true,
+        "due": null,
+        "dueComplete": false,
+        "start": null,
+        "lastUpdatedByAi": false,
+        "attachmentsByType": {
+          "trello": {
+            "board": 0,
+            "card": 0
+          }
+        },
+        "externalSource": null,
+        "location": false,
+        "votes": 0,
+        "maliciousAttachments": 0,
+        "viewingMemberVoted": false,
+        "subscribed": false
+      },
+      "checkItemStates": [],
+      "closed": false,
+      "dueComplete": false,
+      "dateLastActivity": "2025-10-16T01:16:15.700Z",
+      "desc": "Early in the morning, risin' to the street\nLight me up that cigarette, and I'll strap shoes on my feet\nGot to find the reason, reason things went wrong\nGot to find a reason why my money's all gone\nI got a Dalmatian and I can still get high\nI can play the guitar like a motherfuckin' riot\n\nWell, life is too short, so love the one you got\n'Cause you might get run over, or you might get shot\nNever start no static, I just get it off my chest\nNever had to battle with no bulletproof vest\nTake a small example, take a tip from me\nTake all of your money, give it all to charity\n\nLove is what I got, it's within my reach\nAnd the Sublime style's still straight from Long Beach\nIt all comes back to you, you're bound to get what you deserve\nTry and test that, you're bound to get served\nLoves what I got, don't start a riot\nYou'll feel it when the dance gets hot\n\nLovin' is what I got\nI said, remember that\nLovin' is what I got\nAnd remember that\nLovin' is what I got\nI said, remember that\nLovin' is what I got\n(I got, I got, I got)\n\nWhy I don't cry when my dog runs away\nI don't get angry at the bills I have to pay\nI don't get angry when my mom smokes pot\nHits the bottle and goes right to the rock\nFuckin' and fightin', it's all the same\nLiving with Louie Dog's the only way to stay sane\nLet the lovin', let the lovin' come back to me\n\nLovin' is what I got\nI said, remember that\nLovin' is what I got\nAnd remember that\nLovin' is what I got\nI said remember that\nLovin' is what I got\n(I got, I got, I got)\n\nWe're not that far off\nSo, that's the\nSee, but\nWe're done, man is",
+      "descData": {
+        "emoji": {}
+      },
+      "due": null,
+      "dueReminder": null,
+      "email": null,
+      "idBoard": "65c6c6c763388d45f95e4f9b",
+      "idChecklists": [],
+      "idList": "68e3e42307d031c944c17413",
+      "idMembers": [
+        "65c6c6631376a25cbe977732"
+      ],
+      "idMembersVoted": [],
+      "idShort": 40,
       "idAttachmentCover": null,
       "labels": [
         {
@@ -11696,15 +11449,440 @@
         "66ea211e3d545d3dfa1145a9"
       ],
       "manualCoverAttachment": false,
-      "name": "My Own Worst Enemy",
-      "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/68e3e3dfcca7554b03ec40e2",
+      "name": "What I Got",
+      "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/65c6ccef69d99557dfb1e2fd",
       "pinned": false,
-      "pos": 140737488405056,
-      "shortLink": "IVPthaLJ",
-      "shortUrl": "https://trello.com/c/IVPthaLJ",
+      "pos": 140737488565584,
+      "shortLink": "aP52wY6W",
+      "shortUrl": "https://trello.com/c/aP52wY6W",
       "start": null,
       "subscribed": false,
-      "url": "https://trello.com/c/IVPthaLJ/540-my-own-worst-enemy",
+      "url": "https://trello.com/c/aP52wY6W/40-what-i-got",
+      "cover": {
+        "idAttachment": null,
+        "color": null,
+        "idUploadedBackground": null,
+        "size": "normal",
+        "brightness": "dark",
+        "idPlugin": null
+      },
+      "isTemplate": false,
+      "cardRole": null,
+      "mirrorSourceId": null
+    },
+    {
+      "id": "68e3e3fabc6aefd7492a5389",
+      "badges": {
+        "attachments": 1,
+        "fogbugz": "",
+        "checkItems": 0,
+        "checkItemsChecked": 0,
+        "checkItemsEarliestDue": null,
+        "comments": 0,
+        "description": false,
+        "due": null,
+        "dueComplete": false,
+        "lastUpdatedByAi": false,
+        "start": null,
+        "externalSource": null,
+        "attachmentsByType": {
+          "trello": {
+            "board": 0,
+            "card": 0
+          }
+        },
+        "location": false,
+        "votes": 0,
+        "maliciousAttachments": 0,
+        "viewingMemberVoted": false,
+        "subscribed": false
+      },
+      "checkItemStates": [],
+      "closed": false,
+      "dueComplete": false,
+      "dateLastActivity": "2025-10-16T01:25:50.245Z",
+      "desc": "",
+      "descData": {
+        "emoji": {}
+      },
+      "due": null,
+      "dueReminder": null,
+      "email": null,
+      "idBoard": "65c6c6c763388d45f95e4f9b",
+      "idChecklists": [],
+      "idList": "68e3e42307d031c944c17413",
+      "idMembers": [
+        "67f5b87d0808e92f09399bb6"
+      ],
+      "idMembersVoted": [],
+      "idShort": 546,
+      "idAttachmentCover": null,
+      "labels": [
+        {
+          "id": "68069521ec94ac6fce6175ff",
+          "idBoard": "65c6c6c763388d45f95e4f9b",
+          "idOrganization": "65c6c6c763388d45f95e4bf8",
+          "name": "Backing",
+          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/68069521ec94ac6fce6175ff",
+          "color": "black_light",
+          "uses": 158
+        },
+        {
+          "id": "67d235486ce0fcfc7719ce99",
+          "idBoard": "65c6c6c763388d45f95e4f9b",
+          "idOrganization": "65c6c6c763388d45f95e4bf8",
+          "name": "Soul",
+          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/67d235486ce0fcfc7719ce99",
+          "color": "blue_dark",
+          "uses": 12
+        }
+      ],
+      "idLabels": [
+        "68069521ec94ac6fce6175ff",
+        "67d235486ce0fcfc7719ce99"
+      ],
+      "manualCoverAttachment": false,
+      "name": "Lose Control",
+      "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/68e3e3fabc6aefd7492a5389",
+      "pinned": false,
+      "pos": 140737488565642.1,
+      "shortLink": "WLYfsGE2",
+      "shortUrl": "https://trello.com/c/WLYfsGE2",
+      "start": null,
+      "subscribed": false,
+      "url": "https://trello.com/c/WLYfsGE2/546-lose-control",
+      "cover": {
+        "idAttachment": null,
+        "color": null,
+        "idUploadedBackground": null,
+        "size": "normal",
+        "brightness": "dark",
+        "idPlugin": null
+      },
+      "isTemplate": false,
+      "cardRole": null,
+      "mirrorSourceId": null
+    },
+    {
+      "id": "65c6ccf5e8113884d1abae49",
+      "badges": {
+        "fogbugz": "",
+        "checkItems": 0,
+        "checkItemsChecked": 0,
+        "checkItemsEarliestDue": null,
+        "comments": 0,
+        "attachments": 0,
+        "description": true,
+        "due": null,
+        "dueComplete": false,
+        "start": null,
+        "lastUpdatedByAi": false,
+        "attachmentsByType": {
+          "trello": {
+            "board": 0,
+            "card": 0
+          }
+        },
+        "externalSource": null,
+        "location": false,
+        "votes": 0,
+        "maliciousAttachments": 0,
+        "viewingMemberVoted": false,
+        "subscribed": false
+      },
+      "checkItemStates": [],
+      "closed": false,
+      "dueComplete": false,
+      "dateLastActivity": "2025-10-16T01:22:40.684Z",
+      "desc": "[Verse 1]\n\nFor all the times that you rained on my parade\n\nAnd all the clubs you get in using my name\n\nYou think you broke my heart, oh girl, for goodness' sake\n\nYou think I'm cryin' on my own, well, I ain't\n\n‌\n\n[Refrain]\n\nAnd I didn't wanna write a song\n\n'Cause I didn't want anyone thinking I still care\n\nI don't, but you still hit my phone up\n\nAnd baby, I'll be movin' on\n\nAnd I think you should be somethin' I don't wanna hold back\n\nMaybe you should know that\n\n‌\n\n[Pre-Chorus]\n\nMy mama don't like you and she likes everyone\n\nAnd I never like to admit that I was wrong\n\nAnd I've been so caught up in my job, didn't see what's going on\n\nBut now I know, I'm better sleeping on my own\n\n‌\n\n[Chorus]\n\n'Cause if you like the way you look that much\n\nOh baby, you should go and love yourself\n\nAnd if you think that I'm still holdin' on to somethin'\n\nYou should go and love yourself\n\nSee upcoming pop shows\n\nGet tickets for your favorite artists\n\n‌\n\n[Verse 2]\n\nBut when you told me that you hated my friends\n\nThe only problem was with you and not them\n\nAnd every time you told me my opinion was wrong\n\nAnd tried to make me forget where I came from\n\n‌\n\n[Refrain]\n\nAnd I didn't wanna write a song\n\n'Cause I didn't want anyone thinking I still care\n\nI don't, but you still hit my phone up\n\nAnd baby, I'll be movin' on\n\nAnd I think you should be somethin' I don't wanna hold back\n\nMaybe you should know that\n\n‌\n\n[Pre-Chorus]\n\nMy mama don't like you and she likes everyone\n\nAnd I never like to admit that I was wrong\n\nAnd I've been so caught up in my job, didn't see what's going on\n\nBut now I know, I'm better sleeping on my own\n\n‌\n\n[Chorus]\n\n'Cause if you like the way you look that much\n\nOh baby, you should go and love yourself\n\nAnd if you think that I'm still holdin' on to somethin'\n\nYou should go and love yourself\n\n‌\n\n[Trumpet, vocal feature]\n\n‌\n\n[Bridge]\n\nFor all the times that you made me feel small\n\nI fell in love, now I feel nothin' at all\n\nI never felt so low and I was vulnerable\n\nWas I a fool to let you break down my walls?\n\n‌\n\n[Chorus]\n\n'Cause if you like the way you look that much\n\nOh baby, you should go and love yourself\n\nAnd if you think that I'm still holdin' on to somethin'\n\nYou should go and love yourself\n\n'Cause if you like the way you look that much\n\nOh baby, you should go and love yourself\n\nAnd if you think that I'm still holdin' on to somethin'\n\nYou should go and love yourself",
+      "descData": {
+        "emoji": {}
+      },
+      "due": null,
+      "dueReminder": null,
+      "email": null,
+      "idBoard": "65c6c6c763388d45f95e4f9b",
+      "idChecklists": [],
+      "idList": "68e3e42307d031c944c17413",
+      "idMembers": [
+        "67f5b87d0808e92f09399bb6"
+      ],
+      "idMembersVoted": [],
+      "idShort": 41,
+      "idAttachmentCover": null,
+      "labels": [
+        {
+          "id": "66fd74e7bd8067faeb365c05",
+          "idBoard": "65c6c6c763388d45f95e4f9b",
+          "idOrganization": "65c6c6c763388d45f95e4bf8",
+          "name": "Pop",
+          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/66fd74e7bd8067faeb365c05",
+          "color": "pink_dark",
+          "uses": 89
+        }
+      ],
+      "idLabels": [
+        "66fd74e7bd8067faeb365c05"
+      ],
+      "manualCoverAttachment": false,
+      "name": "Love Yourself",
+      "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/65c6ccf5e8113884d1abae49",
+      "pinned": false,
+      "pos": 140737488565700.2,
+      "shortLink": "CVUAmBRP",
+      "shortUrl": "https://trello.com/c/CVUAmBRP",
+      "start": null,
+      "subscribed": false,
+      "url": "https://trello.com/c/CVUAmBRP/41-love-yourself",
+      "cover": {
+        "idAttachment": null,
+        "color": null,
+        "idUploadedBackground": null,
+        "size": "normal",
+        "brightness": "dark",
+        "idPlugin": null
+      },
+      "isTemplate": false,
+      "cardRole": null,
+      "mirrorSourceId": null
+    },
+    {
+      "id": "68e3e3ddcca7554b03ec3d78",
+      "badges": {
+        "attachments": 1,
+        "fogbugz": "",
+        "checkItems": 0,
+        "checkItemsChecked": 0,
+        "checkItemsEarliestDue": null,
+        "comments": 0,
+        "description": true,
+        "due": null,
+        "dueComplete": false,
+        "lastUpdatedByAi": false,
+        "start": null,
+        "externalSource": null,
+        "attachmentsByType": {
+          "trello": {
+            "board": 0,
+            "card": 0
+          }
+        },
+        "location": false,
+        "votes": 0,
+        "maliciousAttachments": 0,
+        "viewingMemberVoted": false,
+        "subscribed": false
+      },
+      "checkItemStates": [],
+      "closed": false,
+      "dueComplete": false,
+      "dateLastActivity": "2025-10-16T01:23:06.245Z",
+      "desc": "[Verse 1]\nShe grew up in an Indiana town\nHad a good lookin' mama who never was around\nBut she grew up tall and she grew up right\nWith them Indiana boys on them Indiana nights\n\nWell, she moved down here at the age of eighteen\nShe blew the boys away, was more than they'd seen\nI was introduced and we both started groovin'\nShe said, \"I dig you baby, but I got to keep movin' on\nKeep movin' on\"\n\n[Chorus]\nLast dance with Mary Jane, one more time to kill the pain\nI feel summer creepin' in and I'm tired of this town again\n\n[Verse 2]\nWell, I don't know, but I've been told\nYou never slow down, you never grow old\nI'm tired of screwin' up, tired of going down\nTired of myself, tired of this town\n\n[Refrain]\nOh, my, my, oh, hell yes\nHoney, put on that party dress\nBuy me a drink, sing me a song\nTake me as I come 'cause I can't stay long\n\n[Chorus]\nLast dance with Mary Jane, one more time to kill the pain\nI feel summer creepin' in and I'm tired of this town again\n\nDouble stop guitar lick into simple guitar solo\n\n[Verse 3]\nThere's pigeons down on Market Square\nShe's standin' in her underwear\nLookin' down from a hotel room\nThe nightfall will be comin' soon\n\n[Refrain]\nOh, my, my, oh, hell yes\nYou got to put on that party dress\nIt was too cold to cry when I woke up alone\nI hit my last number and walked to the road\n\n[Chorus]\nLast dance with Mary Jane, one more time to kill the pain\nI feel summer creepin' in and I'm tired of this town again\n\nKeyboard solo\n\nSprinkle double stop guitar lick with high-hoots\n\nHarmonica cue to outro",
+      "descData": {
+        "emoji": {}
+      },
+      "due": null,
+      "dueReminder": null,
+      "email": null,
+      "idBoard": "65c6c6c763388d45f95e4f9b",
+      "idChecklists": [],
+      "idList": "68e3e42307d031c944c17413",
+      "idMembers": [
+        "65c6c6631376a25cbe977732"
+      ],
+      "idMembersVoted": [],
+      "idShort": 538,
+      "idAttachmentCover": null,
+      "labels": [
+        {
+          "id": "66ea211e3d545d3dfa1145a9",
+          "idBoard": "65c6c6c763388d45f95e4f9b",
+          "idOrganization": "65c6c6c763388d45f95e4bf8",
+          "name": "Rock",
+          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/66ea211e3d545d3dfa1145a9",
+          "color": "green_dark",
+          "uses": 69
+        }
+      ],
+      "idLabels": [
+        "66ea211e3d545d3dfa1145a9"
+      ],
+      "manualCoverAttachment": false,
+      "name": "Mary Jane's Last Dance",
+      "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/68e3e3ddcca7554b03ec3d78",
+      "pinned": false,
+      "pos": 140737488565711.8,
+      "shortLink": "LGu5jG2v",
+      "shortUrl": "https://trello.com/c/LGu5jG2v",
+      "start": null,
+      "subscribed": false,
+      "url": "https://trello.com/c/LGu5jG2v/538-mary-janes-last-dance",
+      "cover": {
+        "idAttachment": null,
+        "color": null,
+        "idUploadedBackground": null,
+        "size": "normal",
+        "brightness": "dark",
+        "idPlugin": null
+      },
+      "isTemplate": false,
+      "cardRole": null,
+      "mirrorSourceId": null
+    },
+    {
+      "id": "68e3e3fbbc6aefd7492a593e",
+      "badges": {
+        "attachments": 0,
+        "fogbugz": "",
+        "checkItems": 0,
+        "checkItemsChecked": 0,
+        "checkItemsEarliestDue": null,
+        "comments": 0,
+        "description": true,
+        "due": null,
+        "dueComplete": false,
+        "lastUpdatedByAi": false,
+        "start": null,
+        "externalSource": null,
+        "attachmentsByType": {
+          "trello": {
+            "board": 0,
+            "card": 0
+          }
+        },
+        "location": false,
+        "votes": 0,
+        "maliciousAttachments": 0,
+        "viewingMemberVoted": false,
+        "subscribed": true
+      },
+      "checkItemStates": [],
+      "closed": false,
+      "dueComplete": false,
+      "dateLastActivity": "2025-10-16T01:22:32.929Z",
+      "desc": "[Verse 1]\n\nWell, I built me a raft, and she's ready for floating\nOld Mississippi, she's calling my name\nCatfish are jumping, that paddle wheel thumping\nBlack water keep rolling on past just the same\n\n‌\n\n[Chorus 1]\n\n**Old black water, keep on rolling**\nMississippi moon, won't you keep on shining on me?\n**Old black water, keep on rolling**\nMississippi moon, won't you keep on shining on me?\n**Old black water, keep on rolling**\nMississippi moon, won't you keep on shining on me?\n\nYeah, keep on shining your light\nGonna make everything\nPretty Mama gonna make everything all right\nAnd I ain't got no worries, 'cause I ain't in no hurry **at all**\n\n‌\n\n[Verse 2]\n\nWell, if it rains, I don't care, don't make no difference to me\nJust take that streetcar that's going up town\nYeah, I'd like to hear some funky Dixieland\nAnd dance a honky tonk\nAnd I'll be buying everybody drinks all 'round\n\n‌\n\n[Chorus 2]\n\n**Old black water, keep on rolling**\nMississippi moon, won't you keep on shining on me?\n**Old black water, keep on rolling**\nMississippi moon, won't you keep on shining on me?\n**Old black water, keep on rolling**\nMississippi moon, won't you keep on shining on me?\n\nYeah, keep on shining your light\nGonna make everything\nPretty Mama gonna make everything all right\nAnd I ain't got no worries, 'cause I ain't in no hurry **at all**\n\n[Outro]\n\nI'd like to hear some funky Dixieland\nPretty Mama come and take me by the hand\nBy the hand (hand), take me by the hand pretty Mama\nCome and dance with your daddy all night long\nI'd like to hear some funky Dixieland\nPretty Mama come and take me by the hand",
+      "descData": {
+        "emoji": {}
+      },
+      "due": null,
+      "dueReminder": null,
+      "email": null,
+      "idBoard": "65c6c6c763388d45f95e4f9b",
+      "idChecklists": [],
+      "idList": "68e3e42307d031c944c17413",
+      "idMembers": [
+        "65c6c6631376a25cbe977732"
+      ],
+      "idMembersVoted": [],
+      "idShort": 557,
+      "idAttachmentCover": null,
+      "labels": [
+        {
+          "id": "66ea211e3d545d3dfa1145a9",
+          "idBoard": "65c6c6c763388d45f95e4f9b",
+          "idOrganization": "65c6c6c763388d45f95e4bf8",
+          "name": "Rock",
+          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/66ea211e3d545d3dfa1145a9",
+          "color": "green_dark",
+          "uses": 69
+        }
+      ],
+      "idLabels": [
+        "66ea211e3d545d3dfa1145a9"
+      ],
+      "manualCoverAttachment": false,
+      "name": "Black Water",
+      "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/68e3e3fbbc6aefd7492a593e",
+      "pinned": false,
+      "pos": 140737488565723.5,
+      "shortLink": "DyN6ISko",
+      "shortUrl": "https://trello.com/c/DyN6ISko",
+      "start": null,
+      "subscribed": true,
+      "url": "https://trello.com/c/DyN6ISko/557-black-water",
+      "cover": {
+        "idAttachment": null,
+        "color": null,
+        "idUploadedBackground": null,
+        "size": "normal",
+        "brightness": "dark",
+        "idPlugin": null
+      },
+      "isTemplate": false,
+      "cardRole": null,
+      "mirrorSourceId": null
+    },
+    {
+      "id": "68e3e3fcbc6aefd7492a5ad1",
+      "badges": {
+        "attachments": 0,
+        "fogbugz": "",
+        "checkItems": 0,
+        "checkItemsChecked": 0,
+        "checkItemsEarliestDue": null,
+        "comments": 0,
+        "description": true,
+        "due": null,
+        "dueComplete": false,
+        "lastUpdatedByAi": false,
+        "start": null,
+        "externalSource": null,
+        "attachmentsByType": {
+          "trello": {
+            "board": 0,
+            "card": 0
+          }
+        },
+        "location": false,
+        "votes": 0,
+        "maliciousAttachments": 0,
+        "viewingMemberVoted": false,
+        "subscribed": true
+      },
+      "checkItemStates": [],
+      "closed": false,
+      "dueComplete": false,
+      "dateLastActivity": "2025-10-16T01:22:28.747Z",
+      "desc": "\n[Verse 1]\nWaitin' on a Sunday afternoon\nFor what I've read between the lines\nYour lies\nFeelin' like a hand in rusted shame\nSo do you laugh or does it cry?\nReply?\n\n[Chorus]\nLeavin' on a southern train\nOnly yesterday you lied\nPromises of what I seemed to be\nOnly watched the time go by\nAll of these things you said to me\n\n[Verse 2]\nBreathin' is the hardest thing to do\nWith all I've said and all that's dead for you\nYou lied, goodbye\n\n[Chorus]\nLeavin' on a southern train\nOnly yesterday you lied\nPromises of what I seemed to be\nOnly watched the time go by\nAll of these things I said to you",
+      "descData": {
+        "emoji": {}
+      },
+      "due": null,
+      "dueReminder": null,
+      "email": null,
+      "idBoard": "65c6c6c763388d45f95e4f9b",
+      "idChecklists": [],
+      "idList": "68e3e42307d031c944c17413",
+      "idMembers": [
+        "65c6c6631376a25cbe977732"
+      ],
+      "idMembersVoted": [],
+      "idShort": 560,
+      "idAttachmentCover": null,
+      "labels": [
+        {
+          "id": "66ea211e3d545d3dfa1145a9",
+          "idBoard": "65c6c6c763388d45f95e4f9b",
+          "idOrganization": "65c6c6c763388d45f95e4bf8",
+          "name": "Rock",
+          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/66ea211e3d545d3dfa1145a9",
+          "color": "green_dark",
+          "uses": 69
+        }
+      ],
+      "idLabels": [
+        "66ea211e3d545d3dfa1145a9"
+      ],
+      "manualCoverAttachment": false,
+      "name": "Interstate Love Song",
+      "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/68e3e3fcbc6aefd7492a5ad1",
+      "pinned": false,
+      "pos": 140737488565863,
+      "shortLink": "38ja93yc",
+      "shortUrl": "https://trello.com/c/38ja93yc",
+      "start": null,
+      "subscribed": true,
+      "url": "https://trello.com/c/38ja93yc/560-interstate-love-song",
       "cover": {
         "idAttachment": null,
         "color": null,
@@ -11747,7 +11925,7 @@
       "checkItemStates": [],
       "closed": false,
       "dueComplete": false,
-      "dateLastActivity": "2025-10-07T19:26:01.207Z",
+      "dateLastActivity": "2025-10-16T01:28:06.437Z",
       "desc": "",
       "descData": {
         "emoji": {}
@@ -11793,7 +11971,7 @@
       "name": "Pink Pony Club",
       "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/68e3e3dccca7554b03ec36d3",
       "pinned": false,
-      "pos": 140737488407104,
+      "pos": 140737488565979.2,
       "shortLink": "G01J4PqN",
       "shortUrl": "https://trello.com/c/G01J4PqN",
       "start": null,
@@ -11841,7 +12019,7 @@
       "checkItemStates": [],
       "closed": false,
       "dueComplete": false,
-      "dateLastActivity": "2025-10-07T19:40:12.181Z",
+      "dateLastActivity": "2025-10-16T01:26:00.918Z",
       "desc": "",
       "descData": {
         "emoji": {}
@@ -11876,105 +12054,12 @@
       "name": "Sugar, We're Goin Down",
       "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/68e3e3fbbc6aefd7492a593b",
       "pinned": false,
-      "pos": 140737488439722.66,
+      "pos": 140737488566095.5,
       "shortLink": "PRCjkVh6",
       "shortUrl": "https://trello.com/c/PRCjkVh6",
       "start": null,
       "subscribed": false,
       "url": "https://trello.com/c/PRCjkVh6/554-sugar-were-goin-down",
-      "cover": {
-        "idAttachment": null,
-        "color": null,
-        "idUploadedBackground": null,
-        "size": "normal",
-        "brightness": "dark",
-        "idPlugin": null
-      },
-      "isTemplate": false,
-      "cardRole": null,
-      "mirrorSourceId": null
-    },
-    {
-      "id": "68e3e3fbbc6aefd7492a58c1",
-      "badges": {
-        "attachments": 0,
-        "fogbugz": "",
-        "checkItems": 0,
-        "checkItemsChecked": 0,
-        "checkItemsEarliestDue": null,
-        "comments": 0,
-        "description": false,
-        "due": null,
-        "dueComplete": false,
-        "lastUpdatedByAi": false,
-        "start": null,
-        "externalSource": null,
-        "attachmentsByType": {
-          "trello": {
-            "board": 0,
-            "card": 0
-          }
-        },
-        "location": false,
-        "votes": 0,
-        "maliciousAttachments": 0,
-        "viewingMemberVoted": false,
-        "subscribed": false
-      },
-      "checkItemStates": [],
-      "closed": false,
-      "dueComplete": false,
-      "dateLastActivity": "2025-10-14T13:32:30.926Z",
-      "desc": "",
-      "descData": {
-        "emoji": {}
-      },
-      "due": null,
-      "dueReminder": null,
-      "email": null,
-      "idBoard": "65c6c6c763388d45f95e4f9b",
-      "idChecklists": [],
-      "idList": "68e3e42307d031c944c17413",
-      "idMembers": [
-        "67f5b87d0808e92f09399bb6"
-      ],
-      "idMembersVoted": [],
-      "idShort": 552,
-      "idAttachmentCover": null,
-      "labels": [
-        {
-          "id": "66fd74389dc4d91a2bf8c098",
-          "idBoard": "65c6c6c763388d45f95e4f9b",
-          "idOrganization": "65c6c6c763388d45f95e4bf8",
-          "name": "Country",
-          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/66fd74389dc4d91a2bf8c098",
-          "color": "orange_dark",
-          "uses": 84
-        },
-        {
-          "id": "68069521ec94ac6fce6175ff",
-          "idBoard": "65c6c6c763388d45f95e4f9b",
-          "idOrganization": "65c6c6c763388d45f95e4bf8",
-          "name": "Backing",
-          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/68069521ec94ac6fce6175ff",
-          "color": "black_light",
-          "uses": 158
-        }
-      ],
-      "idLabels": [
-        "66fd74389dc4d91a2bf8c098",
-        "68069521ec94ac6fce6175ff"
-      ],
-      "manualCoverAttachment": false,
-      "name": "Tipsy / A Bar Song",
-      "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/68e3e3fbbc6aefd7492a58c1",
-      "pinned": false,
-      "pos": 140737488486773.3,
-      "shortLink": "Qlg46q9A",
-      "shortUrl": "https://trello.com/c/Qlg46q9A",
-      "start": null,
-      "subscribed": false,
-      "url": "https://trello.com/c/Qlg46q9A/552-tipsy-a-bar-song",
       "cover": {
         "idAttachment": null,
         "color": null,
@@ -12017,7 +12102,7 @@
       "checkItemStates": [],
       "closed": false,
       "dueComplete": false,
-      "dateLastActivity": "2025-10-08T00:01:13.520Z",
+      "dateLastActivity": "2025-10-16T01:26:04.651Z",
       "desc": "",
       "descData": {
         "emoji": {}
@@ -12062,198 +12147,12 @@
       "name": "Shut Up And Dance With Me",
       "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/68e3e3dccca7554b03ec3626",
       "pinned": false,
-      "pos": 140737488545856,
+      "pos": 140737488566211.8,
       "shortLink": "v8eQB5IE",
       "shortUrl": "https://trello.com/c/v8eQB5IE",
       "start": null,
       "subscribed": false,
       "url": "https://trello.com/c/v8eQB5IE/521-shut-up-and-dance-with-me",
-      "cover": {
-        "idAttachment": null,
-        "color": null,
-        "idUploadedBackground": null,
-        "size": "normal",
-        "brightness": "dark",
-        "idPlugin": null
-      },
-      "isTemplate": false,
-      "cardRole": null,
-      "mirrorSourceId": null
-    },
-    {
-      "id": "68e3e3fabc6aefd7492a538c",
-      "badges": {
-        "attachments": 1,
-        "fogbugz": "",
-        "checkItems": 0,
-        "checkItemsChecked": 0,
-        "checkItemsEarliestDue": null,
-        "comments": 0,
-        "description": false,
-        "due": null,
-        "dueComplete": false,
-        "lastUpdatedByAi": false,
-        "start": null,
-        "externalSource": null,
-        "attachmentsByType": {
-          "trello": {
-            "board": 0,
-            "card": 0
-          }
-        },
-        "location": false,
-        "votes": 0,
-        "maliciousAttachments": 0,
-        "viewingMemberVoted": false,
-        "subscribed": false
-      },
-      "checkItemStates": [],
-      "closed": false,
-      "dueComplete": false,
-      "dateLastActivity": "2025-10-08T00:01:36.371Z",
-      "desc": "",
-      "descData": {
-        "emoji": {}
-      },
-      "due": null,
-      "dueReminder": null,
-      "email": null,
-      "idBoard": "65c6c6c763388d45f95e4f9b",
-      "idChecklists": [],
-      "idList": "68e3e42307d031c944c17413",
-      "idMembers": [
-        "67f5b87d0808e92f09399bb6"
-      ],
-      "idMembersVoted": [],
-      "idShort": 550,
-      "idAttachmentCover": null,
-      "labels": [
-        {
-          "id": "66fd74389dc4d91a2bf8c098",
-          "idBoard": "65c6c6c763388d45f95e4f9b",
-          "idOrganization": "65c6c6c763388d45f95e4bf8",
-          "name": "Country",
-          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/66fd74389dc4d91a2bf8c098",
-          "color": "orange_dark",
-          "uses": 84
-        },
-        {
-          "id": "68069521ec94ac6fce6175ff",
-          "idBoard": "65c6c6c763388d45f95e4f9b",
-          "idOrganization": "65c6c6c763388d45f95e4bf8",
-          "name": "Backing",
-          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/68069521ec94ac6fce6175ff",
-          "color": "black_light",
-          "uses": 158
-        }
-      ],
-      "idLabels": [
-        "66fd74389dc4d91a2bf8c098",
-        "68069521ec94ac6fce6175ff"
-      ],
-      "manualCoverAttachment": false,
-      "name": "Country Girl",
-      "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/68e3e3fabc6aefd7492a538c",
-      "pinned": false,
-      "pos": 140737488548304,
-      "shortLink": "oR5n3qLC",
-      "shortUrl": "https://trello.com/c/oR5n3qLC",
-      "start": null,
-      "subscribed": false,
-      "url": "https://trello.com/c/oR5n3qLC/550-country-girl",
-      "cover": {
-        "idAttachment": null,
-        "color": null,
-        "idUploadedBackground": null,
-        "size": "normal",
-        "brightness": "dark",
-        "idPlugin": null
-      },
-      "isTemplate": false,
-      "cardRole": null,
-      "mirrorSourceId": null
-    },
-    {
-      "id": "68e3e3dccca7554b03ec362d",
-      "badges": {
-        "attachments": 0,
-        "fogbugz": "",
-        "checkItems": 0,
-        "checkItemsChecked": 0,
-        "checkItemsEarliestDue": null,
-        "comments": 0,
-        "description": false,
-        "due": null,
-        "dueComplete": false,
-        "lastUpdatedByAi": false,
-        "start": null,
-        "externalSource": null,
-        "attachmentsByType": {
-          "trello": {
-            "board": 0,
-            "card": 0
-          }
-        },
-        "location": false,
-        "votes": 0,
-        "maliciousAttachments": 0,
-        "viewingMemberVoted": false,
-        "subscribed": false
-      },
-      "checkItemStates": [],
-      "closed": false,
-      "dueComplete": false,
-      "dateLastActivity": "2025-10-08T00:02:08.333Z",
-      "desc": "",
-      "descData": {
-        "emoji": {}
-      },
-      "due": null,
-      "dueReminder": null,
-      "email": null,
-      "idBoard": "65c6c6c763388d45f95e4f9b",
-      "idChecklists": [],
-      "idList": "68e3e42307d031c944c17413",
-      "idMembers": [
-        "67f5b87d0808e92f09399bb6"
-      ],
-      "idMembersVoted": [],
-      "idShort": 524,
-      "idAttachmentCover": null,
-      "labels": [
-        {
-          "id": "66fd74e7bd8067faeb365c05",
-          "idBoard": "65c6c6c763388d45f95e4f9b",
-          "idOrganization": "65c6c6c763388d45f95e4bf8",
-          "name": "Pop",
-          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/66fd74e7bd8067faeb365c05",
-          "color": "pink_dark",
-          "uses": 89
-        },
-        {
-          "id": "68069521ec94ac6fce6175ff",
-          "idBoard": "65c6c6c763388d45f95e4f9b",
-          "idOrganization": "65c6c6c763388d45f95e4bf8",
-          "name": "Backing",
-          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/68069521ec94ac6fce6175ff",
-          "color": "black_light",
-          "uses": 158
-        }
-      ],
-      "idLabels": [
-        "66fd74e7bd8067faeb365c05",
-        "68069521ec94ac6fce6175ff"
-      ],
-      "manualCoverAttachment": false,
-      "name": "Twenty-4K Magic",
-      "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/68e3e3dccca7554b03ec362d",
-      "pinned": false,
-      "pos": 140737488549528,
-      "shortLink": "CzAqJYaf",
-      "shortUrl": "https://trello.com/c/CzAqJYaf",
-      "start": null,
-      "subscribed": false,
-      "url": "https://trello.com/c/CzAqJYaf/524-twenty-4k-magic",
       "cover": {
         "idAttachment": null,
         "color": null,
@@ -12296,7 +12195,7 @@
       "checkItemStates": [],
       "closed": false,
       "dueComplete": false,
-      "dateLastActivity": "2025-10-07T19:41:29.540Z",
+      "dateLastActivity": "2025-10-16T01:16:18.206Z",
       "desc": "",
       "descData": {
         "emoji": {}
@@ -12341,200 +12240,12 @@
       "name": "Uptown Funk",
       "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/68e3e3dccca7554b03ec36d4",
       "pinned": false,
-      "pos": 140737488564096,
+      "pos": 140737488566328,
       "shortLink": "JHo0ubcP",
       "shortUrl": "https://trello.com/c/JHo0ubcP",
       "start": null,
       "subscribed": false,
       "url": "https://trello.com/c/JHo0ubcP/527-uptown-funk",
-      "cover": {
-        "idAttachment": null,
-        "color": null,
-        "idUploadedBackground": null,
-        "size": "normal",
-        "brightness": "dark",
-        "idPlugin": null
-      },
-      "isTemplate": false,
-      "cardRole": null,
-      "mirrorSourceId": null
-    },
-    {
-      "id": "68e3e3fabc6aefd7492a538a",
-      "badges": {
-        "attachments": 0,
-        "fogbugz": "",
-        "checkItems": 0,
-        "checkItemsChecked": 0,
-        "checkItemsEarliestDue": null,
-        "comments": 0,
-        "description": false,
-        "due": null,
-        "dueComplete": false,
-        "lastUpdatedByAi": false,
-        "start": null,
-        "externalSource": null,
-        "attachmentsByType": {
-          "trello": {
-            "board": 0,
-            "card": 0
-          }
-        },
-        "location": false,
-        "votes": 0,
-        "maliciousAttachments": 0,
-        "viewingMemberVoted": false,
-        "subscribed": false
-      },
-      "checkItemStates": [],
-      "closed": false,
-      "dueComplete": false,
-      "dateLastActivity": "2025-10-08T00:12:30.267Z",
-      "desc": "",
-      "descData": {
-        "emoji": {}
-      },
-      "due": null,
-      "dueReminder": null,
-      "email": null,
-      "idBoard": "65c6c6c763388d45f95e4f9b",
-      "idChecklists": [],
-      "idList": "68e3e42307d031c944c17413",
-      "idMembers": [
-        "67f5b87d0808e92f09399bb6"
-      ],
-      "idMembersVoted": [],
-      "idShort": 549,
-      "idAttachmentCover": null,
-      "labels": [
-        {
-          "id": "66ea211e3d545d3dfa1145a9",
-          "idBoard": "65c6c6c763388d45f95e4f9b",
-          "idOrganization": "65c6c6c763388d45f95e4bf8",
-          "name": "Rock",
-          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/66ea211e3d545d3dfa1145a9",
-          "color": "green_dark",
-          "uses": 69
-        },
-        {
-          "id": "68069521ec94ac6fce6175ff",
-          "idBoard": "65c6c6c763388d45f95e4f9b",
-          "idOrganization": "65c6c6c763388d45f95e4bf8",
-          "name": "Backing",
-          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/68069521ec94ac6fce6175ff",
-          "color": "black_light",
-          "uses": 158
-        }
-      ],
-      "idLabels": [
-        "66ea211e3d545d3dfa1145a9",
-        "68069521ec94ac6fce6175ff"
-      ],
-      "manualCoverAttachment": false,
-      "name": "Mr. Brightside",
-      "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/68e3e3fabc6aefd7492a538a",
-      "pinned": false,
-      "pos": 140737488568064,
-      "shortLink": "sNcbe4bQ",
-      "shortUrl": "https://trello.com/c/sNcbe4bQ",
-      "start": null,
-      "subscribed": false,
-      "url": "https://trello.com/c/sNcbe4bQ/549-mr-brightside",
-      "cover": {
-        "idAttachment": null,
-        "color": null,
-        "idUploadedBackground": null,
-        "size": "normal",
-        "brightness": "dark",
-        "idPlugin": null
-      },
-      "isTemplate": false,
-      "cardRole": null,
-      "mirrorSourceId": null
-    },
-    {
-      "id": "68e3e3ddcca7554b03ec3be9",
-      "badges": {
-        "attachments": 1,
-        "fogbugz": "",
-        "checkItems": 0,
-        "checkItemsChecked": 0,
-        "checkItemsEarliestDue": null,
-        "comments": 0,
-        "description": false,
-        "due": null,
-        "dueComplete": false,
-        "lastUpdatedByAi": false,
-        "start": null,
-        "externalSource": null,
-        "attachmentsByType": {
-          "trello": {
-            "board": 0,
-            "card": 0
-          }
-        },
-        "location": false,
-        "votes": 0,
-        "maliciousAttachments": 0,
-        "viewingMemberVoted": false,
-        "subscribed": false
-      },
-      "checkItemStates": [],
-      "closed": false,
-      "dueComplete": false,
-      "dateLastActivity": "2025-10-08T00:01:33.137Z",
-      "desc": "",
-      "descData": {
-        "emoji": {}
-      },
-      "due": null,
-      "dueReminder": null,
-      "email": null,
-      "idBoard": "65c6c6c763388d45f95e4f9b",
-      "idChecklists": [],
-      "idList": "68e3e42307d031c944c17413",
-      "idMembers": [
-        "67f5b87d0808e92f09399bb6",
-        "68c6e53f55781e4307364366",
-        "68e40783b04c8f0627ebea70"
-      ],
-      "idMembersVoted": [],
-      "idShort": 535,
-      "idAttachmentCover": null,
-      "labels": [
-        {
-          "id": "68069521ec94ac6fce6175ff",
-          "idBoard": "65c6c6c763388d45f95e4f9b",
-          "idOrganization": "65c6c6c763388d45f95e4bf8",
-          "name": "Backing",
-          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/68069521ec94ac6fce6175ff",
-          "color": "black_light",
-          "uses": 158
-        },
-        {
-          "id": "66ea211e3d545d3dfa1145a9",
-          "idBoard": "65c6c6c763388d45f95e4f9b",
-          "idOrganization": "65c6c6c763388d45f95e4bf8",
-          "name": "Rock",
-          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/66ea211e3d545d3dfa1145a9",
-          "color": "green_dark",
-          "uses": 69
-        }
-      ],
-      "idLabels": [
-        "68069521ec94ac6fce6175ff",
-        "66ea211e3d545d3dfa1145a9"
-      ],
-      "manualCoverAttachment": false,
-      "name": "Don't Stop Believin",
-      "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/68e3e3ddcca7554b03ec3be9",
-      "pinned": false,
-      "pos": 140737488572032,
-      "shortLink": "oAv5GU0I",
-      "shortUrl": "https://trello.com/c/oAv5GU0I",
-      "start": null,
-      "subscribed": false,
-      "url": "https://trello.com/c/oAv5GU0I/535-dont-stop-believin",
       "cover": {
         "idAttachment": null,
         "color": null,
@@ -17338,90 +17049,6 @@
       "mirrorSourceId": null
     },
     {
-      "id": "68d69361767a465bf6b42301",
-      "badges": {
-        "attachments": 0,
-        "fogbugz": "",
-        "checkItems": 0,
-        "checkItemsChecked": 0,
-        "checkItemsEarliestDue": null,
-        "comments": 0,
-        "description": false,
-        "due": null,
-        "dueComplete": false,
-        "lastUpdatedByAi": false,
-        "start": null,
-        "externalSource": null,
-        "attachmentsByType": {
-          "trello": {
-            "board": 0,
-            "card": 0
-          }
-        },
-        "location": false,
-        "votes": 0,
-        "maliciousAttachments": 0,
-        "viewingMemberVoted": false,
-        "subscribed": false
-      },
-      "checkItemStates": [],
-      "closed": false,
-      "dueComplete": false,
-      "dateLastActivity": "2025-10-06T18:49:21.293Z",
-      "desc": "",
-      "descData": {
-        "emoji": {}
-      },
-      "due": null,
-      "dueReminder": null,
-      "email": null,
-      "idBoard": "65c6c6c763388d45f95e4f9b",
-      "idChecklists": [],
-      "idList": "68e3e4497e06974a9913bd15",
-      "idMembers": [
-        "68c6e53f55781e4307364366",
-        "68e40783b04c8f0627ebea70"
-      ],
-      "idMembersVoted": [],
-      "idShort": 489,
-      "idAttachmentCover": null,
-      "labels": [
-        {
-          "id": "66fd74389dc4d91a2bf8c098",
-          "idBoard": "65c6c6c763388d45f95e4f9b",
-          "idOrganization": "65c6c6c763388d45f95e4bf8",
-          "name": "Country",
-          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/66fd74389dc4d91a2bf8c098",
-          "color": "orange_dark",
-          "uses": 84
-        }
-      ],
-      "idLabels": [
-        "66fd74389dc4d91a2bf8c098"
-      ],
-      "manualCoverAttachment": false,
-      "name": "Redneck Woman",
-      "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/68d69361767a465bf6b42301",
-      "pinned": false,
-      "pos": 140737488338944,
-      "shortLink": "DwLxpHXh",
-      "shortUrl": "https://trello.com/c/DwLxpHXh",
-      "start": null,
-      "subscribed": false,
-      "url": "https://trello.com/c/DwLxpHXh/489-redneck-woman",
-      "cover": {
-        "idAttachment": null,
-        "color": null,
-        "idUploadedBackground": null,
-        "size": "normal",
-        "brightness": "dark",
-        "idPlugin": null
-      },
-      "isTemplate": false,
-      "cardRole": null,
-      "mirrorSourceId": null
-    },
-    {
       "id": "68d693f3a158b62cc110265a",
       "badges": {
         "attachments": 0,
@@ -17506,26 +17133,26 @@
       "mirrorSourceId": null
     },
     {
-      "id": "65c6ccb881e5d3f404a2fa81",
+      "id": "68e3e3fbbc6aefd7492a593c",
       "badges": {
+        "attachments": 0,
         "fogbugz": "",
         "checkItems": 0,
         "checkItemsChecked": 0,
         "checkItemsEarliestDue": null,
         "comments": 0,
-        "attachments": 0,
         "description": false,
         "due": null,
         "dueComplete": false,
-        "start": null,
         "lastUpdatedByAi": false,
+        "start": null,
+        "externalSource": null,
         "attachmentsByType": {
           "trello": {
             "board": 0,
             "card": 0
           }
         },
-        "externalSource": null,
         "location": false,
         "votes": 0,
         "maliciousAttachments": 0,
@@ -17535,7 +17162,7 @@
       "checkItemStates": [],
       "closed": false,
       "dueComplete": false,
-      "dateLastActivity": "2025-10-06T18:49:30.707Z",
+      "dateLastActivity": "2025-10-16T01:28:46.832Z",
       "desc": "",
       "descData": {
         "emoji": {}
@@ -17550,7 +17177,100 @@
         "67f5b87d0808e92f09399bb6"
       ],
       "idMembersVoted": [],
-      "idShort": 35,
+      "idShort": 556,
+      "idAttachmentCover": null,
+      "labels": [
+        {
+          "id": "66fd74389dc4d91a2bf8c098",
+          "idBoard": "65c6c6c763388d45f95e4f9b",
+          "idOrganization": "65c6c6c763388d45f95e4bf8",
+          "name": "Country",
+          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/66fd74389dc4d91a2bf8c098",
+          "color": "orange_dark",
+          "uses": 84
+        },
+        {
+          "id": "68069521ec94ac6fce6175ff",
+          "idBoard": "65c6c6c763388d45f95e4f9b",
+          "idOrganization": "65c6c6c763388d45f95e4bf8",
+          "name": "Backing",
+          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/68069521ec94ac6fce6175ff",
+          "color": "black_light",
+          "uses": 158
+        }
+      ],
+      "idLabels": [
+        "66fd74389dc4d91a2bf8c098",
+        "68069521ec94ac6fce6175ff"
+      ],
+      "manualCoverAttachment": false,
+      "name": "Friends In Low Places",
+      "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/68e3e3fbbc6aefd7492a593c",
+      "pinned": false,
+      "pos": 140737488473368,
+      "shortLink": "dVUFlXhD",
+      "shortUrl": "https://trello.com/c/dVUFlXhD",
+      "start": null,
+      "subscribed": false,
+      "url": "https://trello.com/c/dVUFlXhD/556-friends-in-low-places",
+      "cover": {
+        "idAttachment": null,
+        "color": null,
+        "idUploadedBackground": null,
+        "size": "normal",
+        "brightness": "dark",
+        "idPlugin": null
+      },
+      "isTemplate": false,
+      "cardRole": null,
+      "mirrorSourceId": null
+    },
+    {
+      "id": "68e3e3fbbc6aefd7492a5945",
+      "badges": {
+        "attachments": 1,
+        "fogbugz": "",
+        "checkItems": 0,
+        "checkItemsChecked": 0,
+        "checkItemsEarliestDue": null,
+        "comments": 0,
+        "description": false,
+        "due": null,
+        "dueComplete": false,
+        "lastUpdatedByAi": false,
+        "start": null,
+        "externalSource": null,
+        "attachmentsByType": {
+          "trello": {
+            "board": 0,
+            "card": 0
+          }
+        },
+        "location": false,
+        "votes": 0,
+        "maliciousAttachments": 0,
+        "viewingMemberVoted": false,
+        "subscribed": false
+      },
+      "checkItemStates": [],
+      "closed": false,
+      "dueComplete": false,
+      "dateLastActivity": "2025-10-16T01:20:08.532Z",
+      "desc": "",
+      "descData": {
+        "emoji": {}
+      },
+      "due": null,
+      "dueReminder": null,
+      "email": null,
+      "idBoard": "65c6c6c763388d45f95e4f9b",
+      "idChecklists": [],
+      "idList": "68e3e4497e06974a9913bd15",
+      "idMembers": [
+        "67f5b87d0808e92f09399bb6"
+      ],
+      "idMembersVoted": [],
+      "idShort": 558,
       "idAttachmentCover": null,
       "labels": [
         {
@@ -17567,15 +17287,15 @@
         "66fd74389dc4d91a2bf8c098"
       ],
       "manualCoverAttachment": false,
-      "name": "Sweet Home Alabama",
-      "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/65c6ccb881e5d3f404a2fa81",
+      "name": "Beer Never Broke My Heart",
+      "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/68e3e3fbbc6aefd7492a5945",
       "pinned": false,
-      "pos": 140737488384128,
-      "shortLink": "L8D61tuF",
-      "shortUrl": "https://trello.com/c/L8D61tuF",
+      "pos": 140737488575024,
+      "shortLink": "srI1rtgX",
+      "shortUrl": "https://trello.com/c/srI1rtgX",
       "start": null,
       "subscribed": false,
-      "url": "https://trello.com/c/L8D61tuF/35-sweet-home-alabama",
+      "url": "https://trello.com/c/srI1rtgX/558-beer-never-broke-my-heart",
       "cover": {
         "idAttachment": null,
         "color": null,
@@ -17589,7 +17309,7 @@
       "mirrorSourceId": null
     },
     {
-      "id": "68e3e3fbbc6aefd7492a5946",
+      "id": "68e3e3fbbc6aefd7492a58c1",
       "badges": {
         "attachments": 0,
         "fogbugz": "",
@@ -17597,7 +17317,7 @@
         "checkItemsChecked": 0,
         "checkItemsEarliestDue": null,
         "comments": 0,
-        "description": true,
+        "description": false,
         "due": null,
         "dueComplete": false,
         "lastUpdatedByAi": false,
@@ -17618,8 +17338,8 @@
       "checkItemStates": [],
       "closed": false,
       "dueComplete": false,
-      "dateLastActivity": "2025-10-07T17:12:05.211Z",
-      "desc": "Well, sometimes I go out by myself\nAnd I look across the water\nAnd I think of all the things, what you do\nAnd in my head, I make a picture\n\n'Cause since I've come on home\nWell, my body's been a mess\nAnd I've missed your ginger hair\nAnd the way you like to dress\n\nWon't you come on over?\nAnd stop makin' a fool out of me\nWhy don't you come on over Valerie?\nValerie\n\nDid you have to go to jail?\nPut your house up on for sale\nDid you get a good lawyer?\nI hope you didn't catch a tan\nI hope you'll find the right man\nWho'll fix it for ya\n\nAre you shoppin' anywhere?\nChanged the color of you hair, are you busy?\nAnd did you have to pay the fine\nYou were dodging all the time, are you still dizzy?\n\nYeah, 'cause since I've come on home\nWell, my body's been a mess\nAnd I've missed your ginger hair\nAnd the way you like to dress\n\nWon't you come on over?\nAnd stop makin' a fool out of me\nWhy don't you come on over Valerie?\nValerie\nValerie\nValerie\n\nWell, sometimes I go out by myself\nAnd I look across the water\nAnd I think of all the things, what you're doin'\nAnd in my head I make a picture\n\n'Cause since I've come on home\nWell, my body's been a mess\nAnd I've missed your ginger hair\nAnd the way you like to dress\n\nWon't you come on over?\nAnd stop makin' a fool out of me\nWhy don't you come on over Valerie?\nValerie\nValerie\nValerie\n\nYeah, Valerie",
+      "dateLastActivity": "2025-10-16T01:23:27.555Z",
+      "desc": "",
       "descData": {
         "emoji": {}
       },
@@ -17630,11 +17350,196 @@
       "idChecklists": [],
       "idList": "68e3e4497e06974a9913bd15",
       "idMembers": [
-        "68c6e53f55781e4307364366",
-        "68e40783b04c8f0627ebea70"
+        "67f5b87d0808e92f09399bb6"
       ],
       "idMembersVoted": [],
-      "idShort": 559,
+      "idShort": 552,
+      "idAttachmentCover": null,
+      "labels": [
+        {
+          "id": "66fd74389dc4d91a2bf8c098",
+          "idBoard": "65c6c6c763388d45f95e4f9b",
+          "idOrganization": "65c6c6c763388d45f95e4bf8",
+          "name": "Country",
+          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/66fd74389dc4d91a2bf8c098",
+          "color": "orange_dark",
+          "uses": 84
+        },
+        {
+          "id": "68069521ec94ac6fce6175ff",
+          "idBoard": "65c6c6c763388d45f95e4f9b",
+          "idOrganization": "65c6c6c763388d45f95e4bf8",
+          "name": "Backing",
+          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/68069521ec94ac6fce6175ff",
+          "color": "black_light",
+          "uses": 158
+        }
+      ],
+      "idLabels": [
+        "66fd74389dc4d91a2bf8c098",
+        "68069521ec94ac6fce6175ff"
+      ],
+      "manualCoverAttachment": false,
+      "name": "Tipsy / A Bar Song",
+      "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/68e3e3fbbc6aefd7492a58c1",
+      "pinned": false,
+      "pos": 140737488672024,
+      "shortLink": "Qlg46q9A",
+      "shortUrl": "https://trello.com/c/Qlg46q9A",
+      "start": null,
+      "subscribed": false,
+      "url": "https://trello.com/c/Qlg46q9A/552-tipsy-a-bar-song",
+      "cover": {
+        "idAttachment": null,
+        "color": null,
+        "idUploadedBackground": null,
+        "size": "normal",
+        "brightness": "dark",
+        "idPlugin": null
+      },
+      "isTemplate": false,
+      "cardRole": null,
+      "mirrorSourceId": null
+    },
+    {
+      "id": "68e3e3fabc6aefd7492a538c",
+      "badges": {
+        "attachments": 1,
+        "fogbugz": "",
+        "checkItems": 0,
+        "checkItemsChecked": 0,
+        "checkItemsEarliestDue": null,
+        "comments": 0,
+        "description": false,
+        "due": null,
+        "dueComplete": false,
+        "lastUpdatedByAi": false,
+        "start": null,
+        "externalSource": null,
+        "attachmentsByType": {
+          "trello": {
+            "board": 0,
+            "card": 0
+          }
+        },
+        "location": false,
+        "votes": 0,
+        "maliciousAttachments": 0,
+        "viewingMemberVoted": false,
+        "subscribed": false
+      },
+      "checkItemStates": [],
+      "closed": false,
+      "dueComplete": false,
+      "dateLastActivity": "2025-10-16T01:16:10.574Z",
+      "desc": "",
+      "descData": {
+        "emoji": {}
+      },
+      "due": null,
+      "dueReminder": null,
+      "email": null,
+      "idBoard": "65c6c6c763388d45f95e4f9b",
+      "idChecklists": [],
+      "idList": "68e3e4497e06974a9913bd15",
+      "idMembers": [
+        "67f5b87d0808e92f09399bb6"
+      ],
+      "idMembersVoted": [],
+      "idShort": 550,
+      "idAttachmentCover": null,
+      "labels": [
+        {
+          "id": "66fd74389dc4d91a2bf8c098",
+          "idBoard": "65c6c6c763388d45f95e4f9b",
+          "idOrganization": "65c6c6c763388d45f95e4bf8",
+          "name": "Country",
+          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/66fd74389dc4d91a2bf8c098",
+          "color": "orange_dark",
+          "uses": 84
+        },
+        {
+          "id": "68069521ec94ac6fce6175ff",
+          "idBoard": "65c6c6c763388d45f95e4f9b",
+          "idOrganization": "65c6c6c763388d45f95e4bf8",
+          "name": "Backing",
+          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/68069521ec94ac6fce6175ff",
+          "color": "black_light",
+          "uses": 158
+        }
+      ],
+      "idLabels": [
+        "66fd74389dc4d91a2bf8c098",
+        "68069521ec94ac6fce6175ff"
+      ],
+      "manualCoverAttachment": false,
+      "name": "Country Girl",
+      "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/68e3e3fabc6aefd7492a538c",
+      "pinned": false,
+      "pos": 140737488769024,
+      "shortLink": "oR5n3qLC",
+      "shortUrl": "https://trello.com/c/oR5n3qLC",
+      "start": null,
+      "subscribed": false,
+      "url": "https://trello.com/c/oR5n3qLC/550-country-girl",
+      "cover": {
+        "idAttachment": null,
+        "color": null,
+        "idUploadedBackground": null,
+        "size": "normal",
+        "brightness": "dark",
+        "idPlugin": null
+      },
+      "isTemplate": false,
+      "cardRole": null,
+      "mirrorSourceId": null
+    },
+    {
+      "id": "68e3e3fabc6aefd7492a538a",
+      "badges": {
+        "attachments": 0,
+        "fogbugz": "",
+        "checkItems": 0,
+        "checkItemsChecked": 0,
+        "checkItemsEarliestDue": null,
+        "comments": 0,
+        "description": false,
+        "due": null,
+        "dueComplete": false,
+        "lastUpdatedByAi": false,
+        "start": null,
+        "externalSource": null,
+        "attachmentsByType": {
+          "trello": {
+            "board": 0,
+            "card": 0
+          }
+        },
+        "location": false,
+        "votes": 0,
+        "maliciousAttachments": 0,
+        "viewingMemberVoted": false,
+        "subscribed": false
+      },
+      "checkItemStates": [],
+      "closed": false,
+      "dueComplete": false,
+      "dateLastActivity": "2025-10-16T01:16:05.405Z",
+      "desc": "",
+      "descData": {
+        "emoji": {}
+      },
+      "due": null,
+      "dueReminder": null,
+      "email": null,
+      "idBoard": "65c6c6c763388d45f95e4f9b",
+      "idChecklists": [],
+      "idList": "68e3e4497e06974a9913bd15",
+      "idMembers": [
+        "67f5b87d0808e92f09399bb6"
+      ],
+      "idMembersVoted": [],
+      "idShort": 549,
       "idAttachmentCover": null,
       "labels": [
         {
@@ -17661,15 +17566,15 @@
         "68069521ec94ac6fce6175ff"
       ],
       "manualCoverAttachment": false,
-      "name": "Valerie",
-      "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/68e3e3fbbc6aefd7492a5946",
+      "name": "Mr. Brightside",
+      "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/68e3e3fabc6aefd7492a538a",
       "pinned": false,
-      "pos": 140737488748544,
-      "shortLink": "j2sz7ZUD",
-      "shortUrl": "https://trello.com/c/j2sz7ZUD",
+      "pos": 140737488773120,
+      "shortLink": "sNcbe4bQ",
+      "shortUrl": "https://trello.com/c/sNcbe4bQ",
       "start": null,
       "subscribed": false,
-      "url": "https://trello.com/c/j2sz7ZUD/559-valerie",
+      "url": "https://trello.com/c/sNcbe4bQ/549-mr-brightside",
       "cover": {
         "idAttachment": null,
         "color": null,
@@ -17683,26 +17588,26 @@
       "mirrorSourceId": null
     },
     {
-      "id": "65c6ccef69d99557dfb1e2fd",
+      "id": "68e3e3ddcca7554b03ec3be9",
       "badges": {
+        "attachments": 1,
         "fogbugz": "",
         "checkItems": 0,
         "checkItemsChecked": 0,
         "checkItemsEarliestDue": null,
         "comments": 0,
-        "attachments": 0,
-        "description": true,
+        "description": false,
         "due": null,
         "dueComplete": false,
-        "start": null,
         "lastUpdatedByAi": false,
+        "start": null,
+        "externalSource": null,
         "attachmentsByType": {
           "trello": {
             "board": 0,
             "card": 0
           }
         },
-        "externalSource": null,
         "location": false,
         "votes": 0,
         "maliciousAttachments": 0,
@@ -17712,8 +17617,8 @@
       "checkItemStates": [],
       "closed": false,
       "dueComplete": false,
-      "dateLastActivity": "2025-10-07T17:12:20.168Z",
-      "desc": "Early in the morning, risin' to the street\nLight me up that cigarette, and I'll strap shoes on my feet\nGot to find the reason, reason things went wrong\nGot to find a reason why my money's all gone\nI got a Dalmatian and I can still get high\nI can play the guitar like a motherfuckin' riot\n\nWell, life is too short, so love the one you got\n'Cause you might get run over, or you might get shot\nNever start no static, I just get it off my chest\nNever had to battle with no bulletproof vest\nTake a small example, take a tip from me\nTake all of your money, give it all to charity\n\nLove is what I got, it's within my reach\nAnd the Sublime style's still straight from Long Beach\nIt all comes back to you, you're bound to get what you deserve\nTry and test that, you're bound to get served\nLoves what I got, don't start a riot\nYou'll feel it when the dance gets hot\n\nLovin' is what I got\nI said, remember that\nLovin' is what I got\nAnd remember that\nLovin' is what I got\nI said, remember that\nLovin' is what I got\n(I got, I got, I got)\n\nWhy I don't cry when my dog runs away\nI don't get angry at the bills I have to pay\nI don't get angry when my mom smokes pot\nHits the bottle and goes right to the rock\nFuckin' and fightin', it's all the same\nLiving with Louie Dog's the only way to stay sane\nLet the lovin', let the lovin' come back to me\n\nLovin' is what I got\nI said, remember that\nLovin' is what I got\nAnd remember that\nLovin' is what I got\nI said remember that\nLovin' is what I got\n(I got, I got, I got)\n\nWe're not that far off\nSo, that's the\nSee, but\nWe're done, man is",
+      "dateLastActivity": "2025-10-16T01:15:50.919Z",
+      "desc": "",
       "descData": {
         "emoji": {}
       },
@@ -17724,12 +17629,23 @@
       "idChecklists": [],
       "idList": "68e3e4497e06974a9913bd15",
       "idMembers": [
-        "65c6c6631376a25cbe977732"
+        "67f5b87d0808e92f09399bb6",
+        "68c6e53f55781e4307364366",
+        "68e40783b04c8f0627ebea70"
       ],
       "idMembersVoted": [],
-      "idShort": 40,
+      "idShort": 535,
       "idAttachmentCover": null,
       "labels": [
+        {
+          "id": "68069521ec94ac6fce6175ff",
+          "idBoard": "65c6c6c763388d45f95e4f9b",
+          "idOrganization": "65c6c6c763388d45f95e4bf8",
+          "name": "Backing",
+          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/68069521ec94ac6fce6175ff",
+          "color": "black_light",
+          "uses": 158
+        },
         {
           "id": "66ea211e3d545d3dfa1145a9",
           "idBoard": "65c6c6c763388d45f95e4f9b",
@@ -17741,18 +17657,19 @@
         }
       ],
       "idLabels": [
+        "68069521ec94ac6fce6175ff",
         "66ea211e3d545d3dfa1145a9"
       ],
       "manualCoverAttachment": false,
-      "name": "What I Got",
-      "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/65c6ccef69d99557dfb1e2fd",
+      "name": "Don't Stop Believin",
+      "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/68e3e3ddcca7554b03ec3be9",
       "pinned": false,
-      "pos": 140737488764928,
-      "shortLink": "aP52wY6W",
-      "shortUrl": "https://trello.com/c/aP52wY6W",
+      "pos": 140737488781312,
+      "shortLink": "oAv5GU0I",
+      "shortUrl": "https://trello.com/c/oAv5GU0I",
       "start": null,
       "subscribed": false,
-      "url": "https://trello.com/c/aP52wY6W/40-what-i-got",
+      "url": "https://trello.com/c/oAv5GU0I/535-dont-stop-believin",
       "cover": {
         "idAttachment": null,
         "color": null,
@@ -19683,6 +19600,89 @@
       "start": null,
       "subscribed": false,
       "url": "https://trello.com/c/j4SbWcCk/270-take-me-home-country-roads-john-denver-a",
+      "cover": {
+        "idAttachment": null,
+        "color": null,
+        "idUploadedBackground": null,
+        "size": "normal",
+        "brightness": "dark",
+        "idPlugin": null
+      },
+      "isTemplate": false,
+      "cardRole": null,
+      "mirrorSourceId": null
+    },
+    {
+      "id": "65c6ccb881e5d3f404a2fa81",
+      "badges": {
+        "fogbugz": "",
+        "checkItems": 0,
+        "checkItemsChecked": 0,
+        "checkItemsEarliestDue": null,
+        "comments": 0,
+        "attachments": 0,
+        "description": false,
+        "due": null,
+        "dueComplete": false,
+        "start": null,
+        "lastUpdatedByAi": false,
+        "attachmentsByType": {
+          "trello": {
+            "board": 0,
+            "card": 0
+          }
+        },
+        "externalSource": null,
+        "location": false,
+        "votes": 0,
+        "maliciousAttachments": 0,
+        "viewingMemberVoted": false,
+        "subscribed": false
+      },
+      "checkItemStates": [],
+      "closed": false,
+      "dueComplete": false,
+      "dateLastActivity": "2025-10-16T01:20:00.907Z",
+      "desc": "",
+      "descData": {
+        "emoji": {}
+      },
+      "due": null,
+      "dueReminder": null,
+      "email": null,
+      "idBoard": "65c6c6c763388d45f95e4f9b",
+      "idChecklists": [],
+      "idList": "68596868beae970e5c1e9768",
+      "idMembers": [
+        "67f5b87d0808e92f09399bb6"
+      ],
+      "idMembersVoted": [],
+      "idShort": 35,
+      "idAttachmentCover": null,
+      "labels": [
+        {
+          "id": "66fd74389dc4d91a2bf8c098",
+          "idBoard": "65c6c6c763388d45f95e4f9b",
+          "idOrganization": "65c6c6c763388d45f95e4bf8",
+          "name": "Country",
+          "nodeId": "ari:cloud:trello::label/workspace/65c6c6c763388d45f95e4bf8/66fd74389dc4d91a2bf8c098",
+          "color": "orange_dark",
+          "uses": 84
+        }
+      ],
+      "idLabels": [
+        "66fd74389dc4d91a2bf8c098"
+      ],
+      "manualCoverAttachment": false,
+      "name": "Sweet Home Alabama",
+      "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/65c6ccb881e5d3f404a2fa81",
+      "pinned": false,
+      "pos": 140737489584384,
+      "shortLink": "L8D61tuF",
+      "shortUrl": "https://trello.com/c/L8D61tuF",
+      "start": null,
+      "subscribed": false,
+      "url": "https://trello.com/c/L8D61tuF/35-sweet-home-alabama",
       "cover": {
         "idAttachment": null,
         "color": null,
@@ -29032,6 +29032,75 @@
       "cover": {
         "idAttachment": null,
         "color": "red",
+        "idUploadedBackground": null,
+        "size": "normal",
+        "brightness": "light",
+        "idPlugin": null
+      },
+      "isTemplate": false,
+      "cardRole": null,
+      "mirrorSourceId": null
+    },
+    {
+      "id": "68efe05c55c8e12ef52d3aa9",
+      "badges": {
+        "attachments": 0,
+        "fogbugz": "",
+        "checkItems": 0,
+        "checkItemsChecked": 0,
+        "checkItemsEarliestDue": null,
+        "comments": 0,
+        "description": false,
+        "due": "2026-05-09T04:34:00.000Z",
+        "dueComplete": false,
+        "lastUpdatedByAi": false,
+        "start": null,
+        "externalSource": null,
+        "attachmentsByType": {
+          "trello": {
+            "board": 0,
+            "card": 0
+          }
+        },
+        "location": false,
+        "votes": 0,
+        "maliciousAttachments": 0,
+        "viewingMemberVoted": false,
+        "subscribed": false
+      },
+      "checkItemStates": [],
+      "closed": false,
+      "dueComplete": false,
+      "dateLastActivity": "2025-10-15T17:58:14.429Z",
+      "desc": "",
+      "descData": {
+        "emoji": {}
+      },
+      "due": "2026-05-09T04:34:00.000Z",
+      "dueReminder": 1440,
+      "email": null,
+      "idBoard": "65c6c6c763388d45f95e4f9b",
+      "idChecklists": [],
+      "idList": "68e6806e872f2fbfb6fa7f56",
+      "idMembers": [],
+      "idMembersVoted": [],
+      "idShort": 592,
+      "idAttachmentCover": null,
+      "labels": [],
+      "idLabels": [],
+      "manualCoverAttachment": true,
+      "name": "Uncle Lyle’s Tavern",
+      "nodeId": "ari:cloud:trello::card/workspace/65c6c6c763388d45f95e4bf8/68efe05c55c8e12ef52d3aa9",
+      "pinned": false,
+      "pos": 140737488465920,
+      "shortLink": "8W7jWJAn",
+      "shortUrl": "https://trello.com/c/8W7jWJAn",
+      "start": null,
+      "subscribed": false,
+      "url": "https://trello.com/c/8W7jWJAn/592-uncle-lyles-tavern",
+      "cover": {
+        "idAttachment": null,
+        "color": "lime",
         "idUploadedBackground": null,
         "size": "normal",
         "brightness": "light",
