@@ -11331,7 +11331,7 @@
       "checkItemStates": [],
       "closed": false,
       "dueComplete": false,
-      "dateLastActivity": "2025-10-16T16:25:50.729Z",
+      "dateLastActivity": "2025-10-16T16:51:29.862Z",
       "desc": "",
       "descData": {
         "emoji": {}
@@ -11343,8 +11343,8 @@
       "idChecklists": [],
       "idList": "68f0fba53270509c9494eb3e",
       "idMembers": [
-        "68c6e53f55781e4307364366",
-        "67f5b87d0808e92f09399bb6"
+        "67f5b87d0808e92f09399bb6",
+        "68c6e53f55781e4307364366"
       ],
       "idMembersVoted": [],
       "idShort": 610,
