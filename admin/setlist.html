@@ -6,7 +6,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
-  <title>Generate Setlist - Ultraphonics Admin</title>
+  <title>Setlists - Ultraphonics Admin</title>
   <link rel="stylesheet" href="../assets/css/styles.css" />
   <style>
     .setlist-container {
@@ -29,8 +29,9 @@
       background-color: var(--color-background-dark);
       border-radius: 6px;
       border: 1px solid rgba(255, 255, 255, 0.1);
+      text-align: center; /* Center content in the section */
     }
-    .back-button {
+    .back-button { /* Reusing button style */
       display: inline-block;
       background-color: var(--color-accent);
       color: var(--color-white);
@@ -40,117 +41,9 @@
       transition: all 0.3s ease;
       margin-top: 1rem;
     }
-    .print-button {
+    .back-button:hover {
       background-color: var(--color-accent);
-      color: var(--color-white);
-      border: none;
-      padding: 12px 24px;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 1rem;
-      margin-top: 1rem;
-      transition: all 0.3s ease;
-    }
-    .setlist-output {
-        margin-top: 2rem;
-        padding: 1.5rem;
-        background-color: rgba(255, 255, 255, 0.05);
-        border-radius: 6px;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-    .setlist-column {
-        margin-bottom: 1rem;
-    }
-    .setlist-column li {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .song-title {
-      flex-grow: 1;
-      text-align: left;
-    }
-    .avatar-container {
-      display: flex;
-      gap: 6px;
-    }
-    .avatar {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 22px;
-      height: 22px;
-      border-radius: 50%;
-      color: white;
-      font-size: 12px;
-      font-weight: bold;
-      vertical-align: middle;
-    }
-
-    @media (min-width: 768px) {
-      .setlist-row-top,
-      .setlist-row-bottom {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 1rem;
-      }
-      .setlist-row-top {
-        margin-bottom: 2rem;
-      }
-      .setlist-column {
-        margin-bottom: 0;
-      }
-    }
-    
-    @media print {
-      body {
-        background-color: #fff !important;
-        color: #000 !important;
-        margin: 1in;
-        padding: 0;
-      }
-      .setlist-header,
-      .setlist-section,
-      #print-button-container {
-        display: none !important;
-      }
-      .setlist-container,
-      .setlist-output {
-        margin: 0 !important;
-        padding: 0 !important;
-        border: none !important;
-        box-shadow: none !important;
-        background-color: transparent !important;
-      }
-      #setlist-output-container {
-        display: block !important;
-      }
-      .setlist-row, .setlist-column {
-        page-break-inside: avoid;
-      }
-      .setlist-column {
-        border: 1px solid #000 !important;
-        margin-bottom: 1rem;
-      }
-      .setlist-row-top,
-      .setlist-row-bottom {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 1rem;
-      }
-      .setlist-row-top { margin-bottom: 2rem; }
-      .setlist-column h3 {
-        color: #000 !important;
-      }
-      .setlist-column li {
-        border-bottom-color: #ccc !important;
-      }
-      .avatar {
-        -webkit-print-color-adjust: exact;
-        color-adjust: exact;
-        border: 1px solid #ddd;
-        color: #000 !important;
-      }
+      transform: translateY(-2px);
     }
   </style>
 </head>
@@ -159,18 +52,14 @@
     <div class="setlist-container">
       <div class="setlist-header">
         <h1>Band Setlist</h1>
-        <p>This setlist is automatically updated from Trello.</p>
-        <a href="https://trello.com/b/oatz1C1E" target="_blank" class="back-button">Go to Trello</a>
+        <p>View current setlists directly on Trello.</p>
       </div>
 
-      <div id="setlist-output-container" class="setlist-output">
-         <div id="setlist-output">
-           <p>Loading setlist...</p>
-         </div>
-         <div style="text-align: center; margin-top: 2rem; display: none;" id="print-button-container">
-           <button id="print-btn" class="print-button">🖨️ Print Setlist</button>
-         </div>
-       </div>
+      <div class="setlist-section">
+        <a href="https://trello.com/b/JhDIXJ4s/riverbillies-10-24" target="_blank" class="back-button">
+          Riverbillies (10/24)
+        </a>
+      </div>
 
       <div class="setlist-section">
         <h3>Navigation</h3>
@@ -178,6 +67,5 @@
       </div>
     </div>
   </main>
-  <script src="../../src/setlist.js"></script>
-</body>
+  </body>
 </html>
