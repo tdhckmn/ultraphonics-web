@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   // --- 1. Fetch Data First ---
   let shows = [];
   try {
-    const response = await fetch('../api/shows.json');
+    const response = await fetch(`../api/shows.json?v=${new Date().getTime()}`);
     if (!response.ok) {
       throw new Error('Failed to load show data.');
     }
@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   } catch (error) {
     console.error(error);
   }
-  
+
   const siteContent = {
     shows,
     ...config,
@@ -25,14 +25,14 @@ document.addEventListener('DOMContentLoaded', async () => {
   function firstUrl(...candidates) {
     return candidates.find(u => typeof u === "string" && u.trim().length > 0);
   }
-  
+
   function formatCityState(city, state) {
     const c = (city || "").trim();
     const s = (state || "").trim();
     if (c && s) return `${c}, ${s}`;
     return c || s || "";
   }
-  
+
   function ensureMobileVideoAutoplay() {
     const mobileVideo = document.querySelector('.hero-video-mobile');
     const desktopVideo = document.querySelector('.hero-video-desktop');
@@ -162,7 +162,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const tipButton = document.querySelector(selectors.tipButton);
     const modal = document.getElementById('tip-modal');
     const closeModal = document.querySelector('.close-modal');
-    
+
     if (!tipButton || !modal) return;
 
     const venmoLink = document.getElementById('venmo-link');
@@ -171,15 +171,15 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const { venmo, cashApp, payPal, tipAmount, note } = tipping;
     const encodedNote = encodeURIComponent(note);
-    
+
     const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
-    
+
     if (isIOS) {
         venmoLink.href = `venmo://paycharge?txn=pay&recipients=${venmo}&amount=${tipAmount}&note=${encodedNote}`;
     } else {
         venmoLink.href = `https://account.venmo.com/u/${venmo}?txn=pay&amount=${tipAmount}&note=${encodedNote}`;
     }
-    
+
     cashappLink.href = `https://cash.app/\$${cashApp}/${tipAmount}`;
     paypalLink.href = `https://paypal.me/${payPal}/${tipAmount}`;
 
@@ -202,7 +202,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
     });
 
-    // Add analytics to each payment button
     venmoLink.addEventListener('click', () => trackEvent('Tip with Venmo'));
     cashappLink.addEventListener('click', () => trackEvent('Tip with Cash App'));
     paypalLink.addEventListener('click', () => trackEvent('Tip with PayPal'));
@@ -211,9 +210,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   function loadShowSchedule() {
     const showsContainer = document.querySelector(selectors.showsContainer);
     if (!showsContainer) return;
-
     const currentYear = new Date().getFullYear();
-    
+
     const showsForCurrentYear = siteContent.shows
       .filter(show => new Date(show.date).getFullYear() === currentYear)
       .sort((a, b) => new Date(a.date) - new Date(b.date));
@@ -287,6 +285,46 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
+  function setupMailingListAdminAccess() {
+    const mailerLiteForm = document.querySelector('form[action*="mailerlite.com"]');
+    if (!mailerLiteForm) {
+      console.warn("MailerLite form not found. Admin access via email field is disabled.");
+      return;
+    }
+
+    const emailInput = mailerLiteForm.querySelector('input[name="fields[email]"]');
+    const submitButton = mailerLiteForm.querySelector('button[type="submit"]');
+
+    if (!emailInput || !submitButton) {
+      console.warn("MailerLite email input or submit button not found.");
+      return;
+    }
+
+    let isAdminMode = false;
+
+    // Listen for input changes in the email field
+    emailInput.addEventListener('input', () => {
+      const currentValue = emailInput.value.toLowerCase();
+      if (currentValue === 'dishwasher') {
+        submitButton.textContent = 'Go to Admin';
+        isAdminMode = true;
+      } else {
+        submitButton.textContent = 'Sign up';
+        isAdminMode = false;
+      }
+    });
+
+    // Handle the button click separately
+    submitButton.addEventListener('click', (event) => {
+      if (isAdminMode) {
+        event.preventDefault(); // Prevent form submission
+        window.location.href = '/admin/index.html'; // Redirect
+      }
+      // If not isAdminMode, the click behaves normally and submits the form
+    });
+  }
+
+
   // --- 3. Run Initialization Functions ---
   injectStructuredData();
   populateTextContent();
@@ -294,5 +332,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   setupTippingModal();
   loadShowSchedule();
   setupAdminCode();
+  setupMailingListAdminAccess(); // Call the updated function
   ensureMobileVideoAutoplay();
 });
