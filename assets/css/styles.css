@@ -1,16 +1,11 @@
-/* === Root Variables === */
 :root {
-  /* Colors */
   --color-background: #1a1a1a;
   --color-background-dark: #121212;
   --color-text: #ffffff;
   --color-text-secondary: #cccccc;
   --color-text-tertiary: #aaaaaa;
   --color-accent: #00ddde;
-  --color-accent-hover: #00ddde;
   --color-white: #ffffff;
-
-  /* Spacing */
   --spacing-xs: 0.25rem;
   --spacing-sm: 0.5rem;
   --spacing-md: 1rem;
@@ -18,21 +13,15 @@
   --spacing-xl: 2rem;
   --spacing-xxl: 3rem;
   --spacing-xxxl: 4rem;
-
-  /* Sizes */
   --header-height: 300px;
   --logo-size: 150px;
   --logo-border: 0px;
   --social-icon-size: 40px;
-
-  /* Shadows */
   --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.2);
   --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.3);
-  --shadow-glow: 0 0 10px rgba(4, 252, 252, 0.5),
-                0 0 20px rgba(4, 252, 252, 0.3),
-                0 0 30px rgba(4, 252, 252, 0.2);
-
-  /* Font Sizes */
+  --shadow-glow: 0 0 10px rgba(0, 221, 222, 0.5),
+                0 0 20px rgba(0, 221, 222, 0.3),
+                0 0 30px rgba(0, 221, 222, 0.2);
   --font-size-base: 1rem;
   --font-size-sm: 0.9rem;
   --font-size-lg: 1.2rem;
@@ -40,7 +29,6 @@
   --font-size-xxl: 3rem;
 }
 
-/* === Base Styles === */
 body {
   margin: 0;
   font-family: Arial, sans-serif;
@@ -74,8 +62,8 @@ main {
   align-items: center;
   width: 100%;
   flex: 1;
-  position: relative; /* Add this */
-  z-index: 1;        /* And this */
+  position: relative;
+  z-index: 1;
 }
 
 h1 {
@@ -98,7 +86,6 @@ h3 {
   margin-bottom: var(--spacing-xxl);
 }
 
-/* === Hero Video Background === */
 .hero {
   position: relative;
   overflow: hidden;
@@ -125,8 +112,6 @@ h3 {
   align-items: center;
 }
 
-
-/* === Button Styles === */
 .button-container {
   display: flex;
   gap: var(--spacing-md);
@@ -148,12 +133,11 @@ h3 {
 }
 
 .button:hover {
-  background-color: var(--color-accent-hover);
+  background-color: var(--color-accent); /* Use main accent color directly */
   transform: translateY(-2px);
   box-shadow: var(--shadow-md);
 }
 
-/* === Services Section === */
 .content-section {
   margin: var(--spacing-xxl) 0;
   max-width: 800px;
@@ -221,15 +205,15 @@ h3 {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(29, 185, 84, 0.1), transparent);
+  background: linear-gradient(90deg, transparent, rgba(0, 221, 222, 0.1), transparent);
   transition: left 0.5s ease;
 }
 
 .services-grid li:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(29, 185, 84, 0.2);
+  box-shadow: 0 4px 12px rgba(0, 221, 222, 0.2);
   border-color: var(--color-accent);
-  background-color: rgba(29, 185, 84, 0.05);
+  background-color: rgba(0, 221, 222, 0.05);
   color: var(--color-accent);
 }
 
@@ -242,13 +226,12 @@ h3 {
   color: var(--color-text-secondary);
 }
 
-/* === Shows Section === */
 a.venue-link {
   color: var(--color-accent);
   text-decoration: none;
 }
 a.venue-link:hover {
-  color: var(--color-accent-hover);
+  color: var(--color-accent);
   text-decoration: underline;
 }
 #shows > div {
@@ -262,7 +245,6 @@ a.venue-link:hover {
   margin-top: 2.5em;
 }
 
-/* Loading Spinner Styles */
 .loading-spinner {
   text-align: center;
   padding: 2rem;
@@ -284,7 +266,6 @@ a.venue-link:hover {
   100% { transform: rotate(360deg); }
 }
 
-/* === Modal Styles === */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -303,7 +284,7 @@ a.venue-link:hover {
   background-color: var(--color-background);
   padding: var(--spacing-xl);
   border-radius: 8px;
-  border: 1px solid var(--color-spotify-green);
+  border: 1px solid var(--color-accent);
   text-align: center;
   position: relative;
   width: 90%;
@@ -327,7 +308,7 @@ a.venue-link:hover {
 }
 
 .modal-content h2 {
-  color: var(--color-spotify-green);
+  color: var(--color-accent);
   margin-top: 0;
 }
 
@@ -341,20 +322,19 @@ a.venue-link:hover {
 .modal-buttons .button {
   width: 100%;
   box-sizing: border-box;
-  display: flex; /* Make the button a flex container */
-  align-items: center; /* Vertically center items */
-  justify-content: center; /* Horizontally center items */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .button-logo {
-  height: 1.2em; /* Adjust size relative to font-size */
+  height: 1.2em;
   width: auto;
-  margin-right: var(--spacing-sm); /* Space between logo and text */
-  vertical-align: middle; /* Align with text baseline */
-  filter: brightness(0) invert(1); /* Ensure logos are white if they aren't already */
+  margin-right: var(--spacing-sm);
+  vertical-align: middle;
+  filter: brightness(0) invert(1);
 }
 
-/* === Footer === */
 footer {
   margin-top: auto;
   padding: 30px 10px;
@@ -386,10 +366,9 @@ footer {
 
 .social-icons a:hover img {
   transform: scale(1.1);
-  filter: brightness(0) saturate(100%) invert(48%) sepia(79%) saturate(2476%) hue-rotate(118deg) brightness(118%) contrast(119%);
+  filter: brightness(0) saturate(100%) invert(60%) sepia(90%) saturate(1000%) hue-rotate(130deg) brightness(100%) contrast(105%);
 }
 
-/* === START: MAILING LIST STYLES === */
 .mailing-list-section {
   max-width: 450px;
   margin: 40px auto;
@@ -478,7 +457,6 @@ footer {
   text-align: center !important;
   line-height: 1.6 !important;
 }
-/* === END: MAILING LIST STYLES === */
 
 .email {
   margin-top: var(--spacing-xl);
@@ -493,7 +471,6 @@ footer {
   color: var(--color-accent);
 }
 
-/* === Media Queries for Responsiveness === */
 @media (min-width: 600px) {
   #shows > div {
     font-size: 1.2rem;
@@ -504,8 +481,6 @@ footer {
     font-weight: bold;
   }
 }
-
-/* --- Mobile Styles --- */
 
 .hero-video-desktop {
   display: block;
@@ -560,6 +535,7 @@ footer {
   }
 
   .services-grid {
+    grid-template-columns: 1fr;
     padding: 0 var(--spacing-md);
   }
 }
