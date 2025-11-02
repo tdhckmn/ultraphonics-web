@@ -1,130 +1,159 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-full">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Setlists - Ultraphonics Admin</title>
-    <!-- Using the existing stylesheet -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Setlist Downloader - Ultraphonics Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="../assets/css/styles.css" />
     <style>
-        /* Re-using styles from your other admin pages for consistency */
+        /* Using simplified styles inspired by the admin theme */
+        body {
+            background-color: var(--color-background-dark, #121212);
+            color: var(--color-text, #e0e0e0);
+            font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
         .admin-container {
-            max-width: 600px; /* Made it narrower as less content is needed */
+            max-width: 800px;
             margin: 2rem auto;
             padding: 2rem;
-            background-color: var(--color-background);
+            background-color: var(--color-background, #1e1e1e);
             border-radius: 8px;
-            box-shadow: var(--shadow-md);
+            box-shadow: var(--shadow-md, 0 4px 12px rgba(0, 0, 0, 0.5));
         }
         .admin-header {
             text-align: center;
             margin-bottom: 2rem;
             padding-bottom: 1rem;
-            border-bottom: 2px solid var(--color-accent);
+            border-bottom: 2px solid var(--color-accent, #00ddde);
+        }
+        .admin-header h1 {
+            color: var(--color-white, #ffffff);
+            font-size: 2rem;
+            font-weight: 600;
+        }
+        .admin-header p {
+            color: var(--color-text-secondary, #aaaaaa);
+            font-size: 1rem;
         }
         .admin-section {
             margin-bottom: 2rem;
             padding: 1.5rem;
-            background-color: var(--color-background-dark);
+            background-color: var(--color-background, #282828);
             border-radius: 6px;
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
-        .back-button {
+        .board-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .board-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            padding: 1rem;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 6px;
+            border: 1px solid #333;
+        }
+        @media (min-width: 640px) {
+            .board-item {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+        }
+        .board-name {
+            font-size: 1.25rem;
+            font-weight: 500;
+            color: var(--color-white, #ffffff);
+        }
+        .button-group {
+            display: flex;
+            gap: 0.75rem;
+            flex-shrink: 0;
+        }
+        .btn {
             display: inline-block;
-            background-color: var(--color-accent);
-            color: var(--color-white);
-            padding: 10px 18px;
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #ffffff;
+            border-radius: 6px;
             text-decoration: none;
-            border-radius: 5px;
-            transition: all 0.3s ease;
-            font-size: 0.9rem;
-        }
-        .back-button:hover {
-            background-color: var(--color-accent-hover);
-            transform: translateY(-2px);
-        }
-
-        /* --- New Simplified Styles --- */
-        
-        #loading-message {
-            margin-top: 1.5rem;
-            font-weight: bold;
-            min-height: 1.2em;
-            text-align: center;
-        }
-        
-        /* Style for the dropdown */
-        .setlist-select {
-            display: block;
-            width: 100%;
-            padding: 12px;
-            font-size: 1.1rem;
-            border-radius: 5px;
-            border: 1px solid var(--color-accent);
-            background-color: var(--color-background-light);
-            color: var(--color-white);
+            transition: all 0.2s ease;
+            white-space: nowrap;
             cursor: pointer;
-        }
-
-        /* Download Button */
-        .download-button {
-            background-color: var(--color-accent);
-            color: var(--color-white);
             border: none;
-            padding: 15px 30px;
-            font-size: 1.1rem;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: block;
-            margin: 2rem auto 0;
-            width: 100%;
         }
-        .download-button:hover {
-            background-color: var(--color-accent-hover);
-            transform: translateY(-2px);
+        .btn-primary {
+            background-color: var(--color-accent, #00ddde);
+            color: #121212;
         }
-        .download-button:disabled {
+        .btn-primary:hover {
+            background-color: var(--color-accent-hover, #00b8b9);
+        }
+        .btn-primary:disabled {
             background-color: #555;
+            color: #888;
             cursor: not-allowed;
             opacity: 0.7;
         }
+        .btn-secondary {
+            background-color: #4a4a4a;
+            color: #e0e0e0;
+        }
+        .btn-secondary:hover {
+            background-color: #5a5a5a;
+        }
+        #status-message {
+            margin-top: 1.5rem;
+            font-weight: 500;
+            min-height: 1.2em;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+        .status-success {
+            color: #34d399;
+        }
+        .status-error {
+            color: #f87171;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 2rem;
+            color: var(--color-accent, #00ddde);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .back-link:hover {
+            color: var(--color-accent-hover, #00b8b9);
+        }
     </style>
 </head>
-<body>
+<body class="h-full">
     <main>
         <div class="admin-container">
             <div class="admin-header">
-                <h1>Setlists</h1>
-                <p>Download a Trello setlist as an `.ableset` file.</p>
+                <h1>Setlist Exporter</h1>
+                <p>Download a Trello board as an .ableset file</p>
             </div>
 
-            <!-- Setlist Download Tool -->
             <div class="admin-section">
-                <h3>Select Setlist to Download</h3>
-                
-                <select id="board-select" class="setlist-select">
-                    <option value="JhDIXJ4s">3 Hour Set</option>
-                    <option value="cIqzpNi6">4 Hour Set</option>
-                    <!-- Add more <option> tags here for new boards -->
-                </select>
-                
-                <button id="download-ableset-btn" class="download-button">
-                    Download AbleSet File
-                </button>
-
-                <p id="loading-message"></p>
+                <div id="boards-container" class="board-list">
+                    <!-- Boards will be dynamically inserted here -->
+                </div>
+                <p id="status-message"></p>
             </div>
 
-            <div class="admin-section back-button-section">
-                <a href="index.html" class="back-button">← Back to Admin</a>
+            <div class="back-button-section">
+                <a href="index.html" class="back-link">← Back to Admin</a>
             </div>
-
         </div>
     </main>
 
     <!-- Load the new JavaScript file -->
-    <!-- The path is relative to the admin/ folder -->
     <script src="../src/ableset.js" defer></script>
 </body>
 </html>

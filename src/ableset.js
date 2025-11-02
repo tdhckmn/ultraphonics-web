@@ -2,20 +2,32 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
-    // --- Configuration ---
-    // We must use a CORS proxy to bypass browser security
+    // --- CONFIGURATION ---
+    
+    // Define the list of public Trello boards
+    // id: The ID from the board URL (trello.com/b/[BOARD_ID]/...)
+    // name: The display name you want to see on the page
+    // trelloUrl: The full URL to the board for the "Launch Trello" button
+    const boards = [
+        { id: 'ge3DeazJ', name: '🎤 Rehearsal 11/5', trelloUrl: 'https://trello.com/b/ge3DeazJ' },
+        { id: 'cIqzpNi6', name: '🔥 Hell 11/28', trelloUrl: 'https://trello.com/b/cIqzpNi6' },
+        { id: 'fuOnZPRs', name: '📋 Main Song List', trelloUrl: 'https://trello.com/b/fuOnZPRs/main-song-list' }
+        // Add more boards here as needed
+        // { id: '...', name: '...', trelloUrl: '...' }
+    ];
+
+    // We must use a CORS proxy to bypass browser security for public JSON files
     const CORS_PROXY = 'https://api.allorigins.win/raw?url=';
     const TRELLO_BASE_URL = 'https://trello.com/b/';
 
     // --- DOM Elements ---
-    const loadingMessage = document.getElementById('loading-message');
-    const downloadBtn = document.getElementById('download-ableset-btn');
-    const boardSelect = document.getElementById('board-select');
+    const boardsContainer = document.getElementById('boards-container');
+    const statusMessage = document.getElementById('status-message');
 
     // --- Core Functions ---
 
     /**
-     * Fetches the Trello board data from the public JSON URL via a CORS proxy.
+     * Fetches the Trello board's public JSON data via a CORS proxy.
      */
     async function fetchTrelloData(boardId) {
         const trelloJsonUrl = `${TRELLO_BASE_URL}${boardId}.json`;
@@ -24,74 +36,105 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const response = await fetch(proxyUrl);
             if (!response.ok) {
-                // Try to get text from the failed response for more context
                 const errorText = await response.text();
                 console.error("Proxy/Trello Response Error:", errorText);
-                throw new Error(`Failed to fetch from proxy. Status: ${response.status}.`);
+                throw new Error(`Failed to fetch board. Status: ${response.status}. Is the board public?`);
             }
             return await response.json();
         } catch (error) {
             console.error('Fetch Error:', error);
-            // More robust error message
-            const errorMessage = error.message ? error.message : 'An unknown fetch error occurred.';
-            loadingMessage.textContent = `Error: ${errorMessage}. Please check console and network tab.`;
-            loadingMessage.style.color = 'red';
-            return null; // Return null instead of re-throwing to prevent unhandled rejection
+            showStatus(`Error: ${error.message}. Check console.`, true);
+            return null;
         }
     }
 
     /**
      * Generates and triggers the download of the .ableset file.
      */
-    function generateAndDownloadFile(boardData) {
+    function generateAndDownloadFile(boardData, boardName) {
         if (!boardData) {
-            alert("No setlist data provided to generator.");
+            showStatus("Error: No data to generate file.", true);
             return;
         }
 
-        const setlistName = boardData.name;
-        const metaMap = [];
-        let orderIndex = 0;
+        const setlistName = boardName;
+        let combinedSetlist = [];
 
-        // Get all lists (columns) in order
-        const setLists = boardData.lists
-            .filter(list => !list.closed)
+        // 1. Filter out unwanted lists and sort them by position
+        const filteredLists = boardData.lists
+            .filter(list => !list.closed && !list.name.toLowerCase().includes("ableton live library"))
             .sort((a, b) => a.pos - b.pos);
-        
-        // Create a single, flat list of all song names in the correct order
-        for (const list of setLists) {
-            const cards = boardData.cards
-                .filter(card => card.idList === list.id && !card.closed && !isNoteCard(card.name))
-                .sort((a, b) => a.pos - b.pos);
+
+        if (filteredLists.length === 0) {
+            showStatus(`No valid lists found on board "${boardName}". (Note: "Ableton Live Library" is ignored)`, true);
+            return;
+        }
+
+        // 2. Create a map of cards by list for efficient lookup
+        const cardsByList = {};
+        for (const card of boardData.cards) {
+            if (card.closed) continue;
+            if (!cardsByList[card.idList]) {
+                cardsByList[card.idList] = [];
+            }
+            cardsByList[card.idList].push(card);
+        }
+
+        // 3. Process each list in order
+        for (const list of filteredLists) {
+            const cards = (cardsByList[list.id] || []).sort((a, b) => a.pos - b.pos);
             
             for (const card of cards) {
-                // This is the format AbleSet's import expects.
-                metaMap.push({
-                    "name": card.name.trim(),
-                    "order": orderIndex,
-                    "skipped": false,
-                    "stop": false // 'stop: false' means it will play through to the next song
-                });
-                orderIndex++;
+                let item;
+                try {
+                    // Try to parse the description as JSON
+                    const parsedDesc = JSON.parse(card.desc);
+                    
+                    // Check if it's the expected JSON structure (has id, time, lastKnownName)
+                    if (parsedDesc && typeof parsedDesc.lastKnownName === 'string' && typeof parsedDesc.time === 'number') {
+                        item = parsedDesc; // Use the object from the description
+                    } else {
+                        // It's valid JSON, but not the format we want. Treat as a normal card.
+                        console.warn(`Card "${card.name}" had JSON description, but not in expected format. Using card name.`);
+                        item = {
+                            id: null,
+                            time: 0,
+                            lastKnownName: card.name,
+                            skipped: false
+                        };
+                    }
+                } catch (e) {
+                    // Not valid JSON (empty string, lyrics, notes), so create a default item
+                    item = {
+                        id: null, // No ableset ID
+                        time: 0,  // No ableset time
+                        lastKnownName: card.name,
+                        skipped: false
+                    };
+                    // Log that we're using fallback
+                    if (card.desc) {
+                         console.log(`Card "${card.name}" has non-JSON description, using card name as fallback.`);
+                    }
+                }
+                
+                // Add the processed item to the list
+                combinedSetlist.push(item);
             }
         }
 
-        // Create the final file content
-        const fileContent = {
-            "metaMap": metaMap,
-            "setlistName": setlistName
-        };
+        if (combinedSetlist.length === 0) {
+            showStatus(`No cards found on board "${boardName}".`, true);
+            return;
+        }
 
-        const dataStr = JSON.stringify(fileContent, null, 2);
+        // 4. Create the final .ableset file content (as a raw array)
+        const dataStr = JSON.stringify(combinedSetlist, null, 2);
         const dataBlob = new Blob([dataStr], { type: 'application/json' });
 
-        // Create a temporary link to trigger the download
         const downloadAnchor = document.createElement('a');
+        const safeFilename = setlistName.toLowerCase().replace(/[^a-z0-9]/gi, '_');
         downloadAnchor.href = URL.createObjectURL(dataBlob);
-        
-        // Create a clean filename
-        const safeFilename = setlistName.toLowerCase().replace(/[^a-z0-9]/g, '-');
-        downloadAnchor.download = `${safeFilename}.ableset`; // Use .ableset extension
+        downloadAnchor.download = `${safeFilename}.ableset`;
 
         document.body.appendChild(downloadAnchor);
         downloadAnchor.click();
@@ -101,66 +144,78 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Helper Functions ---
 
-    /**
-     * Checks if a Trello card is a "note" card to be skipped.
-     * We'll filter out cards starting with ---, BREAK, or an emoji.
-     */
-    function isNoteCard(cardName) {
-        const lowerName = cardName.trim().toLowerCase();
-        const emojiRegex = /^\p{Emoji}/u; // Regex to detect a starting emoji
+    function showStatus(message, isError = false) {
+        if (!statusMessage) return;
+        statusMessage.textContent = message;
+        statusMessage.className = isError ? 'status-error' : 'status-success';
         
-        return lowerName.startsWith('---') || 
-               lowerName.startsWith('break') || 
-               emojiRegex.test(cardName.trim());
+        // Clear message after 5 seconds
+        setTimeout(() => {
+            statusMessage.textContent = '';
+            statusMessage.className = '';
+        }, 5000);
     }
 
-    // --- Event Listeners ---
-    downloadBtn.addEventListener('click', async () => {
-        const selectedBoardId = boardSelect.value;
-        const selectedBoardName = boardSelect.options[boardSelect.selectedIndex].text;
+    function setButtonLoading(button, isLoading) {
+        button.disabled = isLoading;
+        button.classList.toggle('btn-disabled', isLoading);
+        button.textContent = isLoading ? 'Downloading...' : 'Download .ableset';
+    }
 
-        // 1. Set Loading State
-        downloadBtn.disabled = true;
-        downloadBtn.textContent = 'Fetching Trello Data...';
-        loadingMessage.textContent = `Loading ${selectedBoardName}...`;
-        loadingMessage.style.color = 'var(--color-text-secondary)';
+    // --- Global Download Function ---
+    // Make it global so inline onclick can find it
+    window.downloadBoardAsAbleset = async (boardId, boardName, buttonId) => {
+        const downloadButton = document.getElementById(buttonId);
+        if (!downloadButton || downloadButton.disabled) return;
+
+        setButtonLoading(downloadButton, true);
+        showStatus(`Loading ${boardName}...`);
 
         try {
-            // 2. Fetch Data
-            const boardData = await fetchTrelloData(selectedBoardId);
+            const boardData = await fetchTrelloData(boardId);
             
             if (boardData) {
-                // Only proceed if fetch was successful (boardData is not null)
-                loadingMessage.textContent = 'Data loaded. Generating file...';
-                
-                // 3. Generate File
-                generateAndDownloadFile(boardData);
-                
-                loadingMessage.textContent = `✅ Success! Your file is downloading.`;
-                loadingMessage.style.color = 'var(--color-accent)';
-            } else {
-                // Error message was already set by fetchTrelloData
-                console.error("Download process failed: boardData is null.");
+                showStatus('Data loaded. Generating file...');
+                generateAndDownloadFile(boardData, boardName);
+                showStatus(`✅ Success! Download for "${boardName}" has started.`);
             }
+            // If boardData is null, fetchTrelloData already showed an error
         } catch (error) {
-            // This will catch any unexpected synchronous errors
             console.error("Download process failed unexpectedly:", error);
-            const errorMessage = error.message ? error.message : 'An unknown error occurred.';
-            loadingMessage.textContent = `Error: ${errorMessage}`;
-            loadingMessage.style.color = 'red';
+            showStatus(`Error: ${error.message}`, true);
         } finally {
-            // 4. Reset Button
-            downloadBtn.disabled = false;
-            downloadBtn.textContent = 'Download AbleSet File';
-
-            // Clear status message after 5 seconds
-            setTimeout(() => {
-                if (loadingMessage.textContent.startsWith('✅') || loadingMessage.textContent.startsWith('Error:')) {
-                    loadingMessage.textContent = '';
-                }
-            }, 5000);
+            setButtonLoading(downloadButton, false);
         }
-    });
+    };
 
+    // --- Initialization ---
+    function initializeBoardList() {
+        if (!boardsContainer) return;
+
+        if (boards.length === 0) {
+            boardsContainer.innerHTML = '<p class="text-center text-gray-500">No boards configured in src/ableset.js.</p>';
+            return;
+        }
+
+        boards.forEach(board => {
+            const buttonId = `download-btn-${board.id}`;
+            const boardEl = document.createElement('div');
+            boardEl.className = 'board-item';
+            boardEl.innerHTML = `
+                <span class="board-name">${board.name}</span>
+                <div class="button-group">
+                    <button id="${buttonId}" onclick="downloadBoardAsAbleset('${board.id}', '${board.name}', '${buttonId}')" class="btn btn-secondary">
+                        Download .ableset
+                    </button>
+                    <a href="${board.trelloUrl}" target="_blank" class="btn btn-primary">
+                        Launch Trello
+                    </a>
+                </div>
+            `;
+            boardsContainer.appendChild(boardEl);
+        });
+    }
+
+    initializeBoardList();
 });
 
