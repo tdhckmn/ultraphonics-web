@@ -158,6 +158,34 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
+  function setupSocialButtons() {
+    const fbButton = document.querySelector('.fb-link');
+    const instaButton = document.querySelector('.insta-link');
+    const ytButton = document.querySelector('.yt-link');
+    const emailButton = document.querySelector('.email');
+
+    if (fbButton) {
+      fbButton.addEventListener('click', () => {
+          trackEvent('Facebook social clicked');
+      });
+    }
+    if (instaButton) {
+      instaButton.addEventListener('click', () => {
+          trackEvent('Instagram social clicked');
+      });
+    }
+    if (ytButton) {
+      ytButton.addEventListener('click', () => {
+          trackEvent('YouTube social clicked');
+      });
+    }
+    if (emailButton) {
+      emailButton.addEventListener('click', () => {
+          trackEvent('Email link clicked');
+      });
+    }
+  }
+
   function setupTippingModal() {
     const tipButton = document.querySelector(selectors.tipButton);
     const modal = document.getElementById('tip-modal');
@@ -319,6 +347,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (isAdminMode) {
         event.preventDefault(); // Prevent form submission
         window.location.href = '/admin/index.html'; // Redirect
+      } else {
+        trackEvent('Mailing list signup complete');
       }
       // If not isAdminMode, the click behaves normally and submits the form
     });
@@ -329,6 +359,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   injectStructuredData();
   populateTextContent();
   setupEventListeners();
+  setupSocialButtons();
   setupTippingModal();
   loadShowSchedule();
   setupAdminCode();
