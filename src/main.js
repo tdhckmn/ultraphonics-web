@@ -22,6 +22,16 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // --- 2. Define All Functions ---
 
+  // UPDATED: Analytics tracking function for GA4
+  // Accepts a standard event name and an object of parameters
+  function trackEvent(eventName, params = {}) {
+    if (typeof gtag !== 'undefined') {
+      gtag('event', eventName, params);
+    } else {
+      console.log('GA Event:', eventName, params);
+    }
+  }
+
   function firstUrl(...candidates) {
     return candidates.find(u => typeof u === "string" && u.trim().length > 0);
   }
@@ -147,14 +157,22 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
+  // UPDATED: Now detects standard UTM parameters OR custom 'src'
   function setupEventListeners() {
     const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('src') === 'email' && typeof gtag !== 'undefined') {
-      gtag('event', 'page_view', { custom_parameter: 'email_traffic', source: 'email' });
+    const source = urlParams.get('utm_source') || urlParams.get('src');
+    const medium = urlParams.get('utm_medium');
+
+    // Fire specific events for known campaigns to make them easy to find in "Events" report
+    if (source === 'qr_code' || source === 'qr') {
+      trackEvent('campaign_visit', { source: 'qr_code', medium: medium || 'offline' });
+    } else if (source === 'email') {
+      trackEvent('campaign_visit', { source: 'email', medium: medium || 'newsletter' });
     }
+
     const contactButton = document.querySelector(selectors.contactButton);
     if (contactButton) {
-      contactButton.addEventListener('click', () => trackEvent('Contact CTA Pressed'));
+      contactButton.addEventListener('click', () => trackEvent('contact_click', { method: 'cta_button' }));
     }
   }
 
@@ -166,22 +184,22 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     if (fbButton) {
       fbButton.addEventListener('click', () => {
-          trackEvent('Facebook social clicked');
+          trackEvent('social_click', { platform: 'Facebook' });
       });
     }
     if (instaButton) {
       instaButton.addEventListener('click', () => {
-          trackEvent('Instagram social clicked');
+          trackEvent('social_click', { platform: 'Instagram' });
       });
     }
     if (ytButton) {
       ytButton.addEventListener('click', () => {
-          trackEvent('YouTube social clicked');
+          trackEvent('social_click', { platform: 'YouTube' });
       });
     }
     if (emailButton) {
       emailButton.addEventListener('click', () => {
-          trackEvent('Email link clicked');
+          trackEvent('contact_click', { method: 'footer_email' });
       });
     }
   }
@@ -189,6 +207,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   function setupTippingModal() {
     const tipButton = document.querySelector(selectors.tipButton);
     const modal = document.getElementById('tip-modal');
+    
+    // Select .close-modal specifically inside this modal to avoid conflicts
     const closeModal = modal ? modal.querySelector('.close-modal') : null;
 
     if (!tipButton || !modal) return;
@@ -212,7 +232,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     paypalLink.href = `https://paypal.me/${payPal}/${tipAmount}`;
 
     tipButton.addEventListener('click', () => {
-      trackEvent('Tip Button Pressed');
+      trackEvent('tip_modal_open');
       modal.style.display = 'flex';
       document.body.classList.add('modal-open');
     });
@@ -222,7 +242,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       document.body.classList.remove('modal-open');
     };
 
-    closeModal.addEventListener('click', hideModal);
+    if (closeModal) closeModal.addEventListener('click', hideModal);
 
     modal.addEventListener('click', (event) => {
       if (event.target === modal) {
@@ -230,12 +250,13 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
     });
 
-    venmoLink.addEventListener('click', () => trackEvent('Tip with Venmo'));
-    cashappLink.addEventListener('click', () => trackEvent('Tip with Cash App'));
-    paypalLink.addEventListener('click', () => trackEvent('Tip with PayPal'));
+    venmoLink.addEventListener('click', () => trackEvent('tip_click', { method: 'Venmo' }));
+    cashappLink.addEventListener('click', () => trackEvent('tip_click', { method: 'CashApp' }));
+    paypalLink.addEventListener('click', () => trackEvent('tip_click', { method: 'PayPal' }));
   }
 
- function setupRequestModal() {
+  // NEW FUNCTION: Handles Request Modal -> Chains to Tip Modal
+  function setupRequestModal() {
     const requestButton = document.querySelector(selectors.requestButton);
     const requestModal = document.getElementById('request-modal');
     const tipModal = document.getElementById('tip-modal'); // Reference for chaining
@@ -249,7 +270,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const fbLink = document.getElementById('fb-message-link');
 
     requestButton.addEventListener('click', () => {
-      trackEvent('Request Button Pressed');
+      trackEvent('request_modal_open');
       requestModal.style.display = 'flex';
       document.body.classList.add('modal-open');
     });
@@ -259,12 +280,15 @@ document.addEventListener('DOMContentLoaded', async () => {
       document.body.classList.remove('modal-open');
     };
 
+    // Helper to switch modals
     const switchToTipModal = () => {
-      hideRequestModal(); 
+      hideRequestModal(); // Close request modal
       if (tipModal) {
+        // Slight delay to allow the new tab to register/open smoothly
         setTimeout(() => {
             tipModal.style.display = 'flex';
             document.body.classList.add('modal-open');
+            trackEvent('tip_modal_open', { source: 'request_flow' }); // Track context
         }, 300);
       }
     };
@@ -279,15 +303,15 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     if (setlistLink) {
         setlistLink.addEventListener('click', () => {
-            trackEvent('Setlist Request Clicked');
-            switchToTipModal();
+            trackEvent('request_click', { type: 'Setlist Form' });
+            switchToTipModal(); // Triggers the swap
         });
     }
     
     if (fbLink) {
         fbLink.addEventListener('click', () => {
-            trackEvent('FB Message Request Clicked');
-            switchToTipModal();
+            trackEvent('request_click', { type: 'Facebook Message' });
+            switchToTipModal(); // Triggers the swap
         });
     }
   }
@@ -309,14 +333,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     
     renderShows(currentYear, showsForCurrentYear, showsContainer);
-  }
-
-  function trackEvent(eventName) {
-    if (typeof gtag !== 'undefined') {
-      gtag('event', eventName);
-    } else {
-      console.log('gtag not available - GA not loaded');
-    }
   }
 
   function renderShows(year, data, container) {
@@ -343,6 +359,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
+  // UPDATED: Uses standard event name with parameters
   function createVenueLink(row, linkText) {
     const a = document.createElement('a');
     a.href = row.eventLink;
@@ -350,7 +367,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     a.target = '_blank';
     a.rel = 'noopener noreferrer';
     a.className = 'venue-link';
-    a.addEventListener('click', () => trackEvent(`${row.date}_${row.venue?.trim()}`));
+    a.addEventListener('click', () => {
+        trackEvent('view_show_details', {
+            event_category: 'Schedule',
+            event_label: row.venue?.trim(),
+            show_date: row.date
+        });
+    });
     return a;
   }
 
@@ -373,7 +396,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   function setupMailingListAdminAccess() {
     const mailerLiteForm = document.querySelector('form[action*="mailerlite.com"]');
     if (!mailerLiteForm) {
-      console.warn("MailerLite form not found. Admin access via email field is disabled.");
       return;
     }
 
@@ -381,7 +403,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     const submitButton = mailerLiteForm.querySelector('button[type="submit"]');
 
     if (!emailInput || !submitButton) {
-      console.warn("MailerLite email input or submit button not found.");
       return;
     }
 
@@ -405,9 +426,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         event.preventDefault(); // Prevent form submission
         window.location.href = '/admin/index.html'; // Redirect
       } else {
-        trackEvent('Mailing list signup complete');
+        trackEvent('mailing_list_signup');
       }
-      // If not isAdminMode, the click behaves normally and submits the form
     });
   }
 
@@ -418,7 +438,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   setupEventListeners();
   setupSocialButtons();
   setupTippingModal();
-  setupRequestModal();
+  setupRequestModal(); // New Feature
   loadShowSchedule();
   setupAdminCode();
   setupMailingListAdminAccess();
