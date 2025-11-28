@@ -189,7 +189,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   function setupTippingModal() {
     const tipButton = document.querySelector(selectors.tipButton);
     const modal = document.getElementById('tip-modal');
-    const closeModal = document.querySelector('.close-modal');
+    const closeModal = modal ? modal.querySelector('.close-modal') : null;
 
     if (!tipButton || !modal) return;
 
@@ -233,6 +233,63 @@ document.addEventListener('DOMContentLoaded', async () => {
     venmoLink.addEventListener('click', () => trackEvent('Tip with Venmo'));
     cashappLink.addEventListener('click', () => trackEvent('Tip with Cash App'));
     paypalLink.addEventListener('click', () => trackEvent('Tip with PayPal'));
+  }
+
+ function setupRequestModal() {
+    const requestButton = document.querySelector(selectors.requestButton);
+    const requestModal = document.getElementById('request-modal');
+    const tipModal = document.getElementById('tip-modal'); // Reference for chaining
+    
+    // Scope close button to this modal
+    const closeModal = requestModal ? requestModal.querySelector('.close-modal') : null;
+
+    if (!requestButton || !requestModal) return;
+
+    const setlistLink = document.getElementById('setlist-request-link');
+    const fbLink = document.getElementById('fb-message-link');
+
+    requestButton.addEventListener('click', () => {
+      trackEvent('Request Button Pressed');
+      requestModal.style.display = 'flex';
+      document.body.classList.add('modal-open');
+    });
+
+    const hideRequestModal = () => {
+      requestModal.style.display = 'none';
+      document.body.classList.remove('modal-open');
+    };
+
+    const switchToTipModal = () => {
+      hideRequestModal(); 
+      if (tipModal) {
+        setTimeout(() => {
+            tipModal.style.display = 'flex';
+            document.body.classList.add('modal-open');
+        }, 300);
+      }
+    };
+
+    if (closeModal) closeModal.addEventListener('click', hideRequestModal);
+
+    requestModal.addEventListener('click', (event) => {
+      if (event.target === requestModal) {
+        hideRequestModal();
+      }
+    });
+
+    if (setlistLink) {
+        setlistLink.addEventListener('click', () => {
+            trackEvent('Setlist Request Clicked');
+            switchToTipModal();
+        });
+    }
+    
+    if (fbLink) {
+        fbLink.addEventListener('click', () => {
+            trackEvent('FB Message Request Clicked');
+            switchToTipModal();
+        });
+    }
   }
 
   function loadShowSchedule() {
@@ -361,8 +418,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   setupEventListeners();
   setupSocialButtons();
   setupTippingModal();
+  setupRequestModal();
   loadShowSchedule();
   setupAdminCode();
-  setupMailingListAdminAccess(); // Call the updated function
+  setupMailingListAdminAccess();
   ensureMobileVideoAutoplay();
 });

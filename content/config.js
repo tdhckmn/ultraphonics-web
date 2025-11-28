@@ -23,8 +23,8 @@ export const config = {
 
   tipping: {
     venmo: "Ultraphonics",
-    cashApp: "tomhickman25", // Replace with your Cash App $cashtag
-    payPal: "lesterburton17",  // Replace with your PayPal.me username
+    cashApp: "tomhickman25",
+    payPal: "lesterburton17",
     tipAmount: 10,
     note: "🤘",
   },
@@ -45,6 +45,7 @@ export const config = {
     // Buttons & Header
     contactButton: "#contact-button",
     tipButton: "#tip-button",
+    requestButton: "#request-button",
     header: "header",
   },
 };
