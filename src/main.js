@@ -275,6 +275,18 @@ document.addEventListener('DOMContentLoaded', async () => {
       document.body.classList.add('modal-open');
     });
 
+    // --- AUTO-OPEN LOGIC ---
+    // Check if the user is visiting specifically for the survey campaign
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('utm_campaign') === '2026_survey_post') {
+        setTimeout(() => {
+            requestModal.style.display = 'flex';
+            document.body.classList.add('modal-open');
+            trackEvent('request_modal_auto_open', { source: 'campaign_url' });
+        }, 500); // Slight delay for smoother UX
+    }
+    // -----------------------
+
     const hideRequestModal = () => {
       requestModal.style.display = 'none';
       document.body.classList.remove('modal-open');
