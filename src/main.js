@@ -197,6 +197,24 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
+  function setupSectionTracking() {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const sectionId = entry.target.id;
+          trackEvent('section_view', { section_name: sectionId });
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.5 });
+  
+    const showsSection = document.getElementById('shows');
+    if (showsSection) observer.observe(showsSection);
+
+    const servicesSection = document.getElementById('services');
+    if (servicesSection) observer.observe(servicesSection);
+  }
+
   function setupTippingModal() {
     const tipButton = document.querySelector(selectors.tipButton);
     const modal = document.getElementById('tip-modal');
@@ -441,6 +459,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   populateTextContent();
   setupEventListeners();
   setupSocialButtons();
+  setupSectionTracking();
   setupTippingModal();
   setupRequestModal();
   setupMediaKit();
