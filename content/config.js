@@ -28,6 +28,10 @@ export const config = {
     tipAmount: 10,
     note: "🤘",
   },
+  
+  links: {
+    mediaKit: "https://drive.google.com/drive/folders/1FWp2LQpdOpGGXYzdAoZ8KKnkTBOnuebB?usp=sharing"
+  },
 
   // Selectors for DOM elements
   selectors: {

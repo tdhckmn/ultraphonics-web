@@ -1,7 +1,6 @@
 import { config } from '../../content/config.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
-  // --- 1. Fetch Data First ---
   let shows = [];
   try {
     const response = await fetch(`../api/shows.json?v=${new Date().getTime()}`);
@@ -18,12 +17,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     ...config,
   };
 
-  const { tipping, selectors, hero, services } = siteContent;
+  const { tipping, selectors, hero, services, links } = siteContent;
 
-  // --- 2. Define All Functions ---
-
-  // UPDATED: Analytics tracking function for GA4
-  // Accepts a standard event name and an object of parameters
   function trackEvent(eventName, params = {}) {
     if (typeof gtag !== 'undefined') {
       gtag('event', eventName, params);
@@ -157,13 +152,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
-  // UPDATED: Now detects standard UTM parameters OR custom 'src'
   function setupEventListeners() {
     const urlParams = new URLSearchParams(window.location.search);
     const source = urlParams.get('utm_source') || urlParams.get('src');
     const medium = urlParams.get('utm_medium');
 
-    // Fire specific events for known campaigns to make them easy to find in "Events" report
     if (source === 'qr_code' || source === 'qr') {
       trackEvent('campaign_visit', { source: 'qr_code', medium: medium || 'offline' });
     } else if (source === 'email') {
@@ -207,8 +200,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   function setupTippingModal() {
     const tipButton = document.querySelector(selectors.tipButton);
     const modal = document.getElementById('tip-modal');
-    
-    // Select .close-modal specifically inside this modal to avoid conflicts
     const closeModal = modal ? modal.querySelector('.close-modal') : null;
 
     if (!tipButton || !modal) return;
@@ -255,13 +246,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     paypalLink.addEventListener('click', () => trackEvent('tip_click', { method: 'PayPal' }));
   }
 
-  // NEW FUNCTION: Handles Request Modal -> Chains to Tip Modal
   function setupRequestModal() {
     const requestButton = document.querySelector(selectors.requestButton);
     const requestModal = document.getElementById('request-modal');
-    const tipModal = document.getElementById('tip-modal'); // Reference for chaining
-    
-    // Scope close button to this modal
+    const tipModal = document.getElementById('tip-modal'); 
     const closeModal = requestModal ? requestModal.querySelector('.close-modal') : null;
 
     if (!requestButton || !requestModal) return;
@@ -275,32 +263,27 @@ document.addEventListener('DOMContentLoaded', async () => {
       document.body.classList.add('modal-open');
     });
 
-    // --- AUTO-OPEN LOGIC ---
-    // Check if the user is visiting specifically for the survey campaign
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('utm_campaign') === '2026_survey_post') {
         setTimeout(() => {
             requestModal.style.display = 'flex';
             document.body.classList.add('modal-open');
             trackEvent('request_modal_auto_open', { source: 'campaign_url' });
-        }, 500); // Slight delay for smoother UX
+        }, 500);
     }
-    // -----------------------
 
     const hideRequestModal = () => {
       requestModal.style.display = 'none';
       document.body.classList.remove('modal-open');
     };
 
-    // Helper to switch modals
     const switchToTipModal = () => {
-      hideRequestModal(); // Close request modal
+      hideRequestModal(); 
       if (tipModal) {
-        // Slight delay to allow the new tab to register/open smoothly
         setTimeout(() => {
             tipModal.style.display = 'flex';
             document.body.classList.add('modal-open');
-            trackEvent('tip_modal_open', { source: 'request_flow' }); // Track context
+            trackEvent('tip_modal_open', { source: 'request_flow' });
         }, 300);
       }
     };
@@ -316,15 +299,29 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (setlistLink) {
         setlistLink.addEventListener('click', () => {
             trackEvent('request_click', { type: 'Setlist Form' });
-            switchToTipModal(); // Triggers the swap
+            hideRequestModal(); 
         });
     }
     
     if (fbLink) {
         fbLink.addEventListener('click', () => {
             trackEvent('request_click', { type: 'Facebook Message' });
-            switchToTipModal(); // Triggers the swap
+            switchToTipModal();
         });
+    }
+  }
+
+  function setupMediaKit() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const target = urlParams.get('to');
+
+    if (target === 'media-kit' && links && links.mediaKit) {
+        trackEvent('campaign_visit', { source: 'media_kit_link', medium: 'smart_link' });
+        trackEvent('media_kit_open', { source: 'auto_redirect' });
+
+        setTimeout(() => {
+            window.location.href = links.mediaKit;
+        }, 800);
     }
   }
 
@@ -371,7 +368,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
-  // UPDATED: Uses standard event name with parameters
   function createVenueLink(row, linkText) {
     const a = document.createElement('a');
     a.href = row.eventLink;
@@ -420,7 +416,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     let isAdminMode = false;
 
-    // Listen for input changes in the email field
     emailInput.addEventListener('input', () => {
       const currentValue = emailInput.value.toLowerCase();
       if (currentValue === 'dishwasher') {
@@ -432,25 +427,23 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
     });
 
-    // Handle the button click separately
     submitButton.addEventListener('click', (event) => {
       if (isAdminMode) {
-        event.preventDefault(); // Prevent form submission
-        window.location.href = '/admin/index.html'; // Redirect
+        event.preventDefault(); 
+        window.location.href = '/admin/index.html'; 
       } else {
         trackEvent('mailing_list_signup');
       }
     });
   }
 
-
-  // --- 3. Run Initialization Functions ---
   injectStructuredData();
   populateTextContent();
   setupEventListeners();
   setupSocialButtons();
   setupTippingModal();
-  setupRequestModal(); // New Feature
+  setupRequestModal();
+  setupMediaKit();
   loadShowSchedule();
   setupAdminCode();
   setupMailingListAdminAccess();

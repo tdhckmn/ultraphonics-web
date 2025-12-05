@@ -160,6 +160,16 @@
     "eventLink": "https://fb.me/e/38NuvVM0w"
   },
   {
+    "date": "12/31/2025",
+    "venue": "Action Detroit",
+    "city": "Romulus",
+    "state": "MI",
+    "startTime": "9:00 PM",
+    "endTime": "11:59 PM",
+    "isPrivate": false,
+    "eventLink": ""
+  },
+  {
     "date": "1/17/2026",
     "venue": "Riverbillies",
     "city": "Gibraltar",
