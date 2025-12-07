@@ -5,9 +5,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- CONFIGURATION ---
     
     // Define the list of public Trello boards
-    // id: The ID from the board URL (trello.com/b/[BOARD_ID]/...)
-    // name: The display name you want to see on the page
-    // trelloUrl: The full URL to the board for the "Launch Trello" button
     const boards = [
         { id: 'ge3DeazJ', name: '🎤 Rehearsal Board', trelloUrl: 'https://trello.com/b/ge3DeazJ/rehearsal' },
         { id: 'GWX8TAdj', name: '🎆 NYE Setlist', trelloUrl: 'https://trello.com/b/GWX8TAdj/nye-action-detroit' },
@@ -17,8 +14,8 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 'fuOnZPRs', name: '📋 Main Song List', trelloUrl: 'https://trello.com/b/fuOnZPRs/main-song-list' }
     ];
 
-    // We must use a CORS proxy to bypass browser security for public JSON files
-    const CORS_PROXY = 'https://api.allorigins.win/raw?url=';
+    // UPDATED: Switched to corsproxy.io for better stability
+    const CORS_PROXY = 'https://corsproxy.io/?';
     const TRELLO_BASE_URL = 'https://trello.com/b/';
 
     // --- DOM Elements ---
@@ -32,19 +29,30 @@ document.addEventListener('DOMContentLoaded', () => {
      */
     async function fetchTrelloData(boardId) {
         const trelloJsonUrl = `${TRELLO_BASE_URL}${boardId}.json`;
+        // corsproxy.io works best with the encoded URL
         const proxyUrl = `${CORS_PROXY}${encodeURIComponent(trelloJsonUrl)}`;
 
         try {
             const response = await fetch(proxyUrl);
+            
+            // Handle HTTP errors
             if (!response.ok) {
-                const errorText = await response.text();
-                console.error("Proxy/Trello Response Error:", errorText);
-                throw new Error(`Failed to fetch board. Status: ${response.status}. Is the board public?`);
+                throw new Error(`Proxy returned status: ${response.status} ${response.statusText}`);
             }
-            return await response.json();
+
+            // Attempt to parse JSON
+            try {
+                return await response.json();
+            } catch (jsonError) {
+                // If JSON parsing fails, the proxy might have returned an HTML error page
+                const text = await response.text();
+                console.error("Non-JSON response received:", text.substring(0, 100) + "...");
+                throw new Error("Received invalid data (not JSON). The board might not be public.");
+            }
+
         } catch (error) {
             console.error('Fetch Error:', error);
-            showStatus(`Error: ${error.message}. Check console.`, true);
+            showStatus(`Error loading board: ${error.message}`, true);
             return null;
         }
     }
@@ -67,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .sort((a, b) => a.pos - b.pos);
 
         if (filteredLists.length === 0) {
-            showStatus(`No valid lists found on board "${boardName}". (Note: "Ableton Live Library" is ignored)`, true);
+            showStatus(`No valid lists found on board "${boardName}".`, true);
             return;
         }
 
@@ -91,12 +99,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     // Try to parse the description as JSON
                     const parsedDesc = JSON.parse(card.desc);
                     
-                    // Check if it's the expected JSON structure (has id, time, lastKnownName)
                     if (parsedDesc && typeof parsedDesc.lastKnownName === 'string' && typeof parsedDesc.time === 'number') {
-                        item = parsedDesc; // Use the object from the description
+                        item = parsedDesc;
                     } else {
-                        // It's valid JSON, but not the format we want. Treat as a normal card.
-                        console.warn(`Card "${card.name}" had JSON description, but not in expected format. Using card name.`);
+                        // Valid JSON but not our format
                         item = {
                             id: null,
                             time: 0,
@@ -105,20 +111,15 @@ document.addEventListener('DOMContentLoaded', () => {
                         };
                     }
                 } catch (e) {
-                    // Not valid JSON (empty string, lyrics, notes), so create a default item
+                    // Not valid JSON (normal text description)
                     item = {
-                        id: null, // No ableset ID
-                        time: 0,  // No ableset time
+                        id: null,
+                        time: 0,
                         lastKnownName: card.name,
                         skipped: false
                     };
-                    // Log that we're using fallback
-                    if (card.desc) {
-                         console.log(`Card "${card.name}" has non-JSON description, using card name as fallback.`);
-                    }
                 }
                 
-                // Add the processed item to the list
                 combinedSetlist.push(item);
             }
         }
@@ -128,7 +129,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // 4. Create the final .ableset file content (as a raw array)
+        // 4. Create the final .ableset file content
         const dataStr = JSON.stringify(combinedSetlist, null, 2);
         const dataBlob = new Blob([dataStr], { type: 'application/json' });
 
@@ -151,10 +152,12 @@ document.addEventListener('DOMContentLoaded', () => {
         statusMessage.className = isError ? 'status-error' : 'status-success';
         
         // Clear message after 5 seconds
-        setTimeout(() => {
-            statusMessage.textContent = '';
-            statusMessage.className = '';
-        }, 5000);
+        if (!isError) {
+            setTimeout(() => {
+                statusMessage.textContent = '';
+                statusMessage.className = '';
+            }, 5000);
+        }
     }
 
     function setButtonLoading(button, isLoading) {
@@ -164,7 +167,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Global Download Function ---
-    // Make it global so inline onclick can find it
     window.downloadBoardAsAbleset = async (boardId, boardName, buttonId) => {
         const downloadButton = document.getElementById(buttonId);
         if (!downloadButton || downloadButton.disabled) return;
@@ -178,11 +180,10 @@ document.addEventListener('DOMContentLoaded', () => {
             if (boardData) {
                 showStatus('Data loaded. Generating file...');
                 generateAndDownloadFile(boardData, boardName);
-                showStatus(`✅ Success! Download for "${boardName}" has started.`);
+                showStatus(`✅ Success! Download for "${boardName}" started.`);
             }
-            // If boardData is null, fetchTrelloData already showed an error
         } catch (error) {
-            console.error("Download process failed unexpectedly:", error);
+            console.error("Download process failed:", error);
             showStatus(`Error: ${error.message}`, true);
         } finally {
             setButtonLoading(downloadButton, false);
@@ -194,7 +195,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!boardsContainer) return;
 
         if (boards.length === 0) {
-            boardsContainer.innerHTML = '<p class="text-center text-gray-500">No boards configured in src/ableset.js.</p>';
+            boardsContainer.innerHTML = '<p class="text-center text-gray-500">No boards configured.</p>';
             return;
         }
 
