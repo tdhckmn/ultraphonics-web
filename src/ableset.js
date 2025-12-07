@@ -9,11 +9,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // name: The display name you want to see on the page
     // trelloUrl: The full URL to the board for the "Launch Trello" button
     const boards = [
-        { id: 'ge3DeazJ', name: '🎤 Rehearsal 11/5', trelloUrl: 'https://trello.com/b/ge3DeazJ' },
-        { id: 'cIqzpNi6', name: '🔥 Hell 11/28', trelloUrl: 'https://trello.com/b/cIqzpNi6' },
+        { id: 'ge3DeazJ', name: '🎤 Rehearsal Board', trelloUrl: 'https://trello.com/b/ge3DeazJ/rehearsal' },
+        { id: 'GWX8TAdj', name: '🎆 NYE Setlist', trelloUrl: 'https://trello.com/b/GWX8TAdj/nye-action-detroit' },
+        { id: 'cIqzpNi6', name: '🔥 Hell Setlist', trelloUrl: 'https://trello.com/b/cIqzpNi6/hell' },
+        { id: 'y3V9lSxZ', name: '🎸 Open Mic / Acoustic', trelloUrl: 'https://trello.com/b/y3V9lSxZ/open-mic' },
+        { id: 'MLsNdpwb', name: '💍 Wedding Setlist', trelloUrl: 'https://trello.com/b/MLsNdpwb/wedding' },
         { id: 'fuOnZPRs', name: '📋 Main Song List', trelloUrl: 'https://trello.com/b/fuOnZPRs/main-song-list' }
-        // Add more boards here as needed
-        // { id: '...', name: '...', trelloUrl: '...' }
     ];
 
     // We must use a CORS proxy to bypass browser security for public JSON files
@@ -218,4 +219,3 @@ document.addEventListener('DOMContentLoaded', () => {
 
     initializeBoardList();
 });
-
