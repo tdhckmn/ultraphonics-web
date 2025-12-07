@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 'fuOnZPRs', name: '📋 Main Song List', trelloUrl: 'https://trello.com/b/fuOnZPRs/main-song-list' }
     ];
 
-    // UPDATED: Switched to CodeTabs proxy which is often more reliable for Trello JSON
+    // UPDATED: Using CodeTabs proxy for better stability
     const CORS_PROXY = 'https://api.codetabs.com/v1/proxy?quest=';
     const TRELLO_BASE_URL = 'https://trello.com/b/';
 
@@ -34,17 +34,16 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const response = await fetch(proxyUrl);
             
-            // Handle HTTP errors
             if (!response.ok) {
                 throw new Error(`Proxy returned status: ${response.status} ${response.statusText}`);
             }
 
-            // Attempt to parse JSON
+            // FIX: Read text first to prevent "Body is disturbed" error
+            const text = await response.text();
+
             try {
-                return await response.json();
+                return JSON.parse(text);
             } catch (jsonError) {
-                // If JSON parsing fails, the proxy might have returned an HTML error page
-                const text = await response.text();
                 console.error("Non-JSON response received:", text.substring(0, 100) + "...");
                 throw new Error("Received invalid data (not JSON). The board might not be public.");
             }
@@ -152,7 +151,7 @@ document.addEventListener('DOMContentLoaded', () => {
         statusMessage.textContent = message;
         statusMessage.className = isError ? 'status-error' : 'status-success';
         
-        // Clear message after 5 seconds
+        // Clear message after 5 seconds if it's a success message
         if (!isError) {
             setTimeout(() => {
                 statusMessage.textContent = '';
