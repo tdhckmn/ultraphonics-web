@@ -14,8 +14,8 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 'fuOnZPRs', name: '📋 Main Song List', trelloUrl: 'https://trello.com/b/fuOnZPRs/main-song-list' }
     ];
 
-    // UPDATED: Switched to corsproxy.io for better stability
-    const CORS_PROXY = 'https://corsproxy.io/?';
+    // UPDATED: Switched to CodeTabs proxy which is often more reliable for Trello JSON
+    const CORS_PROXY = 'https://api.codetabs.com/v1/proxy?quest=';
     const TRELLO_BASE_URL = 'https://trello.com/b/';
 
     // --- DOM Elements ---
@@ -29,7 +29,6 @@ document.addEventListener('DOMContentLoaded', () => {
      */
     async function fetchTrelloData(boardId) {
         const trelloJsonUrl = `${TRELLO_BASE_URL}${boardId}.json`;
-        // corsproxy.io works best with the encoded URL
         const proxyUrl = `${CORS_PROXY}${encodeURIComponent(trelloJsonUrl)}`;
 
         try {
@@ -70,23 +69,25 @@ document.addEventListener('DOMContentLoaded', () => {
         let combinedSetlist = [];
 
         // 1. Filter out unwanted lists and sort them by position
-        const filteredLists = boardData.lists
+        const filteredLists = (boardData.lists || [])
             .filter(list => !list.closed && !list.name.toLowerCase().includes("ableton live library"))
             .sort((a, b) => a.pos - b.pos);
 
         if (filteredLists.length === 0) {
-            showStatus(`No valid lists found on board "${boardName}".`, true);
+            showStatus(`No valid lists found on board "${boardName}". (Note: "Ableton Live Library" is ignored)`, true);
             return;
         }
 
         // 2. Create a map of cards by list for efficient lookup
         const cardsByList = {};
-        for (const card of boardData.cards) {
-            if (card.closed) continue;
-            if (!cardsByList[card.idList]) {
-                cardsByList[card.idList] = [];
+        if (boardData.cards) {
+            for (const card of boardData.cards) {
+                if (card.closed) continue;
+                if (!cardsByList[card.idList]) {
+                    cardsByList[card.idList] = [];
+                }
+                cardsByList[card.idList].push(card);
             }
-            cardsByList[card.idList].push(card);
         }
 
         // 3. Process each list in order
