@@ -67,13 +67,19 @@ document.addEventListener('DOMContentLoaded', () => {
         const setlistName = boardName;
         let combinedSetlist = [];
 
-        // 1. Filter out unwanted lists and sort them by position
+        // 1. Filter lists: strict check for set1, set2, set3, set4 (lowercase, no spaces)
+        const allowedSets = ['set1', 'set2', 'set3', 'set4'];
+
         const filteredLists = (boardData.lists || [])
-            .filter(list => !list.closed && !list.name.toLowerCase().includes("ableton live library"))
+            .filter(list => {
+                if (list.closed) return false;
+                const normalizedName = list.name.toLowerCase().replace(/\s/g, '');                
+                return allowedSets.includes(normalizedName);
+            })
             .sort((a, b) => a.pos - b.pos);
 
         if (filteredLists.length === 0) {
-            showStatus(`No valid lists found on board "${boardName}". (Note: "Ableton Live Library" is ignored)`, true);
+            showStatus(`No matching lists (Set 1-4) found on board "${boardName}".`, true);
             return;
         }
 
@@ -123,7 +129,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (combinedSetlist.length === 0) {
-            showStatus(`No cards found on board "${boardName}".`, true);
+            showStatus(`No cards found in Set 1-4 on board "${boardName}".`, true);
             return;
         }
 
