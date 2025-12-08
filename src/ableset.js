@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /**
-     * Generates and triggers the download of the .ableset file.
+     * Generates and triggers the download of the .json file.
      */
     function generateAndDownloadFile(boardData, boardName) {
         if (!boardData) {
@@ -105,18 +105,16 @@ document.addEventListener('DOMContentLoaded', () => {
                         // Valid JSON but not our format
                         item = {
                             id: null,
-                            time: 0,
                             lastKnownName: card.name,
-                            skipped: false
+                            time: 0,
                         };
                     }
                 } catch (e) {
                     // Not valid JSON (normal text description)
                     item = {
                         id: null,
-                        time: 0,
                         lastKnownName: card.name,
-                        skipped: false
+                        time: 0,
                     };
                 }
                 
@@ -129,14 +127,14 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // 4. Create the final .ableset file content
+        // 4. Create the final .json file content
         const dataStr = JSON.stringify(combinedSetlist, null, 2);
         const dataBlob = new Blob([dataStr], { type: 'application/json' });
 
         const downloadAnchor = document.createElement('a');
         const safeFilename = setlistName.toLowerCase().replace(/[^a-z0-9]/gi, '_');
         downloadAnchor.href = URL.createObjectURL(dataBlob);
-        downloadAnchor.download = `${safeFilename}.ableset`;
+        downloadAnchor.download = `${safeFilename}.json`;
 
         document.body.appendChild(downloadAnchor);
         downloadAnchor.click();
@@ -163,7 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function setButtonLoading(button, isLoading) {
         button.disabled = isLoading;
         button.classList.toggle('btn-disabled', isLoading);
-        button.textContent = isLoading ? 'Downloading...' : 'Download .ableset';
+        button.textContent = isLoading ? 'Downloading...' : 'Download .json';
     }
 
     // --- Global Download Function ---
@@ -207,7 +205,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <span class="board-name">${board.name}</span>
                 <div class="button-group">
                     <button id="${buttonId}" onclick="downloadBoardAsAbleset('${board.id}', '${board.name}', '${buttonId}')" class="btn btn-secondary">
-                        Download .ableset
+                        Download .json
                     </button>
                     <a href="${board.trelloUrl}" target="_blank" class="btn btn-primary">
                         Launch Trello
