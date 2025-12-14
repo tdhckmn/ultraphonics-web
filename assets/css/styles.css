@@ -231,13 +231,13 @@ a.venue-link:hover {
 .setlist-promo-section {
   width: 100%;
   padding: var(--spacing-xxl) var(--spacing-md);
-  margin-bottom: var(--spacing-xl);
+  margin-bottom: var(--spacing-xs);
+  margin-top: var(--spacing-md);
 }
 
 .setlist-content {
   max-width: 800px;
   margin: 0 auto;
-  padding: var(--spacing-xl);
 }
 
 .setlist-title {
