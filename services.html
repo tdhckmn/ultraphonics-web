@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Services | Ultraphonics</title>
+  
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon" />
+
+  <style>
+    /* Back Link Style (Desktop Top Left) */
+    .back-link-desktop {
+        position: absolute;
+        top: 2rem;
+        left: 2rem;
+        margin-left: 50px;
+        font-size: 0.9rem;
+        color: var(--color-text-secondary);
+        text-decoration: none;
+        border: 1px solid #444;
+        padding: 8px 16px;
+        border-radius: 20px;
+        transition: all 0.3s;
+        z-index: 10;
+        display: inline-block;
+    }
+    .back-link-desktop:hover {
+        color: var(--color-white);
+        border-color: var(--color-accent);
+    }
+    @media (max-width: 600px) {
+        .back-link-desktop { display: none; }
+    }
+
+    /* Page specific overrides */
+    .page-header { text-align: center; margin-bottom: 3rem; padding-top: 2rem; }
+    .page-logo { width: 100px; height: 100px; border-radius: 50%; margin-bottom: 1.5rem; box-shadow: var(--shadow-glow); display: inline-block; }
+    .page-title { font-size: 2.5rem; margin-bottom: 0.5rem; color: var(--color-white); }
+    .page-lead { font-size: 1.1rem; color: var(--color-text-secondary); max-width: 600px; margin: 0 auto; }
+    
+    /* Permanent Link Style */
+    .permanent-contact-link { position: absolute; top: 2rem; right: 2rem; font-size: 0.9rem; color: var(--color-text-secondary); text-decoration: none; border: 1px solid #444; padding: 8px 16px; border-radius: 20px; transition: all 0.3s; z-index: 10; }
+    .permanent-contact-link:hover { color: var(--color-white); border-color: var(--color-accent); }
+    @media (max-width: 600px) { .permanent-contact-link { position: relative; display: block; width: fit-content; margin: 1.5rem auto 2rem auto; top: auto; right: auto; } }
+
+    /* Service Card Styles */
+    .services-container { max-width: 1100px; margin: 0 auto; padding: 0 var(--spacing-md) 4rem; }
+    
+    .service-card { 
+        display: flex; 
+        flex-direction: row; 
+        align-items: stretch; /* Ensures content and image are same height */
+        background: linear-gradient(145deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%); 
+        border: 1px solid rgba(255, 255, 255, 0.1); 
+        border-radius: 12px; 
+        margin-bottom: 3rem; 
+        overflow: hidden; 
+        transition: transform 0.3s, box-shadow 0.3s; 
+    }
+    
+    .service-card:hover { 
+        transform: translateY(-2px); 
+        border-color: rgba(0, 221, 222, 0.3); 
+        box-shadow: 0 0 15px rgba(0, 221, 222, 0.1); 
+    }
+    
+    .service-image-container { 
+        flex: 1; 
+        min-width: 300px; /* Ensures image isn't too small */
+        max-width: 450px; /* Prevents it from getting too huge on wide screens */
+        aspect-ratio: 1 / 1; /* FORCE SQUARE */
+        position: relative; 
+        overflow: hidden; 
+    }
+    
+    .service-image { 
+        width: 100%; 
+        height: 100%; 
+        object-fit: cover; /* Crops image to fill the square without distortion */
+        display: block; 
+        transition: transform 0.5s; 
+    }
+    
+    .service-card:hover .service-image { transform: scale(1.05); }
+    
+    .service-content { 
+        flex: 1.5; 
+        padding: 2.5rem; 
+        text-align: left; 
+        display: flex; 
+        flex-direction: column; 
+        justify-content: center; 
+    }
+    
+    .service-title { color: var(--color-accent); font-size: 1.8rem; margin-bottom: 1rem; margin-top: 0; font-weight: bold; }
+    .service-description { font-size: 1.05rem; color: var(--color-text-secondary); margin-bottom: 1.5rem; line-height: 1.6; }
+    .service-features { list-style: none; padding: 0; margin: 0; }
+    .service-features li { position: relative; padding-left: 1.5rem; margin-bottom: 0.5rem; color: var(--color-text); font-size: 0.95rem; }
+    .service-features li::before { content: "•"; color: var(--color-accent); position: absolute; left: 0; font-weight: bold; }
+    
+    @media (max-width: 768px) { 
+        .service-card { flex-direction: column; } 
+        .service-image-container { 
+            max-width: 100%; 
+            width: 100%;
+            height: auto; 
+            aspect-ratio: 1 / 1; /* Keep square on mobile too, or change to 16/9 if preferred */
+        } 
+        .service-content { padding: 1.5rem; } 
+        .service-title { font-size: 1.5rem; } 
+    }
+  </style>
+</head>
+<body>
+  
+  <div class="nav-overlay" id="nav-overlay">
+    <ul class="nav-list" id="nav-list"></ul>
+  </div>
+
+  <button class="hamburger-btn" id="nav-toggle" aria-label="Toggle navigation">
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+  </button>
+
+  <main style="position: relative;">
+    
+    <a href="quote-request.html" class="permanent-contact-link">Request a Quote</a>
+    
+    <div class="page-header">
+      <a href="index.html">
+        <img src="assets/images/logo-color.png" alt="Ultraphonics Logo" class="page-logo" />
+      </a>
+      <h1 class="page-title" id="page-title">Our Services</h1>
+      <p class="page-lead" id="page-lead">Loading...</p>
+    </div>
+    
+    <div style="margin-bottom: 2rem;">
+      <a href="quote-request.html" class="button">Start Your Inquiry</a>
+    </div>
+
+    <div class="services-container" id="services-list"></div>
+
+    <div class="cta-container" style="margin-bottom: 4rem;">
+      <a href="quote-request.html" class="button" style="font-size: 1.2rem; padding: 1rem 2rem;">
+        Book Now
+      </a>
+    </div>
+  </main>
+
+  <footer>
+    <a href="mailto:info@ultraphonicsmusic.com" class="email">info@ultraphonicsmusic.com</a>
+  </footer>
+
+  <script type="module">
+    import { config } from './content/config.js';
+
+    /* --- Navigation Logic --- */
+    const navToggle = document.getElementById('nav-toggle');
+    const navOverlay = document.getElementById('nav-overlay');
+    const navList = document.getElementById('nav-list');
+
+    if (config.navigation) {
+        config.navigation.forEach(item => {
+            const li = document.createElement('li');
+            li.className = 'nav-item';
+            const a = document.createElement('a');
+            a.href = item.link;
+            a.textContent = item.label;
+            a.className = 'nav-link';
+            li.appendChild(a);
+            navList.appendChild(li);
+        });
+    }
+
+    navToggle.addEventListener('click', () => {
+        navToggle.classList.toggle('open');
+        navOverlay.classList.toggle('open');
+        document.body.style.overflow = navOverlay.classList.contains('open') ? 'hidden' : '';
+    });
+
+    navList.addEventListener('click', (e) => {
+        if (e.target.tagName === 'A') {
+            navToggle.classList.remove('open');
+            navOverlay.classList.remove('open');
+            document.body.style.overflow = '';
+        }
+    });
+
+    /* --- Content Population --- */
+    if (config.services) {
+        document.getElementById('page-title').textContent = config.services.pageTitle || "Our Services";
+        document.getElementById('page-lead').textContent = config.services.pageLead || "";
+    }
+
+    const container = document.getElementById('services-list');
+    const items = config.services.detailedItems || [];
+
+    if (items.length > 0) {
+        items.forEach((item) => {
+            const featuresHtml = item.features 
+                ? `<ul class="service-features">
+                    ${item.features.map(f => `<li>${f}</li>`).join('')}
+                   </ul>`
+                : '';
+            
+            const card = document.createElement('div');
+            card.className = 'service-card';
+            card.innerHTML = `
+                <div class="service-image-container">
+                    <img src="${item.image}" alt="${item.title}" class="service-image" loading="lazy" />
+                </div>
+                <div class="service-content">
+                    <h2 class="service-title">${item.title}</h2>
+                    <p class="service-description">${item.description}</p>
+                    ${featuresHtml}
+                </div>
+            `;
+            container.appendChild(card);
+        });
+    }
+
+    /* --- Analytics --- */
+    if (config.ids && config.ids.googleAnalytics) {
+        const gaId = config.ids.googleAnalytics;
+        const script = document.createElement('script');
+        script.async = true;
+        script.src = `https://www.googletagmanager.com/gtag/js?id=${gaId}`;
+        document.head.appendChild(script);
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', gaId);
+    }
+  </script>
+</body>
+</html>

@@ -131,12 +131,23 @@ h3 {
   text-decoration: none;
   transition: all 0.3s ease;
   box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  display: inline-block;
 }
 
 .button:hover {
-  background-color: var(--color-accent); /* Use main accent color directly */
+  background-color: var(--color-accent); 
   transform: translateY(-2px);
   box-shadow: var(--shadow-md);
+}
+
+.button-outline {
+  background-color: transparent;
+  border: 2px solid var(--color-accent);
+}
+.button-outline:hover {
+  background-color: var(--color-accent);
+  color: var(--color-white);
 }
 
 .content-section {
@@ -675,4 +686,138 @@ footer {
     grid-template-columns: 1fr;
     padding: 0 var(--spacing-md);
   }
+}
+
+/* --- Hamburger Menu Styles --- */
+.hamburger-btn {
+  position: fixed;
+  top: 2rem;
+  left: 2rem;
+  z-index: 1001; /* Higher than .nav-overlay */
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 45px;
+  height: 40px;
+}
+
+.hamburger-line {
+  width: 100%;
+  height: 3px;
+  background: var(--color-white);
+  border-radius: 2px;
+  transition: all 0.3s ease;
+  transform-origin: 1px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.5);
+}
+
+.hamburger-btn:hover .hamburger-line {
+    background: var(--color-accent);
+    box-shadow: 0 0 8px var(--color-accent);
+}
+
+/* Open State Animation (X) */
+.hamburger-btn.open .hamburger-line:first-child {
+  transform: rotate(45deg);
+}
+.hamburger-btn.open .hamburger-line:nth-child(2) {
+  opacity: 0;
+  transform: translateX(20px);
+}
+.hamburger-btn.open .hamburger-line:last-child {
+  transform: rotate(-45deg);
+}
+
+/* Nav Overlay */
+.nav-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: rgba(18, 18, 18, 0.98);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.nav-overlay.open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.nav-list {
+  list-style: none;
+  padding: 0;
+  text-align: center;
+}
+
+.nav-item {
+  margin: 1.5rem 0;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.3s ease;
+}
+
+.nav-overlay.open .nav-item {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Stagger animation */
+.nav-overlay.open .nav-item:nth-child(1) { transition-delay: 0.1s; }
+.nav-overlay.open .nav-item:nth-child(2) { transition-delay: 0.2s; }
+.nav-overlay.open .nav-item:nth-child(3) { transition-delay: 0.3s; }
+.nav-overlay.open .nav-item:nth-child(4) { transition-delay: 0.4s; }
+.nav-overlay.open .nav-item:nth-child(5) { transition-delay: 0.5s; }
+
+.nav-link {
+  font-size: 2rem;
+  color: var(--color-white);
+  text-decoration: none;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  transition: color 0.3s;
+}
+
+.nav-link:hover {
+  color: var(--color-accent);
+  text-shadow: var(--shadow-glow);
+}
+
+/* --- Mobile "Pill" Back Button Styles --- */
+@media (max-width: 600px) {
+    .back-link {
+        display: inline-block;
+        margin-top: 3rem;
+        
+        /* Pill Styling */
+        border: 2px solid var(--color-text-secondary);
+        padding: 12px 30px;
+        border-radius: 50px;
+        color: var(--color-text-secondary);
+        text-transform: uppercase;
+        font-weight: bold;
+        letter-spacing: 1px;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+        text-decoration: none;
+    }
+    
+    .back-link:hover {
+        background-color: var(--color-text-secondary);
+        color: var(--color-background-dark);
+        border-color: var(--color-text-secondary);
+    }
 }

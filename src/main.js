@@ -1,13 +1,72 @@
 import { config } from '../../content/config.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
+
+  // --- 1. Analytics Injection (Global) ---
+  if (config.ids && config.ids.googleAnalytics) {
+    const gaId = config.ids.googleAnalytics;
+    
+    // Prevent duplicate injection
+    if (!document.querySelector(`script[src*="${gaId}"]`)) {
+        const script = document.createElement('script');
+        script.async = true;
+        script.src = `https://www.googletagmanager.com/gtag/js?id=${gaId}`;
+        document.head.appendChild(script);
+
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        // Make gtag global
+        window.gtag = gtag; 
+        gtag('js', new Date());
+        gtag('config', gaId);
+    }
+  }
+
+  // --- 2. Navigation Logic ---
+  const navToggle = document.getElementById('nav-toggle');
+  const navOverlay = document.getElementById('nav-overlay');
+  const navList = document.getElementById('nav-list');
+
+  if (navToggle && navOverlay && navList) {
+    // Render Menu Items
+    if (config.navigation) {
+        config.navigation.forEach(item => {
+            const li = document.createElement('li');
+            li.className = 'nav-item';
+            const a = document.createElement('a');
+            a.href = item.link;
+            a.textContent = item.label;
+            a.className = 'nav-link';
+            li.appendChild(a);
+            navList.appendChild(li);
+        });
+    }
+
+    // Toggle Menu
+    navToggle.addEventListener('click', () => {
+        navToggle.classList.toggle('open');
+        navOverlay.classList.toggle('open');
+        document.body.classList.toggle('modal-open');
+    });
+
+    // Close on click
+    navList.addEventListener('click', (e) => {
+        if (e.target.tagName === 'A') {
+            navToggle.classList.remove('open');
+            navOverlay.classList.remove('open');
+            document.body.classList.remove('modal-open');
+        }
+    });
+  }
+
+
+  // --- 3. Home Page Logic (Safe for other pages) ---
   let shows = [];
   try {
     const response = await fetch(`../api/shows.json?v=${new Date().getTime()}`);
-    if (!response.ok) {
-      throw new Error('Failed to load show data.');
+    if (response.ok) {
+      shows = await response.json();
     }
-    shows = await response.json();
   } catch (error) {
     console.error(error);
   }
@@ -20,8 +79,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   const { tipping, selectors, hero, services, links } = siteContent;
 
   function trackEvent(eventName, params = {}) {
-    if (typeof gtag !== 'undefined') {
-      gtag('event', eventName, params);
+    if (typeof window.gtag !== 'undefined') {
+      window.gtag('event', eventName, params);
     } else {
       console.log('GA Event:', eventName, params);
     }
@@ -138,18 +197,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   function populateTextContent() {
-    document.querySelector(selectors.bandName).textContent = hero.bandName;
-    document.querySelector(selectors.tagline).textContent = hero.tagline;
-    document.querySelector(selectors.genres).textContent = hero.genres;
-    document.querySelector(selectors.servicesHeading).textContent = services.heading;
-    document.querySelector(selectors.servicesLeadText).textContent = services.leadText;
-    document.querySelector(selectors.equipmentNote).textContent = services.equipmentNote;
-    const servicesGrid = document.querySelector(selectors.servicesGrid);
-    services.gridItems.forEach(itemText => {
-      const listItem = document.createElement('li');
-      listItem.textContent = itemText;
-      servicesGrid.appendChild(listItem);
-    });
+    if (document.querySelector(selectors.bandName)) document.querySelector(selectors.bandName).textContent = hero.bandName;
+    if (document.querySelector(selectors.tagline)) document.querySelector(selectors.tagline).textContent = hero.tagline;
+    if (document.querySelector(selectors.genres)) document.querySelector(selectors.genres).textContent = hero.genres;
   }
 
   function setupEventListeners() {

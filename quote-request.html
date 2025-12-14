@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Request a Quote | Ultraphonics</title>
+  
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon" />
+
+  <style>
+    /* --- Form Specific Styles --- */
+    .quote-container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: var(--spacing-xxl) var(--spacing-md);
+      text-align: left; 
+    }
+
+    /* Fixed styling for ALL input types */
+    input[type="text"],
+    input[type="date"],
+    input[type="number"],
+    input[type="email"],
+    input[type="tel"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 12px;
+      border-radius: 4px;
+      border: 1px solid #444;
+      background-color: #333;
+      color: var(--color-white);
+      font-size: 1rem;
+      box-sizing: border-box;
+      font-family: inherit;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--color-accent);
+      box-shadow: 0 0 5px rgba(0, 221, 222, 0.5);
+    }
+
+    /* Step Container */
+    .step-content {
+      display: none;
+      animation: fadeIn 0.4s ease;
+    }
+    .step-content.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .form-section h3 {
+      color: var(--color-accent);
+      margin-bottom: 1.5rem;
+      font-size: 1.5rem;
+      font-weight: bold;
+      border-bottom: 1px solid #333;
+      padding-bottom: 0.5rem;
+    }
+
+    /* Navigation Buttons */
+    .form-navigation {
+      margin-top: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid #333;
+      padding-top: 2rem;
+    }
+
+    .nav-btn {
+      padding: 12px 24px;
+      font-size: 1rem;
+      cursor: pointer;
+      border-radius: 5px;
+      border: none;
+      font-weight: bold;
+      transition: all 0.3s;
+    }
+
+    .btn-back {
+      background-color: transparent;
+      border: 1px solid #555;
+      color: #ccc;
+    }
+    .btn-back:hover {
+      border-color: #fff;
+      color: #fff;
+    }
+
+    .btn-next {
+      background-color: var(--color-accent);
+      color: var(--color-white);
+      margin-left: auto;
+    }
+    .btn-next:hover {
+      background-color: var(--color-accent-hover);
+    }
+
+    /* Grid for "Tile" inputs */
+    .options-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 1rem;
+      margin-top: 0.5rem;
+    }
+
+    .tile-input { display: none; }
+
+    .tile-label {
+      background-color: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--color-text);
+      padding: 1rem;
+      border-radius: 8px;
+      font-weight: 500;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 60px;
+      font-size: 0.95rem;
+      user-select: none;
+    }
+
+    .tile-label:hover { background-color: rgba(255, 255, 255, 0.1); }
+
+    .tile-input:checked + .tile-label {
+      border-color: var(--color-accent);
+      box-shadow: var(--shadow-glow);
+      background-color: rgba(0, 221, 222, 0.1);
+      color: var(--color-white);
+    }
+
+    /* Standard Inputs Layout */
+    .input-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    
+    .input-group {
+      flex: 1;
+      min-width: 250px;
+      margin-bottom: 1rem;
+    }
+
+    label.text-label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: var(--color-text-secondary);
+      font-size: 0.9rem;
+    }
+
+    .other-input-container {
+      margin-top: 10px;
+      display: none;
+    }
+    
+    .progress-indicator {
+        margin-bottom: 2rem;
+        display: flex;
+        gap: 5px;
+        justify-content: center;
+    }
+    .progress-step {
+        height: 4px;
+        flex: 1;
+        background: #333;
+        border-radius: 2px;
+    }
+    .progress-step.active {
+        background: var(--color-accent);
+    }
+
+    /* Shared Header Styles (Matches Contact Page) */
+    .page-header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+    .page-logo {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        margin-bottom: 1.5rem;
+        box-shadow: var(--shadow-glow);
+        display: inline-block;
+    }
+    .page-title {
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+        color: var(--color-white);
+    }
+    .page-lead {
+        font-size: 1.1rem;
+        color: var(--color-text-secondary);
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    /* Permanent Link Style */
+    .permanent-contact-link {
+        position: absolute;
+        top: 2rem;
+        right: 2rem;
+        font-size: 0.9rem;
+        color: var(--color-text-secondary);
+        text-decoration: none;
+        border: 1px solid #444;
+        padding: 8px 16px;
+        border-radius: 20px;
+        transition: all 0.3s;
+        z-index: 10;
+    }
+    .permanent-contact-link:hover {
+        color: var(--color-white);
+        border-color: var(--color-accent);
+    }
+    
+    @media (max-width: 600px) {
+        .permanent-contact-link {
+            position: relative;
+            display: block;
+            width: fit-content;
+            margin: 1.5rem auto 2rem auto;
+            top: auto;
+            right: auto;
+        }
+    }
+  </style>
+</head>
+<body>
+  
+  <div class="nav-overlay" id="nav-overlay">
+    <ul class="nav-list" id="nav-list"></ul>
+  </div>
+
+  <button class="hamburger-btn" id="nav-toggle" aria-label="Toggle navigation">
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+  </button>
+
+  <main style="position: relative;">
+    
+    <a href="contact.html" class="permanent-contact-link">Need general info? Contact Us</a>
+
+    <div class="quote-container">
+      
+      <div class="page-header">
+        <a href="index.html">
+            <img src="assets/images/logo-color.png" alt="Ultraphonics Logo" class="page-logo" />
+        </a>
+        <h1 class="page-title">Event Inquiry</h1>
+        <p class="page-lead">Tell us about your event to get a fast, accurate quote.</p>
+      </div>
+
+      <div class="progress-indicator">
+          <div class="progress-step active" id="p-1"></div>
+          <div class="progress-step" id="p-2"></div>
+          <div class="progress-step" id="p-3"></div>
+          <div class="progress-step" id="p-4"></div>
+          <div class="progress-step" id="p-5"></div>
+      </div>
+
+      <form id="quote-form" class="contact-form" style="background: transparent; box-shadow: none; padding: 0;">
+        
+        <div class="step-content active" id="step-1">
+            <div class="form-section">
+              <h3>Step 1: Contact Details</h3>
+              <div class="input-row">
+                <div class="input-group">
+                  <label class="text-label" for="name">Name *</label>
+                  <input type="text" id="name" name="name" required placeholder="Your Name">
+                </div>
+                <div class="input-group">
+                  <label class="text-label" for="email">Email *</label>
+                  <input type="email" id="email" name="email" required placeholder="you@example.com">
+                </div>
+              </div>
+              <div class="input-group">
+                <label class="text-label" for="phone">Phone Number</label>
+                <input type="tel" id="phone" name="phone" placeholder="(555) 555-5555">
+              </div>
+            </div>
+        </div>
+
+        <div class="step-content" id="step-2">
+            <div class="form-section">
+              <h3>Step 2: Event Basics</h3>
+              
+              <label class="text-label">Event Type *</label>
+              <div class="options-grid">
+                <input type="radio" name="event_type" id="et_wedding" value="Wedding" class="tile-input" required>
+                <label for="et_wedding" class="tile-label">Wedding</label>
+    
+                <input type="radio" name="event_type" id="et_corporate" value="Corporate" class="tile-input">
+                <label for="et_corporate" class="tile-label">Corporate</label>
+    
+                <input type="radio" name="event_type" id="et_party" value="Private Party" class="tile-input">
+                <label for="et_party" class="tile-label">Private Party</label>
+    
+                <input type="radio" name="event_type" id="et_festival" value="Festival" class="tile-input">
+                <label for="et_festival" class="tile-label">Festival / Public</label>
+    
+                <input type="radio" name="event_type" id="et_other" value="Other" class="tile-input">
+                <label for="et_other" class="tile-label">Other</label>
+              </div>
+              <div id="event_type_other_container" class="other-input-container">
+                <input type="text" name="event_type_other" placeholder="Please specify event type">
+              </div>
+    
+              <div class="input-row" style="margin-top: 1.5rem;">
+                <div class="input-group">
+                  <label class="text-label" for="date">Event Date *</label>
+                  <input type="date" id="date" name="date" required>
+                </div>
+                <div class="input-group">
+                  <label class="text-label" for="city">City & State *</label>
+                  <input type="text" id="city" name="location" required placeholder="e.g. Detroit, MI">
+                </div>
+              </div>
+              <div class="input-group">
+                <label class="text-label" for="venue">Venue Name (Optional)</label>
+                <input type="text" id="venue" name="venue" placeholder="e.g. The Fillmore">
+              </div>
+    
+              <label class="text-label">Setting</label>
+              <div class="options-grid">
+                <input type="radio" name="setting" id="set_indoor" value="Indoor" class="tile-input">
+                <label for="set_indoor" class="tile-label">Indoor</label>
+                <input type="radio" name="setting" id="set_outdoor" value="Outdoor" class="tile-input">
+                <label for="set_outdoor" class="tile-label">Outdoor</label>
+                <input type="radio" name="setting" id="set_both" value="Both" class="tile-input">
+                <label for="set_both" class="tile-label">Both</label>
+              </div>
+            </div>
+        </div>
+
+        <div class="step-content" id="step-3">
+            <div class="form-section">
+              <h3>Step 3: Logistics & Size</h3>
+              
+              <label class="text-label">Estimated Guest Count</label>
+              <div class="options-grid">
+                <input type="radio" name="guests" id="g_50" value="Under 50" class="tile-input">
+                <label for="g_50" class="tile-label">Under 50</label>
+                
+                <input type="radio" name="guests" id="g_100" value="50-100" class="tile-input">
+                <label for="g_100" class="tile-label">50-100</label>
+    
+                <input type="radio" name="guests" id="g_200" value="100-200" class="tile-input">
+                <label for="g_200" class="tile-label">100-200</label>
+    
+                <input type="radio" name="guests" id="g_300" value="200+" class="tile-input">
+                <label for="g_300" class="tile-label">200+</label>
+              </div>
+    
+              <div class="input-row" style="margin-top: 1.5rem;">
+                <div class="input-group">
+                  <label class="text-label">Total Entertainment Time</label>
+                  <select name="duration">
+                    <option value="" disabled selected>Select duration...</option>
+                    <option value="1-2 hrs">1-2 hrs</option>
+                    <option value="3-4 hrs">3-4 hrs</option>
+                    <option value="4-5 hrs">4-5 hrs</option>
+                    <option value="5+ hrs">5+ hrs</option>
+                  </select>
+                </div>
+                <div class="input-group">
+                   <label class="text-label">Is there a hard stop time?</label>
+                   <select name="hard_stop">
+                     <option value="No">No</option>
+                     <option value="Yes">Yes</option>
+                     <option value="Unsure">Unsure</option>
+                   </select>
+                </div>
+              </div>
+            </div>
+        </div>
+
+        <div class="step-content" id="step-4">
+            <div class="form-section">
+              <h3>Step 4: Band & Music Preferences</h3>
+              
+              <label class="text-label">Preferred Band Size</label>
+              <div class="options-grid">
+                <input type="radio" name="band_size" id="bs_duo" value="Solo/Duo" class="tile-input">
+                <label for="bs_duo" class="tile-label">Solo / Duo</label>
+    
+                <input type="radio" name="band_size" id="bs_small" value="Small (3-4)" class="tile-input">
+                <label for="bs_small" class="tile-label">Small (3-4)</label>
+    
+                <input type="radio" name="band_size" id="bs_med" value="Medium (5-6)" class="tile-input" checked>
+                <label for="bs_med" class="tile-label">Medium (5-6)</label>
+    
+                <input type="radio" name="band_size" id="bs_large" value="Large (7+)" class="tile-input">
+                <label for="bs_large" class="tile-label">Large (7+)</label>
+              </div>
+              <div style="margin-top: 0.5rem;">
+                <input type="checkbox" name="open_to_rec" id="open_to_rec" value="Yes">
+                <label for="open_to_rec" style="color: #ccc; font-size: 0.9rem;">I'm open to recommendations based on my venue/budget.</label>
+              </div>
+    
+              <label class="text-label" style="margin-top: 1.5rem;">Services Needed (Check all that apply)</label>
+              <div class="options-grid">
+                <input type="checkbox" name="services[]" id="svc_band" value="Live Band" class="tile-input" checked>
+                <label for="svc_band" class="tile-label">Live Band</label>
+    
+                <input type="checkbox" name="services[]" id="svc_cocktail" value="Cocktail Hour" class="tile-input">
+                <label for="svc_cocktail" class="tile-label">Cocktail Hour</label>
+    
+                <input type="checkbox" name="services[]" id="svc_ceremony" value="Ceremony" class="tile-input">
+                <label for="svc_ceremony" class="tile-label">Ceremony Music</label>
+    
+                <input type="checkbox" name="services[]" id="svc_mc" value="MC Services" class="tile-input">
+                <label for="svc_mc" class="tile-label">MC Services</label>
+              </div>
+    
+              <label class="text-label" style="margin-top: 1.5rem;">Preferred Genres</label>
+              <div class="options-grid">
+                <input type="checkbox" name="genres[]" id="gen_rock" value="Rock" class="tile-input">
+                <label for="gen_rock" class="tile-label">Classic Rock</label>
+    
+                <input type="checkbox" name="genres[]" id="gen_pop" value="Pop" class="tile-input">
+                <label for="gen_pop" class="tile-label">Pop / Top 40</label>
+    
+                <input type="checkbox" name="genres[]" id="gen_motown" value="Motown" class="tile-input">
+                <label for="gen_motown" class="tile-label">Motown / Soul</label>
+    
+                <input type="checkbox" name="genres[]" id="gen_country" value="Country" class="tile-input">
+                <label for="gen_country" class="tile-label">Country</label>
+                
+                <input type="checkbox" name="genres[]" id="gen_90s" value="90s" class="tile-input">
+                <label for="gen_90s" class="tile-label">90s / 2000s</label>
+              </div>
+            </div>
+        </div>
+
+        <div class="step-content" id="step-5">
+            <div class="form-section">
+              <h3>Step 5: Production & Budget</h3>
+              
+              <div class="input-row">
+                <div class="input-group">
+                    <label class="text-label">Sound System</label>
+                    <select name="sound">
+                        <option value="Band Provides">Band Provides</option>
+                        <option value="Venue Provides">Venue Provides</option>
+                        <option value="Unsure">Unsure</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label class="text-label">Lighting</label>
+                    <select name="lighting">
+                        <option value="Basic">Basic (Stage Wash)</option>
+                        <option value="Enhanced">Enhanced (Party Lights)</option>
+                        <option value="None">None</option>
+                    </select>
+                </div>
+              </div>
+    
+              <div class="input-row">
+                <div class="input-group">
+                    <label class="text-label">Estimated Budget</label>
+                    <select name="budget">
+                        <option value="Under $2k">Under $2,000</option>
+                        <option value="$2k-$4k">$2,000 - $4,000</option>
+                        <option value="$4k-$6k">$4,000 - $6,000</option>
+                        <option value="$6k+">$6,000+</option>
+                        <option value="Prefer not to say">Prefer not to say</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label class="text-label">Urgency</label>
+                    <select name="urgency">
+                        <option value="Information Gathering">Just gathering info</option>
+                        <option value="Ready to Book">Ready to book soon</option>
+                        <option value="Immediate">Immediate</option>
+                    </select>
+                </div>
+              </div>
+              
+              <div class="input-group">
+                <label class="text-label" for="notes">Final Notes / Specific Requests</label>
+                <textarea id="notes" name="notes" rows="4" placeholder="Anything else we should know?"></textarea>
+              </div>
+            </div>
+        </div>
+
+        <div class="form-navigation">
+            <button type="button" id="prevBtn" class="nav-btn btn-back" style="display: none;">Back</button>
+            <button type="button" id="nextBtn" class="nav-btn btn-next">Next</button>
+            <button type="submit" id="submitBtn" class="button submit-button" style="display: none; width: auto; min-width: 150px;">Request Quote</button>
+        </div>
+
+        <p id="form-status" class="form-status" style="margin-top: 1rem; text-align: center;"></p>
+
+      </form>
+    </div>
+  </main>
+
+  <script type="module">
+    import { config } from './content/config.js';
+
+    /* --- Navigation Logic --- */
+    const navToggle = document.getElementById('nav-toggle');
+    const navOverlay = document.getElementById('nav-overlay');
+    const navList = document.getElementById('nav-list');
+
+    if (config.navigation) {
+        config.navigation.forEach(item => {
+            const li = document.createElement('li');
+            li.className = 'nav-item';
+            const a = document.createElement('a');
+            a.href = item.link;
+            a.textContent = item.label;
+            a.className = 'nav-link';
+            li.appendChild(a);
+            navList.appendChild(li);
+        });
+    }
+
+    navToggle.addEventListener('click', () => {
+        navToggle.classList.toggle('open');
+        navOverlay.classList.toggle('open');
+        document.body.classList.toggle('modal-open');
+    });
+
+    navList.addEventListener('click', (e) => {
+        if (e.target.tagName === 'A') {
+            navToggle.classList.remove('open');
+            navOverlay.classList.remove('open');
+            document.body.classList.remove('modal-open');
+        }
+    });
+
+    /* --- Analytics Injection --- */
+    if (config.ids && config.ids.googleAnalytics) {
+        const gaId = config.ids.googleAnalytics;
+        const script = document.createElement('script');
+        script.async = true;
+        script.src = `https://www.googletagmanager.com/gtag/js?id=${gaId}`;
+        document.head.appendChild(script);
+
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', gaId);
+    }
+
+    /* --- Multi-Step Logic --- */
+    let currentStep = 1;
+    const totalSteps = 5;
+
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const submitBtn = document.getElementById("submitBtn");
+
+    function showStep(step) {
+        document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
+        document.getElementById(`step-${step}`).classList.add('active');
+        
+        document.querySelectorAll('.progress-step').forEach((el, idx) => {
+            if (idx < step) el.classList.add('active');
+            else el.classList.remove('active');
+        });
+
+        // Navigation button visibility
+        if (step === 1) prevBtn.style.display = 'none';
+        else prevBtn.style.display = 'inline-block';
+
+        if (step === totalSteps) {
+            nextBtn.style.display = 'none';
+            submitBtn.style.display = 'inline-block';
+        } else {
+            nextBtn.style.display = 'inline-block';
+            submitBtn.style.display = 'none';
+        }
+    }
+
+    function validateStep(step) {
+        const stepEl = document.getElementById(`step-${step}`);
+        const inputs = stepEl.querySelectorAll('input[required], select[required]');
+        let valid = true;
+        
+        inputs.forEach(input => {
+            if (!input.value.trim()) {
+                valid = false;
+                input.style.borderColor = 'red';
+                input.addEventListener('input', () => input.style.borderColor = '#444', {once: true});
+            }
+        });
+
+        if (step === 2) {
+             const radioGroup = stepEl.querySelector('input[name="event_type"]:checked');
+             const radios = stepEl.querySelectorAll('input[name="event_type"]');
+             if (radios.length > 0 && !radioGroup) {
+                 valid = false;
+                 alert("Please select an event type.");
+             }
+        }
+        return valid;
+    }
+
+    nextBtn.addEventListener('click', () => {
+        if (validateStep(currentStep)) {
+            currentStep++;
+            showStep(currentStep);
+            window.scrollTo(0, 0);
+        }
+    });
+
+    prevBtn.addEventListener('click', () => {
+        if (currentStep > 1) {
+            currentStep--;
+            showStep(currentStep);
+            window.scrollTo(0, 0);
+        }
+    });
+
+    /* --- Other Field Toggle --- */
+    document.querySelectorAll('input[name="event_type"]').forEach(radio => {
+        radio.addEventListener('change', (e) => {
+            const container = document.getElementById('event_type_other_container');
+            if(e.target.value === 'Other') {
+                container.style.display = 'block';
+                container.querySelector('input').focus();
+            } else {
+                container.style.display = 'none';
+            }
+        });
+    });
+
+    /* --- Form Submission --- */
+    document.getElementById("quote-form").addEventListener("submit", async function(event) {
+      event.preventDefault();
+      
+      const status = document.getElementById("form-status");
+      const btn = document.getElementById("submitBtn");
+
+      if (!config.ids || !config.ids.formspree || config.ids.formspree.includes('YOUR_')) {
+        status.textContent = "Error: Formspree ID not configured.";
+        status.classList.add("error");
+        return;
+      }
+      
+      btn.disabled = true;
+      btn.textContent = "Sending...";
+      status.textContent = "";
+
+      const data = new FormData(event.target);
+
+      try {
+        const response = await fetch(`https://formspree.io/f/${config.ids.formspree}`, {
+          method: "POST",
+          body: data,
+          headers: { 'Accept': 'application/json' }
+        });
+
+        if (response.ok) {
+          status.textContent = "Thank you! We have received your inquiry and will be in touch shortly.";
+          status.style.color = "var(--color-accent)";
+          event.target.reset();
+          btn.textContent = "Sent";
+          document.querySelector('.form-navigation').style.display = 'none';
+        } else {
+          status.textContent = "Oops! There was a problem submitting your form.";
+          status.style.color = "red";
+          btn.disabled = false;
+          btn.textContent = "Request Quote";
+        }
+      } catch (error) {
+        status.textContent = "Oops! There was a problem submitting your form.";
+        status.style.color = "red";
+        btn.disabled = false;
+        btn.textContent = "Request Quote";
+      }
+    });
+
+    // Initialize
+    showStep(1);
+
+  </script>
+</body>
+</html>

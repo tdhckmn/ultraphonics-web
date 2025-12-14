@@ -27,16 +27,19 @@
   <link rel="stylesheet" href="assets/css/styles.css" />
   <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon" />
   <link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png" />
-
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-7RFPHXHGBC"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-7RFPHXHGBC');
-  </script>
 </head>
 <body>
+  
+  <div class="nav-overlay" id="nav-overlay">
+    <ul class="nav-list" id="nav-list"></ul>
+  </div>
+
+  <button class="hamburger-btn" id="nav-toggle" aria-label="Toggle navigation">
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+  </button>
+
   <main>
     <section class="hero">
       <video autoplay muted loop playsinline preload="auto" webkit-playsinline class="hero-video hero-video-desktop">
@@ -54,7 +57,7 @@
         <h3 class="genres" id="genres"></h3>
 
         <div class="button-container">
-          <a href="mailto:info@ultraphonicsmusic.com" class="button" id="book-button">
+          <a href="quote-request.html" class="button" id="book-button">
             Book Us
           </a>
           <button class="button" id="tip-button">
@@ -98,17 +101,19 @@
       </div>
     </section>
 
-    <section class="content-section" id="services">      <div class="services">
-        <h4 class="section-heading" id="services-heading"></h4>
-        <p class="lead-text" id="services-lead-text"></p>
+    <section class="content-section" id="services">
+      <div class="services">
+        <h4 class="section-heading">Live Entertainment for Any Occasion</h4>
+        <p class="lead-text">
+          From weddings to corporate events, we bring high-energy entertainment tailored to your needs.
+        </p>
 
-        <ul class="services-grid" id="services-grid"></ul>
-
-        <p class="equipment-note" id="equipment-note"></p>
-
-        <div class="cta-container">
-          <a href="mailto:info@ultraphonicsmusic.com" class="button contact-button" id="contact-button">
-            Contact Us
+        <div class="button-container">
+          <a href="services.html" class="button button-outline">
+            View Services
+          </a>
+          <a href="quote-request.html" class="button">
+            Request a Quote
           </a>
         </div>
       </div>
@@ -118,7 +123,7 @@
   </main>
 
   <footer>
-    <section class="mailing-list-section">
+    <section class="mailing-list-section" id="newsletter">
       <div id="mlb2-30962715" class="ml-form-embedContainer ml-subscribe-form ml-subscribe-form-30962715">
         <div class="ml-form-align-center">
           <div class="ml-form-embedWrapper embedForm">
