@@ -21,6 +21,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- DOM Elements ---
     const boardsContainer = document.getElementById('boards-container');
     const statusMessage = document.getElementById('status-message');
+    
+    // --- Manual File Upload Elements ---
+    const dropZone = document.getElementById('drop-zone');
+    const fileInput = document.getElementById('file-input');
 
     // --- Core Functions ---
 
@@ -146,6 +150,72 @@ document.addEventListener('DOMContentLoaded', () => {
         downloadAnchor.click();
         document.body.removeChild(downloadAnchor);
         URL.revokeObjectURL(downloadAnchor.href);
+    }
+
+    // --- Manual File Upload Logic ---
+
+    if (dropZone && fileInput) {
+        // Click to open file dialog
+        dropZone.addEventListener('click', () => fileInput.click());
+
+        // Drag over effect
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('drag-over');
+        });
+
+        // Drag leave effect
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('drag-over');
+        });
+
+        // Drop event
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('drag-over');
+            
+            if (e.dataTransfer.files.length > 0) {
+                handleUploadedFile(e.dataTransfer.files[0]);
+            }
+        });
+
+        // File input change event
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleUploadedFile(e.target.files[0]);
+            }
+        });
+    }
+
+    function handleUploadedFile(file) {
+        if (file.type !== 'application/json' && !file.name.toLowerCase().endsWith('.json')) {
+            showStatus('Error: Please select a valid .json file.', true);
+            return;
+        }
+
+        const reader = new FileReader();
+        
+        reader.onload = (e) => {
+            try {
+                const jsonContent = JSON.parse(e.target.result);
+                // Clean up the filename to use as the board name
+                const boardName = file.name.replace(/\.json$/i, '');
+                
+                showStatus(`Processing "${boardName}"...`);
+                generateAndDownloadFile(jsonContent, boardName);
+                showStatus(`Success! Converted "${boardName}".`);
+                
+            } catch (error) {
+                console.error('File parsing error:', error);
+                showStatus(`Error parsing JSON: ${error.message}`, true);
+            }
+        };
+
+        reader.onerror = () => {
+            showStatus('Error reading file.', true);
+        };
+
+        reader.readAsText(file);
     }
 
     // --- Helper Functions ---

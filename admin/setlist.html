@@ -42,6 +42,31 @@
             border-radius: 6px;
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
+        /* --- Drop Zone Styles --- */
+        .drop-zone {
+            border: 2px dashed #444;
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background-color: rgba(255, 255, 255, 0.02);
+            margin-top: 1rem;
+        }
+        .drop-zone:hover, .drop-zone.drag-over {
+            border-color: var(--color-accent, #00ddde);
+            background-color: rgba(0, 221, 222, 0.05);
+        }
+        .drop-text {
+            color: var(--color-text-secondary, #aaaaaa);
+            font-size: 1rem;
+            pointer-events: none;
+        }
+        .drop-zone.drag-over .drop-text {
+            color: var(--color-white, #ffffff);
+        }
+        /* ------------------------ */
+
         .board-list {
             display: flex;
             flex-direction: column;
@@ -136,13 +161,21 @@
         <div class="admin-container">
             <div class="admin-header">
                 <h1>Setlist Exporter</h1>
-                <p>Download a Trello board as an .json file</p>
+                <p>Download a Trello board as an AbleSet .json file</p>
             </div>
 
             <div class="admin-section">
-                <div id="boards-container" class="board-list">
-                    <!-- Boards will be dynamically inserted here -->
+                <h2 style="margin-top: 0; font-size: 1.25rem; color: #fff;">Manual Conversion</h2>
+                <div id="drop-zone" class="drop-zone">
+                    <p class="drop-text">Drag & Drop Trello JSON export here<br><span style="font-size: 0.8em; opacity: 0.7;">or click to browse</span></p>
+                    <input type="file" id="file-input" accept=".json" style="display: none;">
                 </div>
+            </div>
+
+            <div class="admin-section">
+                <h2 style="margin-top: 0; margin-bottom: 1rem; font-size: 1.25rem; color: #fff;">Saved Boards</h2>
+                <div id="boards-container" class="board-list">
+                    </div>
                 <p id="status-message"></p>
             </div>
 
@@ -152,8 +185,6 @@
         </div>
     </main>
 
-    <!-- Load the new JavaScript file -->
     <script src="../src/ableset.js" defer></script>
 </body>
 </html>
-
