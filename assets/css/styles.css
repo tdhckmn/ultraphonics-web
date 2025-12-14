@@ -202,14 +202,175 @@ h3 {
   color: var(--color-text-secondary);
 }
 
+.featured-video-container {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-md);
+  box-sizing: border-box;
+}
+
+.featured-video {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 8px;
+  box-shadow: var(--shadow-glow);
+  display: block;
+}
+
 a.venue-link {
   color: var(--color-accent);
   text-decoration: none;
 }
+
 a.venue-link:hover {
   color: var(--color-accent);
   text-decoration: underline;
 }
+
+.setlist-promo-section {
+  width: 100%;
+  padding: var(--spacing-xxl) var(--spacing-md);
+  margin-bottom: var(--spacing-xl);
+}
+
+.setlist-content {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: var(--spacing-xl);
+}
+
+.setlist-title {
+  color: var(--color-accent);
+  font-size: var(--font-size-xl);
+  font-weight: bold;
+  margin-bottom: var(--spacing-md);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.setlist-content p {
+  font-size: var(--font-size-lg);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--spacing-lg);
+}
+
+.setlist-button {
+  background-color: transparent;
+  border: 2px solid var(--color-accent);
+  font-weight: bold;
+}
+
+.setlist-button:hover {
+  background-color: var(--color-accent);
+  color: var(--color-white);
+}
+
+/* --- Contact Page Styles --- */
+.contact-page {
+  background-color: var(--color-background-dark);
+}
+
+.contact-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: var(--spacing-xxl) var(--spacing-md);
+  text-align: center;
+}
+
+.contact-logo {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin-bottom: var(--spacing-lg);
+  box-shadow: var(--shadow-glow);
+}
+
+.contact-lead {
+  color: var(--color-text-secondary);
+  margin-bottom: var(--spacing-xl);
+}
+
+.contact-form {
+  background-color: #222;
+  padding: var(--spacing-xl);
+  border-radius: 8px;
+  text-align: left;
+  box-shadow: var(--shadow-md);
+}
+
+.form-group {
+  margin-bottom: var(--spacing-lg);
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: var(--spacing-xs);
+  color: var(--color-accent);
+  font-weight: bold;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 12px;
+  border-radius: 4px;
+  border: 1px solid #444;
+  background-color: #333;
+  color: var(--color-white);
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 5px rgba(0, 221, 222, 0.5);
+}
+
+.submit-button {
+  width: 100%;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.contact-links {
+  margin-top: var(--spacing-xxl);
+  border-top: 1px solid #333;
+  padding-top: var(--spacing-xl);
+}
+
+.contact-link-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: var(--color-text);
+  text-decoration: none;
+  margin-bottom: var(--spacing-md);
+  font-size: 1.1rem;
+  transition: color 0.3s;
+}
+
+.contact-link-item:hover {
+  color: var(--color-accent);
+}
+
+.icon-small {
+  width: 24px;
+  height: 24px;
+}
+
+.back-link {
+  color: var(--color-text-secondary);
+  text-decoration: none;
+}
+.back-link:hover {
+  color: var(--color-white);
+}
+
 #shows > div {
   margin-bottom: 0.75em;
 }

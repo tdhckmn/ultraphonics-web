@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact Ultraphonics</title>
+  <meta name="description" content="Book Ultraphonics for your wedding, event, or venue. Contact us today." />
+  
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon" />
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-7RFPHXHGBC"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-7RFPHXHGBC');
+  </script>
+</head>
+<body class="contact-page">
+  <main>
+    <div class="contact-container">
+      <a href="index.html">
+        <img src="assets/images/logo-color.png" alt="Ultraphonics Logo" class="contact-logo" />
+      </a>
+      <h1>Book Us</h1>
+      <p class="contact-lead">Ready to bring high-energy live music to your event? Send us a message!</p>
+
+      <form class="contact-form" id="contact-form">
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" id="name" name="name" required placeholder="Your Name">
+        </div>
+
+        <div class="form-group">
+          <label for="phone">Phone Number</label>
+          <input type="tel" id="phone" name="phone" placeholder="(555) 555-5555">
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="_replyto" required placeholder="you@example.com">
+        </div>
+
+        <div class="form-group">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" rows="5" required placeholder="Tell us about your event (Date, Location, Venue)..."></textarea>
+        </div>
+
+        <button type="submit" class="button submit-button" id="submit-btn">Send Message</button>
+        <p id="form-status" class="form-status"></p>
+      </form>
+
+      <script>
+        document.getElementById("contact-form").addEventListener("submit", async function(event) {
+          event.preventDefault();
+          
+          const status = document.getElementById("form-status");
+          const btn = document.getElementById("submit-btn");
+          const form = event.target;
+          
+          btn.disabled = true;
+          btn.textContent = "Sending...";
+          status.textContent = "";
+          status.className = "form-status";
+
+          const data = new FormData(event.target);
+
+          try {
+            // Replace 'YOUR_FORMSPREE_ID' with your actual Formspree form ID
+            const response = await fetch("https://formspree.io/f/YOUR_FORMSPREE_ID", {
+              method: "POST",
+              body: data,
+              headers: {
+                'Accept': 'application/json'
+              }
+            });
+
+            if (response.ok) {
+              status.textContent = "Thanks! We've received your message and will follow up soon.";
+              status.classList.add("success");
+              form.reset();
+              btn.textContent = "Message Sent";
+            } else {
+              const result = await response.json();
+              if (Object.hasOwn(result, 'errors')) {
+                status.textContent = result["errors"].map(error => error["message"]).join(", ");
+              } else {
+                status.textContent = "Oops! There was a problem submitting your form.";
+              }
+              status.classList.add("error");
+              btn.disabled = false;
+              btn.textContent = "Send Message";
+            }
+          } catch (error) {
+            status.textContent = "Oops! There was a problem submitting your form.";
+            status.classList.add("error");
+            btn.disabled = false;
+            btn.textContent = "Send Message";
+          }
+        });
+      </script>
+      <div class="contact-links">
+        <h3>Other Ways to Connect</h3>
+        <a href="mailto:info@ultraphonicsmusic.com" class="contact-link-item">
+          <img src="assets/images/email.svg" alt="Email" class="button-logo" /> info@ultraphonicsmusic.com
+        </a>
+        <a href="https://www.facebook.com/UltraphonicsMusic" target="_blank" class="contact-link-item">
+          <img src="assets/images/facebook-white.png" alt="Facebook" class="button-logo" /> Message us on Facebook
+        </a>
+      </div>
+      
+      <div style="margin-top: 2rem;">
+        <a href="index.html" class="back-link">← Back to Home</a>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
