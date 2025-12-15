@@ -3,7 +3,12 @@ export const config = {
   // API Keys and IDs
   ids: {
     googleAnalytics: "G-7RFPHXHGBC",
-    formspree: "YOUR_FORMSPREE_ID"
+    emailjs: {
+      publicKey: "KhA8Z-PRCg69qMpWp",
+      serviceId: "service_eujinnf",
+      contactTemplateId: "template_o1lwsxk",
+      quoteTemplateId: "template_0i5n9gk"
+    }
   },
 
   // Navigation Menu Items

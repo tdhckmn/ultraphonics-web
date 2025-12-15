@@ -8,6 +8,8 @@
   <link rel="stylesheet" href="assets/css/styles.css" />
   <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon" />
 
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
   <style>
     /* --- Form Specific Styles --- */
     .quote-container {
@@ -414,34 +416,34 @@
     
               <label class="text-label" style="margin-top: 1.5rem;">Services Needed (Check all that apply)</label>
               <div class="options-grid">
-                <input type="checkbox" name="services[]" id="svc_band" value="Live Band" class="tile-input" checked>
+                <input type="checkbox" name="services" id="svc_band" value="Live Band" class="tile-input" checked>
                 <label for="svc_band" class="tile-label">Live Band</label>
     
-                <input type="checkbox" name="services[]" id="svc_cocktail" value="Cocktail Hour" class="tile-input">
+                <input type="checkbox" name="services" id="svc_cocktail" value="Cocktail Hour" class="tile-input">
                 <label for="svc_cocktail" class="tile-label">Cocktail Hour</label>
     
-                <input type="checkbox" name="services[]" id="svc_ceremony" value="Ceremony" class="tile-input">
+                <input type="checkbox" name="services" id="svc_ceremony" value="Ceremony" class="tile-input">
                 <label for="svc_ceremony" class="tile-label">Ceremony Music</label>
     
-                <input type="checkbox" name="services[]" id="svc_mc" value="MC Services" class="tile-input">
+                <input type="checkbox" name="services" id="svc_mc" value="MC Services" class="tile-input">
                 <label for="svc_mc" class="tile-label">MC Services</label>
               </div>
     
               <label class="text-label" style="margin-top: 1.5rem;">Preferred Genres</label>
               <div class="options-grid">
-                <input type="checkbox" name="genres[]" id="gen_rock" value="Rock" class="tile-input">
+                <input type="checkbox" name="genres" id="gen_rock" value="Rock" class="tile-input">
                 <label for="gen_rock" class="tile-label">Classic Rock</label>
     
-                <input type="checkbox" name="genres[]" id="gen_pop" value="Pop" class="tile-input">
+                <input type="checkbox" name="genres" id="gen_pop" value="Pop" class="tile-input">
                 <label for="gen_pop" class="tile-label">Pop / Top 40</label>
     
-                <input type="checkbox" name="genres[]" id="gen_motown" value="Motown" class="tile-input">
+                <input type="checkbox" name="genres" id="gen_motown" value="Motown" class="tile-input">
                 <label for="gen_motown" class="tile-label">Motown / Soul</label>
     
-                <input type="checkbox" name="genres[]" id="gen_country" value="Country" class="tile-input">
+                <input type="checkbox" name="genres" id="gen_country" value="Country" class="tile-input">
                 <label for="gen_country" class="tile-label">Country</label>
                 
-                <input type="checkbox" name="genres[]" id="gen_90s" value="90s" class="tile-input">
+                <input type="checkbox" name="genres" id="gen_90s" value="90s" class="tile-input">
                 <label for="gen_90s" class="tile-label">90s / 2000s</label>
               </div>
             </div>
@@ -559,6 +561,13 @@
         gtag('config', gaId);
     }
 
+    /* --- Initialize EmailJS --- */
+    if (config.ids && config.ids.emailjs) {
+        emailjs.init({
+            publicKey: config.ids.emailjs.publicKey,
+        });
+    }
+
     /* --- Multi-Step Logic --- */
     let currentStep = 1;
     const totalSteps = 5;
@@ -642,15 +651,15 @@
         });
     });
 
-    /* --- Form Submission --- */
-    document.getElementById("quote-form").addEventListener("submit", async function(event) {
+    /* --- Form Submission with EmailJS --- */
+    document.getElementById("quote-form").addEventListener("submit", function(event) {
       event.preventDefault();
       
       const status = document.getElementById("form-status");
       const btn = document.getElementById("submitBtn");
 
-      if (!config.ids || !config.ids.formspree || config.ids.formspree.includes('YOUR_')) {
-        status.textContent = "Error: Formspree ID not configured.";
+      if (!config.ids || !config.ids.emailjs || !config.ids.emailjs.serviceId) {
+        status.textContent = "Error: EmailJS not configured.";
         status.classList.add("error");
         return;
       }
@@ -659,33 +668,25 @@
       btn.textContent = "Sending...";
       status.textContent = "";
 
-      const data = new FormData(event.target);
-
-      try {
-        const response = await fetch(`https://formspree.io/f/${config.ids.formspree}`, {
-          method: "POST",
-          body: data,
-          headers: { 'Accept': 'application/json' }
-        });
-
-        if (response.ok) {
+      // Send via EmailJS
+      emailjs.sendForm(
+          config.ids.emailjs.serviceId, 
+          config.ids.emailjs.quoteTemplateId, 
+          this
+      )
+      .then(() => {
           status.textContent = "Thank you! We have received your inquiry and will be in touch shortly.";
           status.style.color = "var(--color-accent)";
           event.target.reset();
           btn.textContent = "Sent";
           document.querySelector('.form-navigation').style.display = 'none';
-        } else {
+      }, (error) => {
+          console.error('FAILED...', error);
           status.textContent = "Oops! There was a problem submitting your form.";
           status.style.color = "red";
           btn.disabled = false;
           btn.textContent = "Request Quote";
-        }
-      } catch (error) {
-        status.textContent = "Oops! There was a problem submitting your form.";
-        status.style.color = "red";
-        btn.disabled = false;
-        btn.textContent = "Request Quote";
-      }
+      });
     });
 
     // Initialize
