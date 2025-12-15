@@ -7,110 +7,6 @@
   
   <link rel="stylesheet" href="assets/css/styles.css" />
   <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon" />
-
-  <style>
-    /* Back Link Style (Desktop Top Left) */
-    .back-link-desktop {
-        position: absolute;
-        top: 2rem;
-        left: 2rem;
-        margin-left: 50px;
-        font-size: 0.9rem;
-        color: var(--color-text-secondary);
-        text-decoration: none;
-        border: 1px solid #444;
-        padding: 8px 16px;
-        border-radius: 20px;
-        transition: all 0.3s;
-        z-index: 10;
-        display: inline-block;
-    }
-    .back-link-desktop:hover {
-        color: var(--color-white);
-        border-color: var(--color-accent);
-    }
-    @media (max-width: 600px) {
-        .back-link-desktop { display: none; }
-    }
-
-    /* Page specific overrides */
-    .page-header { text-align: center; margin-bottom: 3rem; padding-top: 2rem; }
-    .page-logo { width: 100px; height: 100px; border-radius: 50%; margin-bottom: 1.5rem; box-shadow: var(--shadow-glow); display: inline-block; }
-    .page-title { font-size: 2.5rem; margin-bottom: 0.5rem; color: var(--color-white); }
-    .page-lead { font-size: 1.1rem; color: var(--color-text-secondary); max-width: 600px; margin: 0 auto; }
-    
-    /* Permanent Link Style */
-    .permanent-contact-link { position: absolute; top: 2rem; right: 2rem; font-size: 0.9rem; color: var(--color-text-secondary); text-decoration: none; border: 1px solid #444; padding: 8px 16px; border-radius: 20px; transition: all 0.3s; z-index: 10; }
-    .permanent-contact-link:hover { color: var(--color-white); border-color: var(--color-accent); }
-    @media (max-width: 600px) { .permanent-contact-link { position: relative; display: block; width: fit-content; margin: 1.5rem auto 2rem auto; top: auto; right: auto; } }
-
-    /* Service Card Styles */
-    .services-container { max-width: 1100px; margin: 0 auto; padding: 0 var(--spacing-md) 4rem; }
-    
-    .service-card { 
-        display: flex; 
-        flex-direction: row; 
-        align-items: stretch; /* Ensures content and image are same height */
-        background: linear-gradient(145deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%); 
-        border: 1px solid rgba(255, 255, 255, 0.1); 
-        border-radius: 12px; 
-        margin-bottom: 3rem; 
-        overflow: hidden; 
-        transition: transform 0.3s, box-shadow 0.3s; 
-    }
-    
-    .service-card:hover { 
-        transform: translateY(-2px); 
-        border-color: rgba(0, 221, 222, 0.3); 
-        box-shadow: 0 0 15px rgba(0, 221, 222, 0.1); 
-    }
-    
-    .service-image-container { 
-        flex: 1; 
-        min-width: 300px; /* Ensures image isn't too small */
-        max-width: 450px; /* Prevents it from getting too huge on wide screens */
-        aspect-ratio: 1 / 1; /* FORCE SQUARE */
-        position: relative; 
-        overflow: hidden; 
-    }
-    
-    .service-image { 
-        width: 100%; 
-        height: 100%; 
-        object-fit: cover; /* Crops image to fill the square without distortion */
-        display: block; 
-        transition: transform 0.5s; 
-    }
-    
-    .service-card:hover .service-image { transform: scale(1.05); }
-    
-    .service-content { 
-        flex: 1.5; 
-        padding: 2.5rem; 
-        text-align: left; 
-        display: flex; 
-        flex-direction: column; 
-        justify-content: center; 
-    }
-    
-    .service-title { color: var(--color-accent); font-size: 1.8rem; margin-bottom: 1rem; margin-top: 0; font-weight: bold; }
-    .service-description { font-size: 1.05rem; color: var(--color-text-secondary); margin-bottom: 1.5rem; line-height: 1.6; }
-    .service-features { list-style: none; padding: 0; margin: 0; }
-    .service-features li { position: relative; padding-left: 1.5rem; margin-bottom: 0.5rem; color: var(--color-text); font-size: 0.95rem; }
-    .service-features li::before { content: "•"; color: var(--color-accent); position: absolute; left: 0; font-weight: bold; }
-    
-    @media (max-width: 768px) { 
-        .service-card { flex-direction: column; } 
-        .service-image-container { 
-            max-width: 100%; 
-            width: 100%;
-            height: auto; 
-            aspect-ratio: 1 / 1; /* Keep square on mobile too, or change to 16/9 if preferred */
-        } 
-        .service-content { padding: 1.5rem; } 
-        .service-title { font-size: 1.5rem; } 
-    }
-  </style>
 </head>
 <body>
   
@@ -128,7 +24,7 @@
     
     <a href="quote-request.html" class="permanent-contact-link">Request a Quote</a>
     
-    <div class="page-header">
+    <div class="page-header services-page-header">
       <a href="index.html">
         <img src="assets/images/logo-color.png" alt="Ultraphonics Logo" class="page-logo" />
       </a>

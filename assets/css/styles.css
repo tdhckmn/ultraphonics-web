@@ -6,6 +6,8 @@
   --color-text-tertiary: #aaaaaa;
   --color-accent: #00ddde;
   --color-accent-hover: #33ddff;
+  --color-btn-bg: #008c8d;
+  --color-btn-hover: #00aeb0;
   --color-white: #ffffff;
   --spacing-xs: 0.25rem;
   --spacing-sm: 0.5rem;
@@ -121,8 +123,9 @@ h3 {
   margin-bottom: var(--spacing-lg);
 }
 
+/* Primary CTA - Uses Darker Button Blue */
 .button {
-  background-color: var(--color-accent);
+  background-color: var(--color-btn-bg);
   color: var(--color-white);
   border: none;
   padding: 12px 24px;
@@ -133,20 +136,23 @@ h3 {
   box-shadow: var(--shadow-sm);
   cursor: pointer;
   display: inline-block;
+  font-weight: bold;
 }
 
 .button:hover {
-  background-color: var(--color-accent); 
+  background-color: var(--color-btn-hover); 
   transform: translateY(-2px);
   box-shadow: var(--shadow-md);
 }
 
+/* Secondary CTA - Uses Darker Button Blue for Border/Hover */
 .button-outline {
   background-color: transparent;
-  border: 2px solid var(--color-accent);
+  border: 2px solid var(--color-btn-bg);
+  color: var(--color-text);
 }
 .button-outline:hover {
-  background-color: var(--color-accent);
+  background-color: var(--color-btn-bg);
   color: var(--color-white);
 }
 
@@ -268,13 +274,75 @@ a.venue-link:hover {
 
 .setlist-button {
   background-color: transparent;
-  border: 2px solid var(--color-accent);
+  border: 2px solid var(--color-btn-bg);
   font-weight: bold;
 }
 
 .setlist-button:hover {
-  background-color: var(--color-accent);
+  background-color: var(--color-btn-bg);
   color: var(--color-white);
+}
+
+/* --- Shared Page Styles (Contact, Services, Quote) --- */
+
+/* Common Page Header */
+.page-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+.page-logo {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-bottom: 1.5rem;
+    box-shadow: var(--shadow-glow);
+    display: inline-block;
+}
+.page-title {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--color-white);
+}
+.page-lead {
+    font-size: 1.1rem;
+    color: var(--color-text-secondary);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* The "Pill" Button (Shared) */
+.permanent-contact-link {
+    position: absolute;
+    top: 1.5rem; 
+    z-index: 10;
+    background-color: rgba(0,0,0,0.3);
+    white-space: nowrap;
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    border: 1px solid #444;
+    padding: 8px 16px;
+    border-radius: 20px;
+    transition: all 0.3s;
+    
+    /* Mobile Default: Centered */
+    left: 50%;
+    transform: translateX(-50%);
+    right: auto;
+}
+
+/* Desktop: Move to Right */
+@media (min-width: 768px) {
+    .permanent-contact-link {
+        left: auto;
+        transform: none;
+        right: 2rem;
+    }
+}
+
+.permanent-contact-link:hover {
+    color: var(--color-white);
+    border-color: var(--color-accent); /* Keeps bright accent for hover glow */
 }
 
 /* --- Contact Page Styles --- */
@@ -285,7 +353,7 @@ a.venue-link:hover {
 .contact-container {
   max-width: 600px;
   margin: 0 auto;
-  padding: var(--spacing-xxl) var(--spacing-md);
+  padding: 6rem var(--spacing-md) var(--spacing-xxl);
   text-align: center;
 }
 
@@ -317,7 +385,7 @@ a.venue-link:hover {
 .form-group label {
   display: block;
   margin-bottom: var(--spacing-xs);
-  color: var(--color-accent);
+  color: var(--color-accent); /* Text Accent */
   font-weight: bold;
 }
 
@@ -336,8 +404,8 @@ a.venue-link:hover {
 .form-group input:focus,
 .form-group textarea:focus {
   outline: none;
-  border-color: var(--color-accent);
-  box-shadow: 0 0 5px rgba(0, 221, 222, 0.5);
+  border-color: var(--color-accent); /* Focus color matches text accent */
+  box-shadow: 0 0 5px rgba(0, 221, 222, 0.5); /* Glow matches text accent */
 }
 
 .submit-button {
@@ -353,20 +421,41 @@ a.venue-link:hover {
   padding-top: var(--spacing-xl);
 }
 
+.contact-links-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
 .contact-link-item {
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--color-text);
+  padding: 1rem;
+  border-radius: 8px;
+  font-weight: 500;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
-  color: var(--color-text);
+  min-height: 60px;
+  font-size: 1rem;
   text-decoration: none;
+  box-sizing: border-box;
+  width: 100%;
   margin-bottom: var(--spacing-md);
-  font-size: 1.1rem;
-  transition: color 0.3s;
 }
 
 .contact-link-item:hover {
-  color: var(--color-accent);
+  background-color: rgba(0, 221, 222, 0.1); /* Matches bright accent */
+  border-color: var(--color-accent);
+  box-shadow: var(--shadow-glow);
+  color: var(--color-white);
+  transform: translateY(-2px);
 }
 
 .icon-small {
@@ -483,6 +572,257 @@ a.venue-link:hover {
   filter: brightness(0) invert(1);
 }
 
+/* --- Services Page Styles --- */
+.services-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-md) 4rem;
+}
+
+.services-page-header {
+    padding-top: 6rem; 
+}
+
+.service-card { 
+    display: flex; 
+    flex-direction: row; 
+    align-items: stretch;
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%); 
+    border: 1px solid rgba(255, 255, 255, 0.1); 
+    border-radius: 12px; 
+    margin-bottom: 3rem; 
+    overflow: hidden; 
+    transition: transform 0.3s, box-shadow 0.3s; 
+}
+
+.service-card:hover { 
+    transform: translateY(-2px); 
+    border-color: rgba(0, 221, 222, 0.3); /* Hover border matches bright accent */
+    box-shadow: 0 0 15px rgba(0, 221, 222, 0.1); 
+}
+
+.service-image-container { 
+    flex: 1; 
+    min-width: 300px;
+    max-width: 450px;
+    aspect-ratio: 1 / 1; 
+    position: relative; 
+    overflow: hidden; 
+}
+
+.service-image { 
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover;
+    display: block; 
+    transition: transform 0.5s; 
+}
+
+.service-card:hover .service-image { transform: scale(1.05); }
+
+.service-content { 
+    flex: 1.5; 
+    padding: 2.5rem; 
+    text-align: left; 
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center; 
+}
+
+.service-title { color: var(--color-accent); font-size: 1.8rem; margin-bottom: 1rem; margin-top: 0; font-weight: bold; }
+.service-description { font-size: 1.05rem; color: var(--color-text-secondary); margin-bottom: 1.5rem; line-height: 1.6; }
+.service-features { list-style: none; padding: 0; margin: 0; }
+.service-features li { position: relative; padding-left: 1.5rem; margin-bottom: 0.5rem; color: var(--color-text); font-size: 0.95rem; }
+.service-features li::before { content: "•"; color: var(--color-accent); position: absolute; left: 0; font-weight: bold; }
+
+@media (max-width: 768px) { 
+    .service-card { flex-direction: column; } 
+    .service-image-container { 
+        max-width: 100%; 
+        width: 100%;
+        height: auto; 
+        aspect-ratio: 1 / 1;
+    } 
+    .service-content { padding: 1.5rem; } 
+    .service-title { font-size: 1.5rem; } 
+}
+
+
+/* --- Quote Request Page Styles --- */
+.quote-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 6rem var(--spacing-md) var(--spacing-xxl);
+  text-align: left; 
+}
+
+/* Fixed styling for ALL input types */
+input[type="text"],
+input[type="date"],
+input[type="number"],
+input[type="email"],
+input[type="tel"],
+select,
+textarea {
+  width: 100%;
+  padding: 12px;
+  border-radius: 4px;
+  border: 1px solid #444;
+  background-color: #333;
+  color: var(--color-white);
+  font-size: 1rem;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 5px rgba(0, 221, 222, 0.5);
+}
+
+/* Step Container */
+.step-content {
+  display: none;
+  animation: fadeIn 0.4s ease;
+}
+.step-content.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.form-section h3 {
+  color: var(--color-accent);
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  border-bottom: 1px solid #333;
+  padding-bottom: 0.5rem;
+}
+
+/* Navigation Buttons */
+.form-navigation {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #333;
+  padding-top: 2rem;
+}
+
+.nav-btn {
+  padding: 12px 24px;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 5px;
+  border: none;
+  font-weight: bold;
+  transition: all 0.3s;
+}
+
+.btn-back {
+  background-color: transparent;
+  border: 1px solid #555;
+  color: #ccc;
+}
+.btn-back:hover {
+  border-color: #fff;
+  color: #fff;
+}
+
+.btn-next {
+  background-color: var(--color-btn-bg); /* Use Button Blue */
+  color: var(--color-white);
+  margin-left: auto;
+}
+.btn-next:hover {
+  background-color: var(--color-btn-hover);
+}
+
+/* Grid for "Tile" inputs */
+.options-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.tile-input { display: none; }
+
+.tile-label {
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--color-text);
+  padding: 1rem;
+  border-radius: 8px;
+  font-weight: 500;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60px;
+  font-size: 0.95rem;
+  user-select: none;
+}
+
+.tile-label:hover { background-color: rgba(255, 255, 255, 0.1); }
+
+.tile-input:checked + .tile-label {
+  border-color: var(--color-accent); /* Selected tile border uses text accent */
+  box-shadow: var(--shadow-glow);
+  background-color: rgba(0, 221, 222, 0.1);
+  color: var(--color-white);
+}
+
+/* Standard Inputs Layout */
+.input-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.input-group {
+  flex: 1;
+  min-width: 250px;
+  margin-bottom: 1rem;
+}
+
+label.text-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+}
+
+.other-input-container {
+  margin-top: 10px;
+  display: none;
+}
+
+.progress-indicator {
+    margin-bottom: 2rem;
+    display: flex;
+    gap: 5px;
+    justify-content: center;
+}
+.progress-step {
+    height: 4px;
+    flex: 1;
+    background: #333;
+    border-radius: 2px;
+}
+.progress-step.active {
+    background: var(--color-accent); /* Progress bar uses bright accent */
+}
+
+/* --- Footer --- */
 footer {
   margin-top: auto;
   padding: 30px 10px;
@@ -691,8 +1031,8 @@ footer {
 /* --- Hamburger Menu Styles --- */
 .hamburger-btn {
   position: fixed;
-  top: 2rem;
-  left: 2rem;
+  top: 1.5rem;
+  left: 1.5rem;
   z-index: 1001; /* Higher than .nav-overlay */
   background: transparent;
   border: none;
@@ -794,30 +1134,4 @@ footer {
 .nav-link:hover {
   color: var(--color-accent);
   text-shadow: var(--shadow-glow);
-}
-
-/* --- Mobile "Pill" Back Button Styles --- */
-@media (max-width: 600px) {
-    .back-link {
-        display: inline-block;
-        margin-top: 3rem;
-        
-        /* Pill Styling */
-        border: 2px solid var(--color-text-secondary);
-        padding: 12px 30px;
-        border-radius: 50px;
-        color: var(--color-text-secondary);
-        text-transform: uppercase;
-        font-weight: bold;
-        letter-spacing: 1px;
-        font-size: 0.9rem;
-        transition: all 0.3s ease;
-        text-decoration: none;
-    }
-    
-    .back-link:hover {
-        background-color: var(--color-text-secondary);
-        color: var(--color-background-dark);
-        border-color: var(--color-text-secondary);
-    }
 }
