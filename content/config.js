@@ -46,7 +46,8 @@ export const config = {
             "Full sound and lighting tailored to the venue size.",
             "Options for cocktail hour and ceremony music."
         ],
-        image: "assets/images/Weddings.jpg" 
+        image: "assets/images/Weddings.jpg",
+        attribution: "Photo: Karin Maurer"
       },
       {
         title: "Corporate Parties & Holiday Events",
@@ -57,7 +58,8 @@ export const config = {
             "Wireless microphone availability for speeches and awards.",
             "Flexible scheduling to match your itinerary."
         ],
-        image: "assets/images/Corporate.png"
+        image: "assets/images/Corporate.png",
+        attribution: "Photo: Emily Yates"
       },
       {
         title: "Bar & Brewery Sets",
@@ -68,7 +70,8 @@ export const config = {
             "Social media promotion to our local following.",
             "Volume control appropriate for the venue."
         ],
-        image: "assets/images/Bars.png"
+        image: "assets/images/Bars.png",
+        attribution: "Photo: Emily Yates"
       },
       {
         title: "Music Halls & Festivals",
@@ -79,7 +82,8 @@ export const config = {
             "Original music options available upon request.",
             "Promo materials available for marketing."
         ],
-        image: "assets/images/Festivals.png"
+        image: "assets/images/Festivals.png",
+        attribution: "Photo: Lester Burton"
       }
     ]
   },

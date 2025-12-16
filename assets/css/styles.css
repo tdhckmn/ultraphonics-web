@@ -1135,3 +1135,22 @@ footer {
   color: var(--color-accent);
   text-shadow: var(--shadow-glow);
 }
+
+.photo-attribution {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.6);
+  color: rgba(255, 255, 255, 0.9);
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: bold;
+  pointer-events: none;
+  white-space: nowrap;
+  z-index: 2;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}

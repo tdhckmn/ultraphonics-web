@@ -121,11 +121,16 @@
                    </ul>`
                 : '';
             
+            const attributionHtml = item.attribution 
+                ? `<div class="photo-attribution">${item.attribution}</div>` 
+                : '';
+            
             const card = document.createElement('div');
             card.className = 'service-card';
             card.innerHTML = `
                 <div class="service-image-container">
                     <img src="${item.image}" alt="${item.title}" class="service-image" loading="lazy" />
+                    ${attributionHtml}
                 </div>
                 <div class="service-content">
                     <h2 class="service-title">${item.title}</h2>
