@@ -46,7 +46,7 @@ export const config = {
             "Full sound and lighting tailored to the venue size.",
             "Options for cocktail hour and ceremony music."
         ],
-        image: "assets/images/Weddings.png" 
+        image: "assets/images/Weddings.jpg" 
       },
       {
         title: "Corporate Parties & Holiday Events",
