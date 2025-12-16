@@ -505,8 +505,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
+  function setupCopyright() {
+    const yearSpan = document.getElementById('copyright-year');
+    if (yearSpan) {
+      yearSpan.textContent = new Date().getUTCFullYear();
+    }
+  }
+
   injectStructuredData();
   populateTextContent();
+  setupCopyright();
   setupEventListeners();
   setupSocialButtons();
   setupSectionTracking();

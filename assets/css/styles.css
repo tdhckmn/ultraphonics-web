@@ -1154,3 +1154,16 @@ footer {
   letter-spacing: 0.5px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }
+
+.site-credits {
+  margin-top: var(--spacing-xxxl);
+  margin-bottom: var(--spacing-md);
+  color: var(--color-text-tertiary);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  opacity: 0.8;
+}
+
+.site-credits p {
+  margin: 0;
+}
