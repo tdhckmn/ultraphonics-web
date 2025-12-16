@@ -59,7 +59,7 @@ export const config = {
             "Flexible scheduling to match your itinerary."
         ],
         image: "assets/images/Corporate.png",
-        attribution: "Photo: Emily Yates"
+        attribution: "Photo: Justin Collins-Domansky"
       },
       {
         title: "Bar & Brewery Sets",
