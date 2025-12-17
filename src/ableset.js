@@ -6,12 +6,12 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Define the list of public Trello boards
     const boards = [
-        { id: 'ge3DeazJ', name: '🎤 Rehearsal Board', trelloUrl: 'https://trello.com/b/ge3DeazJ/rehearsal' },
-        { id: 'GWX8TAdj', name: '🎆 NYE Setlist', trelloUrl: 'https://trello.com/b/GWX8TAdj/nye-action-detroit' },
-        { id: 'cIqzpNi6', name: '🔥 Hell Setlist', trelloUrl: 'https://trello.com/b/cIqzpNi6/hell' },
-        { id: 'y3V9lSxZ', name: '🎸 Open Mic / Acoustic', trelloUrl: 'https://trello.com/b/y3V9lSxZ/open-mic' },
-        { id: 'MLsNdpwb', name: '💍 Wedding Setlist', trelloUrl: 'https://trello.com/b/MLsNdpwb/wedding' },
-        { id: 'fuOnZPRs', name: '📋 Main Song List', trelloUrl: 'https://trello.com/b/fuOnZPRs/main-song-list' }
+        { id: 'ge3DeazJ', name: '🎤 Rehearsal' },
+        { id: 'GWX8TAdj', name: '🎆 NYE Setlist' },
+        { id: 'cIqzpNi6', name: '🪩 Three-hour Gig' },
+        { id: 'y3V9lSxZ', name: '🎸 Open Mic / Acoustic' },
+        { id: 'MLsNdpwb', name: '💍 Wedding Setlist' },
+        { id: 'fuOnZPRs', name: '📋 Main Song List' }
     ];
 
     // UPDATED: Using CodeTabs proxy for better stability
@@ -283,7 +283,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <button id="${buttonId}" onclick="downloadBoardAsAbleset('${board.id}', '${board.name}', '${buttonId}')" class="btn btn-secondary">
                         Download .json
                     </button>
-                    <a href="${board.trelloUrl}" target="_blank" class="btn btn-primary">
+                    <a href="${TRELLO_BASE_URL}${board.id}" target="_blank" class="btn btn-primary">
                         Launch Trello
                     </a>
                 </div>
