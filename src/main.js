@@ -379,20 +379,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
-  function setupMediaKit() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const target = urlParams.get('to');
-
-    if (target === 'media-kit' && links && links.mediaKit) {
-        trackEvent('campaign_visit', { source: 'media_kit_link', medium: 'smart_link' });
-        trackEvent('media_kit_open', { source: 'auto_redirect' });
-
-        setTimeout(() => {
-            window.location.href = links.mediaKit;
-        }, 800);
-    }
-  }
-
   function loadShowSchedule() {
     const showsContainer = document.querySelector(selectors.showsContainer);
     if (!showsContainer) return;
@@ -520,7 +506,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   setupSectionTracking();
   setupTippingModal();
   setupRequestModal();
-  setupMediaKit();
   loadShowSchedule();
   setupAdminCode();
   setupMailingListAdminAccess();
