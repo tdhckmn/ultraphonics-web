@@ -946,6 +946,15 @@ footer {
   line-height: 1.6 !important;
 }
 
+.contact-link {
+  margin-top: var(--spacing-xl);
+  color: var(--color-text-tertiary);
+  font-size: var(--font-size-sm);
+  text-decoration: none;
+  transition: color 0.3s;
+  display: inline-block;
+}
+
 .email {
   margin-top: var(--spacing-xl);
   color: var(--color-text-tertiary);
@@ -1120,6 +1129,9 @@ footer {
 .nav-overlay.open .nav-item:nth-child(3) { transition-delay: 0.3s; }
 .nav-overlay.open .nav-item:nth-child(4) { transition-delay: 0.4s; }
 .nav-overlay.open .nav-item:nth-child(5) { transition-delay: 0.5s; }
+.nav-overlay.open .nav-item:nth-child(6) { transition-delay: 0.6s; }
+.nav-overlay.open .nav-item:nth-child(7) { transition-delay: 0.7s; }
+.nav-overlay.open .nav-item:nth-child(8) { transition-delay: 0.8s; }
 
 .nav-link {
   font-size: 2rem;

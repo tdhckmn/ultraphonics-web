@@ -28,6 +28,7 @@
   <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon" />
   <link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png" />
 
+  <!-- EmailJS is required for the contact form functionality -->
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 </head>
 <body class="contact-page">
@@ -95,99 +96,12 @@
     </div>
   </main>
 
-  <script type="module">
-    import { config } from './content/config.js';
+  <footer>
+    <div class="site-credits">
+      <p>&copy; <span id="copyright-year"></span> Ultraphonics</p>
+    </div>
+  </footer>
 
-    /* --- Navigation Logic --- */
-    const navToggle = document.getElementById('nav-toggle');
-    const navOverlay = document.getElementById('nav-overlay');
-    const navList = document.getElementById('nav-list');
-
-    if (config.navigation) {
-        config.navigation.forEach(item => {
-            const li = document.createElement('li');
-            li.className = 'nav-item';
-            const a = document.createElement('a');
-            a.href = item.link;
-            a.textContent = item.label;
-            a.className = 'nav-link';
-            li.appendChild(a);
-            navList.appendChild(li);
-        });
-    }
-
-    navToggle.addEventListener('click', () => {
-        navToggle.classList.toggle('open');
-        navOverlay.classList.toggle('open');
-        document.body.classList.toggle('modal-open');
-    });
-
-    navList.addEventListener('click', (e) => {
-        if (e.target.tagName === 'A') {
-            navToggle.classList.remove('open');
-            navOverlay.classList.remove('open');
-            document.body.classList.remove('modal-open');
-        }
-    });
-
-    // 1. Inject Google Analytics
-    if (config.ids && config.ids.googleAnalytics) {
-        const gaId = config.ids.googleAnalytics;
-        const script = document.createElement('script');
-        script.async = true;
-        script.src = `https://www.googletagmanager.com/gtag/js?id=${gaId}`;
-        document.head.appendChild(script);
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', gaId);
-    }
-
-    // 2. Initialize EmailJS
-    if (config.ids && config.ids.emailjs) {
-        emailjs.init({
-            publicKey: config.ids.emailjs.publicKey,
-        });
-    }
-
-    // 3. Handle Form Submission with EmailJS
-    document.getElementById("contact-form").addEventListener("submit", function(event) {
-      event.preventDefault();
-      
-      const status = document.getElementById("form-status");
-      const btn = document.getElementById("submit-btn");
-      
-      // Check for config
-      if (!config.ids || !config.ids.emailjs || !config.ids.emailjs.serviceId) {
-        status.textContent = "Error: EmailJS not configured in content/config.js";
-        status.classList.add("error");
-        return;
-      }
-
-      btn.disabled = true;
-      btn.textContent = "Sending...";
-      status.textContent = "";
-      status.className = "form-status";
-
-      // Send Form
-      emailjs.sendForm(
-          config.ids.emailjs.serviceId, 
-          config.ids.emailjs.contactTemplateId, 
-          this
-      )
-      .then(() => {
-          status.textContent = "Thanks! We've received your message and will follow up soon.";
-          status.classList.add("success");
-          event.target.reset();
-          btn.textContent = "Message Sent";
-      }, (error) => {
-          console.error('FAILED...', error);
-          status.textContent = "Oops! There was a problem submitting your form. Please try again or email us directly.";
-          status.classList.add("error");
-          btn.disabled = false;
-          btn.textContent = "Send Message";
-      });
-    });
-  </script>
+  <script type="module" src="src/contact.js" defer></script>
 </body>
 </html>

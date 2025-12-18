@@ -1,5 +1,9 @@
-// content/config.js
 export const config = {
+  // Global Contact Info
+  siteInfo: {
+    copyrightName: "Ultraphonics"
+  },
+
   // API Keys and IDs
   ids: {
     googleAnalytics: "G-7RFPHXHGBC",
@@ -8,6 +12,22 @@ export const config = {
       serviceId: "service_eujinnf",
       contactTemplateId: "template_o1lwsxk",
       quoteTemplateId: "template_0i5n9gk"
+    }
+  },
+
+  // Page Content (Titles & Subtitles)
+  pages: {
+    contact: {
+      title: "Contact Us",
+      lead: "Have a general question? Send us a message below."
+    },
+    quote: {
+      title: "Event Inquiry",
+      lead: "Tell us about your event to get a fast, accurate quote."
+    },
+    services: {
+      title: "Our Services",
+      lead: "High-energy live entertainment tailored to your specific event needs."
     }
   },
 
@@ -34,8 +54,6 @@ export const config = {
     leadText:
       "Ultraphonics delivers high-energy live music to weddings, private parties, corporate events, bars, and music venues in Detroit, Ann Arbor, and Toledo.",
     // Detailed Configuration for the Services Page
-    pageTitle: "Our Services",
-    pageLead: "High-energy live entertainment tailored to your specific event needs.",
     detailedItems: [
       {
         title: "Weddings & Private Events",

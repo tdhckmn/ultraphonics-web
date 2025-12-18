@@ -28,6 +28,7 @@
   <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon" />
   <link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png" />
 
+  <!-- EmailJS is required for the quote form functionality -->
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 </head>
 <body>
@@ -301,186 +302,13 @@
     </div>
   </main>
 
-  <script type="module">
-    import { config } from './content/config.js';
+  <footer>
+    <div class="site-credits">
+      <p>&copy; <span id="copyright-year"></span> Ultraphonics</p>
+      <a href="contact.html" class="contact-link">Contact Us</a>
+    </div>
+  </footer>
 
-    /* --- Navigation Logic --- */
-    const navToggle = document.getElementById('nav-toggle');
-    const navOverlay = document.getElementById('nav-overlay');
-    const navList = document.getElementById('nav-list');
-
-    if (config.navigation) {
-        config.navigation.forEach(item => {
-            const li = document.createElement('li');
-            li.className = 'nav-item';
-            const a = document.createElement('a');
-            a.href = item.link;
-            a.textContent = item.label;
-            a.className = 'nav-link';
-            li.appendChild(a);
-            navList.appendChild(li);
-        });
-    }
-
-    navToggle.addEventListener('click', () => {
-        navToggle.classList.toggle('open');
-        navOverlay.classList.toggle('open');
-        document.body.classList.toggle('modal-open');
-    });
-
-    navList.addEventListener('click', (e) => {
-        if (e.target.tagName === 'A') {
-            navToggle.classList.remove('open');
-            navOverlay.classList.remove('open');
-            document.body.classList.remove('modal-open');
-        }
-    });
-
-    /* --- Analytics Injection --- */
-    if (config.ids && config.ids.googleAnalytics) {
-        const gaId = config.ids.googleAnalytics;
-        const script = document.createElement('script');
-        script.async = true;
-        script.src = `https://www.googletagmanager.com/gtag/js?id=${gaId}`;
-        document.head.appendChild(script);
-
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', gaId);
-    }
-
-    /* --- Initialize EmailJS --- */
-    if (config.ids && config.ids.emailjs) {
-        emailjs.init({
-            publicKey: config.ids.emailjs.publicKey,
-        });
-    }
-
-    /* --- Multi-Step Logic --- */
-    let currentStep = 1;
-    const totalSteps = 5;
-
-    const prevBtn = document.getElementById("prevBtn");
-    const nextBtn = document.getElementById("nextBtn");
-    const submitBtn = document.getElementById("submitBtn");
-
-    function showStep(step) {
-        document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
-        document.getElementById(`step-${step}`).classList.add('active');
-        
-        document.querySelectorAll('.progress-step').forEach((el, idx) => {
-            if (idx < step) el.classList.add('active');
-            else el.classList.remove('active');
-        });
-
-        // Navigation button visibility
-        if (step === 1) prevBtn.style.display = 'none';
-        else prevBtn.style.display = 'inline-block';
-
-        if (step === totalSteps) {
-            nextBtn.style.display = 'none';
-            submitBtn.style.display = 'inline-block';
-        } else {
-            nextBtn.style.display = 'inline-block';
-            submitBtn.style.display = 'none';
-        }
-    }
-
-    function validateStep(step) {
-        const stepEl = document.getElementById(`step-${step}`);
-        const inputs = stepEl.querySelectorAll('input[required], select[required]');
-        let valid = true;
-        
-        inputs.forEach(input => {
-            if (!input.value.trim()) {
-                valid = false;
-                input.style.borderColor = 'red';
-                input.addEventListener('input', () => input.style.borderColor = '#444', {once: true});
-            }
-        });
-
-        if (step === 2) {
-             const radioGroup = stepEl.querySelector('input[name="event_type"]:checked');
-             const radios = stepEl.querySelectorAll('input[name="event_type"]');
-             if (radios.length > 0 && !radioGroup) {
-                 valid = false;
-                 alert("Please select an event type.");
-             }
-        }
-        return valid;
-    }
-
-    nextBtn.addEventListener('click', () => {
-        if (validateStep(currentStep)) {
-            currentStep++;
-            showStep(currentStep);
-            window.scrollTo(0, 0);
-        }
-    });
-
-    prevBtn.addEventListener('click', () => {
-        if (currentStep > 1) {
-            currentStep--;
-            showStep(currentStep);
-            window.scrollTo(0, 0);
-        }
-    });
-
-    /* --- Other Field Toggle --- */
-    document.querySelectorAll('input[name="event_type"]').forEach(radio => {
-        radio.addEventListener('change', (e) => {
-            const container = document.getElementById('event_type_other_container');
-            if(e.target.value === 'Other') {
-                container.style.display = 'block';
-                container.querySelector('input').focus();
-            } else {
-                container.style.display = 'none';
-            }
-        });
-    });
-
-    /* --- Form Submission with EmailJS --- */
-    document.getElementById("quote-form").addEventListener("submit", function(event) {
-      event.preventDefault();
-      
-      const status = document.getElementById("form-status");
-      const btn = document.getElementById("submitBtn");
-
-      if (!config.ids || !config.ids.emailjs || !config.ids.emailjs.serviceId) {
-        status.textContent = "Error: EmailJS not configured.";
-        status.classList.add("error");
-        return;
-      }
-      
-      btn.disabled = true;
-      btn.textContent = "Sending...";
-      status.textContent = "";
-
-      // Send via EmailJS
-      emailjs.sendForm(
-          config.ids.emailjs.serviceId, 
-          config.ids.emailjs.quoteTemplateId, 
-          this
-      )
-      .then(() => {
-          status.textContent = "Thank you! We have received your inquiry and will be in touch shortly.";
-          status.style.color = "var(--color-accent)";
-          event.target.reset();
-          btn.textContent = "Sent";
-          document.querySelector('.form-navigation').style.display = 'none';
-      }, (error) => {
-          console.error('FAILED...', error);
-          status.textContent = "Oops! There was a problem submitting your form.";
-          status.style.color = "red";
-          btn.disabled = false;
-          btn.textContent = "Request Quote";
-      });
-    });
-
-    // Initialize
-    showStep(1);
-
-  </script>
+  <script type="module" src="src/quote.js" defer></script>
 </body>
 </html>

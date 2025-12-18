@@ -66,94 +66,12 @@
   </main>
 
   <footer>
-    <a href="mailto:info@ultraphonicsmusic.com" class="email">info@ultraphonicsmusic.com</a>
+    <div class="site-credits">
+      <p>&copy; <span id="copyright-year"></span> Ultraphonics</p>
+      <a href="contact.html" class="contact-link">Contact Us</a>
+    </div>
   </footer>
 
-  <script type="module">
-    import { config } from './content/config.js';
-
-    /* --- Navigation Logic --- */
-    const navToggle = document.getElementById('nav-toggle');
-    const navOverlay = document.getElementById('nav-overlay');
-    const navList = document.getElementById('nav-list');
-
-    if (config.navigation) {
-        config.navigation.forEach(item => {
-            const li = document.createElement('li');
-            li.className = 'nav-item';
-            const a = document.createElement('a');
-            a.href = item.link;
-            a.textContent = item.label;
-            a.className = 'nav-link';
-            li.appendChild(a);
-            navList.appendChild(li);
-        });
-    }
-
-    navToggle.addEventListener('click', () => {
-        navToggle.classList.toggle('open');
-        navOverlay.classList.toggle('open');
-        document.body.style.overflow = navOverlay.classList.contains('open') ? 'hidden' : '';
-    });
-
-    navList.addEventListener('click', (e) => {
-        if (e.target.tagName === 'A') {
-            navToggle.classList.remove('open');
-            navOverlay.classList.remove('open');
-            document.body.style.overflow = '';
-        }
-    });
-
-    /* --- Content Population --- */
-    if (config.services) {
-        document.getElementById('page-title').textContent = config.services.pageTitle || "Our Services";
-        document.getElementById('page-lead').textContent = config.services.pageLead || "";
-    }
-
-    const container = document.getElementById('services-list');
-    const items = config.services.detailedItems || [];
-
-    if (items.length > 0) {
-        items.forEach((item) => {
-            const featuresHtml = item.features 
-                ? `<ul class="service-features">
-                    ${item.features.map(f => `<li>${f}</li>`).join('')}
-                   </ul>`
-                : '';
-            
-            const attributionHtml = item.attribution 
-                ? `<div class="photo-attribution">${item.attribution}</div>` 
-                : '';
-            
-            const card = document.createElement('div');
-            card.className = 'service-card';
-            card.innerHTML = `
-                <div class="service-image-container">
-                    <img src="${item.image}" alt="${item.title}" class="service-image" loading="lazy" />
-                    ${attributionHtml}
-                </div>
-                <div class="service-content">
-                    <h2 class="service-title">${item.title}</h2>
-                    <p class="service-description">${item.description}</p>
-                    ${featuresHtml}
-                </div>
-            `;
-            container.appendChild(card);
-        });
-    }
-
-    /* --- Analytics --- */
-    if (config.ids && config.ids.googleAnalytics) {
-        const gaId = config.ids.googleAnalytics;
-        const script = document.createElement('script');
-        script.async = true;
-        script.src = `https://www.googletagmanager.com/gtag/js?id=${gaId}`;
-        document.head.appendChild(script);
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', gaId);
-    }
-  </script>
+  <script type="module" src="src/services.js" defer></script>
 </body>
 </html>

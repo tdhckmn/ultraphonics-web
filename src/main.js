@@ -1,69 +1,28 @@
-import { config } from '../../content/config.js';
+import { config } from '../content/config.js';
+import { trackEvent } from './analytics.js';
+import { initMailerLite } from './mailer-lite.js';
+import { 
+    setupCommonElements, 
+    parseLocalDateOnly, 
+    parseTimeToHM, 
+    dateToIsoWithLocalTz, 
+    toIsoWithTz, 
+    firstUrl, 
+    formatCityState 
+} from './utils.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
+  // 1. Setup Navigation, Analytics, Footer
+  setupCommonElements('home'); 
 
-  // --- 1. Analytics Injection (Global) ---
-  if (config.ids && config.ids.googleAnalytics) {
-    const gaId = config.ids.googleAnalytics;
-    
-    // Prevent duplicate injection
-    if (!document.querySelector(`script[src*="${gaId}"]`)) {
-        const script = document.createElement('script');
-        script.async = true;
-        script.src = `https://www.googletagmanager.com/gtag/js?id=${gaId}`;
-        document.head.appendChild(script);
+  // 2. Setup MailerLite
+  initMailerLite();
 
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        // Make gtag global
-        window.gtag = gtag; 
-        gtag('js', new Date());
-        gtag('config', gaId);
-    }
-  }
-
-  // --- 2. Navigation Logic ---
-  const navToggle = document.getElementById('nav-toggle');
-  const navOverlay = document.getElementById('nav-overlay');
-  const navList = document.getElementById('nav-list');
-
-  if (navToggle && navOverlay && navList) {
-    // Render Menu Items
-    if (config.navigation) {
-        config.navigation.forEach(item => {
-            const li = document.createElement('li');
-            li.className = 'nav-item';
-            const a = document.createElement('a');
-            a.href = item.link;
-            a.textContent = item.label;
-            a.className = 'nav-link';
-            li.appendChild(a);
-            navList.appendChild(li);
-        });
-    }
-
-    // Toggle Menu
-    navToggle.addEventListener('click', () => {
-        navToggle.classList.toggle('open');
-        navOverlay.classList.toggle('open');
-        document.body.classList.toggle('modal-open');
-    });
-
-    // Close on click
-    navList.addEventListener('click', (e) => {
-        if (e.target.tagName === 'A') {
-            navToggle.classList.remove('open');
-            navOverlay.classList.remove('open');
-            document.body.classList.remove('modal-open');
-        }
-    });
-  }
-
-
-  // --- 3. Home Page Logic (Safe for other pages) ---
+  // --- Home Page Specific Logic ---
+  
   let shows = [];
   try {
-    const response = await fetch(`../api/shows.json?v=${new Date().getTime()}`);
+    const response = await fetch(`api/shows.json?v=${new Date().getTime()}`);
     if (response.ok) {
       shows = await response.json();
     }
@@ -71,31 +30,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     console.error(error);
   }
 
-  const siteContent = {
-    shows,
-    ...config,
-  };
+  const { tipping, selectors, hero, services, links } = config;
 
-  const { tipping, selectors, hero, services, links } = siteContent;
-
-  function trackEvent(eventName, params = {}) {
-    if (typeof window.gtag !== 'undefined') {
-      window.gtag('event', eventName, params);
-    } else {
-      console.log('GA Event:', eventName, params);
-    }
-  }
-
-  function firstUrl(...candidates) {
-    return candidates.find(u => typeof u === "string" && u.trim().length > 0);
-  }
-
-  function formatCityState(city, state) {
-    const c = (city || "").trim();
-    const s = (state || "").trim();
-    if (c && s) return `${c}, ${s}`;
-    return c || s || "";
-  }
+  // --- Helper Functions Specific to Home Page Logic ---
 
   function ensureMobileVideoAutoplay() {
     const mobileVideo = document.querySelector('.hero-video-mobile');
@@ -129,63 +66,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
-  function parseLocalDateOnly(dateStr) {
-    if (!dateStr) return null;
-    const iso = dateStr.match(/^(\d{4})-(\d{2})-(\d{2})$/);
-    if (iso) {
-      const [, y, m, d] = iso.map(Number);
-      return new Date(y, m - 1, d, 0, 0, 0, 0);
-    }
-    const us = dateStr.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
-    if (us) {
-      const [, m, d, y] = us.map(Number);
-      return new Date(y, m - 1, d, 0, 0, 0, 0);
-    }
-    return new Date(dateStr);
-  }
-
-  function parseTimeToHM(timeStr) {
-    if (!timeStr) return { hours: 0, minutes: 0, isAM: false, isPM: false };
-    const parts = timeStr.trim().split(/\s+/);
-    const [hStr, mStr = "00"] = parts[0].split(":");
-    let h = parseInt(hStr, 10);
-    const ampm = (parts[1] || "").toUpperCase();
-    const isAM = ampm === "AM";
-    const isPM = ampm === "PM";
-    if (isPM && h !== 12) h += 12;
-    if (isAM && h === 12) h = 0;
-    return { hours: h, minutes: parseInt(mStr, 10), isAM, isPM };
-  }
-
-  function dateToIsoWithLocalTz(dLocal) {
-    const pad = n => String(n).padStart(2, "0");
-    const y = dLocal.getFullYear();
-    const mo = pad(dLocal.getMonth() + 1);
-    const da = pad(dLocal.getDate());
-    const H = pad(dLocal.getHours());
-    const M = pad(dLocal.getMinutes());
-    const S = pad(dLocal.getSeconds());
-    const tzMinutes = -dLocal.getTimezoneOffset();
-    const sign = tzMinutes >= 0 ? "+" : "-";
-    const offAbs = Math.abs(tzMinutes);
-    const offH = pad(Math.floor(offAbs / 60));
-    const offM = pad(offAbs % 60);
-    return `${y}-${mo}-${da}T${H}:${M}:${S}${sign}${offH}:${offM}`;
-  }
-
-  function toIsoWithTz(dateStr, timeStr) {
-    const base = parseLocalDateOnly(dateStr);
-    if (!base || isNaN(base)) return null;
-    const { hours, minutes } = parseTimeToHM(timeStr);
-    base.setHours(hours, minutes, 0, 0);
-    return dateToIsoWithLocalTz(base);
-  }
-
   function injectStructuredData() {
     const SITE = "https://www.ultraphonicsmusic.com/";
     const DEFAULT_IMAGE = SITE + "assets/images/logo-color.png";
     const musicGroup = { "@id": SITE + "#musicgroup", "@type": "MusicGroup", name: "Ultraphonics", alternateName: "Ultraphonics Music", url: SITE, image: DEFAULT_IMAGE, logo: DEFAULT_IMAGE, genre: ["Rock", "Pop", "Country", "Soul"], description: "Ultraphonics is a high-energy variety band playing Rock, Pop, Country & Soul for weddings, events, and bars in Detroit, Ann Arbor, and Toledo.", sameAs: ["https://www.facebook.com/UltraphonicsMusic", "https://www.instagram.com/ultraphonicsmusic"], contactPoint: { "@type": "ContactPoint", email: "info@ultraphonicsmusic.com", contactType: "booking" } };
-    const events = (siteContent.shows || []).filter(s => !s.isPrivate && s.startTime).map(s => { const startDateIso = toIsoWithTz(s.date, s.startTime); if (!startDateIso) return null; let endDateIso; if (s.endTime) { const startBase = parseLocalDateOnly(s.date); const { hours: sh, minutes: sm } = parseTimeToHM(s.startTime); const { hours: eh, minutes: em } = parseTimeToHM(s.endTime); const endBase = new Date(startBase.getTime()); endBase.setHours(eh, em, 0, 0); if (endBase <= new Date(startBase.getFullYear(), startBase.getMonth(), startBase.getDate(), sh, sm, 0, 0)) { endBase.setDate(endBase.getDate() + 1); } endDateIso = dateToIsoWithLocalTz(endBase); } const address = { "@type": "PostalAddress", addressCountry: "US" }; if (s.streetAddress) address.streetAddress = s.streetAddress; if (s.city) address.addressLocality = s.city; if (s.state) address.addressRegion = s.state; if (s.postalCode) address.postalCode = s.postalCode; const location = { "@type": "Place", name: s.venue?.trim() || "Venue TBD", address: address }; const cityState = formatCityState(s.city, s.state); const description = s.description || (cityState ? `Live performance by Ultraphonics at ${s.venue || "venue TBD"} in ${cityState}.` : `Live performance by Ultraphonics at ${s.venue || "venue TBD"}.`); let offers; const offerUrl = firstUrl(s.ticketUrl, s.eventLink); const hasPrice = typeof s.price === "number"; if (offerUrl || hasPrice) { offers = { "@type": "Offer", url: offerUrl || (SITE + "#shows"), ...(hasPrice ? { "price": s.price } : {}), priceCurrency: s.currency || "USD", availability: "https://schema.org/InStock" }; } const eventUrl = firstUrl(s.eventLink, s.ticketUrl, SITE + "#shows"); const eventObj = { "@type": "Event", name: `Ultraphonics at ${s.venue?.trim() || "TBD"}`, eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode", eventStatus: "https://schema.org/EventScheduled", startDate: startDateIso, ...(endDateIso ? { "endDate": endDateIso } : {}), location: location, image: s.image || DEFAULT_IMAGE, description: description, organizer: { "@type": "Organization", name: s.organizerName || s.venue || "Ultraphonics" }, performer: { "@id": SITE + "#musicgroup" }, ...(offers ? { "offers": offers } : {}), url: eventUrl }; return eventObj; }).filter(Boolean);
+    const events = (shows || []).filter(s => !s.isPrivate && s.startTime).map(s => { const startDateIso = toIsoWithTz(s.date, s.startTime); if (!startDateIso) return null; let endDateIso; if (s.endTime) { const startBase = parseLocalDateOnly(s.date); const { hours: sh, minutes: sm } = parseTimeToHM(s.startTime); const { hours: eh, minutes: em } = parseTimeToHM(s.endTime); const endBase = new Date(startBase.getTime()); endBase.setHours(eh, em, 0, 0); if (endBase <= new Date(startBase.getFullYear(), startBase.getMonth(), startBase.getDate(), sh, sm, 0, 0)) { endBase.setDate(endBase.getDate() + 1); } endDateIso = dateToIsoWithLocalTz(endBase); } const address = { "@type": "PostalAddress", addressCountry: "US" }; if (s.streetAddress) address.streetAddress = s.streetAddress; if (s.city) address.addressLocality = s.city; if (s.state) address.addressRegion = s.state; if (s.postalCode) address.postalCode = s.postalCode; const location = { "@type": "Place", name: s.venue?.trim() || "Venue TBD", address: address }; const cityState = formatCityState(s.city, s.state); const description = s.description || (cityState ? `Live performance by Ultraphonics at ${s.venue || "venue TBD"} in ${cityState}.` : `Live performance by Ultraphonics at ${s.venue || "venue TBD"}.`); let offers; const offerUrl = firstUrl(s.ticketUrl, s.eventLink); const hasPrice = typeof s.price === "number"; if (offerUrl || hasPrice) { offers = { "@type": "Offer", url: offerUrl || (SITE + "#shows"), ...(hasPrice ? { "price": s.price } : {}), priceCurrency: s.currency || "USD", availability: "https://schema.org/InStock" }; } const eventUrl = firstUrl(s.eventLink, s.ticketUrl, SITE + "#shows"); const eventObj = { "@type": "Event", name: `Ultraphonics at ${s.venue?.trim() || "TBD"}`, eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode", eventStatus: "https://schema.org/EventScheduled", startDate: startDateIso, ...(endDateIso ? { "endDate": endDateIso } : {}), location: location, image: s.image || DEFAULT_IMAGE, description: description, organizer: { "@type": "Organization", name: s.organizerName || s.venue || "Ultraphonics" }, performer: { "@id": SITE + "#musicgroup" }, ...(offers ? { "offers": offers } : {}), url: eventUrl }; return eventObj; }).filter(Boolean);
     const graph = { "@context": "https://schema.org", "@graph": [musicGroup, ...events] };
     const existing = document.getElementById("ld-json-ultraphonics");
     if (existing) existing.remove();
@@ -384,7 +269,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (!showsContainer) return;
     const currentYear = new Date().getFullYear();
 
-    const showsForCurrentYear = siteContent.shows
+    const showsForCurrentYear = shows
       .filter(show => new Date(show.date).getFullYear() === currentYear)
       .sort((a, b) => new Date(a.date) - new Date(b.date));
 
@@ -455,52 +340,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
-  function setupMailingListAdminAccess() {
-    const mailerLiteForm = document.querySelector('form[action*="mailerlite.com"]');
-    if (!mailerLiteForm) {
-      return;
-    }
-
-    const emailInput = mailerLiteForm.querySelector('input[name="fields[email]"]');
-    const submitButton = mailerLiteForm.querySelector('button[type="submit"]');
-
-    if (!emailInput || !submitButton) {
-      return;
-    }
-
-    let isAdminMode = false;
-
-    emailInput.addEventListener('input', () => {
-      const currentValue = emailInput.value.toLowerCase();
-      if (currentValue === 'dishwasher') {
-        submitButton.textContent = 'Go to Admin';
-        isAdminMode = true;
-      } else {
-        submitButton.textContent = 'Sign up';
-        isAdminMode = false;
-      }
-    });
-
-    submitButton.addEventListener('click', (event) => {
-      if (isAdminMode) {
-        event.preventDefault(); 
-        window.location.href = '/admin/index.html'; 
-      } else {
-        trackEvent('mailing_list_signup');
-      }
-    });
-  }
-
-  function setupCopyright() {
-    const yearSpan = document.getElementById('copyright-year');
-    if (yearSpan) {
-      yearSpan.textContent = new Date().getUTCFullYear();
-    }
-  }
-
   injectStructuredData();
   populateTextContent();
-  setupCopyright();
   setupEventListeners();
   setupSocialButtons();
   setupSectionTracking();
@@ -508,6 +349,5 @@ document.addEventListener('DOMContentLoaded', async () => {
   setupRequestModal();
   loadShowSchedule();
   setupAdminCode();
-  setupMailingListAdminAccess();
   ensureMobileVideoAutoplay();
 });
