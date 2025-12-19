@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   
   let shows = [];
   try {
-    const response = await fetch(`api/shows.json?v=${new Date().getTime()}`);
+    const response = await fetch(`content/shows.json?v=${new Date().getTime()}`);
     if (response.ok) {
       shows = await response.json();
     }
@@ -285,7 +285,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   function renderShows(year, data, container) {
     const heading = document.createElement('h2');
-    heading.textContent = `${year} EVENTS`;
+    heading.textContent = `${year} Events`;
+    heading.classList.add('section-heading');
     container.appendChild(heading);
 
     data.forEach((row) => {

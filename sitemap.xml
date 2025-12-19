@@ -1,10 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <!-- This is the main and only page of the website. -->
   <url>
     <loc>https://www.ultraphonicsmusic.com/</loc>
-    <lastmod>2025-08-24</lastmod>
-    <changefreq>weekly</changefreq>
+    <lastmod>2025-12-18</lastmod>
     <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://www.ultraphonicsmusic.com/services.html</loc>
+    <lastmod>2025-12-18</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ultraphonicsmusic.com/quote-request.html</loc>
+    <lastmod>2025-12-18</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ultraphonicsmusic.com/contact.html</loc>
+    <lastmod>2025-12-18</lastmod>
+    <priority>0.8</priority>
   </url>
 </urlset>

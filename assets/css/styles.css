@@ -89,6 +89,17 @@ h3 {
   margin-bottom: var(--spacing-xxl);
 }
 
+/* Global Heading Class for consistent section headers */
+.section-heading {
+  color: var(--color-accent) !important;
+  font-size: var(--font-size-xl) !important;
+  font-weight: bold;
+  margin-bottom: var(--spacing-md);
+  text-transform: none !important;
+  text-align: center;
+  margin-top: 0;
+}
+
 .hero {
   position: relative;
   overflow: hidden;
@@ -262,7 +273,6 @@ a.venue-link:hover {
   font-size: var(--font-size-xl);
   font-weight: bold;
   margin-bottom: var(--spacing-md);
-  text-transform: uppercase;
   letter-spacing: 1px;
 }
 
@@ -878,7 +888,6 @@ footer {
   color: var(--color-text) !important;
   margin: 0 0 var(--spacing-lg) 0 !important;
   font-weight: bold !important;
-  text-transform: uppercase !important;
   letter-spacing: 1px !important;
   text-align: center !important;
 }
@@ -1132,6 +1141,8 @@ footer {
 .nav-overlay.open .nav-item:nth-child(6) { transition-delay: 0.6s; }
 .nav-overlay.open .nav-item:nth-child(7) { transition-delay: 0.7s; }
 .nav-overlay.open .nav-item:nth-child(8) { transition-delay: 0.8s; }
+.nav-overlay.open .nav-item:nth-child(9) { transition-delay: 0.9s; }
+.nav-overlay.open .nav-item:nth-child(10) { transition-delay: 1.0s; }
 
 .nav-link {
   font-size: 2rem;
