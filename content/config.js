@@ -15,31 +15,49 @@ export const config = {
     }
   },
 
-  // Page Content (Titles & Subtitles)
+  // Page Content (Titles & Subtitles) & Navigation Configuration
+  // Keys determine the order in the navigation menu unless filtered out.
   pages: {
-    contact: {
-      title: "Contact Us",
-      lead: "Have a general question? Send us a message below."
+    home: {
+      label: "Home",
+      link: "index.html",
+      // Home page content is often handled by specific 'hero' keys below
+    },
+    services: {
+      label: "Services",
+      link: "services.html",
+      title: "Our Services",
+      lead: "High-energy live entertainment tailored to your specific event needs."
+    },
+    mediaKit: {
+      label: "Media Kit",
+      link: "media-kit.html",
+      title: "Electronic Press Kit",
+      lead: "Official photos, audio demos, and promotional assets for booking.",
+      hide: true
     },
     quote: {
+      label: "Request a Quote",
+      link: "quote-request.html",
       title: "Event Inquiry",
       lead: "Tell us about your event to get a fast, accurate quote."
     },
-    services: {
-      title: "Our Services",
-      lead: "High-energy live entertainment tailored to your specific event needs."
+    contact: {
+      label: "Contact",
+      link: "contact.html",
+      title: "Contact Us",
+      lead: "Have a general question? Send us a message below."
+    },
+    // Anchor links treated as 'pages' for navigation purposes
+    shows: {
+      label: "Events",
+      link: "index.html#shows",
+    },
+    newsletter: {
+      label: "Email List",
+      link: "index.html#newsletter",
     }
   },
-
-  // Navigation Menu Items
-  navigation: [
-    { label: "Home", link: "index.html" },
-    { label: "Services", link: "services.html" },
-    { label: "Request a Quote", link: "quote-request.html" },
-    { label: "Contact", link: "contact.html" },
-    { label: "Events", link: "index.html#shows" },
-    { label: "Email List", link: "index.html#newsletter" }
-  ],
 
   // Hero Section Content
   hero: {
@@ -103,6 +121,37 @@ export const config = {
         image: "assets/images/Festivals.png",
         attribution: "Photo: Lester Burton"
       }
+    ]
+  },
+
+  // Media Kit / EPK Content
+  mediaKit: {
+    // Downloads Section
+    downloads: [
+      { 
+        label: "Download Full Media Kit (Google Drive)", 
+        useLink: "mediaKit", 
+        primary: true 
+      },
+      { 
+        label: "Download Stage Plot (PDF)", 
+        url: "#", 
+        primary: false
+      }
+    ],
+    // Photo Gallery
+    gallery: [
+      { src: "assets/images/ultra-hell-20251017.jpeg", alt: "Ultraphonics Live 1" },
+      { src: "assets/images/ultra-hell-20251017-2.jpeg", alt: "Ultraphonics Live 2" },
+      { src: "assets/images/ultra-hell-20251017-3.jpeg", alt: "Ultraphonics Live 3" },
+      { src: "assets/images/ultra-hell-20251017-4.jpeg", alt: "Ultraphonics Live 4" },
+      { src: "assets/images/ultra-hell-20251017-5.jpeg", alt: "Ultraphonics Live 5" },
+      { src: "assets/images/ultra-hell-20251017-6.jpeg", alt: "Ultraphonics Live 6" }
+    ],
+    // Audio Demos
+    audio: [
+      { title: "High Energy Demo", src: "assets/audio/high-energy-demo.mp3", duration: "0:30" },
+      { title: "Soul & Motown Clip", src: "assets/audio/soul-clip.mp3", duration: "0:45" }
     ]
   },
 

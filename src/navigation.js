@@ -1,7 +1,7 @@
 /**
  * Shared Navigation Logic
  * Renders menu items from config and handles toggle/interaction behaviors.
- * @param {Object} config - The configuration object containing the navigation array.
+ * @param {Object} config - The configuration object containing the pages object.
  */
 export function initNavigation(config) {
     const navToggle = document.getElementById('nav-toggle');
@@ -12,14 +12,19 @@ export function initNavigation(config) {
     if (!navToggle || !navOverlay || !navList) return;
   
     // 1. Render Menu Items
-    if (config.navigation) {
+    if (config.pages) {
         navList.innerHTML = ''; 
-        config.navigation.forEach(item => {
+        
+        // Convert pages object to array of values to iterate
+        Object.values(config.pages).forEach(page => {
+            // Check if page should be hidden from navigation or if it lacks a link/label
+            if (page.hide || !page.link || !page.label) return;
+
             const li = document.createElement('li');
             li.className = 'nav-item';
             const a = document.createElement('a');
-            a.href = item.link;
-            a.textContent = item.label;
+            a.href = page.link;
+            a.textContent = page.label;
             a.className = 'nav-link';
             li.appendChild(a);
             navList.appendChild(li);
