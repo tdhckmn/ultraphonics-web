@@ -71,19 +71,17 @@ document.addEventListener('DOMContentLoaded', () => {
         const setlistName = boardName;
         let combinedSetlist = [];
 
-        // 1. Filter lists: strict check for set1, set2, set3, set4 (lowercase, no spaces)
-        const allowedSets = ['set1', 'set2', 'set3', 'set4'];
-
+        // 1. Filter lists: Include any list that does NOT contain "exclude" (case-insensitive)
         const filteredLists = (boardData.lists || [])
             .filter(list => {
                 if (list.closed) return false;
-                const normalizedName = list.name.toLowerCase().replace(/\s/g, '');                
-                return allowedSets.includes(normalizedName);
+                const normalizedName = list.name.toLowerCase();                
+                return !normalizedName.includes('exclude');
             })
             .sort((a, b) => a.pos - b.pos);
 
         if (filteredLists.length === 0) {
-            showStatus(`No matching lists (Set 1-4) found on board "${boardName}".`, true);
+            showStatus(`No valid lists found on board "${boardName}". Ensure lists do not contain "exclude".`, true);
             return;
         }
 
@@ -105,14 +103,15 @@ document.addEventListener('DOMContentLoaded', () => {
             
             for (const card of cards) {
                 let item;
+                
+                // Parse Description for basic AbleSet props (id, time, name)
                 try {
-                    // Try to parse the description as JSON
                     const parsedDesc = JSON.parse(card.desc);
                     
                     if (parsedDesc && typeof parsedDesc.lastKnownName === 'string' && typeof parsedDesc.time === 'number') {
                         item = parsedDesc;
                     } else {
-                        // Valid JSON but not our format
+                        // Valid JSON but not our format, default to card name
                         item = {
                             id: null,
                             lastKnownName: card.name,
@@ -120,12 +119,26 @@ document.addEventListener('DOMContentLoaded', () => {
                         };
                     }
                 } catch (e) {
-                    // Not valid JSON (normal text description)
+                    // Not valid JSON (normal text description), default to card name
                     item = {
                         id: null,
                         lastKnownName: card.name,
                         time: 0,
                     };
+                }
+
+                // Check Labels for "Segue" and "Skipped" (case-insensitive)
+                const labels = card.labels || [];
+                const hasSegueLabel = labels.some(l => l.name && l.name.toLowerCase() === 'segue');
+                const hasSkippedLabel = labels.some(l => l.name && l.name.toLowerCase() === 'skipped');
+
+                // Apply label overrides
+                // If "segue" is present, we do NOT stop (stop = false).
+                // If "segue" is missing, we DO stop (stop = true).
+                item.stop = !hasSegueLabel; 
+
+                if (hasSkippedLabel) {
+                    item.skipped = true;
                 }
                 
                 combinedSetlist.push(item);
@@ -133,7 +146,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (combinedSetlist.length === 0) {
-            showStatus(`No cards found in Set 1-4 on board "${boardName}".`, true);
+            showStatus(`No cards found in valid lists on board "${boardName}".`, true);
             return;
         }
 
@@ -254,7 +267,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (boardData) {
                 showStatus('Data loaded. Generating file...');
                 generateAndDownloadFile(boardData, boardName);
-                showStatus(`✅ Success! Download for "${boardName}" started.`);
+                showStatus(`笨 Success! Download for "${boardName}" started.`);
             }
         } catch (error) {
             console.error("Download process failed:", error);
