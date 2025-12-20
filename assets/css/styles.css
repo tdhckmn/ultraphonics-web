@@ -1337,10 +1337,91 @@ footer {
     transform: translateX(-50%);
     width: auto;
     max-width: 90%;
-    z-index: 998;
+    z-index: 999;
     box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
     text-transform: uppercase;
     letter-spacing: 1px;
     border-radius: 15px;
     white-space: nowrap;
+}
+
+/* --- Song Selection Styles --- */
+
+.song-filter-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: var(--spacing-lg);
+}
+
+.genre-select {
+  padding: 10px 20px;
+  font-size: 1rem;
+  background-color: var(--color-background-dark);
+  color: var(--color-white);
+  border: 1px solid var(--color-accent);
+  border-radius: 25px;
+  outline: none;
+  cursor: pointer;
+  transition: box-shadow 0.3s ease;
+  min-width: 200px;
+  text-align: center;
+}
+
+.genre-select:focus {
+  box-shadow: var(--shadow-glow);
+}
+
+.song-grid {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--spacing-md);
+}
+
+.song-item {
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 15px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.song-item:hover {
+  transform: translateX(5px);
+  border-color: var(--color-accent);
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.song-title {
+  font-weight: bold;
+  text-align: left;
+  margin-right: 10px;
+}
+
+.song-genre-tag {
+  font-size: 0.75rem;
+  padding: 4px 8px;
+  border-radius: 12px;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+/* Specific Genre Colors (Optional flair) */
+.genre-pop { color: #ff7eb3; border: 1px solid rgba(255, 126, 179, 0.3); }
+.genre-rock { color: #7efff5; border: 1px solid rgba(126, 255, 245, 0.3); }
+.genre-soul { color: #f0ff7e; border: 1px solid rgba(240, 255, 126, 0.3); }
+.genre-country { color: #ffa37e; border: 1px solid rgba(255, 163, 126, 0.3); }
+
+.empty-text, .error-text {
+    color: var(--color-text-secondary);
+    font-style: italic;
+    margin-top: 2rem;
 }

@@ -42,11 +42,23 @@
       </div>
     </section>
 
-    <!-- Audio Section -->
-    <section class="content-section" id="epk-audio">
-      <h2 class="section-heading">Audio Demos</h2>
-      <div class="audio-container" id="audio-list">
-        <!-- Injected via JS -->
+    <!-- Song Selection Section -->
+    <section class="content-section" id="song-selection">
+      <h2 class="section-heading">Crowd Favorites</h2>
+      <p class="lead-text">A curated selection of bangers from our rotating setlist.</p>
+      
+      <div class="song-filter-container">
+        <select id="genre-filter" class="genre-select">
+          <option value="all">All Genres</option>
+          <option value="Rock">Rock</option>
+          <option value="Pop">Pop</option>
+          <option value="Country">Country</option>
+          <option value="Soul">Soul</option>
+        </select>
+      </div>
+
+      <div class="song-list-container" id="song-list">
+        <!-- Songs injected via JS -->
       </div>
     </section>
 

@@ -131,12 +131,10 @@ export const config = {
       { 
         label: "Download Full Media Kit (Google Drive)", 
         useLink: "mediaKit", 
-        primary: true 
       },
       { 
         label: "Download Stage Plot (PDF)", 
-        url: "#", 
-        primary: false
+        useLink: "stagePlot", 
       }
     ],
     // Photo Gallery
@@ -149,10 +147,7 @@ export const config = {
       { src: "assets/images/ultra-hell-20251017-6.jpeg", alt: "Ultraphonics Live 6" }
     ],
     // Audio Demos
-    audio: [
-      { title: "High Energy Demo", src: "assets/audio/high-energy-demo.mp3", duration: "0:30" },
-      { title: "Soul & Motown Clip", src: "assets/audio/soul-clip.mp3", duration: "0:45" }
-    ]
+    audio: []
   },
 
   tipping: {
@@ -164,7 +159,8 @@ export const config = {
   },
   
   links: {
-    mediaKit: "https://drive.google.com/drive/folders/1FWp2LQpdOpGGXYzdAoZ8KKnkTBOnuebB?usp=sharing"
+    mediaKit: "https://drive.google.com/drive/folders/1FWp2LQpdOpGGXYzdAoZ8KKnkTBOnuebB?usp=sharing",
+    stagePlot: "https://drive.google.com/file/d/19QCiGi2nKrpzuGb5ET7U17vBLtI3SJ5R/view?usp=sharing"
   },
 
   // Selectors for DOM elements

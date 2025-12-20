@@ -1,7 +1,7 @@
 import { config } from '../content/config.js';
 import { setupCommonElements } from './utils.js';
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     // 1. Setup Navigation, Footer, etc.
     setupCommonElements('mediaKit');
 
@@ -50,7 +50,41 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 4. Render Gallery
+    // 4. Song Selection Logic
+    const songListContainer = document.getElementById('song-list');
+    const genreFilter = document.getElementById('genre-filter');
+    
+    if (songListContainer) {
+        let allSongs = [];
+
+        try {
+            // Fetch songs from the separate JSON file
+            const response = await fetch(`content/songs.json?v=${new Date().getTime()}`);
+            if (response.ok) {
+                allSongs = await response.json();
+                renderSongs(allSongs);
+            } else {
+                songListContainer.innerHTML = '<p class="error-text">Unable to load song list.</p>';
+            }
+        } catch (error) {
+            console.error("Error loading songs:", error);
+        }
+
+        // Handle Filter Change
+        if (genreFilter) {
+            genreFilter.addEventListener('change', (e) => {
+                const selectedGenre = e.target.value;
+                if (selectedGenre === 'all') {
+                    renderSongs(allSongs);
+                } else {
+                    const filtered = allSongs.filter(s => s.genre === selectedGenre);
+                    renderSongs(filtered);
+                }
+            });
+        }
+    }
+
+    // 5. Render Gallery
     const galleryContainer = document.getElementById('gallery-list');
     if (galleryContainer && mediaConfig.gallery) {
         mediaConfig.gallery.forEach(image => {
@@ -67,6 +101,35 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
+function renderSongs(songs) {
+    const container = document.getElementById('song-list');
+    if (!container) return;
+
+    container.innerHTML = ''; // Clear current
+
+    if (songs.length === 0) {
+        container.innerHTML = '<p class="empty-text">No songs found for this category.</p>';
+        return;
+    }
+
+    // Grouping for display if "All" is selected could be cool, but a flat grid is cleaner for "Top X"
+    const ul = document.createElement('ul');
+    ul.className = 'song-grid';
+
+    songs.forEach(song => {
+        const li = document.createElement('li');
+        li.className = 'song-item';
+        // Add genre tag for visual flair
+        li.innerHTML = `
+            <span class="song-title">${song.title}</span>
+            <span class="song-genre-tag genre-${song.genre.toLowerCase()}">${song.genre}</span>
+        `;
+        ul.appendChild(li);
+    });
+
+    container.appendChild(ul);
+}
 
 /**
  * Creates a custom HTML structure for an audio player
