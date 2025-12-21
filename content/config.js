@@ -21,7 +21,6 @@ export const config = {
     home: {
       label: "Home",
       link: "index.html",
-      // Home page content is often handled by specific 'hero' keys below
     },
     services: {
       label: "Services",
@@ -33,8 +32,7 @@ export const config = {
       label: "Media Kit",
       link: "media-kit.html",
       title: "Electronic Press Kit",
-      lead: "Official photos, audio demos, and promotional assets for booking.",
-      hide: true
+      lead: "Official photos, promotional assets, and resources.",
     },
     quote: {
       label: "Request a Quote",
@@ -129,7 +127,7 @@ export const config = {
     // Downloads Section
     downloads: [
       { 
-        label: "Download Full Media Kit (Google Drive)", 
+        label: "Download Media Kit (Google Drive)", 
         useLink: "mediaKit", 
       },
       { 
@@ -139,12 +137,10 @@ export const config = {
     ],
     // Photo Gallery
     gallery: [
-      { src: "assets/images/ultra-hell-20251017.jpeg", alt: "Ultraphonics Live 1" },
-      { src: "assets/images/ultra-hell-20251017-2.jpeg", alt: "Ultraphonics Live 2" },
-      { src: "assets/images/ultra-hell-20251017-3.jpeg", alt: "Ultraphonics Live 3" },
-      { src: "assets/images/ultra-hell-20251017-4.jpeg", alt: "Ultraphonics Live 4" },
-      { src: "assets/images/ultra-hell-20251017-5.jpeg", alt: "Ultraphonics Live 5" },
-      { src: "assets/images/ultra-hell-20251017-6.jpeg", alt: "Ultraphonics Live 6" }
+      { src: "assets/images/UltraphonicsLivePromoPic1.jpg", alt: "Ultraphonics Live 1" },
+      { src: "assets/images/UltraphonicsLivePromoPic2.jpg", alt: "Ultraphonics Live 2" },
+      { src: "assets/images/UltraphonicsLivePromoPic3.png", alt: "Ultraphonics Live 3" },
+      { src: "assets/images/UltraphonicsLivePromoPic4.jpg", alt: "Ultraphonics Live 4" },
     ],
     // Audio Demos
     audio: []

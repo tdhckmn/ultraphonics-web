@@ -1323,6 +1323,40 @@ footer {
   transform: scale(1.1);
 }
 
+.gallery-download-btn {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: var(--color-white);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1.2rem;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  transition: all 0.2s ease;
+  z-index: 20;
+  opacity: 0; /* Hidden by default, shown on hover */
+  transform: translateY(10px);
+}
+
+.gallery-item:hover .gallery-download-btn {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.gallery-download-btn:hover {
+  background-color: var(--color-accent);
+  color: var(--color-background-dark);
+  border-color: var(--color-accent);
+  box-shadow: 0 0 8px var(--color-accent);
+}
+
 /* Pre-Production Banner */
 .pre-production-banner {
     background-color: #aa0000;

@@ -95,8 +95,18 @@ document.addEventListener('DOMContentLoaded', async () => {
             img.src = image.src;
             img.alt = image.alt;
             img.loading = "lazy";
+
+            // Create Download Button
+            const downloadBtn = document.createElement('a');
+            downloadBtn.href = image.src;
+            downloadBtn.download = ''; // Triggers download behavior
+            downloadBtn.className = 'gallery-download-btn';
+            downloadBtn.innerHTML = '⇩'; 
+            downloadBtn.setAttribute('aria-label', 'Download image');
+            downloadBtn.title = 'Download';
             
             div.appendChild(img);
+            div.appendChild(downloadBtn);
             galleryContainer.appendChild(div);
         });
     }
