@@ -141,8 +141,7 @@ export const config = {
             features: [
                 "Wireless lavalier microphones for the officiant and couple.",
                 "Custom playlist curation for seating and processionals.",
-                "Acoustic guitar or piano duo options available.",
-                "Battery-powered systems for remote outdoor locations."
+                "Acoustic guitar or piano duo options available."
             ],
             image: "assets/images/Ceremony.png",
         },
@@ -174,8 +173,7 @@ export const config = {
             features: [
                 "Early arrival and setup before guests arrive.",
                 "Coordination with your wedding planner and venue staff.",
-                "Top-tier professional sound equipment.",
-                "Liability insurance (COI) provided to venues upon request."
+                "Top-tier professional sound equipment."
             ],
             image: "assets/images/Production.png"
         }
