@@ -18,7 +18,7 @@ export function initNavigation(config) {
         // Convert pages object to array of values to iterate
         Object.values(config.pages).forEach(page => {
             // Check if page should be hidden from navigation or if it lacks a link/label
-            if (page.hide || !page.link || !page.label) return;
+            if (page.hide || !page.link || !page.label || page.staging) return;
 
             const li = document.createElement('li');
             li.className = 'nav-item';

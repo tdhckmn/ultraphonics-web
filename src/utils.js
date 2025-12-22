@@ -52,7 +52,7 @@ export function setupCommonElements(pageKey) {
         if (leadEl && pageConfig.lead) leadEl.textContent = pageConfig.lead;
 
         // 6. Pre-Production Banner Logic
-        if (pageConfig.hide) {
+        if (pageConfig.staging) {
             const banner = document.createElement('div');
             banner.className = 'pre-production-banner';
             banner.textContent = 'PRE-PRODUCTION: THIS PAGE IS NOT PUBLIC';

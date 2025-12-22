@@ -21,6 +21,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const attributionHtml = item.attribution 
                 ? `<div class="photo-attribution">${item.attribution}</div>` 
                 : '';
+
+            const buttonHtml = item.button 
+                ? `<div style="margin-top: 1rem;"><a href="${item.button.link}" class="button" style="font-size: 1rem; padding: 0.5rem 1rem;">${item.button.title}</a></div>` 
+                : '';
             
             const card = document.createElement('div');
             card.className = 'service-card';
@@ -33,6 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <h2 class="service-title">${item.title}</h2>
                     <p class="service-description">${item.description}</p>
                     ${featuresHtml}
+                    ${buttonHtml}
                 </div>
             `;
             container.appendChild(card);

@@ -22,6 +22,13 @@ export const config = {
       label: "Home",
       link: "index.html",
     },
+    weddings: {
+      label: "Weddings",
+      link: "weddings.html",
+      title: "Weddings",
+      lead: "Your perfect day deserves the perfect soundtrack.",
+      hide: true,
+    },
     services: {
       label: "Services",
       link: "services.html",
@@ -33,6 +40,7 @@ export const config = {
       link: "media-kit.html",
       title: "Electronic Press Kit",
       lead: "Official photos, promotional assets, and resources.",
+      hide: true,
     },
     quote: {
       label: "Request a Quote",
@@ -69,7 +77,6 @@ export const config = {
     heading: "Book Us for Your Next Event",
     leadText:
       "Ultraphonics delivers high-energy live music to weddings, private parties, corporate events, bars, and music venues in Detroit, Ann Arbor, and Toledo.",
-    // Detailed Configuration for the Services Page
     detailedItems: [
       {
         title: "Weddings & Private Events",
@@ -80,8 +87,11 @@ export const config = {
             "Full sound and lighting tailored to the venue size.",
             "Options for cocktail hour and ceremony music."
         ],
-        image: "assets/images/Weddings.jpg",
-        attribution: "Photo: Karin Maurer"
+        image: "assets/images/Weddings.png",
+        button: {
+          title: "Learn more",
+          link: "weddings.html"
+        }
       },
       {
         title: "Corporate Parties & Holiday Events",
@@ -104,7 +114,7 @@ export const config = {
             "Social media promotion to our local following.",
             "Volume control appropriate for the venue."
         ],
-        image: "assets/images/Bars.png",
+        image: "assets/images/UltraphonicsLivePromoPic3.png",
         attribution: "Photo: Emily Yates"
       },
       {
@@ -116,9 +126,59 @@ export const config = {
             "Original music options available upon request.",
             "Promo materials available for marketing."
         ],
-        image: "assets/images/Festivals.png",
-        attribution: "Photo: Lester Burton"
+        image: "assets/images/UltraphonicsLivePromoPic5.jpg",
+        attribution: "Photo: Karin Maurer"
       }
+    ]
+  },
+
+  weddingPage: {
+    heading: "A Soundtrack for Every Moment",
+    items: [
+        {
+            title: "The Ceremony",
+            description: "Set the perfect tone for your vows. We provide crystal-clear audio support and musical accompaniment for your ceremony.",
+            features: [
+                "Wireless lavalier microphones for the officiant and couple.",
+                "Custom playlist curation for seating and processionals.",
+                "Acoustic guitar or piano duo options available.",
+                "Battery-powered systems for remote outdoor locations."
+            ],
+            image: "assets/images/Ceremony.png",
+        },
+        {
+            title: "Cocktail Hour",
+            description: "Transition smoothly from the ceremony to the party. We keep the energy light and social while your guests mingle.",
+            features: [
+                "Acoustic duo or jazz trio configurations.",
+                "Curated background playlists (Motown, Soft Rock, Jazz).",
+                "Separate sound system setup if location differs from reception.",
+                "Volume management to ensure comfortable conversation."
+            ],
+            image: "assets/images/Cocktail.png"
+        },
+        {
+            title: "The Reception",
+            description: "This is where the memories are made. We read the room and build the energy until the dance floor is packed.",
+            features: [
+                "High-energy full band performance (3-4 hours).",
+                "Professional stage lighting and dance floor wash.",
+                "Learning your specific 'First Dance' and 'Parent Dance' songs.",
+                "MC services for introductions, toasts, and cake cutting."
+            ],
+            image: "assets/images/Reception.png"
+        },
+        {
+            title: "Seamless Production",
+            description: "We handle the technical details so you don't have to worry about a thing.",
+            features: [
+                "Early arrival and setup before guests arrive.",
+                "Coordination with your wedding planner and venue staff.",
+                "Top-tier professional sound equipment.",
+                "Liability insurance (COI) provided to venues upon request."
+            ],
+            image: "assets/images/Production.png"
+        }
     ]
   },
 
