@@ -66,12 +66,6 @@
     "stop": true
   },
   {
-    "id": "e9f2a123-295f-4eba-97e7-0f511409c9d3",
-    "lastKnownName": "All the small things - C",
-    "time": 26496,
-    "stop": true
-  },
-  {
     "id": "32962ca3-c7c5-4bae-8279-64d0e5a95a4b",
     "lastKnownName": "Ain't It Fun - C#m",
     "time": 412,
@@ -144,9 +138,9 @@
     "stop": true
   },
   {
-    "id": "c281bcf8-df34-429d-a66c-4b47fa839bc9",
-    "lastKnownName": "Country Girl - Em",
-    "time": 4247.0078125,
+    "id": "ddbd8ec4-0eac-4781-a179-69d24fc00687",
+    "lastKnownName": "Valerie - Amy - Eb",
+    "time": 20885.75,
     "stop": true
   },
   {
@@ -237,6 +231,18 @@
     "id": "93a84c41-44d8-4670-8709-0da3d84edce0",
     "lastKnownName": "Uptown Funk - Dm",
     "time": 30933.612438603064,
+    "stop": true
+  },
+  {
+    "id": "cab3a40f-1dcc-4cbf-9278-ee208c06b133",
+    "lastKnownName": "Set 4",
+    "time": 23552,
+    "stop": true
+  },
+  {
+    "id": "c281bcf8-df34-429d-a66c-4b47fa839bc9",
+    "lastKnownName": "Country Girl - Em",
+    "time": 4247.0078125,
     "stop": true
   },
   {
