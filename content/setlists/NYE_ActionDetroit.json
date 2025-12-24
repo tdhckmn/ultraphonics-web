@@ -60,6 +60,12 @@
     "stop": true
   },
   {
+    "id": "c281bcf8-df34-429d-a66c-4b47fa839bc9",
+    "lastKnownName": "Country Girl - Em",
+    "time": 4247.0078125,
+    "stop": true
+  },
+  {
     "id": "32962ca3-c7c5-4bae-8279-64d0e5a95a4b",
     "lastKnownName": "Ain't It Fun - C#m",
     "time": 412,
@@ -159,6 +165,12 @@
     "id": "510ebd7a-d7e9-4784-87d9-1a30667ca7e7",
     "lastKnownName": "Set 3",
     "time": 23424,
+    "stop": true
+  },
+  {
+    "id": "6911bbe3-ba25-4af7-97f4-37e184cd63ef",
+    "lastKnownName": "Play That Funky Music - E",
+    "time": 24549.71875,
     "stop": true
   },
   {
