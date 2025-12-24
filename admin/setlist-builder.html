@@ -2,9 +2,8 @@
 <html lang="en" class="h-full">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Setlist Builder - Ultraphonics</title>
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         // Suppress Tailwind CDN warning
@@ -12,9 +11,7 @@
             theme: { extend: {} }
         }
     </script>
-    <!-- SortableJS for Drag and Drop -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
@@ -23,7 +20,8 @@
             background-color: #121212;
             color: #e0e0e0;
             font-family: "Inter", system-ui, -apple-system, sans-serif;
-            overflow: hidden;
+            overflow: hidden; /* Prevent body scroll, handle inside panels */
+            touch-action: pan-x pan-y;
         }
 
         /* --- Layout --- */
@@ -40,10 +38,9 @@
 
         @media (max-width: 768px) {
             .editor-container {
-                grid-template-columns: 1fr;
-                grid-template-rows: 1fr 1fr;
-                overflow-y: auto;
-                height: auto;
+                display: block; /* Stack/Tab mode */
+                padding: 0;
+                height: calc(100vh - 120px); /* Header (70) + Tabs (50) */
             }
         }
 
@@ -57,6 +54,20 @@
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
             overflow: hidden;
             position: relative;
+            height: 100%; /* Fill container */
+        }
+
+        @media (max-width: 768px) {
+            .panel {
+                border-radius: 0;
+                border-left: none;
+                border-right: none;
+                border-bottom: none;
+            }
+            /* Helper to hide panels via JS tabs */
+            .mobile-hidden {
+                display: none !important;
+            }
         }
 
         .panel-header {
@@ -75,6 +86,7 @@
             padding: 0.75rem;
             scrollbar-width: thin;
             scrollbar-color: #444 #1e1e1e;
+            -webkit-overflow-scrolling: touch; /* Smooth scroll on iOS */
         }
 
         /* --- Song Cards --- */
@@ -90,7 +102,7 @@
             border: 1px solid transparent;
             transition: transform 0.2s, background-color 0.2s;
             user-select: none;
-            position: relative; /* Fix for z-index issues during drag */
+            touch-action: manipulation; /* Improves touch response */
         }
 
         .song-item:hover {
@@ -115,7 +127,6 @@
             cursor: grabbing;
         }
         
-        /* Ensure text in drag clone is visible */
         .song-item.sortable-drag .song-name {
             color: #121212 !important;
         }
@@ -158,6 +169,7 @@
             border: none;
             transition: all 0.2s;
             white-space: nowrap;
+            justify-content: center;
         }
         .btn-primary { background: #00ddde; color: #121212; }
         .btn-primary:hover { background: #00b8b9; }
@@ -219,37 +231,51 @@
             display: none; align-items: center; justify-content: center; z-index: 20;
         }
         .loading-overlay.active { display: flex; }
+        
+        /* Tap Target sizing for mobile */
+        @media (max-width: 768px) {
+            .btn { min-height: 44px; }
+            .song-item { min-height: 50px; }
+            input[type="checkbox"] { transform: scale(1.2); }
+        }
 
     </style>
 </head>
 <body class="bg-[#121212]">
     
-    <!-- Header -->
-    <header class="h-[70px] px-6 border-b border-[#333] bg-[#1e1e1e] flex justify-between items-center shadow-md z-10 relative">
-        <div class="flex items-center gap-4">
-            <div class="w-8 h-8 bg-gradient-to-br from-[#00ddde] to-blue-600 rounded flex items-center justify-center text-black font-bold">U</div>
+    <header class="h-[70px] px-4 md:px-6 border-b border-[#333] bg-[#1e1e1e] flex justify-between items-center shadow-md z-10 relative">
+        <div class="flex items-center gap-3 md:gap-4">
+            <div class="w-8 h-8 bg-gradient-to-br from-[#00ddde] to-blue-600 rounded flex items-center justify-center text-black font-bold flex-shrink-0">U</div>
             <div>
-                <h1 class="text-lg font-bold text-white tracking-wide">Setlist Builder</h1>
-                <p id="connection-status" class="text-xs text-gray-500">
+                <h1 class="text-base md:text-lg font-bold text-white tracking-wide">Setlist Builder</h1>
+                <p id="connection-status" class="text-[10px] md:text-xs text-gray-500 whitespace-nowrap">
                     <i class="fas fa-circle text-[8px] mr-1"></i> Checking...
                 </p>
             </div>
         </div>
-        <div class="flex items-center gap-3">
-            <button onclick="openSettings()" class="btn btn-secondary text-xs" title="GitHub Settings">
-                <i class="fas fa-cog"></i> Settings
+        <div class="flex items-center gap-2">
+            <button onclick="openSettings()" class="btn btn-secondary text-xs px-3" title="GitHub Settings">
+                <i class="fas fa-cog"></i> <span class="hidden md:inline">Settings</span>
             </button>
-            <a href="index.html" class="text-gray-400 hover:text-[#00ddde] text-sm transition ml-2">
-                <i class="fas fa-arrow-left mr-1"></i> Exit
+            <a href="index.html" class="text-gray-400 hover:text-[#00ddde] text-sm transition ml-2 p-2">
+                <i class="fas fa-arrow-left"></i>
             </a>
         </div>
     </header>
 
-    <!-- Main Content -->
+    <div class="md:hidden flex border-b border-[#333] bg-[#1e1e1e] h-[50px]">
+        <button onclick="switchMobileTab('library')" id="tab-library" class="flex-1 text-sm font-bold text-[#00ddde] border-b-2 border-[#00ddde] transition-colors">
+            <i class="fas fa-music mr-2"></i>Library
+        </button>
+        <button onclick="switchMobileTab('setlist')" id="tab-setlist" class="flex-1 text-sm font-bold text-gray-500 border-b-2 border-transparent transition-colors">
+            <i class="fas fa-list mr-2"></i>Setlist 
+            <span id="mobile-count" class="ml-1 text-[10px] bg-[#333] px-2 py-0.5 rounded-full text-white">0</span>
+        </button>
+    </div>
+
     <main class="editor-container">
         
-        <!-- LEFT PANEL: Master Library -->
-        <div class="panel">
+        <div class="panel" id="panel-library">
             <div class="panel-header">
                 <div class="flex justify-between items-center">
                     <h2 class="font-bold text-white flex items-center gap-2">
@@ -262,8 +288,8 @@
                     <input type="text" id="search" placeholder="Search songs..." class="search-input pl-8">
                 </div>
                 <div class="flex gap-2 mt-1">
-                    <button onclick="filterLibrary('all')" class="text-xs px-2 py-1 rounded bg-[#333] hover:bg-[#444] text-white transition">All</button>
-                    <button onclick="filterLibrary('sets')" class="text-xs px-2 py-1 rounded bg-[#2c0b0e] text-[#fca5a5] border border-[#f87171] hover:opacity-80 transition">Sets</button>
+                    <button onclick="filterLibrary('all')" class="flex-1 text-xs px-2 py-1.5 rounded bg-[#333] hover:bg-[#444] text-white transition">All</button>
+                    <button onclick="filterLibrary('sets')" class="flex-1 text-xs px-2 py-1.5 rounded bg-[#2c0b0e] text-[#fca5a5] border border-[#f87171] hover:opacity-80 transition">Sets</button>
                 </div>
             </div>
             
@@ -274,60 +300,49 @@
             </div>
         </div>
 
-        <!-- RIGHT PANEL: Current Setlist -->
-        <div class="panel border-[#00ddde] border-opacity-30">
+        <div class="panel border-[#00ddde] border-opacity-30 mobile-hidden" id="panel-setlist">
             <div class="loading-overlay" id="main-loader">
                 <div class="text-[#00ddde] font-bold animate-pulse" id="loader-text"><i class="fas fa-sync fa-spin mr-2"></i> Processing...</div>
             </div>
 
-            <!-- Toolbar -->
-            <div class="panel-header !flex-row !justify-between !items-center !gap-4 !bg-[#181818]">
-                <div class="flex items-center gap-3 overflow-hidden">
-                    <div class="font-bold text-white whitespace-nowrap">File:</div>
-                    <div id="current-filename" class="text-[#00ddde] font-mono text-sm truncate px-2 py-1 bg-[#222] rounded border border-[#333]">
+            <div class="panel-header !flex-row !justify-between !items-center !gap-2 !bg-[#181818] !p-2 md:!p-4">
+                <div class="flex items-center gap-2 overflow-hidden flex-1">
+                    <div id="current-filename" class="text-[#00ddde] font-mono text-sm truncate px-2 py-1 bg-[#222] rounded border border-[#333] w-full text-center md:text-left">
                         (Unsaved)
                     </div>
                 </div>
                 
-                <div class="flex gap-2">
-                    <button onclick="resetToNew()" class="btn btn-secondary" title="New Setlist">
-                        <i class="fas fa-file"></i> <span class="hidden md:inline">New</span>
+                <div class="flex gap-1 md:gap-2">
+                    <button onclick="resetToNew()" class="btn btn-secondary !px-2 md:!px-4" title="New">
+                        <i class="fas fa-file"></i>
                     </button>
-                    <button onclick="openFileManager()" class="btn btn-secondary" title="Open from GitHub" id="btn-open" disabled>
-                        <i class="fas fa-folder-open"></i> <span class="hidden md:inline">Open</span>
+                    <button onclick="openFileManager()" class="btn btn-secondary !px-2 md:!px-4" title="Open" id="btn-open" disabled>
+                        <i class="fas fa-folder-open"></i>
                     </button>
-                    <button onclick="saveCurrent()" class="btn btn-primary" id="btn-save" disabled>
-                        <i class="fas fa-save"></i> <span class="hidden md:inline">Save</span>
-                    </button>
-                     <button onclick="saveAs()" class="btn btn-secondary" id="btn-save-as" disabled>
-                        <i class="fas fa-copy"></i> <span class="hidden md:inline">Save As...</span>
+                    <button onclick="saveCurrent()" class="btn btn-primary !px-2 md:!px-4" id="btn-save" disabled>
+                        <i class="fas fa-save"></i>
                     </button>
                 </div>
             </div>
             
-            <!-- Wrapper for Setlist + Empty State Overlay -->
             <div class="relative flex-1 bg-[#181818] overflow-hidden">
-                <!-- Sortable Container -->
-                <div id="setlist-area" class="absolute inset-0 overflow-y-auto p-3 custom-scrollbar">
-                    <!-- Songs dropped here -->
-                </div>
+                <div id="setlist-area" class="absolute inset-0 overflow-y-auto p-3 custom-scrollbar pb-20">
+                    </div>
 
-                <!-- Empty State Overlay (Sibling, not child) -->
                 <div id="empty-state" class="absolute inset-0 flex flex-col items-center justify-center text-gray-600 pointer-events-none z-10">
                     <i class="fas fa-hand-pointer text-4xl mb-4 opacity-20"></i>
                     <p class="font-medium opacity-50">Drag songs here</p>
+                    <p class="text-xs opacity-30 mt-2 md:hidden">(Or tap + in Library)</p>
                 </div>
             </div>
 
-            <!-- Footer Stats -->
             <div class="bg-[#252525] p-2 px-4 border-t border-[#333] flex justify-between items-center text-[10px] text-gray-500 z-20">
-                <span id="setlist-stats" class="text-gray-300 font-mono text-xs overflow-hidden text-ellipsis whitespace-nowrap max-w-[70%]">0 items</span>
-                <button onclick="downloadLocalJSON()" class="hover:text-[#00ddde] whitespace-nowrap">Download Backup</button>
+                <span id="setlist-stats" class="text-gray-300 font-mono text-xs overflow-hidden text-ellipsis whitespace-nowrap max-w-[65%]">0 items</span>
+                <button onclick="downloadLocalJSON()" class="hover:text-[#00ddde] whitespace-nowrap"><i class="fas fa-download mr-1"></i> Backup</button>
             </div>
         </div>
     </main>
 
-    <!-- SETTINGS MODAL -->
     <div id="settings-modal" class="modal-overlay">
         <div class="modal-content">
             <h2 class="text-xl font-bold text-white mb-4">Settings</h2>
@@ -346,7 +361,6 @@
             <div class="form-group">
                 <label class="form-label">Setlists Folder (Path in repo)</label>
                 <input type="text" id="gh-path" class="form-input" value="content/setlists">
-                <p class="text-[10px] text-gray-500 mt-1">Files will be loaded/saved here. E.g. content/setlists</p>
             </div>
             <div class="flex justify-end gap-3 mt-6">
                 <button onclick="closeSettings()" class="btn btn-secondary">Cancel</button>
@@ -355,7 +369,6 @@
         </div>
     </div>
 
-    <!-- FILE MANAGER MODAL -->
     <div id="file-modal" class="modal-overlay">
         <div class="modal-content h-[600px]">
             <div class="flex justify-between items-center mb-4">
@@ -366,7 +379,6 @@
             <p class="text-xs text-gray-500 mb-2">Fetching from: <span id="file-path-display" class="font-mono text-gray-300">...</span></p>
             
             <div id="file-list-container" class="file-list custom-scrollbar">
-                <!-- File items injected here -->
                 <p class="text-center text-gray-500 mt-10">Loading files...</p>
             </div>
 
@@ -384,13 +396,14 @@
             library: [], 
             setlist: [],
             master: [],
-            currentFile: null, // Filename (e.g., 'night1.json')
+            currentFile: null, 
             config: {
                 owner: '',
                 repo: '',
                 token: '',
                 folder: 'content/setlists'
-            }
+            },
+            mobileTab: 'library' // 'library' or 'setlist'
         };
 
         const els = {
@@ -398,6 +411,14 @@
             setlist: document.getElementById('setlist-area'),
             emptyState: document.getElementById('empty-state'),
             currentFilename: document.getElementById('current-filename'),
+            panels: {
+                library: document.getElementById('panel-library'),
+                setlist: document.getElementById('panel-setlist')
+            },
+            tabs: {
+                library: document.getElementById('tab-library'),
+                setlist: document.getElementById('tab-setlist')
+            },
             modals: {
                 settings: document.getElementById('settings-modal'),
                 files: document.getElementById('file-modal')
@@ -423,7 +444,6 @@
                 state.config = JSON.parse(saved);
                 updateConnectionStatus(true);
             } else {
-                // Default defaults
                 state.config.owner = 'tdhckmn';
                 state.config.repo = 'ultraphonics-web';
                 updateConnectionStatus(false);
@@ -461,6 +481,32 @@
             }
         }
 
+        // --- MOBILE TABS ---
+        window.switchMobileTab = (tab) => {
+            state.mobileTab = tab;
+            
+            // Toggle Panel Visibility
+            if (tab === 'library') {
+                els.panels.library.classList.remove('mobile-hidden');
+                els.panels.setlist.classList.add('mobile-hidden');
+                
+                // Style Tabs
+                els.tabs.library.classList.add('text-[#00ddde]', 'border-[#00ddde]');
+                els.tabs.library.classList.remove('text-gray-500', 'border-transparent');
+                els.tabs.setlist.classList.add('text-gray-500', 'border-transparent');
+                els.tabs.setlist.classList.remove('text-[#00ddde]', 'border-[#00ddde]');
+            } else {
+                els.panels.library.classList.add('mobile-hidden');
+                els.panels.setlist.classList.remove('mobile-hidden');
+                
+                // Style Tabs
+                els.tabs.setlist.classList.add('text-[#00ddde]', 'border-[#00ddde]');
+                els.tabs.setlist.classList.remove('text-gray-500', 'border-transparent');
+                els.tabs.library.classList.add('text-gray-500', 'border-transparent');
+                els.tabs.library.classList.remove('text-[#00ddde]', 'border-[#00ddde]');
+            }
+        };
+
         // --- DATA LOGIC ---
         async function loadMasterData() {
             try {
@@ -472,13 +518,12 @@
                 }
             } catch (e) {
                 console.warn("Using fallback data", e);
-                state.master = getFallbackData(); // Fallback defined at bottom
+                state.master = getFallbackData(); 
             }
             refreshLibrary();
         }
 
         function refreshLibrary() {
-            // Filter Master against Setlist
             const setlistIds = new Set(state.setlist.map(s => s.id));
             const setlistNames = new Set(state.setlist.map(s => s.lastKnownName));
 
@@ -492,8 +537,25 @@
             renderLibrary();
         }
 
-        // --- FILE OPERATIONS ---
+        function addToSetlist(data) {
+            // Clone data to avoid reference issues
+            const item = JSON.parse(JSON.stringify(data));
+            // Default stop to true if undefined
+            if (item.stop === undefined) item.stop = true;
+            
+            state.setlist.push(item);
+            renderSetlist();
+            refreshLibrary(); // Removes it from library list
+            
+            // On mobile, show feedback
+            if (window.innerWidth < 768) {
+                const badge = document.getElementById('mobile-count');
+                badge.classList.add('animate-ping');
+                setTimeout(() => badge.classList.remove('animate-ping'), 500);
+            }
+        }
 
+        // --- FILE OPERATIONS ---
         function resetToNew() {
             if (state.setlist.length > 0 && !confirm("Discard current setlist?")) return;
             state.setlist = [];
@@ -533,8 +595,8 @@
                     const div = document.createElement('div');
                     div.className = 'file-item';
                     div.innerHTML = `
-                        <span class="font-medium text-gray-200"><i class="fas fa-file-code mr-2 text-gray-500"></i> ${file.name}</span>
-                        <button class="text-xs bg-[#333] hover:bg-[#00ddde] hover:text-black px-2 py-1 rounded transition">Load</button>
+                        <span class="font-medium text-gray-200 truncate pr-2"><i class="fas fa-file-code mr-2 text-gray-500"></i> ${file.name}</span>
+                        <button class="text-xs bg-[#333] hover:bg-[#00ddde] hover:text-black px-3 py-2 rounded transition flex-shrink-0">Load</button>
                     `;
                     div.onclick = () => loadRemoteFile(file);
                     container.appendChild(div);
@@ -551,8 +613,7 @@
             closeFileManager();
             
             try {
-                // Fetch content
-                const res = await fetch(fileObj.download_url); // Use download_url from API response
+                const res = await fetch(fileObj.download_url);
                 if (!res.ok) throw new Error("Failed to download file");
                 
                 const data = await res.json();
@@ -564,6 +625,8 @@
                 renderSetlist();
                 refreshLibrary();
                 updateUIState();
+                // Switch to setlist tab on mobile upon load
+                if(window.innerWidth < 768) switchMobileTab('setlist');
                 
             } catch (err) {
                 alert("Error loading file: " + err.message);
@@ -597,7 +660,6 @@
             showLoader(true, `Saving ${filename}...`);
 
             try {
-                // 1. Get SHA if file exists
                 const path = `${folder}/${filename}`;
                 const apiUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
                 
@@ -612,11 +674,9 @@
                     }
                 } catch(e) {}
 
-                // 2. Prepare content
                 const jsonStr = JSON.stringify(state.setlist, null, 2);
                 const contentBase64 = btoa(unescape(encodeURIComponent(jsonStr)));
 
-                // 3. PUT
                 const payload = {
                     message: `Update ${filename}: ${new Date().toLocaleString()}`,
                     content: contentBase64,
@@ -647,7 +707,6 @@
         }
 
         // --- RENDERING ---
-
         function renderLibrary() {
             const container = els.library;
             container.innerHTML = '';
@@ -663,27 +722,52 @@
 
         function renderSetlist() {
             const container = els.setlist;
-            container.innerHTML = ''; // Only clears the song items now, not the empty state div (which is outside)
+            container.innerHTML = ''; 
             
             if (state.setlist.length === 0) {
-                els.emptyState.style.display = 'flex'; // Show overlay
+                els.emptyState.style.display = 'flex';
             } else {
-                els.emptyState.style.display = 'none'; // Hide overlay
+                els.emptyState.style.display = 'none';
                 state.setlist.forEach(song => {
                     container.appendChild(createSongElement(song, true));
                 });
             }
             updateStatsDisplay();
+            document.getElementById('mobile-count').textContent = state.setlist.length;
         }
 
         function createSongElement(data, isSetlist) {
             const div = document.createElement('div');
             div.className = 'song-item group';
-            div.dataset.json = JSON.stringify(data); // Store full data for drags
+            div.dataset.json = JSON.stringify(data); 
             div.dataset.id = data.id;
 
             const isSegue = (data.stop === false);
             const isSetMarker = data.lastKnownName.toLowerCase().startsWith('set');
+
+            // Add Control logic
+            let controlsHtml = '';
+            
+            if (isSetlist) {
+                // Setlist Item Controls
+                controlsHtml = `
+                <div class="flex items-center gap-3">
+                    ${!isSetMarker ? `
+                    <label class="segue-toggle" title="Segue (Don't stop)">
+                        <input type="checkbox" onchange="toggleSegue(this)" ${isSegue ? 'checked' : ''}>
+                        <span class="slider"></span>
+                    </label>` : ''}
+                    <button onclick="removeItem('${data.id}')" class="text-gray-500 hover:text-red-500 p-2"><i class="fas fa-times"></i></button>
+                </div>`;
+            } else {
+                // Library Item Controls (Add Button)
+                controlsHtml = `
+                <div class="flex items-center">
+                    <button class="add-btn text-gray-500 hover:text-[#00ddde] p-3 -mr-2" title="Add to Setlist">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>`;
+            }
 
             div.innerHTML = `
                 <div class="flex-1 overflow-hidden flex flex-col">
@@ -691,30 +775,30 @@
                         ${data.lastKnownName}
                     </div>
                 </div>
-                ${isSetlist ? `
-                <div class="flex items-center gap-3">
-                    ${!isSetMarker ? `
-                    <label class="segue-toggle" title="Segue (Don't stop)">
-                        <input type="checkbox" onchange="toggleSegue(this)" ${isSegue ? 'checked' : ''}>
-                        <span class="slider"></span>
-                    </label>` : ''}
-                    <button onclick="removeItem('${data.id}')" class="text-gray-500 hover:text-red-500"><i class="fas fa-times"></i></button>
-                </div>` : ''}
+                ${controlsHtml}
             `;
+            
+            // Attach event listener for Add Button safely
+            if (!isSetlist) {
+                const btn = div.querySelector('.add-btn');
+                if (btn) {
+                    btn.onclick = (e) => {
+                        e.stopPropagation(); // Stop drag start
+                        addToSetlist(data);
+                    };
+                }
+            }
+
             return div;
         }
 
         // --- INTERACTIONS ---
-        
         window.toggleSegue = (input) => {
             const el = input.closest('.song-item');
             const data = JSON.parse(el.dataset.json);
-            
-            // Find in setlist
             const item = state.setlist.find(s => s.id === data.id);
             if (item) {
                 item.stop = !input.checked;
-                // Update dataset so drag operations carry new state
                 el.dataset.json = JSON.stringify(item);
             }
         };
@@ -736,47 +820,38 @@
 
         // --- DRAG & DROP ---
         function setupDragAndDrop() {
-            // Library: Pull: clone means we copy the data from source
+            // Library: Pull only
             new Sortable(els.library, {
                 group: { name: 'shared', pull: 'clone', put: false }, 
                 sort: false,
                 animation: 150,
                 draggable: '.song-item',
-                forceFallback: true, // IMPORTANT: Forces JS dragging, fixes local preview issues
-                fallbackClass: 'sortable-drag', // Class applied to the dragged element
+                delay: 200, // Important for Mobile scrolling
+                delayOnTouchOnly: true,
+                forceFallback: true, 
+                fallbackClass: 'sortable-drag', 
                 onEnd: (evt) => {
-                    // Item dragged from Library to Setlist
-                    // We DO NOT handle state sync here because the target's onAdd will handle it.
+                   // Handled by receiver
                 }
             });
 
-            // Setlist: Accepts drop and handles the logic
+            // Setlist: Reorder & Receive
             new Sortable(els.setlist, {
                 group: 'shared',
                 animation: 150,
                 draggable: '.song-item',
-                forceFallback: true, // IMPORTANT: Forces JS dragging here too
+                delay: 200, // Important for Mobile scrolling
+                delayOnTouchOnly: true,
+                forceFallback: true, 
                 fallbackClass: 'sortable-drag',
                 onAdd: (evt) => {
-                    // Item dropped here.
                     const data = JSON.parse(evt.item.dataset.json);
-                    
-                    // 1. Create correct setlist styled element
                     const newEl = createSongElement(data, true);
                     evt.item.replaceWith(newEl);
-                    
-                    // 2. Sync State (this will update Library to remove the item we just cloned)
-                    // We use setTimeout to defer the destruction of the Library DOM
-                    // This prevents Sortable from reverting the drag due to source node destruction
-                    setTimeout(() => {
-                        syncSetlist();
-                    }, 10);
+                    setTimeout(() => syncSetlist(), 10);
                 },
                 onUpdate: () => {
-                     // Defer sync for safety here too
-                    setTimeout(() => {
-                        syncSetlist();
-                    }, 10);
+                    setTimeout(() => syncSetlist(), 10);
                 }
             });
         }
@@ -788,12 +863,11 @@
                 newArr.push(JSON.parse(el.dataset.json));
             });
             state.setlist = newArr;
-            refreshLibrary(); // Update library to remove moved items
+            refreshLibrary(); 
             updateUIState();
         }
 
         // --- UTILS ---
-
         function updateUIState() {
             els.currentFilename.textContent = state.currentFile || "(Unsaved)";
             updateStatsDisplay();
@@ -801,7 +875,7 @@
             const connected = !!(state.config.token && state.config.repo);
             document.getElementById('btn-open').disabled = !connected;
             document.getElementById('btn-save').disabled = !connected;
-            document.getElementById('btn-save-as').disabled = !connected;
+            // document.getElementById('btn-save-as').disabled = !connected; // Removed explicit ID for simplicity in mobile view
         }
 
         function updateStatsDisplay() {
@@ -818,20 +892,15 @@
              let bufferName = null;
 
              state.setlist.forEach(item => {
-                 // Check if it's a set marker
                  const name = item.lastKnownName || "";
-                 // Using toLowerCase comparison to catch "Set 1", "set 2", "Set3" etc.
                  const isSet = name.toLowerCase().startsWith('set');
 
                  if (isSet) {
-                     // Close previous buffer if it existed
                      if (bufferName !== null) {
                          report.push(`${bufferName} (${bufferCount})`);
                      } else if (bufferCount > 0) {
-                         // Songs before the first Set marker
                          report.push(`Intro (${bufferCount})`);
                      }
-                     // Start new buffer
                      bufferName = name;
                      bufferCount = 0;
                  } else {
@@ -839,16 +908,13 @@
                  }
              });
 
-             // Close final buffer
              if (bufferName !== null) {
                  report.push(`${bufferName} (${bufferCount})`);
              } else if (bufferCount > 0) {
-                 // Only songs, no sets at all
                  report.push(`Total (${bufferCount})`);
              }
              
              statsEl.textContent = report.join(" • ");
-             statsEl.title = report.join("\n"); // Tooltip for full view if truncated
         }
 
         function showLoader(show, msg) {
