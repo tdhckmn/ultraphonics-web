@@ -20,7 +20,18 @@
         
         /* --- Layout --- */
         .editor-container { display: grid; grid-template-columns: 350px 1fr; grid-template-rows: 1fr; gap: 1.5rem; height: calc(100vh - 70px); padding: 1.5rem; max-width: 1600px; margin: 0 auto; }
-        @media (max-width: 768px) { .editor-container { display: block; padding: 0; height: calc(100vh - 120px); } }
+        
+        /* Mobile Scroll Behavior Update */
+        @media (max-width: 768px) { 
+            body { overflow: auto; height: auto; }
+            .editor-container { display: block; padding: 0; height: auto; min-height: calc(100vh - 120px); }
+            .panel { height: auto; min-height: 50vh; overflow: visible; }
+            .scroll-area { overflow: visible; height: auto; }
+            header { position: sticky; top: 0; z-index: 50; }
+            .mobile-tabs { position: sticky; top: 70px; z-index: 40; } /* Adjust top based on header height */
+            /* Ensure internal scroll areas don't trap scroll on mobile */
+            #setlist-area, #library-list, #file-list-sidebar { position: relative; overflow: visible; inset: auto; height: auto; }
+        }
 
         /* --- Panels --- */
         .panel { background: #1e1e1e; border-radius: 12px; display: flex; flex-direction: column; border: 1px solid #333; box-shadow: 0 4px 6px rgba(0,0,0,0.5); overflow: hidden; height: 100%; }
@@ -48,6 +59,7 @@
         .prop-label.capo { color: #fbbf24; border-color: #fbbf24; }
         .prop-label.drop { color: #f87171; border-color: #f87171; }
         .prop-label.eflat { color: #2dd4bf; border-color: #2dd4bf; }
+        .prop-label.segue { color: #00ddde; border-color: #00ddde; }
 
         /* --- File List (Sidebar) --- */
         .file-item { padding: 0.75rem; background: #252525; border-radius: 6px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: all 0.2s; border: 1px solid transparent; }
@@ -64,14 +76,6 @@
         .btn-secondary { background: #333; color: #e0e0e0; }
         .btn-secondary:hover { background: #444; }
         .btn:disabled { opacity: 0.5; cursor: not-allowed; }
-
-        /* --- Segue Toggle --- */
-        .segue-toggle { position: relative; display: none; width: 36px; height: 20px; }
-        .segue-toggle input { opacity: 0; width: 0; height: 0; }
-        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #444; transition: .4s; border-radius: 34px; }
-        .slider:before { position: absolute; content: ""; height: 14px; width: 14px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
-        input:checked + .slider { background-color: #fbbf24; }
-        input:checked + .slider:before { transform: translateX(16px); }
 
         /* --- Modals --- */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 50; display: none; align-items: center; justify-content: center; }
@@ -98,7 +102,9 @@
     <!-- Header -->
     <header class="h-[70px] px-4 md:px-6 border-b border-[#333] bg-[#1e1e1e] flex justify-between items-center shadow-md z-10 relative">
         <div class="flex items-center gap-3 md:gap-4">
-            <div class="w-8 h-8 bg-gradient-to-br from-yellow-400 to-orange-500 rounded flex items-center justify-center text-black font-bold flex-shrink-0">B</div>
+            <div class="w-8 h-8 bg-gradient-to-br from-yellow-400 to-orange-500 rounded flex items-center justify-center text-black font-bold flex-shrink-0">
+                <i class="fas fa-hammer text-sm"></i>
+            </div>
             <div>
                 <h1 class="text-base md:text-lg font-bold text-white tracking-wide">Builder</h1>
                 <p id="connection-status" class="text-[10px] md:text-xs text-gray-500 whitespace-nowrap">
@@ -183,7 +189,7 @@
             </div>
 
             <!-- Toolbar -->
-            <div class="panel-header !flex-row !justify-between !items-center !gap-2 !bg-[#181818] !p-2 md:!p-4">
+            <div class="panel-header !flex-row !justify-between !items-center !gap-2 !bg-[#181818] !p-2 md:!p-4 sticky top-0 z-10">
                 <div class="flex items-center gap-2 overflow-hidden flex-1">
                     <div id="current-filename" class="text-[#fbbf24] font-mono text-sm truncate px-2 py-1 bg-[#222] rounded border border-[#333] w-full text-center md:text-left">
                         (Unsaved)
@@ -265,14 +271,18 @@
                 <input type="number" id="props-capo" class="form-input" min="0" max="12" placeholder="0">
             </div>
 
-            <div class="flex gap-4 mb-4">
-                <div class="flex items-center">
+            <div class="flex gap-4 mb-4 flex-wrap">
+                <div class="flex items-center mr-4 mb-2">
                     <input type="checkbox" id="props-drop" class="form-checkbox">
                     <label for="props-drop" class="ml-2 text-sm text-gray-300">Drop Tuning</label>
                 </div>
-                <div class="flex items-center">
+                <div class="flex items-center mr-4 mb-2">
                     <input type="checkbox" id="props-eflat" class="form-checkbox">
                     <label for="props-eflat" class="ml-2 text-sm text-gray-300">Eb Tuning</label>
+                </div>
+                <div class="flex items-center mb-2">
+                    <input type="checkbox" id="props-segue" class="form-checkbox">
+                    <label for="props-segue" class="ml-2 text-sm text-gray-300">Segue</label>
                 </div>
             </div>
 
@@ -446,6 +456,8 @@
                 if (data.drop) indicatorsHtml += `<span class="prop-label drop" title="Drop Tuning">D</span>`;
                 // Capo
                 if (data.capo && data.capo > 0) indicatorsHtml += `<span class="prop-label capo" title="Capo ${data.capo}">C${data.capo}</span>`;
+                // Segue
+                if (isSegue) indicatorsHtml += `<span class="prop-label segue" title="Segue">S</span>`;
                 // Vocals
                 if (data.vocals) {
                     const v = data.vocals.toLowerCase();
@@ -457,7 +469,6 @@
             let controlsHtml = isSetlist ? 
                 `<div class="flex items-center gap-3">
                     <div class="flex items-center mr-2">${indicatorsHtml}</div>
-                    ${!isSetMarker ? `<label class="segue-toggle"><input type="checkbox" onchange="toggleSegue(this)" ${isSegue ? 'checked' : ''}><span class="slider"></span></label>` : ''}
                     ${!isSetMarker ? `<button onclick="editItemProps('${data.id}')" class="text-gray-500 hover:text-[#fbbf24] p-2" title="Edit Properties"><i class="fas fa-pencil-alt"></i></button>` : ''}
                     <button onclick="removeItem('${data.id}')" class="text-gray-500 hover:text-red-500 p-2"><i class="fas fa-times"></i></button>
                 </div>` : 
@@ -752,6 +763,7 @@
             document.getElementById('props-capo').value = song.capo || "";
             document.getElementById('props-drop').checked = song.drop || false;
             document.getElementById('props-eflat').checked = song.eflat || false;
+            document.getElementById('props-segue').checked = (song.stop === false);
 
             document.getElementById('props-modal').classList.add('active');
         };
@@ -766,6 +778,7 @@
                 song.capo = capoVal ? parseInt(capoVal) : 0;
                 song.drop = document.getElementById('props-drop').checked;
                 song.eflat = document.getElementById('props-eflat').checked;
+                song.stop = !document.getElementById('props-segue').checked;
 
                 renderSetlist();
             }
