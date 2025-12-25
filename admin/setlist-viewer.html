@@ -4,10 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Setlist Viewer - Ultraphonics</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = { theme: { extend: {} } }
     </script>
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
@@ -26,19 +28,21 @@
         /* File List Items */
         .file-item { padding: 1rem; background: #2a2a2a; margin-bottom: 0.5rem; border-radius: 6px; cursor: pointer; border: 1px solid transparent; transition: all 0.2s; }
         .file-item:hover { background: #333; border-color: #444; }
-        .file-item.active { background: #2c0b0e; border-color: #f87171; color: #fca5a5; }
+        .file-item.active { background: #172554; border-color: #3b82f6; color: #60a5fa; } /* Blue active state */
 
         /* Song Items (Read Only) */
         .song-item { padding: 0.85rem 1rem; background: #2a2a2a; margin-bottom: 0.5rem; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; border-left: 4px solid #444; }
-        .song-item.segue-active { border-left-color: #00ddde; } /* Segue indicator */
-        .song-item[data-name^="Set"] { background: linear-gradient(90deg, #2c0b0e 0%, #1e1e1e 100%); border-left: 4px solid #f87171; margin: 1.5rem 0 1rem 0; }
-        .song-item[data-name^="Set"] .song-name { font-weight: 700; font-size: 1.2em; color: #fca5a5; text-transform: uppercase; }
+        .song-item.segue-active { border-left-color: #3b82f6; } /* Segue indicator - Blue */
+        
+        /* SET MARKERS - Matched to Builder Style */
+        .song-item[data-name^="Set"] { background: linear-gradient(90deg, #2c0b0e 0%, #1e1e1e 100%); border-left: 4px solid #f87171; margin: 1rem 0; }
+        .song-item[data-name^="Set"] .song-name { font-weight: 700; font-size: 1.1em; color: #fca5a5; text-transform: uppercase; }
 
         .btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; border-radius: 6px; font-weight: 600; font-size: 0.85rem; cursor: pointer; border: none; transition: all 0.2s; white-space: nowrap; justify-content: center; text-decoration: none; }
         .btn-secondary { background: #333; color: #e0e0e0; }
         .btn-secondary:hover { background: #444; }
-        .btn-primary { background: #00ddde; color: #121212; }
-        .btn-primary:hover { background: #00b8b9; }
+        .btn-primary { background: #3b82f6; color: #121212; }
+        .btn-primary:hover { background: #2563eb; }
 
         /* --- Loader --- */
         .loading-overlay { position: absolute; inset: 0; background: rgba(30,30,30,0.9); display: none; align-items: center; justify-content: center; z-index: 20; }
@@ -56,9 +60,10 @@
 </head>
 <body class="bg-[#121212]">
     
+    <!-- Header -->
     <header class="h-[70px] px-4 md:px-6 border-b border-[#333] bg-[#1e1e1e] flex justify-between items-center shadow-md z-10 relative">
         <div class="flex items-center gap-3 md:gap-4">
-            <div class="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-600 rounded flex items-center justify-center text-white font-bold flex-shrink-0"><i class="fas fa-eye"></i></div>
+            <div class="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-600 rounded flex items-center justify-center text-white font-bold flex-shrink-0"><i class="fas fa-eye"></i></div>
             <div>
                 <h1 class="text-base md:text-lg font-bold text-white tracking-wide">Viewer</h1>
                 <p id="connection-status" class="text-[10px] md:text-xs text-gray-500 whitespace-nowrap">Checking...</p>
@@ -68,17 +73,18 @@
             <a href="setlist-builder.html" id="link-edit-mode" class="btn btn-secondary text-xs px-3 bg-[#1e3a8a] border border-blue-500 text-blue-200 hover:bg-[#1e40af]" title="Switch to Edit Mode">
                 <i class="fas fa-edit"></i> <span class="hidden md:inline">Edit Mode</span>
             </a>
-            <button onclick="openSettings()" class="btn btn-secondary text-xs px-3">
+            <button onclick="openSettings()" class="btn btn-secondary text-xs px-3" title="Settings">
                 <i class="fas fa-cog"></i>
             </button>
-            <a href="index.html" class="text-gray-400 hover:text-[#00ddde] text-sm transition ml-2 p-2">
+            <a href="index.html" class="text-gray-400 hover:text-[#3b82f6] text-sm transition ml-2 p-2">
                 <i class="fas fa-arrow-left"></i>
             </a>
         </div>
     </header>
 
+    <!-- Mobile Tabs -->
     <div class="md:hidden flex border-b border-[#333] bg-[#1e1e1e] h-[50px]">
-        <button onclick="switchMobileTab('files')" id="tab-files" class="flex-1 text-sm font-bold text-[#00ddde] border-b-2 border-[#00ddde] transition-colors">
+        <button onclick="switchMobileTab('files')" id="tab-files" class="flex-1 text-sm font-bold text-[#3b82f6] border-b-2 border-[#3b82f6] transition-colors">
             <i class="fas fa-folder mr-2"></i>Files
         </button>
         <button onclick="switchMobileTab('view')" id="tab-view" class="flex-1 text-sm font-bold text-gray-500 border-b-2 border-transparent transition-colors">
@@ -86,12 +92,17 @@
         </button>
     </div>
 
+    <!-- Main Content -->
     <main class="viewer-container">
         
+        <!-- LEFT: File Browser -->
         <div class="panel" id="panel-files">
             <div class="panel-header">
-                <h2 class="font-bold text-white flex items-center gap-2"><i class="fas fa-folder-open text-[#00ddde]"></i> Available Setlists</h2>
-                <div class="text-xs text-gray-500 mt-1" id="folder-path-display">...</div>
+                <!-- Compact Header for Mobile -->
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-1">
+                    <h2 class="font-bold text-white flex items-center gap-2 text-sm md:text-base"><i class="fas fa-folder-open text-[#3b82f6]"></i> <span class="md:inline hidden">Available Setlists</span><span class="md:hidden inline">Setlists</span></h2>
+                    <div class="text-[10px] md:text-xs text-gray-500 font-mono truncate max-w-[150px] md:max-w-none" id="folder-path-display">...</div>
+                </div>
             </div>
             
             <div id="file-list" class="scroll-area flex flex-col gap-2">
@@ -103,19 +114,19 @@
             </div>
         </div>
 
-        <div class="panel border-purple-900 border-opacity-30 mobile-hidden" id="panel-view">
+        <!-- RIGHT: Viewer -->
+        <div class="panel border-blue-900 border-opacity-30 mobile-hidden" id="panel-view">
             <div class="loading-overlay" id="main-loader">
-                <div class="text-[#00ddde] font-bold animate-pulse" id="loader-text"><i class="fas fa-sync fa-spin mr-2"></i> Loading...</div>
+                <div class="text-[#3b82f6] font-bold animate-pulse" id="loader-text"><i class="fas fa-sync fa-spin mr-2"></i> Loading...</div>
             </div>
 
             <div class="panel-header !flex-row !justify-between !items-center">
                 <div class="flex items-center gap-3 overflow-hidden">
                     <div class="font-bold text-lg text-white truncate" id="view-title">Select a Setlist</div>
-                    <button id="btn-download" onclick="downloadCurrent()" class="text-gray-400 hover:text-[#00ddde] hidden" title="Download JSON">
+                    <button id="btn-download" onclick="downloadCurrent()" class="text-gray-400 hover:text-[#3b82f6] hidden" title="Download JSON">
                         <i class="fas fa-download"></i>
                     </button>
                 </div>
-                <div class="text-xs font-mono text-[#00ddde] bg-[#222] px-2 py-1 rounded" id="view-stats"></div>
             </div>
             
             <div class="relative flex-1 bg-[#181818] overflow-hidden">
@@ -127,9 +138,15 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Footer Stats (Moved from Header) -->
+            <div class="bg-[#252525] p-2 px-4 border-t border-[#333] flex justify-between items-center text-[10px] text-gray-500 z-20">
+                 <span id="view-stats" class="text-gray-300 font-mono text-xs overflow-hidden text-ellipsis whitespace-nowrap">0 items</span>
+            </div>
         </div>
     </main>
 
+    <!-- SETTINGS MODAL -->
     <div id="settings-modal" class="modal-overlay">
         <div class="modal-content">
             <h2 class="text-xl font-bold text-white mb-4">Settings</h2>
@@ -156,6 +173,7 @@
         </div>
     </div>
 
+    <!-- SHARED SCRIPT -->
     <script src="setlist-builder.js"></script>
 
     <script>
@@ -259,7 +277,7 @@
                 if (isSegue && !isSet) div.classList.add('segue-active');
                 
                 let icon = '<i class="fas fa-stop text-xs text-gray-600 ml-2" title="Stop after this"></i>';
-                if (isSegue) icon = '<i class="fas fa-arrow-down text-xs text-[#00ddde] ml-2" title="Segue into next"></i>';
+                if (isSegue) icon = '<i class="fas fa-arrow-down text-xs text-[#3b82f6] ml-2" title="Segue into next"></i>';
                 if (isSet) icon = '';
 
                 div.innerHTML = `
@@ -299,17 +317,17 @@
             if (tab === 'files') {
                 els.panels.files.classList.remove('mobile-hidden');
                 els.panels.view.classList.add('mobile-hidden');
-                els.tabs.files.classList.replace('text-gray-500', 'text-[#00ddde]');
-                els.tabs.files.classList.replace('border-transparent', 'border-[#00ddde]');
-                els.tabs.view.classList.replace('text-[#00ddde]', 'text-gray-500');
-                els.tabs.view.classList.replace('border-[#00ddde]', 'border-transparent');
+                els.tabs.files.classList.replace('text-gray-500', 'text-[#3b82f6]');
+                els.tabs.files.classList.replace('border-transparent', 'border-[#3b82f6]');
+                els.tabs.view.classList.replace('text-[#3b82f6]', 'text-gray-500');
+                els.tabs.view.classList.replace('border-[#3b82f6]', 'border-transparent');
             } else {
                 els.panels.files.classList.add('mobile-hidden');
                 els.panels.view.classList.remove('mobile-hidden');
-                els.tabs.view.classList.replace('text-gray-500', 'text-[#00ddde]');
-                els.tabs.view.classList.replace('border-transparent', 'border-[#00ddde]');
-                els.tabs.files.classList.replace('text-[#00ddde]', 'text-gray-500');
-                els.tabs.files.classList.replace('border-[#00ddde]', 'border-transparent');
+                els.tabs.view.classList.replace('text-gray-500', 'text-[#3b82f6]');
+                els.tabs.view.classList.replace('border-transparent', 'border-[#3b82f6]');
+                els.tabs.files.classList.replace('text-[#3b82f6]', 'text-gray-500');
+                els.tabs.files.classList.replace('border-[#3b82f6]', 'border-transparent');
             }
         };
     </script>

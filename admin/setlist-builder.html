@@ -4,11 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Setlist Builder - Ultraphonics</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = { theme: { extend: {} } }
     </script>
+    <!-- SortableJS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
@@ -28,8 +31,8 @@
         /* --- Items --- */
         .song-item { padding: 0.75rem 1rem; background: #2a2a2a; margin-bottom: 0.5rem; border-radius: 6px; cursor: grab; display: flex; justify-content: space-between; align-items: center; border: 1px solid transparent; transition: transform 0.2s, background 0.2s; user-select: none; touch-action: manipulation; }
         .song-item:hover { background: #333; border-color: #444; transform: translateY(-1px); }
-        .song-item.sortable-ghost { opacity: 0.4; background: #00ddde !important; border: 1px dashed #fff; }
-        .song-item.sortable-drag { background: #00ddde !important; color: #121212 !important; opacity: 1; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.5); transform: scale(1.02); cursor: grabbing; }
+        .song-item.sortable-ghost { opacity: 0.4; background: #fbbf24 !important; border: 1px dashed #fff; }
+        .song-item.sortable-drag { background: #fbbf24 !important; color: #121212 !important; opacity: 1; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.5); transform: scale(1.02); cursor: grabbing; }
         .song-item.sortable-drag .song-name { color: #121212 !important; }
         .song-item[data-name^="Set"] { background: linear-gradient(90deg, #2c0b0e 0%, #1e1e1e 100%); border-left: 4px solid #f87171; margin: 1rem 0; }
         .song-item[data-name^="Set"] .song-name { font-weight: 700; font-size: 1.1em; color: #fca5a5; text-transform: uppercase; }
@@ -37,15 +40,15 @@
         /* --- File List (Sidebar) --- */
         .file-item { padding: 0.75rem; background: #252525; border-radius: 6px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: all 0.2s; border: 1px solid transparent; }
         .file-item:hover { background: #333; border-color: #444; }
-        .file-item.active { background: #2c0b0e; border-color: #f87171; color: #fca5a5; }
+        .file-item.active { background: #451a03; border-color: #fbbf24; color: #fcd34d; } /* Amber active state */
 
         /* --- Components --- */
         .search-input { width: 100%; padding: 0.6rem 1rem; background: #121212; border: 1px solid #444; color: white; border-radius: 6px; font-size: 0.9rem; }
-        .search-input:focus { outline: none; border-color: #00ddde; }
+        .search-input:focus { outline: none; border-color: #fbbf24; }
         
         .btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; border-radius: 6px; font-weight: 600; font-size: 0.85rem; cursor: pointer; border: none; transition: all 0.2s; white-space: nowrap; justify-content: center; }
-        .btn-primary { background: #00ddde; color: #121212; }
-        .btn-primary:hover { background: #00b8b9; }
+        .btn-primary { background: #fbbf24; color: #121212; }
+        .btn-primary:hover { background: #f59e0b; }
         .btn-secondary { background: #333; color: #e0e0e0; }
         .btn-secondary:hover { background: #444; }
         .btn:disabled { opacity: 0.5; cursor: not-allowed; }
@@ -55,7 +58,7 @@
         .segue-toggle input { opacity: 0; width: 0; height: 0; }
         .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #444; transition: .4s; border-radius: 34px; }
         .slider:before { position: absolute; content: ""; height: 14px; width: 14px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
-        input:checked + .slider { background-color: #00ddde; }
+        input:checked + .slider { background-color: #fbbf24; }
         input:checked + .slider:before { transform: translateX(16px); }
 
         /* --- Modals --- */
@@ -78,9 +81,10 @@
 </head>
 <body class="bg-[#121212]">
     
+    <!-- Header -->
     <header class="h-[70px] px-4 md:px-6 border-b border-[#333] bg-[#1e1e1e] flex justify-between items-center shadow-md z-10 relative">
         <div class="flex items-center gap-3 md:gap-4">
-            <div class="w-8 h-8 bg-gradient-to-br from-[#00ddde] to-blue-600 rounded flex items-center justify-center text-black font-bold flex-shrink-0"><i class="fas fa-hammer"></i></div>
+            <div class="w-8 h-8 bg-gradient-to-br from-yellow-400 to-orange-500 rounded flex items-center justify-center text-black font-bold flex-shrink-0"><i class="fas fa-hammer"></i></div>
             <div>
                 <h1 class="text-base md:text-lg font-bold text-white tracking-wide">Builder</h1>
                 <p id="connection-status" class="text-[10px] md:text-xs text-gray-500 whitespace-nowrap">
@@ -93,16 +97,17 @@
                 <i class="fas fa-eye"></i> <span class="hidden md:inline">View Mode</span>
             </a>
             <button onclick="openSettings()" class="btn btn-secondary text-xs px-3" title="Settings">
-                <i class="fas fa-cog"></i> <span class="hidden md:inline">Settings</span>
+                <i class="fas fa-cog"></i>
             </button>
-            <a href="index.html" class="text-gray-400 hover:text-[#00ddde] text-sm transition ml-2 p-2">
+            <a href="index.html" class="text-gray-400 hover:text-[#fbbf24] text-sm transition ml-2 p-2">
                 <i class="fas fa-arrow-left"></i>
             </a>
         </div>
     </header>
 
+    <!-- Mobile Tabs -->
     <div class="md:hidden flex border-b border-[#333] bg-[#1e1e1e] h-[50px]">
-        <button onclick="switchMobileTab('library')" id="tab-library" class="flex-1 text-sm font-bold text-[#00ddde] border-b-2 border-[#00ddde] transition-colors">
+        <button onclick="switchMobileTab('library')" id="tab-library" class="flex-1 text-sm font-bold text-[#fbbf24] border-b-2 border-[#fbbf24] transition-colors">
             <i class="fas fa-music mr-2"></i>Library
         </button>
         <button onclick="switchMobileTab('setlist')" id="tab-setlist" class="flex-1 text-sm font-bold text-gray-500 border-b-2 border-transparent transition-colors">
@@ -111,28 +116,33 @@
         </button>
     </div>
 
+    <!-- Main Content -->
     <main class="editor-container">
         
+        <!-- LEFT: Library / Files Sidebar -->
         <div class="panel" id="panel-library">
+            <!-- Sidebar Tabs -->
             <div class="flex border-b border-[#333]">
                  <button onclick="switchSidebarTab('files')" id="tab-side-files" class="flex-1 py-3 text-sm font-bold bg-[#252525] text-gray-400 border-b-2 border-transparent hover:bg-[#2a2a2a] transition-colors">Files</button>
-                 <button onclick="switchSidebarTab('library')" id="tab-side-library" class="flex-1 py-3 text-sm font-bold bg-[#252525] text-[#00ddde] border-b-2 border-[#00ddde] transition-colors">Library</button>
+                 <button onclick="switchSidebarTab('library')" id="tab-side-library" class="flex-1 py-3 text-sm font-bold bg-[#252525] text-[#fbbf24] border-b-2 border-[#fbbf24] transition-colors">Library</button>
             </div>
 
+            <!-- TAB 1: Files View -->
             <div id="view-files" class="hidden flex-col h-full bg-[#1e1e1e]">
                  <div class="p-3 border-b border-[#333] flex justify-between items-center bg-[#252525]">
                      <span class="text-xs text-gray-400 font-mono" id="folder-path-display">...</span>
-                     <button onclick="refreshFileList()" class="text-xs text-[#00ddde] hover:text-white"><i class="fas fa-sync"></i> Refresh</button>
+                     <button onclick="refreshFileList()" class="text-xs text-[#fbbf24] hover:text-white"><i class="fas fa-sync"></i> Refresh</button>
                  </div>
                  <div id="file-list-sidebar" class="scroll-area p-2 flex flex-col gap-1">
                      <div class="text-center text-gray-500 mt-10 text-sm">Select a file...</div>
                  </div>
             </div>
 
+            <!-- TAB 2: Library View -->
             <div id="view-library" class="flex flex-col h-full">
                 <div class="panel-header !border-t-0">
                     <div class="flex justify-between items-center">
-                        <h2 class="font-bold text-white flex items-center gap-2"><i class="fas fa-music text-[#00ddde]"></i> Songs</h2>
+                        <h2 class="font-bold text-white flex items-center gap-2"><i class="fas fa-music text-[#fbbf24]"></i> Songs</h2>
                         <span id="library-count" class="text-xs font-mono text-gray-500 bg-[#121212] px-2 py-1 rounded">0</span>
                     </div>
                     <div class="relative">
@@ -151,14 +161,16 @@
             </div>
         </div>
 
-        <div class="panel border-[#00ddde] border-opacity-30 mobile-hidden" id="panel-setlist">
+        <!-- RIGHT: Setlist -->
+        <div class="panel border-yellow-500 border-opacity-30 mobile-hidden" id="panel-setlist">
             <div class="loading-overlay" id="main-loader">
-                <div class="text-[#00ddde] font-bold animate-pulse" id="loader-text"><i class="fas fa-sync fa-spin mr-2"></i> Processing...</div>
+                <div class="text-[#fbbf24] font-bold animate-pulse" id="loader-text"><i class="fas fa-sync fa-spin mr-2"></i> Processing...</div>
             </div>
 
+            <!-- Toolbar -->
             <div class="panel-header !flex-row !justify-between !items-center !gap-2 !bg-[#181818] !p-2 md:!p-4">
                 <div class="flex items-center gap-2 overflow-hidden flex-1">
-                    <div id="current-filename" class="text-[#00ddde] font-mono text-sm truncate px-2 py-1 bg-[#222] rounded border border-[#333] w-full text-center md:text-left">
+                    <div id="current-filename" class="text-[#fbbf24] font-mono text-sm truncate px-2 py-1 bg-[#222] rounded border border-[#333] w-full text-center md:text-left">
                         (Unsaved)
                     </div>
                 </div>
@@ -166,10 +178,11 @@
                     <button onclick="resetToNew()" class="btn btn-secondary !px-2 md:!px-4" title="New"><i class="fas fa-file"></i></button>
                     <button onclick="saveCurrent()" class="btn btn-primary !px-2 md:!px-4" title="Save" id="btn-save" disabled><i class="fas fa-save"></i></button>
                     <button onclick="saveAs()" class="btn btn-secondary !px-2 md:!px-4" title="Save As" id="btn-save-as" disabled><i class="fas fa-copy"></i></button>
-                    <button onclick="downloadLocalJSON()" class="btn btn-secondary !px-2 md:!px-4 text-[#00ddde] border border-[#00ddde] border-opacity-30 hover:bg-[#003333]" title="Download JSON"><i class="fas fa-download"></i></button>
+                    <button onclick="downloadLocalJSON()" class="btn btn-secondary !px-2 md:!px-4 text-[#fbbf24] border border-[#fbbf24] border-opacity-30 hover:bg-[#451a03]" title="Download JSON"><i class="fas fa-download"></i></button>
                 </div>
             </div>
             
+            <!-- List Area -->
             <div class="relative flex-1 bg-[#181818] overflow-hidden">
                 <div id="setlist-area" class="absolute inset-0 overflow-y-auto p-3 custom-scrollbar pb-20"></div>
                 <div id="empty-state" class="absolute inset-0 flex flex-col items-center justify-center text-gray-600 pointer-events-none z-10">
@@ -179,12 +192,14 @@
                 </div>
             </div>
 
+            <!-- Footer Stats -->
             <div class="bg-[#252525] p-2 px-4 border-t border-[#333] flex justify-between items-center text-[10px] text-gray-500 z-20">
                 <span id="setlist-stats" class="text-gray-300 font-mono text-xs overflow-hidden text-ellipsis whitespace-nowrap">0 items</span>
             </div>
         </div>
     </main>
 
+    <!-- SETTINGS MODAL -->
     <div id="settings-modal" class="modal-overlay">
         <div class="modal-content">
             <h2 class="text-xl font-bold text-white mb-4">Settings</h2>
@@ -211,6 +226,7 @@
         </div>
     </div>
 
+    <!-- SHARED SCRIPT -->
     <script src="setlist-builder.js"></script>
 
     <script>
@@ -274,19 +290,19 @@
                 els.sidebarViews.files.classList.add('flex');
                 els.sidebarViews.library.classList.add('hidden');
                 
-                els.sidebarTabs.files.classList.replace('border-transparent', 'border-[#00ddde]');
-                els.sidebarTabs.files.classList.replace('text-gray-400', 'text-[#00ddde]');
-                els.sidebarTabs.library.classList.replace('border-[#00ddde]', 'border-transparent');
-                els.sidebarTabs.library.classList.replace('text-[#00ddde]', 'text-gray-400');
+                els.sidebarTabs.files.classList.replace('border-transparent', 'border-[#fbbf24]');
+                els.sidebarTabs.files.classList.replace('text-gray-400', 'text-[#fbbf24]');
+                els.sidebarTabs.library.classList.replace('border-[#fbbf24]', 'border-transparent');
+                els.sidebarTabs.library.classList.replace('text-[#fbbf24]', 'text-gray-400');
             } else {
                 els.sidebarViews.files.classList.add('hidden');
                 els.sidebarViews.files.classList.remove('flex');
                 els.sidebarViews.library.classList.remove('hidden');
 
-                els.sidebarTabs.library.classList.replace('border-transparent', 'border-[#00ddde]');
-                els.sidebarTabs.library.classList.replace('text-gray-400', 'text-[#00ddde]');
-                els.sidebarTabs.files.classList.replace('border-[#00ddde]', 'border-transparent');
-                els.sidebarTabs.files.classList.replace('text-[#00ddde]', 'text-gray-400');
+                els.sidebarTabs.library.classList.replace('border-transparent', 'border-[#fbbf24]');
+                els.sidebarTabs.library.classList.replace('text-gray-400', 'text-[#fbbf24]');
+                els.sidebarTabs.files.classList.replace('border-[#fbbf24]', 'border-transparent');
+                els.sidebarTabs.files.classList.replace('text-[#fbbf24]', 'text-gray-400');
             }
         };
 
@@ -364,7 +380,7 @@
                     ${!isSetMarker ? `<label class="segue-toggle"><input type="checkbox" onchange="toggleSegue(this)" ${isSegue ? 'checked' : ''}><span class="slider"></span></label>` : ''}
                     <button onclick="removeItem('${data.id}')" class="text-gray-500 hover:text-red-500 p-2"><i class="fas fa-times"></i></button>
                 </div>` : 
-                `<div class="flex items-center"><button class="add-btn text-gray-500 hover:text-[#00ddde] p-3 -mr-2"><i class="fas fa-plus"></i></button></div>`;
+                `<div class="flex items-center"><button class="add-btn text-gray-500 hover:text-[#fbbf24] p-3 -mr-2"><i class="fas fa-plus"></i></button></div>`;
 
             div.innerHTML = `
                 <div class="flex-1 overflow-hidden flex flex-col">
@@ -406,17 +422,17 @@
             if (tab === 'library') {
                 els.panels.library.classList.remove('mobile-hidden');
                 els.panels.setlist.classList.add('mobile-hidden');
-                els.tabs.library.classList.replace('text-gray-500', 'text-[#00ddde]');
-                els.tabs.library.classList.replace('border-transparent', 'border-[#00ddde]');
-                els.tabs.setlist.classList.replace('text-[#00ddde]', 'text-gray-500');
-                els.tabs.setlist.classList.replace('border-[#00ddde]', 'border-transparent');
+                els.tabs.library.classList.replace('text-gray-500', 'text-[#fbbf24]');
+                els.tabs.library.classList.replace('border-transparent', 'border-[#fbbf24]');
+                els.tabs.setlist.classList.replace('text-[#fbbf24]', 'text-gray-500');
+                els.tabs.setlist.classList.replace('border-[#fbbf24]', 'border-transparent');
             } else {
                 els.panels.library.classList.add('mobile-hidden');
                 els.panels.setlist.classList.remove('mobile-hidden');
-                els.tabs.setlist.classList.replace('text-gray-500', 'text-[#00ddde]');
-                els.tabs.setlist.classList.replace('border-transparent', 'border-[#00ddde]');
-                els.tabs.library.classList.replace('text-[#00ddde]', 'text-gray-500');
-                els.tabs.library.classList.replace('border-[#00ddde]', 'border-transparent');
+                els.tabs.setlist.classList.replace('text-gray-500', 'text-[#fbbf24]');
+                els.tabs.setlist.classList.replace('border-transparent', 'border-[#fbbf24]');
+                els.tabs.library.classList.replace('text-[#fbbf24]', 'text-gray-500');
+                els.tabs.library.classList.replace('border-[#fbbf24]', 'border-transparent');
             }
         };
 
