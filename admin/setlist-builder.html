@@ -4,14 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Setlist Builder - Ultraphonics</title>
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = { theme: { extend: {} } }
     </script>
-    <!-- SortableJS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
@@ -36,6 +33,11 @@
         .song-item.sortable-drag .song-name { color: #121212 !important; }
         .song-item[data-name^="Set"] { background: linear-gradient(90deg, #2c0b0e 0%, #1e1e1e 100%); border-left: 4px solid #f87171; margin: 1rem 0; }
         .song-item[data-name^="Set"] .song-name { font-weight: 700; font-size: 1.1em; color: #fca5a5; text-transform: uppercase; }
+
+        /* --- File List (Sidebar) --- */
+        .file-item { padding: 0.75rem; background: #252525; border-radius: 6px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: all 0.2s; border: 1px solid transparent; }
+        .file-item:hover { background: #333; border-color: #444; }
+        .file-item.active { background: #2c0b0e; border-color: #f87171; color: #fca5a5; }
 
         /* --- Components --- */
         .search-input { width: 100%; padding: 0.6rem 1rem; background: #121212; border: 1px solid #444; color: white; border-radius: 6px; font-size: 0.9rem; }
@@ -62,10 +64,7 @@
         .modal-content { background: #1e1e1e; padding: 2rem; border-radius: 12px; width: 90%; max-width: 500px; border: 1px solid #444; max-height: 85vh; display: flex; flex-direction: column; }
         .form-input { width: 100%; padding: 0.75rem; background: #121212; border: 1px solid #333; color: white; border-radius: 6px; margin-bottom: 1rem; }
         .form-label { display: block; margin-bottom: 0.5rem; font-size: 0.875rem; color: #aaa; }
-        .file-list { display: flex; flex-direction: column; gap: 0.5rem; margin-top: 1rem; overflow-y: auto; flex: 1; min-height: 200px; }
-        .file-item { padding: 0.75rem; background: #252525; border-radius: 6px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: background 0.2s; }
-        .file-item:hover { background: #333; }
-
+        
         /* --- Loader --- */
         .loading-overlay { position: absolute; inset: 0; background: rgba(30,30,30,0.9); display: none; align-items: center; justify-content: center; z-index: 20; }
         .loading-overlay.active { display: flex; }
@@ -79,10 +78,9 @@
 </head>
 <body class="bg-[#121212]">
     
-    <!-- Header -->
     <header class="h-[70px] px-4 md:px-6 border-b border-[#333] bg-[#1e1e1e] flex justify-between items-center shadow-md z-10 relative">
         <div class="flex items-center gap-3 md:gap-4">
-            <div class="w-8 h-8 bg-gradient-to-br from-[#00ddde] to-blue-600 rounded flex items-center justify-center text-black font-bold flex-shrink-0">B</div>
+            <div class="w-8 h-8 bg-gradient-to-br from-[#00ddde] to-blue-600 rounded flex items-center justify-center text-black font-bold flex-shrink-0"><i class="fas fa-hammer"></i></div>
             <div>
                 <h1 class="text-base md:text-lg font-bold text-white tracking-wide">Builder</h1>
                 <p id="connection-status" class="text-[10px] md:text-xs text-gray-500 whitespace-nowrap">
@@ -103,7 +101,6 @@
         </div>
     </header>
 
-    <!-- Mobile Tabs -->
     <div class="md:hidden flex border-b border-[#333] bg-[#1e1e1e] h-[50px]">
         <button onclick="switchMobileTab('library')" id="tab-library" class="flex-1 text-sm font-bold text-[#00ddde] border-b-2 border-[#00ddde] transition-colors">
             <i class="fas fa-music mr-2"></i>Library
@@ -114,38 +111,51 @@
         </button>
     </div>
 
-    <!-- Main Content -->
     <main class="editor-container">
         
-        <!-- LEFT: Library -->
         <div class="panel" id="panel-library">
-            <div class="panel-header">
-                <div class="flex justify-between items-center">
-                    <h2 class="font-bold text-white flex items-center gap-2"><i class="fas fa-music text-[#00ddde]"></i> Library</h2>
-                    <span id="library-count" class="text-xs font-mono text-gray-500 bg-[#121212] px-2 py-1 rounded">0</span>
-                </div>
-                <div class="relative">
-                    <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-xs"></i>
-                    <input type="text" id="search" placeholder="Search songs..." class="search-input pl-8">
-                </div>
-                <div class="flex gap-2 mt-1">
-                    <button onclick="filterLibrary('all')" class="flex-1 text-xs px-2 py-1.5 rounded bg-[#333] hover:bg-[#444] text-white transition">All</button>
-                    <button onclick="filterLibrary('sets')" class="flex-1 text-xs px-2 py-1.5 rounded bg-[#2c0b0e] text-[#fca5a5] border border-[#f87171] hover:opacity-80 transition">Sets</button>
-                </div>
+            <div class="flex border-b border-[#333]">
+                 <button onclick="switchSidebarTab('files')" id="tab-side-files" class="flex-1 py-3 text-sm font-bold bg-[#252525] text-gray-400 border-b-2 border-transparent hover:bg-[#2a2a2a] transition-colors">Files</button>
+                 <button onclick="switchSidebarTab('library')" id="tab-side-library" class="flex-1 py-3 text-sm font-bold bg-[#252525] text-[#00ddde] border-b-2 border-[#00ddde] transition-colors">Library</button>
             </div>
-            
-            <div id="library-list" class="scroll-area">
-                <div class="flex flex-col items-center justify-center h-40 text-gray-500"><i class="fas fa-circle-notch fa-spin mb-2"></i> Loading Library...</div>
+
+            <div id="view-files" class="hidden flex-col h-full bg-[#1e1e1e]">
+                 <div class="p-3 border-b border-[#333] flex justify-between items-center bg-[#252525]">
+                     <span class="text-xs text-gray-400 font-mono" id="folder-path-display">...</span>
+                     <button onclick="refreshFileList()" class="text-xs text-[#00ddde] hover:text-white"><i class="fas fa-sync"></i> Refresh</button>
+                 </div>
+                 <div id="file-list-sidebar" class="scroll-area p-2 flex flex-col gap-1">
+                     <div class="text-center text-gray-500 mt-10 text-sm">Select a file...</div>
+                 </div>
+            </div>
+
+            <div id="view-library" class="flex flex-col h-full">
+                <div class="panel-header !border-t-0">
+                    <div class="flex justify-between items-center">
+                        <h2 class="font-bold text-white flex items-center gap-2"><i class="fas fa-music text-[#00ddde]"></i> Songs</h2>
+                        <span id="library-count" class="text-xs font-mono text-gray-500 bg-[#121212] px-2 py-1 rounded">0</span>
+                    </div>
+                    <div class="relative">
+                        <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-xs"></i>
+                        <input type="text" id="search" placeholder="Search songs..." class="search-input pl-8">
+                    </div>
+                    <div class="flex gap-2 mt-1">
+                        <button onclick="filterLibrary('all')" class="flex-1 text-xs px-2 py-1.5 rounded bg-[#333] hover:bg-[#444] text-white transition">All</button>
+                        <button onclick="filterLibrary('sets')" class="flex-1 text-xs px-2 py-1.5 rounded bg-[#2c0b0e] text-[#fca5a5] border border-[#f87171] hover:opacity-80 transition">Sets</button>
+                    </div>
+                </div>
+                
+                <div id="library-list" class="scroll-area">
+                    <div class="flex flex-col items-center justify-center h-40 text-gray-500"><i class="fas fa-circle-notch fa-spin mb-2"></i> Loading Library...</div>
+                </div>
             </div>
         </div>
 
-        <!-- RIGHT: Setlist -->
         <div class="panel border-[#00ddde] border-opacity-30 mobile-hidden" id="panel-setlist">
             <div class="loading-overlay" id="main-loader">
                 <div class="text-[#00ddde] font-bold animate-pulse" id="loader-text"><i class="fas fa-sync fa-spin mr-2"></i> Processing...</div>
             </div>
 
-            <!-- Toolbar -->
             <div class="panel-header !flex-row !justify-between !items-center !gap-2 !bg-[#181818] !p-2 md:!p-4">
                 <div class="flex items-center gap-2 overflow-hidden flex-1">
                     <div id="current-filename" class="text-[#00ddde] font-mono text-sm truncate px-2 py-1 bg-[#222] rounded border border-[#333] w-full text-center md:text-left">
@@ -154,13 +164,12 @@
                 </div>
                 <div class="flex gap-1 md:gap-2">
                     <button onclick="resetToNew()" class="btn btn-secondary !px-2 md:!px-4" title="New"><i class="fas fa-file"></i></button>
-                    <button onclick="openFileManager()" class="btn btn-secondary !px-2 md:!px-4" title="Open" id="btn-open" disabled><i class="fas fa-folder-open"></i></button>
                     <button onclick="saveCurrent()" class="btn btn-primary !px-2 md:!px-4" title="Save" id="btn-save" disabled><i class="fas fa-save"></i></button>
                     <button onclick="saveAs()" class="btn btn-secondary !px-2 md:!px-4" title="Save As" id="btn-save-as" disabled><i class="fas fa-copy"></i></button>
+                    <button onclick="downloadLocalJSON()" class="btn btn-secondary !px-2 md:!px-4 text-[#00ddde] border border-[#00ddde] border-opacity-30 hover:bg-[#003333]" title="Download JSON"><i class="fas fa-download"></i></button>
                 </div>
             </div>
             
-            <!-- List Area -->
             <div class="relative flex-1 bg-[#181818] overflow-hidden">
                 <div id="setlist-area" class="absolute inset-0 overflow-y-auto p-3 custom-scrollbar pb-20"></div>
                 <div id="empty-state" class="absolute inset-0 flex flex-col items-center justify-center text-gray-600 pointer-events-none z-10">
@@ -170,15 +179,12 @@
                 </div>
             </div>
 
-            <!-- Footer Stats -->
             <div class="bg-[#252525] p-2 px-4 border-t border-[#333] flex justify-between items-center text-[10px] text-gray-500 z-20">
-                <span id="setlist-stats" class="text-gray-300 font-mono text-xs overflow-hidden text-ellipsis whitespace-nowrap max-w-[65%]">0 items</span>
-                <button onclick="downloadLocalJSON()" class="hover:text-[#00ddde] whitespace-nowrap"><i class="fas fa-download mr-1"></i> Backup</button>
+                <span id="setlist-stats" class="text-gray-300 font-mono text-xs overflow-hidden text-ellipsis whitespace-nowrap">0 items</span>
             </div>
         </div>
     </main>
 
-    <!-- SETTINGS MODAL -->
     <div id="settings-modal" class="modal-overlay">
         <div class="modal-content">
             <h2 class="text-xl font-bold text-white mb-4">Settings</h2>
@@ -205,22 +211,6 @@
         </div>
     </div>
 
-    <!-- FILE MODAL -->
-    <div id="file-modal" class="modal-overlay">
-        <div class="modal-content h-[600px]">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-xl font-bold text-white">Open Setlist</h2>
-                <button onclick="document.getElementById('file-modal').classList.remove('active')" class="text-gray-400 hover:text-white"><i class="fas fa-times"></i></button>
-            </div>
-            <p class="text-xs text-gray-500 mb-2">Folder: <span id="file-path-display" class="font-mono text-gray-300">...</span></p>
-            <div id="file-list-container" class="file-list custom-scrollbar"></div>
-            <div class="mt-4 pt-4 border-t border-[#333] flex justify-end">
-                <button onclick="document.getElementById('file-modal').classList.remove('active')" class="btn btn-secondary">Cancel</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- SHARED SCRIPT -->
     <script src="setlist-builder.js"></script>
 
     <script>
@@ -230,17 +220,22 @@
             setlist: [],
             master: [],
             currentFile: null,
+            fileList: [], // Cache file list
             mobileTab: 'library'
         };
 
         const els = {
             library: document.getElementById('library-list'),
+            files: document.getElementById('file-list-sidebar'),
             setlist: document.getElementById('setlist-area'),
             emptyState: document.getElementById('empty-state'),
             currentFilename: document.getElementById('current-filename'),
             stats: document.getElementById('setlist-stats'),
+            folderPath: document.getElementById('folder-path-display'),
             panels: { library: document.getElementById('panel-library'), setlist: document.getElementById('panel-setlist') },
-            tabs: { library: document.getElementById('tab-library'), setlist: document.getElementById('tab-setlist') }
+            tabs: { library: document.getElementById('tab-library'), setlist: document.getElementById('tab-setlist') },
+            sidebarTabs: { files: document.getElementById('tab-side-files'), library: document.getElementById('tab-side-library') },
+            sidebarViews: { files: document.getElementById('view-files'), library: document.getElementById('view-library') }
         };
 
         // --- INIT ---
@@ -249,7 +244,51 @@
             await loadMasterData();
             updateUI();
             setupDragAndDrop();
+            
+            // Auto-load Logic
+            const urlParams = new URLSearchParams(window.location.search);
+            const fileParam = urlParams.get('file');
+
+            if (fileParam) {
+                // If a file is requested, fetch files to get URL, then load
+                await refreshFileList(true); // Silent fetch
+                const fileObj = state.fileList.find(f => f.name === fileParam);
+                if(fileObj) {
+                    await loadRemoteFile(fileObj);
+                    switchSidebarTab('library'); // Switch to library so they can add songs
+                } else {
+                    alert(`File "${fileParam}" not found.`);
+                    switchSidebarTab('files');
+                }
+            } else {
+                // If no file requested, default to Files view to pick one (User Feedback)
+                await refreshFileList();
+                switchSidebarTab('files'); 
+            }
         });
+
+        // --- SIDEBAR TABS ---
+        window.switchSidebarTab = (tab) => {
+            if (tab === 'files') {
+                els.sidebarViews.files.classList.remove('hidden');
+                els.sidebarViews.files.classList.add('flex');
+                els.sidebarViews.library.classList.add('hidden');
+                
+                els.sidebarTabs.files.classList.replace('border-transparent', 'border-[#00ddde]');
+                els.sidebarTabs.files.classList.replace('text-gray-400', 'text-[#00ddde]');
+                els.sidebarTabs.library.classList.replace('border-[#00ddde]', 'border-transparent');
+                els.sidebarTabs.library.classList.replace('text-[#00ddde]', 'text-gray-400');
+            } else {
+                els.sidebarViews.files.classList.add('hidden');
+                els.sidebarViews.files.classList.remove('flex');
+                els.sidebarViews.library.classList.remove('hidden');
+
+                els.sidebarTabs.library.classList.replace('border-transparent', 'border-[#00ddde]');
+                els.sidebarTabs.library.classList.replace('text-gray-400', 'text-[#00ddde]');
+                els.sidebarTabs.files.classList.replace('border-[#00ddde]', 'border-transparent');
+                els.sidebarTabs.files.classList.replace('text-[#00ddde]', 'text-gray-400');
+            }
+        };
 
         // --- SETTINGS ---
         function openSettings() {
@@ -263,6 +302,7 @@
         function saveSettings() {
             saveSettingsFromUI('gh-owner', 'gh-repo', 'gh-token', 'gh-path', 'settings-modal');
             updateUI();
+            refreshFileList();
         }
 
         // --- DATA ---
@@ -357,7 +397,6 @@
         function updateUI() {
             els.currentFilename.textContent = state.currentFile || "(Unsaved)";
             const connected = !!(window.AppState.config.token && window.AppState.config.repo);
-            document.getElementById('btn-open').disabled = !connected;
             document.getElementById('btn-save').disabled = !connected;
             document.getElementById('btn-save-as').disabled = !connected;
         }
@@ -381,35 +420,42 @@
             }
         };
 
-        // --- FILE OPS ---
-        async function openFileManager() {
-            const modal = document.getElementById('file-modal');
-            modal.classList.add('active');
-            const container = document.getElementById('file-list-container');
-            container.innerHTML = '<p class="text-center text-gray-500 mt-4"><i class="fas fa-circle-notch fa-spin"></i> Fetching file list...</p>';
-            
+        // --- FILE OPS (Sidebar) ---
+        async function refreshFileList(silent = false) {
+            if(!silent) els.files.innerHTML = '<p class="text-center text-gray-500 mt-4"><i class="fas fa-circle-notch fa-spin"></i> Fetching...</p>';
+            els.folderPath.textContent = window.AppState.config.folder || '...';
+
             try {
                 const files = await fetchGithubFiles();
+                state.fileList = files;
                 if (files.length === 0) {
-                    container.innerHTML = '<p class="text-center text-gray-500 mt-4">No .json files found.</p>';
+                    if(!silent) els.files.innerHTML = '<p class="text-center text-gray-500 mt-4">No setlists found.</p>';
                     return;
                 }
-                container.innerHTML = '';
-                files.forEach(file => {
-                    const div = document.createElement('div');
-                    div.className = 'file-item';
-                    div.innerHTML = `<span class="font-medium text-gray-200 truncate"><i class="fas fa-file-code mr-2 text-gray-500"></i> ${file.name}</span> <button class="text-xs bg-[#333] hover:bg-[#00ddde] hover:text-black px-3 py-2 rounded">Load</button>`;
-                    div.onclick = () => loadRemoteFile(file);
-                    container.appendChild(div);
-                });
+                if(!silent) renderFileListSidebar(files);
             } catch (err) {
-                container.innerHTML = `<p class="text-center text-red-500 mt-4">${err.message}</p>`;
+                if(!silent) els.files.innerHTML = `<p class="text-center text-red-500 mt-4 text-xs px-2">${err.message}</p>`;
             }
+        }
+
+        function renderFileListSidebar(files) {
+            els.files.innerHTML = '';
+            files.forEach(file => {
+                const div = document.createElement('div');
+                div.className = 'file-item';
+                if(state.currentFile === file.name) div.classList.add('active');
+                
+                div.innerHTML = `<span class="font-medium text-gray-200 truncate text-sm"><i class="fas fa-file-alt mr-2 text-gray-500"></i> ${file.name.replace('.json','')}</span>`;
+                div.onclick = () => {
+                     loadRemoteFile(file);
+                     switchSidebarTab('library');
+                };
+                els.files.appendChild(div);
+            });
         }
 
         async function loadRemoteFile(fileObj) {
             showLoader('main-loader', 'loader-text', true, `Loading ${fileObj.name}...`);
-            document.getElementById('file-modal').classList.remove('active');
             try {
                 const data = await fetchGithubFileContent(fileObj.download_url);
                 state.setlist = data;
@@ -417,6 +463,7 @@
                 renderSetlist();
                 refreshLibrary();
                 updateUI();
+                renderFileListSidebar(state.fileList); // Re-render to highlight active
                 if(window.innerWidth < 768) switchMobileTab('setlist');
             } catch (err) {
                 alert("Error: " + err.message);
@@ -461,6 +508,7 @@
                 if (!res.ok) throw new Error(`GitHub Error: ${res.status}`);
                 state.currentFile = filename;
                 updateUI();
+                refreshFileList(true); // refresh sidebar list
                 alert(`Saved to ${path}`);
             } catch (err) {
                 alert(`Save failed: ${err.message}`);
@@ -487,8 +535,19 @@
             document.getElementById('search').value = type === 'sets' ? 'set' : '';
             renderLibrary();
         };
-        window.resetToNew = () => { if(confirm("Discard?")) { state.setlist = []; state.currentFile = null; renderSetlist(); refreshLibrary(); updateUI(); } };
+        window.resetToNew = () => { 
+            if(confirm("Discard changes and start new?")) { 
+                state.setlist = []; 
+                state.currentFile = null; 
+                renderSetlist(); 
+                refreshLibrary(); 
+                updateUI();
+                // Reset active highlighting in sidebar
+                renderFileListSidebar(state.fileList);
+            } 
+        };
         window.downloadLocalJSON = () => {
+             if(state.setlist.length === 0) { alert("Setlist is empty."); return; }
              const blob = new Blob([JSON.stringify(state.setlist, null, 2)], { type: 'application/json' });
              const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = state.currentFile || 'setlist.json'; a.click();
         };

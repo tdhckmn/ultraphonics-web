@@ -64,7 +64,7 @@ function updateConnectionStatus(hasSavedConfig) {
         el.innerHTML = `<span class="text-green-500"><i class="fas fa-check-circle"></i> Connected</span>`;
     } else if (owner && repo) {
         // Public / Read-Only Mode
-        el.innerHTML = `<span class="text-yellow-500"><i class="fas fa-eye"></i> Public View</span>`;
+        el.innerHTML = `<span class="text-yellow-500">Read-only</span>`;
     } else {
         el.innerHTML = `<span class="text-red-500"><i class="fas fa-times-circle"></i> Config Required</span>`;
     }

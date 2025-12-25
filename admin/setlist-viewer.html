@@ -4,12 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Setlist Viewer - Ultraphonics</title>
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = { theme: { extend: {} } }
     </script>
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
@@ -58,17 +56,16 @@
 </head>
 <body class="bg-[#121212]">
     
-    <!-- Header -->
     <header class="h-[70px] px-4 md:px-6 border-b border-[#333] bg-[#1e1e1e] flex justify-between items-center shadow-md z-10 relative">
         <div class="flex items-center gap-3 md:gap-4">
-            <div class="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-600 rounded flex items-center justify-center text-white font-bold flex-shrink-0">V</div>
+            <div class="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-600 rounded flex items-center justify-center text-white font-bold flex-shrink-0"><i class="fas fa-eye"></i></div>
             <div>
                 <h1 class="text-base md:text-lg font-bold text-white tracking-wide">Viewer</h1>
                 <p id="connection-status" class="text-[10px] md:text-xs text-gray-500 whitespace-nowrap">Checking...</p>
             </div>
         </div>
         <div class="flex items-center gap-2">
-            <a href="setlist-builder.html" class="btn btn-secondary text-xs px-3 bg-[#1e3a8a] border border-blue-500 text-blue-200 hover:bg-[#1e40af]" title="Switch to Edit Mode">
+            <a href="setlist-builder.html" id="link-edit-mode" class="btn btn-secondary text-xs px-3 bg-[#1e3a8a] border border-blue-500 text-blue-200 hover:bg-[#1e40af]" title="Switch to Edit Mode">
                 <i class="fas fa-edit"></i> <span class="hidden md:inline">Edit Mode</span>
             </a>
             <button onclick="openSettings()" class="btn btn-secondary text-xs px-3">
@@ -80,7 +77,6 @@
         </div>
     </header>
 
-    <!-- Mobile Tabs -->
     <div class="md:hidden flex border-b border-[#333] bg-[#1e1e1e] h-[50px]">
         <button onclick="switchMobileTab('files')" id="tab-files" class="flex-1 text-sm font-bold text-[#00ddde] border-b-2 border-[#00ddde] transition-colors">
             <i class="fas fa-folder mr-2"></i>Files
@@ -90,10 +86,8 @@
         </button>
     </div>
 
-    <!-- Main Content -->
     <main class="viewer-container">
         
-        <!-- LEFT: File Browser -->
         <div class="panel" id="panel-files">
             <div class="panel-header">
                 <h2 class="font-bold text-white flex items-center gap-2"><i class="fas fa-folder-open text-[#00ddde]"></i> Available Setlists</h2>
@@ -109,14 +103,18 @@
             </div>
         </div>
 
-        <!-- RIGHT: Viewer -->
         <div class="panel border-purple-900 border-opacity-30 mobile-hidden" id="panel-view">
             <div class="loading-overlay" id="main-loader">
                 <div class="text-[#00ddde] font-bold animate-pulse" id="loader-text"><i class="fas fa-sync fa-spin mr-2"></i> Loading...</div>
             </div>
 
             <div class="panel-header !flex-row !justify-between !items-center">
-                <div class="font-bold text-lg text-white truncate" id="view-title">Select a Setlist</div>
+                <div class="flex items-center gap-3 overflow-hidden">
+                    <div class="font-bold text-lg text-white truncate" id="view-title">Select a Setlist</div>
+                    <button id="btn-download" onclick="downloadCurrent()" class="text-gray-400 hover:text-[#00ddde] hidden" title="Download JSON">
+                        <i class="fas fa-download"></i>
+                    </button>
+                </div>
                 <div class="text-xs font-mono text-[#00ddde] bg-[#222] px-2 py-1 rounded" id="view-stats"></div>
             </div>
             
@@ -132,7 +130,6 @@
         </div>
     </main>
 
-    <!-- SETTINGS MODAL -->
     <div id="settings-modal" class="modal-overlay">
         <div class="modal-content">
             <h2 class="text-xl font-bold text-white mb-4">Settings</h2>
@@ -159,7 +156,6 @@
         </div>
     </div>
 
-    <!-- SHARED SCRIPT -->
     <script src="setlist-builder.js"></script>
 
     <script>
@@ -175,6 +171,7 @@
         };
 
         let currentSetlist = [];
+        let currentFileObj = null;
 
         document.addEventListener('DOMContentLoaded', () => {
             const hasConfig = loadConfig();
@@ -222,7 +219,16 @@
             try {
                 const data = await fetchGithubFileContent(fileObj.download_url);
                 currentSetlist = data;
+                currentFileObj = fileObj;
+                
                 els.title.textContent = fileObj.name.replace('.json', '');
+                
+                // Update Edit Mode Link to pass this file
+                document.getElementById('link-edit-mode').href = `setlist-builder.html?file=${encodeURIComponent(fileObj.name)}`;
+                
+                // Show download button
+                document.getElementById('btn-download').classList.remove('hidden');
+
                 renderSetlist(data);
             } catch (err) {
                 alert("Error: " + err.message);
@@ -249,9 +255,7 @@
                 div.className = 'song-item';
                 div.setAttribute('data-name', song.lastKnownName);
                 
-                // Visual Indicator for Segue (Green/Blue line on left vs standard gray)
-                // If it's a Set marker, red line.
-                // If Segue is active (stop=false), make border bright.
+                // Visual Indicator for Segue
                 if (isSegue && !isSet) div.classList.add('segue-active');
                 
                 let icon = '<i class="fas fa-stop text-xs text-gray-600 ml-2" title="Stop after this"></i>';
@@ -264,6 +268,15 @@
                 `;
                 els.viewArea.appendChild(div);
             });
+        }
+
+        function downloadCurrent() {
+            if(!currentSetlist || !currentFileObj) return;
+            const blob = new Blob([JSON.stringify(currentSetlist, null, 2)], { type: 'application/json' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = currentFileObj.name;
+            a.click();
         }
 
         // --- SETTINGS ---
