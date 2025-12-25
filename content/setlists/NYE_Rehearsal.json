@@ -3,7 +3,11 @@
     "id": "471b1d37-d453-48a2-bc10-d6adc7b1bd6e",
     "lastKnownName": "MmmBop - A",
     "time": 30129.875,
-    "stop": true
+    "stop": false,
+    "vocals": "",
+    "capo": 0,
+    "drop": false,
+    "eflat": false
   },
   {
     "id": "32962ca3-c7c5-4bae-8279-64d0e5a95a4b",
