@@ -9,17 +9,17 @@
     "id": "6911bbe3-ba25-4af7-97f4-37e184cd63ef",
     "lastKnownName": "Play That Funky Music - E",
     "time": 24549.71875,
-    "stop": true
+    "stop": true,
+    "vocals": "David",
+    "capo": 0,
+    "drop": false,
+    "eflat": false
   },
   {
     "id": "6cdd82e7-ec98-4f95-81a4-d556184229ec",
     "lastKnownName": "Redneck Woman - F#m",
     "time": 16052.4140625,
-    "stop": true,
-    "vocals": "Shelley",
-    "capo": 0,
-    "drop": false,
-    "eflat": false
+    "stop": true
   },
   {
     "id": "965f1d1c-8fc9-460f-a806-9779b5f61a1a",
@@ -49,11 +49,7 @@
     "id": "9ca155d3-b9e9-4bad-a47c-025dd73f0c77",
     "lastKnownName": "Man! I Feel Like A Woman - Bb",
     "time": 12095.25,
-    "stop": true,
-    "vocals": "Shelley",
-    "capo": 1,
-    "drop": false,
-    "eflat": false
+    "stop": true
   },
   {
     "id": "0123ffcc-6869-4321-9b9e-5a7ec4e80973",
@@ -166,11 +162,7 @@
     "id": "5637f222-46fc-404b-9e36-87ce21337f55",
     "lastKnownName": "Higher - D",
     "time": 8236.125,
-    "stop": true,
-    "vocals": "David",
-    "capo": 0,
-    "drop": true,
-    "eflat": false
+    "stop": true
   },
   {
     "id": "ee1c40f1-cb5e-4584-8c7e-d30f9ba87629",
