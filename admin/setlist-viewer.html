@@ -35,8 +35,20 @@
         .song-item.segue-active { border-left-color: #3b82f6; } /* Segue indicator - Blue */
         
         /* SET MARKERS - Matched to Builder Style */
-        .song-item[data-name^="Set"] { border-left: 4px solid #fd5151; margin: 1rem 0; }
-        .song-item[data-name^="Set"] .song-name { font-weight: 700; font-size: 1.1em; color: #fd5151; text-transform: uppercase; }
+        .song-item[data-name^="Set"] { border-left: 4px solid #f87171; margin: 1rem 0; }
+        .song-item[data-name^="Set"] .song-name { font-weight: 700; font-size: 1.1em; color: #fca5a5; text-transform: uppercase; }
+
+        /* --- Visual Indicators --- */
+        .prop-bubble { width: 20px; height: 20px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 10px; font-weight: bold; color: white; margin-left: 4px; text-transform: uppercase; }
+        .prop-bubble.david { background-color: #9333ea; } /* Purple */
+        .prop-bubble.kelsey { background-color: #3b82f6; } /* Blue */
+        .prop-bubble.shelley { background-color: #f97316; } /* Orange */
+        .prop-bubble.tom { background-color: #22c55e; } /* Green */
+        
+        .prop-label { display: inline-flex; align-items: center; font-size: 10px; font-weight: bold; padding: 1px 4px; border-radius: 4px; margin-left: 4px; background: #333; color: #ccc; border: 1px solid #555; }
+        .prop-label.capo { color: #fbbf24; border-color: #fbbf24; }
+        .prop-label.drop { color: #f87171; border-color: #f87171; }
+        .prop-label.eflat { color: #2dd4bf; border-color: #2dd4bf; }
 
         .btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; border-radius: 6px; font-weight: 600; font-size: 0.85rem; cursor: pointer; border: none; transition: all 0.2s; white-space: nowrap; justify-content: center; text-decoration: none; }
         .btn-secondary { background: #333; color: #e0e0e0; }
@@ -205,6 +217,17 @@
             try {
                 const files = await fetchGithubFiles();
                 renderFileList(files);
+                
+                // NEW: Auto-load file from URL params
+                const urlParams = new URLSearchParams(window.location.search);
+                const fileParam = urlParams.get('file');
+                if (fileParam) {
+                    const fileObj = files.find(f => f.name === fileParam);
+                    if (fileObj) {
+                        const fileEl = Array.from(els.files.children).find(el => el.textContent.includes(fileParam));
+                        loadFile(fileObj, fileEl);
+                    }
+                }
             } catch (err) {
                 els.files.innerHTML = `<div class="text-center text-red-500 mt-4 px-4">Error: ${err.message}<br><button onclick="openSettings()" class="underline mt-2">Check Settings</button></div>`;
             }
@@ -280,9 +303,31 @@
                 if (isSegue) icon = '<i class="fas fa-arrow-down text-xs text-[#3b82f6] ml-2" title="Segue into next"></i>';
                 if (isSet) icon = '';
 
+                // --- Indicators Logic ---
+                let indicatorsHtml = '';
+                if (!isSet) {
+                    // Eb
+                    if (song.eflat) indicatorsHtml += `<span class="prop-label eflat" title="Eb Tuning">Eb</span>`;
+                    // Drop
+                    if (song.drop) indicatorsHtml += `<span class="prop-label drop" title="Drop Tuning">D</span>`;
+                    // Capo
+                    if (song.capo && song.capo > 0) indicatorsHtml += `<span class="prop-label capo" title="Capo ${song.capo}">C${song.capo}</span>`;
+                    // Vocals
+                    if (song.vocals) {
+                        const v = song.vocals.toLowerCase();
+                        const initial = song.vocals.charAt(0).toUpperCase();
+                        indicatorsHtml += `<span class="prop-bubble ${v}" title="${song.vocals}">${initial}</span>`;
+                    }
+                }
+
                 div.innerHTML = `
-                    <div class="song-name text-lg ${isSet ? '' : 'text-gray-200'}">${song.lastKnownName}</div>
-                    <div>${icon}</div>
+                    <div class="flex-1 overflow-hidden flex flex-col">
+                        <div class="song-name text-lg ${isSet ? '' : 'text-gray-200'}">${song.lastKnownName}</div>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="flex items-center mr-2">${indicatorsHtml}</div>
+                        <div>${icon}</div>
+                    </div>
                 `;
                 els.viewArea.appendChild(div);
             });

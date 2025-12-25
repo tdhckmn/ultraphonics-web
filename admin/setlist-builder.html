@@ -37,6 +37,18 @@
         .song-item[data-name^="Set"] { background: linear-gradient(90deg, #2c0b0e 0%, #1e1e1e 100%); border-left: 4px solid #f87171; margin: 1rem 0; }
         .song-item[data-name^="Set"] .song-name { font-weight: 700; font-size: 1.1em; color: #fca5a5; text-transform: uppercase; }
 
+        /* --- Visual Indicators --- */
+        .prop-bubble { width: 20px; height: 20px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 10px; font-weight: bold; color: white; margin-left: 4px; text-transform: uppercase; }
+        .prop-bubble.david { background-color: #9333ea; } /* Purple */
+        .prop-bubble.kelsey { background-color: #3b82f6; } /* Blue */
+        .prop-bubble.shelley { background-color: #f97316; } /* Orange */
+        .prop-bubble.tom { background-color: #22c55e; } /* Green */
+        
+        .prop-label { display: inline-flex; align-items: center; font-size: 10px; font-weight: bold; padding: 1px 4px; border-radius: 4px; margin-left: 4px; background: #333; color: #ccc; border: 1px solid #555; }
+        .prop-label.capo { color: #fbbf24; border-color: #fbbf24; }
+        .prop-label.drop { color: #f87171; border-color: #f87171; }
+        .prop-label.eflat { color: #2dd4bf; border-color: #2dd4bf; }
+
         /* --- File List (Sidebar) --- */
         .file-item { padding: 0.75rem; background: #252525; border-radius: 6px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: all 0.2s; border: 1px solid transparent; }
         .file-item:hover { background: #333; border-color: #444; }
@@ -66,6 +78,8 @@
         .modal-overlay.active { display: flex; }
         .modal-content { background: #1e1e1e; padding: 2rem; border-radius: 12px; width: 90%; max-width: 500px; border: 1px solid #444; max-height: 85vh; display: flex; flex-direction: column; }
         .form-input { width: 100%; padding: 0.75rem; background: #121212; border: 1px solid #333; color: white; border-radius: 6px; margin-bottom: 1rem; }
+        .form-select { width: 100%; padding: 0.75rem; background: #121212; border: 1px solid #333; color: white; border-radius: 6px; margin-bottom: 1rem; appearance: none; }
+        .form-checkbox { width: 1.25rem; height: 1.25rem; background: #121212; border: 1px solid #333; border-radius: 4px; accent-color: #fbbf24; }
         .form-label { display: block; margin-bottom: 0.5rem; font-size: 0.875rem; color: #aaa; }
         
         /* --- Loader --- */
@@ -93,7 +107,7 @@
             </div>
         </div>
         <div class="flex items-center gap-2">
-            <a href="setlist-viewer.html" class="btn btn-secondary text-xs px-3 bg-[#2c0b0e] border border-[#f87171] text-[#fca5a5] hover:bg-[#333]" title="Switch to View Mode">
+            <a href="setlist-viewer.html" id="link-view-mode" class="btn btn-secondary text-xs px-3 bg-[#2c0b0e] border border-[#f87171] text-[#fca5a5] hover:bg-[#333]" title="Switch to View Mode">
                 <i class="fas fa-eye"></i> <span class="hidden md:inline">View Mode</span>
             </a>
             <button onclick="openSettings()" class="btn btn-secondary text-xs px-3" title="Settings">
@@ -227,6 +241,48 @@
         </div>
     </div>
 
+    <!-- SONG PROPS MODAL -->
+    <div id="props-modal" class="modal-overlay">
+        <div class="modal-content">
+            <h2 class="text-xl font-bold text-white mb-4">Song Properties</h2>
+            <div class="text-gray-400 text-sm mb-4 truncate" id="props-song-name">Song Name</div>
+            
+            <input type="hidden" id="props-song-id">
+
+            <div class="form-group">
+                <label class="form-label">Vocals</label>
+                <select id="props-vocals" class="form-select">
+                    <option value="">(None)</option>
+                    <option value="David">David</option>
+                    <option value="Kelsey">Kelsey</option>
+                    <option value="Shelley">Shelley</option>
+                    <option value="Tom">Tom</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Capo</label>
+                <input type="number" id="props-capo" class="form-input" min="0" max="12" placeholder="0">
+            </div>
+
+            <div class="flex gap-4 mb-4">
+                <div class="flex items-center">
+                    <input type="checkbox" id="props-drop" class="form-checkbox">
+                    <label for="props-drop" class="ml-2 text-sm text-gray-300">Drop Tuning</label>
+                </div>
+                <div class="flex items-center">
+                    <input type="checkbox" id="props-eflat" class="form-checkbox">
+                    <label for="props-eflat" class="ml-2 text-sm text-gray-300">Eb Tuning</label>
+                </div>
+            </div>
+
+            <div class="flex justify-end gap-3 mt-4">
+                <button onclick="document.getElementById('props-modal').classList.remove('active')" class="btn btn-secondary">Cancel</button>
+                <button onclick="saveSongProps()" class="btn btn-primary">Save Properties</button>
+            </div>
+        </div>
+    </div>
+
     <!-- SHARED SCRIPT -->
     <script src="setlist-builder.js"></script>
 
@@ -252,7 +308,8 @@
             panels: { library: document.getElementById('panel-library'), setlist: document.getElementById('panel-setlist') },
             tabs: { library: document.getElementById('tab-library'), setlist: document.getElementById('tab-setlist') },
             sidebarTabs: { files: document.getElementById('tab-side-files'), library: document.getElementById('tab-side-library') },
-            sidebarViews: { files: document.getElementById('view-files'), library: document.getElementById('view-library') }
+            sidebarViews: { files: document.getElementById('view-files'), library: document.getElementById('view-library') },
+            viewModeLink: document.getElementById('link-view-mode') // Get ref to the button
         };
 
         // --- INIT ---
@@ -380,9 +437,28 @@
             const isSegue = (data.stop === false);
             const isSetMarker = data.lastKnownName.toLowerCase().startsWith('set');
 
+            // --- Indicators Logic ---
+            let indicatorsHtml = '';
+            if (isSetlist && !isSetMarker) {
+                // Eb
+                if (data.eflat) indicatorsHtml += `<span class="prop-label eflat" title="Eb Tuning">Eb</span>`;
+                // Drop
+                if (data.drop) indicatorsHtml += `<span class="prop-label drop" title="Drop Tuning">D</span>`;
+                // Capo
+                if (data.capo && data.capo > 0) indicatorsHtml += `<span class="prop-label capo" title="Capo ${data.capo}">C${data.capo}</span>`;
+                // Vocals
+                if (data.vocals) {
+                    const v = data.vocals.toLowerCase();
+                    const initial = data.vocals.charAt(0).toUpperCase();
+                    indicatorsHtml += `<span class="prop-bubble ${v}" title="${data.vocals}">${initial}</span>`;
+                }
+            }
+
             let controlsHtml = isSetlist ? 
                 `<div class="flex items-center gap-3">
+                    <div class="flex items-center mr-2">${indicatorsHtml}</div>
                     ${!isSetMarker ? `<label class="segue-toggle"><input type="checkbox" onchange="toggleSegue(this)" ${isSegue ? 'checked' : ''}><span class="slider"></span></label>` : ''}
+                    ${!isSetMarker ? `<button onclick="editItemProps('${data.id}')" class="text-gray-500 hover:text-[#fbbf24] p-2" title="Edit Properties"><i class="fas fa-pencil-alt"></i></button>` : ''}
                     <button onclick="removeItem('${data.id}')" class="text-gray-500 hover:text-red-500 p-2"><i class="fas fa-times"></i></button>
                 </div>` : 
                 `<div class="flex items-center"><button class="add-btn text-gray-500 hover:text-[#fbbf24] p-3 -mr-2"><i class="fas fa-plus"></i></button></div>`;
@@ -420,6 +496,13 @@
             const connected = !!(window.AppState.config.token && window.AppState.config.repo);
             document.getElementById('btn-save').disabled = !connected;
             document.getElementById('btn-save-as').disabled = !connected;
+            
+            // Update "View Mode" link query param
+            if (state.currentFile) {
+                els.viewModeLink.href = `setlist-viewer.html?file=${encodeURIComponent(state.currentFile)}`;
+            } else {
+                els.viewModeLink.href = `setlist-viewer.html`;
+            }
         }
 
         window.switchMobileTab = (tab) => {
@@ -655,6 +738,39 @@
                 }
             });
         }
+        
+        // --- SONG PROPERTIES LOGIC ---
+        window.editItemProps = (id) => {
+            const song = state.setlist.find(s => s.id === id);
+            if(!song) return;
+
+            document.getElementById('props-song-name').textContent = song.lastKnownName;
+            document.getElementById('props-song-id').value = song.id;
+            
+            // Set fields
+            document.getElementById('props-vocals').value = song.vocals || "";
+            document.getElementById('props-capo').value = song.capo || "";
+            document.getElementById('props-drop').checked = song.drop || false;
+            document.getElementById('props-eflat').checked = song.eflat || false;
+
+            document.getElementById('props-modal').classList.add('active');
+        };
+
+        window.saveSongProps = () => {
+            const id = document.getElementById('props-song-id').value;
+            const song = state.setlist.find(s => s.id === id);
+            if(song) {
+                // Update properties
+                song.vocals = document.getElementById('props-vocals').value;
+                const capoVal = document.getElementById('props-capo').value;
+                song.capo = capoVal ? parseInt(capoVal) : 0;
+                song.drop = document.getElementById('props-drop').checked;
+                song.eflat = document.getElementById('props-eflat').checked;
+
+                renderSetlist();
+            }
+            document.getElementById('props-modal').classList.remove('active');
+        };
     </script>
 </body>
 </html>
