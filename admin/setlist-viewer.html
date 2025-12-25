@@ -35,8 +35,8 @@
         .song-item.segue-active { border-left-color: #3b82f6; } /* Segue indicator - Blue */
         
         /* SET MARKERS - Matched to Builder Style */
-        .song-item[data-name^="Set"] { background: linear-gradient(90deg, #2c0b0e 0%, #1e1e1e 100%); border-left: 4px solid #f87171; margin: 1rem 0; }
-        .song-item[data-name^="Set"] .song-name { font-weight: 700; font-size: 1.1em; color: #fca5a5; text-transform: uppercase; }
+        .song-item[data-name^="Set"] { border-left: 4px solid #fd5151; margin: 1rem 0; }
+        .song-item[data-name^="Set"] .song-name { font-weight: 700; font-size: 1.1em; color: #fd5151; text-transform: uppercase; }
 
         .btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; border-radius: 6px; font-weight: 600; font-size: 0.85rem; cursor: pointer; border: none; transition: all 0.2s; white-space: nowrap; justify-content: center; text-decoration: none; }
         .btn-secondary { background: #333; color: #e0e0e0; }
@@ -220,7 +220,7 @@
             files.forEach(file => {
                 const div = document.createElement('div');
                 div.className = 'file-item';
-                div.innerHTML = `<div class="font-medium text-gray-200 truncate"><i class="fas fa-file-alt mr-2 text-gray-500"></i> ${file.name}</div>`;
+                div.innerHTML = `<div class="font-medium text-gray-200 truncate"><i class="fas fa-file-alt mr-2 text-gray-500"></i> ${file.name.replace('.json', '').replace('_', ' ')}</div>`;
                 div.onclick = () => loadFile(file, div);
                 els.files.appendChild(div);
             });
