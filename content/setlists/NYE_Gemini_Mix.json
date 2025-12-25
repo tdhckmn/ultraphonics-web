@@ -1,0 +1,425 @@
+[
+    {
+        "id": "44c0b0c6-3c9c-42a5-bff1-fe5c32259cb1",
+        "lastKnownName": "Set 1",
+        "time": 23170,
+        "stop": true
+    },
+    {
+        "id": "6911bbe3-ba25-4af7-97f4-37e184cd63ef",
+        "lastKnownName": "Play That Funky Music - E",
+        "time": 24549.71875,
+        "stop": true,
+        "vocals": "David",
+        "capo": 0,
+        "drop": false,
+        "eflat": false
+    },
+    {
+        "id": "6cdd82e7-ec98-4f95-81a4-d556184229ec",
+        "lastKnownName": "Redneck Woman - F#m",
+        "time": 16052.4140625,
+        "stop": true,
+        "vocals": "Shelley",
+        "capo": 0,
+        "drop": false,
+        "eflat": false
+    },
+    {
+        "id": "097f8288-3509-46cd-a8f1-c9972e841609",
+        "lastKnownName": "24K Magic - Fm",
+        "time": 0,
+        "stop": true,
+        "vocals": "David",
+        "capo": 0,
+        "drop": false,
+        "eflat": false
+    },
+    {
+        "id": "9143f0c2-f941-4f4c-9fd7-1c33aca4c9d4",
+        "lastKnownName": "Any Man Of Mine - Ab - Bb",
+        "time": 1195.6,
+        "stop": true,
+        "vocals": "Shelley",
+        "capo": 0,
+        "drop": false,
+        "eflat": true
+    },
+    {
+        "id": "30f571a1-e991-41a5-8022-cb41ed48e6b3",
+        "lastKnownName": "As Good As I Once Was - F",
+        "time": 1678,
+        "stop": true,
+        "vocals": "David",
+        "capo": 0,
+        "drop": false,
+        "eflat": false
+    },
+    {
+        "id": "965f1d1c-8fc9-460f-a806-9779b5f61a1a",
+        "lastKnownName": "Mary Jane's Last Dance - Am",
+        "time": 12570.5,
+        "stop": true,
+        "vocals": "Tom",
+        "capo": 0,
+        "drop": false,
+        "eflat": false
+    },
+    {
+        "id": "0123ffcc-6869-4321-9b9e-5a7ec4e80973",
+        "lastKnownName": "Watermelon Sugar - Dm",
+        "time": 21808.75,
+        "stop": true,
+        "vocals": "David",
+        "capo": 0,
+        "drop": false,
+        "eflat": false
+    },
+    {
+        "id": "9ca155d3-b9e9-4bad-a47c-025dd73f0c77",
+        "lastKnownName": "Man! I Feel Like A Woman - Bb",
+        "time": 12095.25,
+        "stop": true,
+        "vocals": "Shelley",
+        "capo": 1,
+        "drop": false,
+        "eflat": false
+    },
+    {
+        "id": "471b1d37-d453-48a2-bc10-d6adc7b1bd6e",
+        "lastKnownName": "MmmBop - A",
+        "time": 30129.875,
+        "stop": true,
+        "vocals": "David",
+        "capo": 2,
+        "drop": false,
+        "eflat": false
+    },
+    {
+        "id": "6a51803a-77d6-46c9-87c8-ec23c7da6f21",
+        "lastKnownName": "Don't Start Now - Bm",
+        "time": 4703.21875,
+        "stop": true,
+        "vocals": "Shelley",
+        "capo": 2,
+        "drop": false,
+        "eflat": false
+    },
+    {
+        "id": "e67050c5-da6a-4a96-a5f6-e73ac7d1b306",
+        "lastKnownName": "Tispsy - F#m",
+        "time": 19859.25,
+        "stop": true,
+        "vocals": "David",
+        "capo": 2,
+        "drop": false,
+        "eflat": false
+    },
+    {
+        "id": "32962ca3-c7c5-4bae-8279-64d0e5a95a4b",
+        "lastKnownName": "Ain't It Fun - C#m",
+        "time": 412,
+        "stop": true,
+        "vocals": "Shelley",
+        "capo": 0,
+        "drop": false,
+        "eflat": false
+    },
+    {
+        "id": "64325fc7-c793-4bb5-8a23-05f323ca7016",
+        "lastKnownName": "Set 2",
+        "time": 23296,
+        "stop": true
+    },
+    {
+        "id": "14c66e20-c786-4f99-89ee-e0a3c410e193",
+        "lastKnownName": "I Want It That Way - F#m - B",
+        "time": 10310,
+        "stop": true,
+        "vocals": "David",
+        "capo": 2,
+        "drop": false,
+        "eflat": false
+    },
+    {
+        "id": "416d0320-28ed-473d-9eae-0dbb670f6890",
+        "lastKnownName": "Before He Cheats - F#m",
+        "time": 2518.4,
+        "stop": true,
+        "vocals": "Shelley",
+        "capo": 2,
+        "drop": false,
+        "eflat": false
+    },
+    {
+        "id": "f4a2b1db-2dea-42a8-be40-61b6e30431fc",
+        "lastKnownName": "December 1963 - Db",
+        "time": 29021.7890625,
+        "stop": true,
+        "vocals": "David",
+        "capo": 0,
+        "drop": false,
+        "eflat": false
+    },
+    {
+        "id": "25a4b300-664f-4072-bedb-b17e277426e4",
+        "lastKnownName": "Espresso - Cm",
+        "time": 6564.5,
+        "stop": true,
+        "vocals": "Shelley",
+        "capo": 0,
+        "drop": false,
+        "eflat": false
+    },
+    {
+        "id": "a4c0e95c-cb3f-4498-a0a8-bda8f5153ff6",
+        "lastKnownName": "Friends In Low Places - A",
+        "time": 7727,
+        "stop": true,
+        "vocals": "David",
+        "capo": 0,
+        "drop": false,
+        "eflat": false
+    },
+    {
+        "id": "2f5d98e8-67f4-4cfd-983c-c179cb07d47c",
+        "lastKnownName": "Flowers - Cm",
+        "time": 7339.75,
+        "stop": true,
+        "vocals": "Shelley",
+        "capo": 0,
+        "drop": false,
+        "eflat": false
+    },
+    {
+        "id": "27fe4d86-bebb-4d8f-b349-7ef88bba027d",
+        "lastKnownName": "Lose Control",
+        "time": 11577,
+        "stop": true,
+        "vocals": "David",
+        "capo": 0,
+        "drop": false,
+        "eflat": false
+    },
+    {
+        "id": "b93e6177-fe8f-4694-b10c-12ac0582dc90",
+        "lastKnownName": "I Wanna Dance With Somebody - Gb - Ab",
+        "time": 9710.75,
+        "stop": true,
+        "vocals": "Shelley",
+        "capo": 0,
+        "drop": false,
+        "eflat": false
+    },
+    {
+        "id": "5b0bc018-491e-4562-b52f-ab8a76eb43d0",
+        "lastKnownName": "The Way You Make Me Feel - F",
+        "time": 19372,
+        "stop": true,
+        "vocals": "David",
+        "capo": 0,
+        "drop": false,
+        "eflat": false
+    },
+    {
+        "id": "615fc292-fb59-4f7d-b63b-8078c31cb3be",
+        "lastKnownName": "Beer Never Broke My Heart - Db",
+        "time": 2140,
+        "stop": true,
+        "vocals": "David",
+        "capo": 0,
+        "drop": true,
+        "eflat": true
+    },
+    {
+        "id": "cc424727-eb2f-42f0-8ecf-3707a958d9dc",
+        "lastKnownName": "Juice - Dm",
+        "time": 26825.170521665834,
+        "stop": true,
+        "vocals": "Shelley",
+        "capo": 3,
+        "drop": false,
+        "eflat": false
+    },
+    {
+        "id": "ee1c40f1-cb5e-4584-8c7e-d30f9ba87629",
+        "lastKnownName": "Sugar, We're Goin Down - D",
+        "time": 34336,
+        "stop": true,
+        "vocals": "David",
+        "capo": 0,
+        "drop": true,
+        "eflat": false
+    },
+    {
+        "id": "510ebd7a-d7e9-4784-87d9-1a30667ca7e7",
+        "lastKnownName": "Set 3",
+        "time": 23424,
+        "stop": true
+    },
+    {
+        "id": "5637f222-46fc-404b-9e36-87ce21337f55",
+        "lastKnownName": "Higher - D",
+        "time": 8236.125,
+        "stop": true,
+        "vocals": "David",
+        "capo": 0,
+        "drop": true,
+        "eflat": false
+    },
+    {
+        "id": "9c48153b-2827-4c5f-8988-b334f882b2e2",
+        "lastKnownName": "My Own Worst Enemy - E",
+        "time": 34656,
+        "stop": true,
+        "vocals": "David",
+        "capo": 0,
+        "drop": false,
+        "eflat": false
+    },
+    {
+        "id": "ddbd8ec4-0eac-4781-a179-69d24fc00687",
+        "lastKnownName": "Valerie - Amy - Eb",
+        "time": 20885.75,
+        "stop": true,
+        "vocals": "Shelley",
+        "capo": 0,
+        "drop": false,
+        "eflat": true
+    },
+    {
+        "id": "ce22043b-9ef0-4074-bdc9-8ca10f8f3dcb",
+        "lastKnownName": "Need A Favor - G#m",
+        "time": 13588.203125,
+        "stop": true,
+        "vocals": "David",
+        "capo": 2,
+        "drop": false,
+        "eflat": false
+    },
+    {
+        "id": "7b583910-85ae-4d87-89ae-3840bd237be7",
+        "lastKnownName": "Mash_About Damn Time/ Superstition",
+        "time": 23680,
+        "stop": true,
+        "vocals": "Shelley",
+        "capo": 0,
+        "drop": false,
+        "eflat": true
+    },
+    {
+        "id": "a74e15b5-a08b-44a7-9922-9e051fec8e76",
+        "lastKnownName": "Shut Up And Dance With Me - Db",
+        "time": 16891,
+        "stop": true,
+        "vocals": "David",
+        "capo": 0,
+        "drop": false,
+        "eflat": false
+    },
+    {
+        "id": "243acb02-7b68-4e40-b228-65b6de82f071",
+        "lastKnownName": "Something To Talk About - Ab - Bb",
+        "time": 17294,
+        "vocals": "Shelley",
+        "capo": 0,
+        "drop": false,
+        "eflat": true
+    },
+    {
+        "id": "06e4d108-33e7-413d-a721-e4584df709e4",
+        "lastKnownName": "Tennessee Whiskey - A",
+        "time": 18787.75,
+        "stop": true,
+        "vocals": "David",
+        "capo": 0,
+        "drop": false,
+        "eflat": false
+    },
+    {
+        "id": "1ebfe064-a7aa-470e-b83a-f0c17efa9fb1",
+        "lastKnownName": "Pink Pony Club - Gb",
+        "time": 14476.5,
+        "stop": true,
+        "vocals": "Shelley",
+        "capo": 0,
+        "drop": false,
+        "eflat": false
+    },
+    {
+        "id": "80e8490f-530f-458b-986a-df454870cc60",
+        "lastKnownName": "Treasure - Cm",
+        "time": 20201.984375,
+        "stop": true,
+        "vocals": "David",
+        "capo": 1,
+        "drop": false,
+        "eflat": false
+    },
+    {
+        "id": "efa89d00-d55d-4a13-9ab8-ded3c18409ec",
+        "lastKnownName": "Toxic - Cm",
+        "time": 28616.76757825508,
+        "stop": true,
+        "vocals": "Shelley",
+        "capo": 0,
+        "drop": false,
+        "eflat": false
+    },
+    {
+        "id": "61d7e0be-6f48-4793-a74a-554ca9366e25",
+        "lastKnownName": "Pony - C#m",
+        "time": 15586,
+        "stop": true,
+        "vocals": "David",
+        "capo": 0,
+        "drop": false,
+        "eflat": false
+    },
+    {
+        "id": "93a84c41-44d8-4670-8709-0da3d84edce0",
+        "lastKnownName": "Uptown Funk - Dm",
+        "time": 30933.612438603064,
+        "stop": true,
+        "vocals": "David",
+        "capo": 0,
+        "drop": false,
+        "eflat": false
+    },
+    {
+        "id": "cab3a40f-1dcc-4cbf-9278-ee208c06b133",
+        "lastKnownName": "Set 4",
+        "time": 23552,
+        "stop": true
+    },
+    {
+        "id": "c281bcf8-df34-429d-a66c-4b47fa839bc9",
+        "lastKnownName": "Country Girl - Em",
+        "time": 4247.0078125,
+        "stop": true,
+        "vocals": "David",
+        "capo": 0,
+        "drop": false,
+        "eflat": false
+    },
+    {
+        "id": "7222eeed-6f9a-4216-9ae3-88c058dafd90",
+        "lastKnownName": "Mr. Brightside - Db",
+        "time": 13142,
+        "stop": true,
+        "vocals": "David",
+        "capo": 0,
+        "drop": false,
+        "eflat": true
+    },
+    {
+        "id": "71622b32-714e-43d2-b983-61ba4e3c6a9d",
+        "lastKnownName": "Don't Stop Believing",
+        "time": 5069.625,
+        "stop": true,
+        "vocals": "Shelley",
+        "capo": 0,
+        "drop": false,
+        "eflat": false
+    }
+]
