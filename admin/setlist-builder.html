@@ -84,7 +84,7 @@
     <!-- Header -->
     <header class="h-[70px] px-4 md:px-6 border-b border-[#333] bg-[#1e1e1e] flex justify-between items-center shadow-md z-10 relative">
         <div class="flex items-center gap-3 md:gap-4">
-            <div class="w-8 h-8 bg-gradient-to-br from-yellow-400 to-orange-500 rounded flex items-center justify-center text-black font-bold flex-shrink-0"><i class="fas fa-hammer"></i></div>
+            <div class="w-8 h-8 bg-gradient-to-br from-yellow-400 to-orange-500 rounded flex items-center justify-center text-black font-bold flex-shrink-0">B</div>
             <div>
                 <h1 class="text-base md:text-lg font-bold text-white tracking-wide">Builder</h1>
                 <p id="connection-status" class="text-[10px] md:text-xs text-gray-500 whitespace-nowrap">
@@ -121,30 +121,31 @@
         
         <!-- LEFT: Library / Files Sidebar -->
         <div class="panel" id="panel-library">
-            <!-- Sidebar Tabs -->
-            <div class="flex border-b border-[#333]">
-                 <button onclick="switchSidebarTab('files')" id="tab-side-files" class="flex-1 py-3 text-sm font-bold bg-[#252525] text-gray-400 border-b-2 border-transparent hover:bg-[#2a2a2a] transition-colors">Files</button>
-                 <button onclick="switchSidebarTab('library')" id="tab-side-library" class="flex-1 py-3 text-sm font-bold bg-[#252525] text-[#fbbf24] border-b-2 border-[#fbbf24] transition-colors">Library</button>
+            <!-- Sidebar Toggle (Unified) -->
+            <div class="p-3 border-b border-[#333] bg-[#252525]">
+                <div class="flex bg-[#121212] p-1 rounded-lg">
+                    <button onclick="switchSidebarTab('files')" id="tab-side-files" class="flex-1 py-1.5 text-xs font-bold rounded-md transition-all text-gray-400 hover:text-white">Sets</button>
+                    <button onclick="switchSidebarTab('library')" id="tab-side-library" class="flex-1 py-1.5 text-xs font-bold rounded-md transition-all bg-[#333] text-[#fbbf24] shadow-sm">Songs&nbsp;&nbsp;<span id="library-count" class="text-xs font-mono text-gray-500 bg-[#121212] px-2 py-1 rounded">0</span></button>
+                </div>
             </div>
 
             <!-- TAB 1: Files View -->
             <div id="view-files" class="hidden flex-col h-full bg-[#1e1e1e]">
                  <div class="p-3 border-b border-[#333] flex justify-between items-center bg-[#252525]">
-                     <span class="text-xs text-gray-400 font-mono" id="folder-path-display">...</span>
-                     <button onclick="refreshFileList()" class="text-xs text-[#fbbf24] hover:text-white"><i class="fas fa-sync"></i> Refresh</button>
+                     <span class="text-xs text-gray-400 font-mono truncate" id="folder-path-display">...</span>
                  </div>
                  <div id="file-list-sidebar" class="scroll-area p-2 flex flex-col gap-1">
                      <div class="text-center text-gray-500 mt-10 text-sm">Select a file...</div>
                  </div>
+                 <!-- Refresh Button Moved to Bottom (Matching Viewer) -->
+                 <div class="p-3 border-t border-[#333] mt-auto">
+                    <button onclick="refreshFileList()" class="btn btn-secondary w-full text-xs"><i class="fas fa-sync mr-2"></i> Refresh List</button>
+                </div>
             </div>
 
             <!-- TAB 2: Library View -->
             <div id="view-library" class="flex flex-col h-full">
                 <div class="panel-header !border-t-0">
-                    <div class="flex justify-between items-center">
-                        <h2 class="font-bold text-white flex items-center gap-2"><i class="fas fa-music text-[#fbbf24]"></i> Songs</h2>
-                        <span id="library-count" class="text-xs font-mono text-gray-500 bg-[#121212] px-2 py-1 rounded">0</span>
-                    </div>
                     <div class="relative">
                         <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-xs"></i>
                         <input type="text" id="search" placeholder="Search songs..." class="search-input pl-8">
@@ -290,19 +291,23 @@
                 els.sidebarViews.files.classList.add('flex');
                 els.sidebarViews.library.classList.add('hidden');
                 
-                els.sidebarTabs.files.classList.replace('border-transparent', 'border-[#fbbf24]');
-                els.sidebarTabs.files.classList.replace('text-gray-400', 'text-[#fbbf24]');
-                els.sidebarTabs.library.classList.replace('border-[#fbbf24]', 'border-transparent');
-                els.sidebarTabs.library.classList.replace('text-[#fbbf24]', 'text-gray-400');
+                // Toggle Button Styling
+                els.sidebarTabs.files.classList.add('bg-[#333]', 'text-[#fbbf24]', 'shadow-sm');
+                els.sidebarTabs.files.classList.remove('text-gray-400', 'hover:text-white');
+                
+                els.sidebarTabs.library.classList.remove('bg-[#333]', 'text-[#fbbf24]', 'shadow-sm');
+                els.sidebarTabs.library.classList.add('text-gray-400', 'hover:text-white');
             } else {
                 els.sidebarViews.files.classList.add('hidden');
                 els.sidebarViews.files.classList.remove('flex');
                 els.sidebarViews.library.classList.remove('hidden');
 
-                els.sidebarTabs.library.classList.replace('border-transparent', 'border-[#fbbf24]');
-                els.sidebarTabs.library.classList.replace('text-gray-400', 'text-[#fbbf24]');
-                els.sidebarTabs.files.classList.replace('border-[#fbbf24]', 'border-transparent');
-                els.sidebarTabs.files.classList.replace('text-[#fbbf24]', 'text-gray-400');
+                // Toggle Button Styling
+                els.sidebarTabs.library.classList.add('bg-[#333]', 'text-[#fbbf24]', 'shadow-sm');
+                els.sidebarTabs.library.classList.remove('text-gray-400', 'hover:text-white');
+                
+                els.sidebarTabs.files.classList.remove('bg-[#333]', 'text-[#fbbf24]', 'shadow-sm');
+                els.sidebarTabs.files.classList.add('text-gray-400', 'hover:text-white');
             }
         };
 
@@ -456,18 +461,79 @@
 
         function renderFileListSidebar(files) {
             els.files.innerHTML = '';
+            const hasAuth = !!window.AppState.config.token;
+            
             files.forEach(file => {
                 const div = document.createElement('div');
                 div.className = 'file-item';
                 if(state.currentFile === file.name) div.classList.add('active');
                 
-                div.innerHTML = `<span class="font-medium text-gray-200 truncate text-sm"><i class="fas fa-file-alt mr-2 text-gray-500"></i> ${file.name.replace('.json','')}</span>`;
-                div.onclick = () => {
+                // Add Delete Button if Authenticated
+                let deleteBtn = '';
+                if(hasAuth) {
+                    deleteBtn = `<button class="delete-file-btn text-gray-500 hover:text-red-500 p-2 ml-2" title="Delete"><i class="fas fa-trash-alt"></i></button>`;
+                }
+                
+                div.innerHTML = `
+                    <span class="font-medium text-gray-200 truncate text-sm flex-1"><i class="fas fa-file-alt mr-2 text-gray-500"></i> ${file.name.replace('.json','')}</span>
+                    ${deleteBtn}
+                `;
+                
+                // Click on main area loads file
+                div.onclick = (e) => {
+                     // If clicked on delete button, don't load
+                     if(e.target.closest('.delete-file-btn')) return;
+                     
                      loadRemoteFile(file);
                      switchSidebarTab('library');
                 };
+
+                // Delete Logic
+                const btn = div.querySelector('.delete-file-btn');
+                if(btn) {
+                    btn.onclick = async (e) => {
+                        e.stopPropagation();
+                        if(confirm(`Are you sure you want to delete "${file.name}"? This cannot be undone.`)) {
+                            await deleteRemoteFile(file);
+                        }
+                    };
+                }
+
                 els.files.appendChild(div);
             });
+        }
+        
+        async function deleteRemoteFile(fileObj) {
+            const { owner, repo, token, folder } = window.AppState.config;
+            showLoader('main-loader', 'loader-text', true, `Deleting ${fileObj.name}...`);
+            try {
+                const path = `${folder}/${fileObj.name}`;
+                const apiUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
+                
+                const res = await fetch(apiUrl, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: `Delete ${fileObj.name}`, sha: fileObj.sha, branch: 'main' })
+                });
+
+                if (!res.ok) throw new Error(`GitHub Error: ${res.status}`);
+                
+                // If we deleted the current file, reset
+                if(state.currentFile === fileObj.name) {
+                    state.currentFile = null;
+                    state.setlist = [];
+                    renderSetlist();
+                    refreshLibrary();
+                    updateUI();
+                }
+                
+                refreshFileList(); // Refresh list
+                alert(`Deleted ${fileObj.name}`);
+            } catch (err) {
+                alert(`Delete failed: ${err.message}`);
+            } finally {
+                showLoader('main-loader', null, false);
+            }
         }
 
         async function loadRemoteFile(fileObj) {
