@@ -156,3 +156,86 @@ function getFallbackData() {
         { "id": "3", "lastKnownName": "Uptown Funk", "stop": true }
     ];
 }
+
+/**
+ * Parses hashtags from song names into individual properties
+ * @param {Array} setlist - The setlist array to process
+ * @returns {Array} - A deep copy of the setlist with hashtags parsed into properties
+ */
+function parseSetlistFromImport(setlist) {
+    return setlist.map(song => {
+        const songCopy = { ...song };
+
+        if (!songCopy.lastKnownName) return songCopy;
+
+        // Extract hashtags from song name
+        const hashtagRegex = /#([a-z]+):([^#\s]+)/g;
+        const matches = [...songCopy.lastKnownName.matchAll(hashtagRegex)];
+
+        if (matches.length > 0) {
+            // Remove hashtags from the name for display
+            songCopy.lastKnownName = songCopy.lastKnownName.replace(/#[a-z]+:[^#\s]+/g, '').trim();
+
+            // Parse each hashtag into properties
+            matches.forEach(match => {
+                const key = match[1];
+                const value = match[2];
+
+                if (key === 'vocals') {
+                    songCopy.vocals = value;
+                } else if (key === 'eflat' && value === 'true') {
+                    songCopy.eflat = true;
+                } else if (key === 'drop' && value === 'true') {
+                    songCopy.drop = true;
+                } else if (key === 'capo') {
+                    songCopy.capo = parseInt(value);
+                }
+            });
+        }
+
+        return songCopy;
+    });
+}
+
+/**
+ * Prepares setlist data for export by appending hashtags to song names
+ * @param {Array} setlist - The setlist array to process
+ * @returns {Array} - A deep copy of the setlist with props converted to hashtags
+ */
+function prepareSetlistForExport(setlist) {
+    return setlist.map(song => {
+        const songCopy = { ...song };
+
+        // Build hashtags
+        const hashtags = [];
+
+        if (songCopy.vocals !== undefined && songCopy.vocals !== '') {
+            hashtags.push(`#vocals:${songCopy.vocals}`);
+        }
+
+        if (songCopy.eflat === true) {
+            hashtags.push('#eflat:true');
+        }
+
+        if (songCopy.drop === true) {
+            hashtags.push('#drop:true');
+        }
+
+        if (songCopy.capo !== undefined && songCopy.capo > 0) {
+            hashtags.push(`#capo:${songCopy.capo}`);
+        }
+
+        // Append hashtags to song name if any exist
+        if (hashtags.length > 0) {
+            songCopy.lastKnownName = `${songCopy.lastKnownName} ${hashtags.join(' ')}`;
+        }
+
+        // Remove the individual properties (they're now in the name)
+        delete songCopy.vocals;
+        delete songCopy.eflat;
+        delete songCopy.drop;
+        delete songCopy.capo;
+
+        return songCopy;
+    });
+}
