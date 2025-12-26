@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ultraphonics Admin Portal</title>
+    <title>Ultraphonics Admin</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -29,9 +29,10 @@
     <nav class="bg-slate-900 border-b border-slate-800 shadow-lg sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
+                <!-- Speaker Icon / Admin Header -->
                 <div class="flex items-center gap-3">
                     <div class="bg-indigo-600 p-2 rounded-lg shadow-lg shadow-indigo-900/50">
-                        <i class="fa-solid fa-sliders text-white"></i>
+                        <i class="fa-solid fa-volume-up text-white"></i>
                     </div>
                     <span class="font-bold text-xl tracking-tight text-white">Ultraphonics Admin</span>
                 </div>
@@ -85,8 +86,22 @@
             <h2 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-4 px-1">External Tools</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
+                <!-- Discord -->
+                <a href="https://discord.com/channels/1450501228462215208" target="_blank" class="group relative flex flex-col p-5 bg-slate-900 border border-slate-800 rounded-xl hover:border-indigo-500 hover:shadow-xl hover:shadow-indigo-900/10 transition-all duration-300">
+                    <div class="flex items-center gap-4 mb-3">
+                        <div class="p-2 bg-indigo-500/10 text-indigo-400 rounded-lg group-hover:bg-indigo-600 group-hover:text-white transition-colors">
+                            <i class="fa-brands fa-discord text-lg"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white group-hover:text-indigo-400 transition-colors">Discord</h3>
+                    </div>
+                    <p class="text-slate-400 text-xs">Ultraphonics Discord server.</p>
+                    <div class="absolute top-5 right-5 text-slate-700 group-hover:text-indigo-500 transition-colors">
+                        <i class="fa-solid fa-external-link-alt text-xs"></i>
+                    </div>
+                </a>
+
                 <!-- Ultrasheet -->
-                <a href="https://docs.google.com/spreadsheets/d/1BwdSlDKeK-a3oxvIb704Rdu7_aKk2Gv4u1K1SgqG7uY/edit?gid=0#gid=0" target="_blank" class="group relative flex flex-col p-5 bg-slate-900 border border-slate-800 rounded-xl hover:border-emerald-500 hover:shadow-xl hover:shadow-emerald-900/10 transition-all duration-300">
+                <a href="https://docs.google.com/spreadsheets/d/1csJb56jnisEb_37pYMVTOY6kSt6J-HqN5X7IYYRgH20/edit?usp=sharing" target="_blank" class="group relative flex flex-col p-5 bg-slate-900 border border-slate-800 rounded-xl hover:border-emerald-500 hover:shadow-xl hover:shadow-emerald-900/10 transition-all duration-300">
                     <div class="flex items-center gap-4 mb-3">
                         <div class="p-2 bg-emerald-500/10 text-emerald-400 rounded-lg group-hover:bg-emerald-600 group-hover:text-white transition-colors">
                             <i class="fa-solid fa-file-excel text-lg"></i>
@@ -95,34 +110,6 @@
                     </div>
                     <p class="text-slate-400 text-xs">Master Google Sheet for band management.</p>
                     <div class="absolute top-5 right-5 text-slate-700 group-hover:text-emerald-500 transition-colors">
-                        <i class="fa-solid fa-external-link-alt text-xs"></i>
-                    </div>
-                </a>
-
-                <!-- MailerLite -->
-                <a href="https://dashboard.mailerlite.com/" target="_blank" class="group relative flex flex-col p-5 bg-slate-900 border border-slate-800 rounded-xl hover:border-green-500 hover:shadow-xl hover:shadow-green-900/10 transition-all duration-300">
-                    <div class="flex items-center gap-4 mb-3">
-                        <div class="p-2 bg-green-500/10 text-green-400 rounded-lg group-hover:bg-green-600 group-hover:text-white transition-colors">
-                            <i class="fa-solid fa-envelope text-lg"></i>
-                        </div>
-                        <h3 class="text-lg font-bold text-white group-hover:text-green-400 transition-colors">MailerLite</h3>
-                    </div>
-                    <p class="text-slate-400 text-xs">Email marketing and newsletter campaigns.</p>
-                    <div class="absolute top-5 right-5 text-slate-700 group-hover:text-green-500 transition-colors">
-                        <i class="fa-solid fa-external-link-alt text-xs"></i>
-                    </div>
-                </a>
-
-                <!-- EmailJS -->
-                <a href="https://dashboard.emailjs.com/admin" target="_blank" class="group relative flex flex-col p-5 bg-slate-900 border border-slate-800 rounded-xl hover:border-yellow-500 hover:shadow-xl hover:shadow-yellow-900/10 transition-all duration-300">
-                    <div class="flex items-center gap-4 mb-3">
-                        <div class="p-2 bg-yellow-500/10 text-yellow-400 rounded-lg group-hover:bg-yellow-600 group-hover:text-white transition-colors">
-                            <i class="fa-solid fa-paper-plane text-lg"></i>
-                        </div>
-                        <h3 class="text-lg font-bold text-white group-hover:text-yellow-400 transition-colors">EmailJS</h3>
-                    </div>
-                    <p class="text-slate-400 text-xs">Manage transactional emails and contact forms.</p>
-                    <div class="absolute top-5 right-5 text-slate-700 group-hover:text-yellow-500 transition-colors">
                         <i class="fa-solid fa-external-link-alt text-xs"></i>
                     </div>
                 </a>
@@ -151,6 +138,34 @@
                     </div>
                     <p class="text-slate-400 text-xs">Search performance and indexing status.</p>
                     <div class="absolute top-5 right-5 text-slate-700 group-hover:text-blue-500 transition-colors">
+                        <i class="fa-solid fa-external-link-alt text-xs"></i>
+                    </div>
+                </a>
+
+                                <!-- MailerLite -->
+                <a href="https://dashboard.mailerlite.com/" target="_blank" class="group relative flex flex-col p-5 bg-slate-900 border border-slate-800 rounded-xl hover:border-green-500 hover:shadow-xl hover:shadow-green-900/10 transition-all duration-300">
+                    <div class="flex items-center gap-4 mb-3">
+                        <div class="p-2 bg-green-500/10 text-green-400 rounded-lg group-hover:bg-green-600 group-hover:text-white transition-colors">
+                            <i class="fa-solid fa-envelope text-lg"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white group-hover:text-green-400 transition-colors">MailerLite</h3>
+                    </div>
+                    <p class="text-slate-400 text-xs">Email marketing and newsletter campaigns.</p>
+                    <div class="absolute top-5 right-5 text-slate-700 group-hover:text-green-500 transition-colors">
+                        <i class="fa-solid fa-external-link-alt text-xs"></i>
+                    </div>
+                </a>
+
+                <!-- EmailJS -->
+                <a href="https://dashboard.emailjs.com/admin" target="_blank" class="group relative flex flex-col p-5 bg-slate-900 border border-slate-800 rounded-xl hover:border-yellow-500 hover:shadow-xl hover:shadow-yellow-900/10 transition-all duration-300">
+                    <div class="flex items-center gap-4 mb-3">
+                        <div class="p-2 bg-yellow-500/10 text-yellow-400 rounded-lg group-hover:bg-yellow-600 group-hover:text-white transition-colors">
+                            <i class="fa-solid fa-paper-plane text-lg"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white group-hover:text-yellow-400 transition-colors">EmailJS</h3>
+                    </div>
+                    <p class="text-slate-400 text-xs">Manage transactional emails and contact forms.</p>
+                    <div class="absolute top-5 right-5 text-slate-700 group-hover:text-yellow-500 transition-colors">
                         <i class="fa-solid fa-external-link-alt text-xs"></i>
                     </div>
                 </a>
