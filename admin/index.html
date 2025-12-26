@@ -1,134 +1,193 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ultraphonics Admin</title>
-  <link rel="stylesheet" href="../assets/css/styles.css" />
-  <style>
-    .admin-container {
-      max-width: 800px;
-      margin: 2rem auto;
-      padding: 2rem;
-      background-color: var(--color-background);
-      border-radius: 8px;
-      box-shadow: var(--shadow-md);
-    }
-
-    .admin-header {
-      text-align: center;
-      margin-bottom: 2rem;
-      padding-bottom: 1rem;
-      border-bottom: 2px solid var(--color-accent);
-    }
-
-    .admin-section {
-      margin-bottom: 2rem;
-      padding: 1.5rem;
-      background-color: var(--color-background-dark);
-      border-radius: 6px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .admin-section h3 {
-      color: var(--color-accent);
-      margin-bottom: 1rem;
-    }
-
-    .back-button {
-      display: inline-block;
-      background-color: var(--color-accent);
-      color: var(--color-white);
-      padding: 12px 24px;
-      text-decoration: none;
-      border-radius: 5px;
-      transition: all 0.3s ease;
-      margin-top: 1rem;
-    }
-
-    .back-button:hover {
-      background-color: var(--color-accent-hover);
-      transform: translateY(-2px);
-    }
-
-    .admin-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 1rem;
-      margin-top: 1rem;
-    }
-
-    .admin-card {
-      background-color: rgba(255, 255, 255, 0.05);
-      padding: 1rem;
-      border-radius: 6px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-    .alert-dot {
-      display: inline-block;
-      width: 8px; 
-      height: 8px;
-      background-color: red;
-      border-radius: 50%;
-      margin-right: 5px;
-    }
-    #hide {
-      display: none;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultraphonics Admin Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Custom scrollbar for webkit */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569; 
+        }
+    </style>
 </head>
-<body>
-  <main>
-    <div class="admin-container">
-      <div class="admin-header">
-        <h1>Ultraphonics Admin Panel</h1>
-      </div>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans">
 
-      <div class="admin-section">
-        <div class="admin-grid">
-          <!-- Admin Content -->
-          <div class="admin-card">
-            <h4>🔊 ULTRASHEET</h4>
-            <p>Keep it Ultra</p>
-            <br>
-            <a href="https://docs.google.com/spreadsheets/d/1csJb56jnisEb_37pYMVTOY6kSt6J-HqN5X7IYYRgH20/edit" class="back-button" target="_blank">Nice.</a>
-          </div>
-          <div class="admin-card">
-            <h4>📋 Setlists</h4>
-            <p>View, create and download setlists</p>
-            <a href="setlist-viewer.html" class="back-button">Lit.</a>
-          </div>
-          <div class="admin-card">
-            <h4>🔎 Google Search Console</h4>
-            <p>View the Google Search Console</p>
-            <a href="https://search.google.com/u/1/search-console?resource_id=sc-domain%3Aultraphonicsmusic.com" class="back-button" target="_blank">Sick.</a>
-          </div>
-          <div class="admin-card">
-            <h4>📈 Google Analytics</h4>
-            <p>View Google Analytics.</p>
-            <br>
-          <a href="https://analytics.google.com/analytics/web/?#/a359545509p494427066/reports/intelligenthome" class="back-button" target="_blank">Dope.</a>
-          </div>
-          <div class="admin-card">
-            <h4>📬 MailerLite</h4>
-            <p>View our email subscribers</p>
-            <br>
-            <a href="https://dashboard.mailerlite.com/forms/165731060920878324/stats" target="_blank" class="back-button">Tight.</a>
-          </div>
-          <div class="admin-card">
-            <h4>📩 EmailJS</h4>
-            <p>View EmailJS Campaigns</p>            
-            <br>
-            <a href="https://dashboard.emailjs.com/admin" class="back-button">Rad.</a>
-          </div>
+    <!-- Navbar -->
+    <nav class="bg-slate-900 border-b border-slate-800 shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center gap-3">
+                    <div class="bg-indigo-600 p-2 rounded-lg shadow-lg shadow-indigo-900/50">
+                        <i class="fa-solid fa-sliders text-white"></i>
+                    </div>
+                    <span class="font-bold text-xl tracking-tight text-white">Ultraphonics Admin</span>
+                </div>
+                <div>
+                    <a href="../index.html" class="text-slate-400 hover:text-white transition-colors text-sm font-medium flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-800">
+                        <span>View Site</span>
+                        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                    </a>
+                </div>
+            </div>
         </div>
-      </div>
+    </nav>
 
-      <div class="admin-section">
-        <h3>Site Navigation</h3>
-        <a href="../index.html" class="back-button">← Back to Site</a>
-      </div>
-    </div>
-  </main>
+    <!-- Main Content -->
+    <main class="flex-grow container mx-auto px-4 py-8 max-w-7xl">
+        
+        <!-- App Management Section -->
+        <div class="mb-10">
+            <h2 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-4 px-1">Setlist Management</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                <!-- Setlist Builder Card (Yellow/Amber with Hammer) -->
+                <a href="setlist-builder.html" class="group relative flex flex-col p-6 bg-slate-900 border border-slate-800 rounded-2xl hover:border-amber-500 hover:shadow-2xl hover:shadow-amber-900/20 transition-all duration-300">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="p-3 bg-amber-500/10 text-amber-500 rounded-xl group-hover:bg-amber-500 group-hover:text-white transition-all duration-300">
+                            <i class="fa-solid fa-hammer text-xl"></i>
+                        </div>
+                        <i class="fa-solid fa-arrow-right text-slate-700 group-hover:text-amber-500 group-hover:translate-x-1 transition-all"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2 group-hover:text-amber-500 transition-colors">Setlist Builder</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">Create, edit, and organize setlists. Export JSON for the AbleSet</p>
+                </a>
+
+                <!-- Setlist Viewer Card (Blue/Indigo with Eye) -->
+                <a href="setlist-viewer.html" class="group relative flex flex-col p-6 bg-slate-900 border border-slate-800 rounded-2xl hover:border-indigo-500 hover:shadow-2xl hover:shadow-indigo-900/20 transition-all duration-300">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="p-3 bg-indigo-500/10 text-indigo-400 rounded-xl group-hover:bg-indigo-600 group-hover:text-white transition-all duration-300">
+                            <i class="fa-solid fa-eye text-xl"></i>
+                        </div>
+                        <i class="fa-solid fa-arrow-right text-slate-700 group-hover:text-indigo-400 group-hover:translate-x-1 transition-all"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2 group-hover:text-indigo-400 transition-colors">Setlist Viewer</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">Live performance display. High contrast, large text view for use on stage.</p>
+                </a>
+
+            </div>
+        </div>
+
+        <!-- External Tools Section -->
+        <div class="mb-10">
+            <h2 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-4 px-1">External Tools</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+                <!-- Ultrasheet -->
+                <a href="https://docs.google.com/spreadsheets/d/1BwdSlDKeK-a3oxvIb704Rdu7_aKk2Gv4u1K1SgqG7uY/edit?gid=0#gid=0" target="_blank" class="group relative flex flex-col p-5 bg-slate-900 border border-slate-800 rounded-xl hover:border-emerald-500 hover:shadow-xl hover:shadow-emerald-900/10 transition-all duration-300">
+                    <div class="flex items-center gap-4 mb-3">
+                        <div class="p-2 bg-emerald-500/10 text-emerald-400 rounded-lg group-hover:bg-emerald-600 group-hover:text-white transition-colors">
+                            <i class="fa-solid fa-file-excel text-lg"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white group-hover:text-emerald-400 transition-colors">Ultrasheet</h3>
+                    </div>
+                    <p class="text-slate-400 text-xs">Master Google Sheet for band management.</p>
+                    <div class="absolute top-5 right-5 text-slate-700 group-hover:text-emerald-500 transition-colors">
+                        <i class="fa-solid fa-external-link-alt text-xs"></i>
+                    </div>
+                </a>
+
+                <!-- MailerLite -->
+                <a href="https://dashboard.mailerlite.com/" target="_blank" class="group relative flex flex-col p-5 bg-slate-900 border border-slate-800 rounded-xl hover:border-green-500 hover:shadow-xl hover:shadow-green-900/10 transition-all duration-300">
+                    <div class="flex items-center gap-4 mb-3">
+                        <div class="p-2 bg-green-500/10 text-green-400 rounded-lg group-hover:bg-green-600 group-hover:text-white transition-colors">
+                            <i class="fa-solid fa-envelope text-lg"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white group-hover:text-green-400 transition-colors">MailerLite</h3>
+                    </div>
+                    <p class="text-slate-400 text-xs">Email marketing and newsletter campaigns.</p>
+                    <div class="absolute top-5 right-5 text-slate-700 group-hover:text-green-500 transition-colors">
+                        <i class="fa-solid fa-external-link-alt text-xs"></i>
+                    </div>
+                </a>
+
+                <!-- EmailJS -->
+                <a href="https://dashboard.emailjs.com/admin" target="_blank" class="group relative flex flex-col p-5 bg-slate-900 border border-slate-800 rounded-xl hover:border-yellow-500 hover:shadow-xl hover:shadow-yellow-900/10 transition-all duration-300">
+                    <div class="flex items-center gap-4 mb-3">
+                        <div class="p-2 bg-yellow-500/10 text-yellow-400 rounded-lg group-hover:bg-yellow-600 group-hover:text-white transition-colors">
+                            <i class="fa-solid fa-paper-plane text-lg"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white group-hover:text-yellow-400 transition-colors">EmailJS</h3>
+                    </div>
+                    <p class="text-slate-400 text-xs">Manage transactional emails and contact forms.</p>
+                    <div class="absolute top-5 right-5 text-slate-700 group-hover:text-yellow-500 transition-colors">
+                        <i class="fa-solid fa-external-link-alt text-xs"></i>
+                    </div>
+                </a>
+
+                <!-- Google Analytics -->
+                <a href="https://analytics.google.com/" target="_blank" class="group relative flex flex-col p-5 bg-slate-900 border border-slate-800 rounded-xl hover:border-orange-500 hover:shadow-xl hover:shadow-orange-900/10 transition-all duration-300">
+                    <div class="flex items-center gap-4 mb-3">
+                        <div class="p-2 bg-orange-500/10 text-orange-400 rounded-lg group-hover:bg-orange-600 group-hover:text-white transition-colors">
+                            <i class="fa-solid fa-chart-line text-lg"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white group-hover:text-orange-400 transition-colors">Analytics</h3>
+                    </div>
+                    <p class="text-slate-400 text-xs">Traffic and visitor statistics.</p>
+                    <div class="absolute top-5 right-5 text-slate-700 group-hover:text-orange-500 transition-colors">
+                        <i class="fa-solid fa-external-link-alt text-xs"></i>
+                    </div>
+                </a>
+
+                <!-- Search Console -->
+                <a href="https://search.google.com/search-console" target="_blank" class="group relative flex flex-col p-5 bg-slate-900 border border-slate-800 rounded-xl hover:border-blue-500 hover:shadow-xl hover:shadow-blue-900/10 transition-all duration-300">
+                    <div class="flex items-center gap-4 mb-3">
+                        <div class="p-2 bg-blue-500/10 text-blue-400 rounded-lg group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                            <i class="fa-brands fa-google text-lg"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white group-hover:text-blue-400 transition-colors">Search Console</h3>
+                    </div>
+                    <p class="text-slate-400 text-xs">Search performance and indexing status.</p>
+                    <div class="absolute top-5 right-5 text-slate-700 group-hover:text-blue-500 transition-colors">
+                        <i class="fa-solid fa-external-link-alt text-xs"></i>
+                    </div>
+                </a>
+
+            </div>
+        </div>
+
+        <!-- Data Management -->
+        <div class="pt-6 border-t border-slate-800">
+            <h2 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-4 px-1">Data Management</h2>
+            <div class="flex flex-wrap gap-3">
+                <!-- Links point to GitHub Edit URL for direct editing -->
+                <a href="https://github.com/tdhckmn/ultraphonics-web/edit/master/content/songs.json" target="_blank" class="inline-flex items-center px-4 py-2 rounded-lg bg-slate-900 border border-slate-700 text-slate-300 hover:text-white hover:border-slate-400 hover:bg-slate-800 transition-all text-xs font-bold">
+                    <i class="fa-solid fa-pen-to-square mr-2 text-blue-400"></i> Edit Songs
+                </a>
+                 <a href="https://github.com/tdhckmn/ultraphonics-web/edit/master/content/shows.json" target="_blank" class="inline-flex items-center px-4 py-2 rounded-lg bg-slate-900 border border-slate-700 text-slate-300 hover:text-white hover:border-slate-400 hover:bg-slate-800 transition-all text-xs font-bold">
+                    <i class="fa-solid fa-pen-to-square mr-2 text-blue-400"></i> Edit Shows
+                </a>
+                <a href="../content/Ultraphonics_V3.json" target="_blank" class="inline-flex items-center px-4 py-2 rounded-lg bg-slate-900 border border-slate-700 text-slate-400 hover:text-white hover:border-slate-500 transition-colors text-xs font-medium">
+                    <i class="fa-solid fa-file-code mr-2 text-slate-500"></i> Master JSON
+                </a>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-950 border-t border-slate-800 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8 flex justify-between items-center">
+            <p class="text-slate-600 text-xs">
+                Ultraphonics Admin Portal
+            </p>
+            <p class="text-slate-700 text-xs">
+                v2.3
+            </p>
+        </div>
+    </footer>
+
 </body>
 </html>
