@@ -21,6 +21,15 @@
         @media (max-width: 768px) {
             .viewer-container { display: block; padding: 0; height: auto; min-height: calc(100vh - 120px); }
             #view-area { position: relative; overflow: visible; inset: auto; height: auto; }
+
+            /* Pin stats bar to bottom on mobile */
+            .stats-bar-mobile {
+                position: fixed !important;
+                bottom: 0 !important;
+                left: 0 !important;
+                right: 0 !important;
+                z-index: 50 !important;
+            }
         }
 
         /* --- Viewer-Specific: Active File State (Blue) --- */
@@ -121,8 +130,8 @@
             </div>
 
             <!-- Footer Stats (Moved from Header) -->
-            <div class="bg-[#252525] p-2 px-4 border-t border-[#333] flex justify-between items-center text-[10px] text-gray-500 z-20">
-                 <span id="view-stats" class="text-gray-300 font-mono text-xs overflow-hidden text-ellipsis whitespace-nowrap">0 items</span>
+            <div class="stats-bar-mobile bg-[#252525] p-2 px-4 border-t border-[#333] flex justify-center md:justify-between items-center z-20">
+                 <span id="view-stats" class="text-[#3b82f6] font-mono text-sm overflow-hidden text-ellipsis whitespace-nowrap">0 items</span>
             </div>
         </div>
     </main>

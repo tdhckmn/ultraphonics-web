@@ -129,9 +129,11 @@ function generateStats(setlistData) {
 
          if (isSet) {
              if (bufferName !== null) {
-                 report.push(`${bufferName} (${bufferCount})`);
+                 // Extract just the number from "Set 1", "Set 2", etc.
+                 const setNumber = bufferName.toLowerCase().replace('set', '').trim();
+                 report.push(`${setNumber}(${bufferCount})`);
              } else if (bufferCount > 0) {
-                 report.push(`Intro (${bufferCount})`);
+                 report.push(`Intro(${bufferCount})`);
              }
              bufferName = name;
              bufferCount = 0;
@@ -141,11 +143,13 @@ function generateStats(setlistData) {
      });
 
      if (bufferName !== null) {
-         report.push(`${bufferName} (${bufferCount})`);
+         // Extract just the number from "Set 1", "Set 2", etc.
+         const setNumber = bufferName.toLowerCase().replace('set', '').trim();
+         report.push(`${setNumber}(${bufferCount})`);
      } else if (bufferCount > 0) {
-         report.push(`Total (${bufferCount})`);
+         report.push(`Total(${bufferCount})`);
      }
-     
+
      return report.join(" • ");
 }
 
