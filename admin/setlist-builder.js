@@ -158,28 +158,18 @@ function getFallbackData() {
 }
 
 /**
- * Parses hashtags from song names into individual properties
+ * Parses tags array from imported setlist into individual properties
  * @param {Array} setlist - The setlist array to process
- * @returns {Array} - A deep copy of the setlist with hashtags parsed into properties
+ * @returns {Array} - A deep copy of the setlist with tags parsed into properties
  */
 function parseSetlistFromImport(setlist) {
     return setlist.map(song => {
         const songCopy = { ...song };
 
-        if (!songCopy.lastKnownName) return songCopy;
-
-        // Extract hashtags from song name
-        const hashtagRegex = /#([a-z]+):([^#\s]+)/g;
-        const matches = [...songCopy.lastKnownName.matchAll(hashtagRegex)];
-
-        if (matches.length > 0) {
-            // Remove hashtags from the name for display
-            songCopy.lastKnownName = songCopy.lastKnownName.replace(/#[a-z]+:[^#\s]+/g, '').trim();
-
-            // Parse each hashtag into properties
-            matches.forEach(match => {
-                const key = match[1];
-                const value = match[2];
+        // Parse tags array if it exists
+        if (Array.isArray(songCopy.tags) && songCopy.tags.length > 0) {
+            songCopy.tags.forEach(tag => {
+                const [key, value] = tag.split(':');
 
                 if (key === 'vocals') {
                     songCopy.vocals = value;
@@ -191,6 +181,9 @@ function parseSetlistFromImport(setlist) {
                     songCopy.capo = parseInt(value);
                 }
             });
+
+            // Remove tags array after parsing
+            delete songCopy.tags;
         }
 
         return songCopy;
@@ -198,39 +191,39 @@ function parseSetlistFromImport(setlist) {
 }
 
 /**
- * Prepares setlist data for export by appending hashtags to song names
+ * Prepares setlist data for export by converting properties to tags array
  * @param {Array} setlist - The setlist array to process
- * @returns {Array} - A deep copy of the setlist with props converted to hashtags
+ * @returns {Array} - A deep copy of the setlist with props converted to tags array
  */
 function prepareSetlistForExport(setlist) {
     return setlist.map(song => {
         const songCopy = { ...song };
 
-        // Build hashtags
-        const hashtags = [];
+        // Build tags array
+        const tags = [];
 
         if (songCopy.vocals !== undefined && songCopy.vocals !== '') {
-            hashtags.push(`#vocals:${songCopy.vocals}`);
+            tags.push(`vocals:${songCopy.vocals}`);
         }
 
         if (songCopy.eflat === true) {
-            hashtags.push('#eflat:true');
+            tags.push('eflat:true');
         }
 
         if (songCopy.drop === true) {
-            hashtags.push('#drop:true');
+            tags.push('drop:true');
         }
 
         if (songCopy.capo !== undefined && songCopy.capo > 0) {
-            hashtags.push(`#capo:${songCopy.capo}`);
+            tags.push(`capo:${songCopy.capo}`);
         }
 
-        // Append hashtags to song name if any exist
-        if (hashtags.length > 0) {
-            songCopy.lastKnownName = `${songCopy.lastKnownName} ${hashtags.join(' ')}`;
+        // Add tags array if any exist
+        if (tags.length > 0) {
+            songCopy.tags = tags;
         }
 
-        // Remove the individual properties (they're now in the name)
+        // Remove the individual properties (they're now in tags)
         delete songCopy.vocals;
         delete songCopy.eflat;
         delete songCopy.drop;
