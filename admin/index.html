@@ -21,6 +21,14 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #475569; 
         }
+        /* Modal transition */
+        .modal {
+            transition: opacity 0.25s ease;
+        }
+        body.modal-active {
+            overflow-x: hidden;
+            overflow-y: visible !important;
+        }
     </style>
 </head>
 <body class="bg-stone-950 text-stone-100 min-h-screen flex flex-col font-sans">
@@ -36,7 +44,10 @@
                     </div>
                     <span class="font-bold text-xl tracking-tight text-white">Ultraphonics Admin</span>
                 </div>
-                <div>
+                <div class="flex items-center gap-3">
+                    <button id="openSettings" class="text-stone-400 hover:text-white transition-colors p-2 rounded-lg hover:bg-stone-800" title="Admin Settings">
+                        <i class="fa-solid fa-gear"></i>
+                    </button>
                     <a href="../index.html" class="text-stone-400 hover:text-white transition-colors text-sm font-medium flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-stone-800">
                         <span>View Site</span>
                         <i class="fa-solid fa-arrow-right-from-bracket"></i>
@@ -63,7 +74,7 @@
                         <i class="fa-solid fa-arrow-right text-stone-700 group-hover:text-amber-500 group-hover:transtone-x-1 transition-all"></i>
                     </div>
                     <h3 class="text-xl font-bold text-white mb-2 group-hover:text-amber-500 transition-colors">Setlist Builder</h3>
-                    <p class="text-stone-400 text-sm leading-relaxed">Create, edit, and organize setlists. Export JSON for the AbleSet</p>
+                    <p class="text-stone-400 text-sm leading-relaxed">Create, edit, and organize setlists. Export JSON for AbleSet.</p>
                 </a>
 
                 <!-- Setlist Viewer Card (Blue/Indigo with Eye) -->
@@ -77,6 +88,20 @@
                     <h3 class="text-xl font-bold text-white mb-2 group-hover:text-indigo-400 transition-colors">Setlist Viewer</h3>
                     <p class="text-stone-400 text-sm leading-relaxed">Live performance display. High contrast, large text view for use on stage.</p>
                 </a>
+
+                <!-- AbleSet Launcher -->
+                <a id="ablesetLink" href="#" target="_blank" class="group relative flex flex-col p-6 bg-stone-900 border border-stone-800 rounded-2xl hover:border-rose-500 hover:shadow-2xl hover:shadow-rose-900/20 transition-all duration-300">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="p-3 bg-rose-500/10 text-rose-400 rounded-xl group-hover:bg-rose-600 group-hover:text-white transition-all duration-300">
+                            <i class="fa-solid fa-circle-play text-xl"></i>
+                        </div>
+                        <i class="fa-solid fa-arrow-right text-stone-700 group-hover:text-rose-400 group-hover:transtone-x-1 transition-all"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2 group-hover:text-rose-400 transition-colors">AbleSet</h3>
+                    <p class="text-stone-400 text-sm leading-relaxed">Launch AbleSet.</p>
+                    <div class="mt-auto pt-4 border-t border-stone-800/50 text-[10px] text-stone-600 font-mono truncate" id="ablesetUrlDisplay">Loading...</div>
+                </a>
+
 
             </div>
         </div>
@@ -101,7 +126,7 @@
                 </a>
 
                 <!-- Ultrasheet -->
-                <a href="https://docs.google.com/spreadsheets/d/1csJb56jnisEb_37pYMVTOY6kSt6J-HqN5X7IYYRgH20/edit?usp=sharing" target="_blank" class="group relative flex flex-col p-5 bg-stone-900 border border-stone-800 rounded-xl hover:border-emerald-500 hover:shadow-xl hover:shadow-emerald-900/10 transition-all duration-300">
+                <a href="https://docs.google.com/spreadsheets/d/1BwdSlDKeK-a3oxvIb704Rdu7_aKk2Gv4u1K1SgqG7uY/edit?gid=0#gid=0" target="_blank" class="group relative flex flex-col p-5 bg-stone-900 border border-stone-800 rounded-xl hover:border-emerald-500 hover:shadow-xl hover:shadow-emerald-900/10 transition-all duration-300">
                     <div class="flex items-center gap-4 mb-3">
                         <div class="p-2 bg-emerald-500/10 text-emerald-400 rounded-lg group-hover:bg-emerald-600 group-hover:text-white transition-colors">
                             <i class="fa-solid fa-file-excel text-lg"></i>
@@ -199,10 +224,125 @@
                 Ultraphonics Admin Portal
             </p>
             <p class="text-stone-700 text-xs">
-                v2.3
+                v2.4
             </p>
         </div>
     </footer>
+
+    <!-- Settings Modal -->
+    <div id="settingsModal" class="modal opacity-0 pointer-events-none fixed w-full h-full top-0 left-0 flex items-center justify-center z-[100]">
+        <div class="modal-overlay absolute w-full h-full bg-stone-950/80 backdrop-blur-sm"></div>
+        
+        <div class="modal-container bg-stone-900 w-11/12 md:max-w-md mx-auto rounded-xl shadow-2xl border border-stone-700 z-50 overflow-y-auto">
+            
+            <div class="modal-content py-4 text-left px-6">
+                <!-- Title -->
+                <div class="flex justify-between items-center pb-3 border-b border-stone-800">
+                    <p class="text-lg font-bold text-white">Admin Settings</p>
+                    <div id="closeModal" class="cursor-pointer z-50 text-stone-400 hover:text-white">
+                        <i class="fa-solid fa-times"></i>
+                    </div>
+                </div>
+
+                <!-- Body -->
+                <div class="my-5">
+                    <label class="block text-stone-400 text-xs font-bold mb-2" for="ablesetUrl">
+                        AbleSet Host URL
+                    </label>
+                    <input class="appearance-none border border-stone-700 rounded w-full py-3 px-3 text-stone-200 bg-stone-800 leading-tight focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500" 
+                        id="ablesetUrlInput" type="text" placeholder="http://10.0.0.102">
+                    <p class="text-stone-500 text-xs mt-2 italic">
+                        Example: http://10.0.0.102, http://Karls-MacBook.local
+                    </p>
+                </div>
+
+                <!-- Footer -->
+                <div class="flex justify-end pt-2">
+                    <button id="saveSettings" class="px-4 py-2 bg-indigo-600 p-3 rounded-lg text-white hover:bg-indigo-500 font-bold transition-colors">
+                        Save Changes
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Logic -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const ablesetLink = document.getElementById('ablesetLink');
+            const ablesetUrlDisplay = document.getElementById('ablesetUrlDisplay');
+            const ablesetUrlInput = document.getElementById('ablesetUrlInput');
+            
+            const openSettingsBtn = document.getElementById('openSettings');
+            const closeModalBtn = document.getElementById('closeModal');
+            const modalOverlay = document.querySelector('.modal-overlay');
+            const modal = document.getElementById('settingsModal');
+            const saveSettingsBtn = document.getElementById('saveSettings');
+
+            // Default
+            const DEFAULT_ABLESET_URL = 'http://10.0.0.102';
+            
+            // --- Helper Functions ---
+
+            function loadSettings() {
+                const storedUrl = localStorage.getItem('ableset_url');
+                const url = storedUrl || DEFAULT_ABLESET_URL;
+                
+                // Update Link
+                ablesetLink.href = url;
+                // Update Display text
+                ablesetUrlDisplay.textContent = url;
+                // Update Input value
+                ablesetUrlInput.value = url;
+            }
+
+            function saveSettings() {
+                let url = ablesetUrlInput.value.trim();
+                
+                // Basic validation/cleanup
+                if (!url) {
+                    url = DEFAULT_ABLESET_URL;
+                }
+                if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                    url = 'http://' + url;
+                }
+
+                localStorage.setItem('ableset_url', url);
+                loadSettings();
+                toggleModal();
+            }
+
+            function toggleModal() {
+                const body = document.querySelector('body');
+                modal.classList.toggle('opacity-0');
+                modal.classList.toggle('pointer-events-none');
+                body.classList.toggle('modal-active');
+            }
+
+            // --- Event Listeners ---
+
+            openSettingsBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                toggleModal();
+            });
+
+            closeModalBtn.addEventListener('click', toggleModal);
+            modalOverlay.addEventListener('click', toggleModal);
+
+            saveSettingsBtn.addEventListener('click', saveSettings);
+
+            // Close on Escape key
+            document.onkeydown = function(evt) {
+                evt = evt || window.event;
+                if (evt.keyCode == 27 && !modal.classList.contains('opacity-0')) {
+                    toggleModal();
+                }
+            };
+
+            // --- Init ---
+            loadSettings();
+        });
+    </script>
 
 </body>
 </html>
