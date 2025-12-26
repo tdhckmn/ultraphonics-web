@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
+
 :root {
   --color-background: #1a1a1a;
   --color-background-dark: #121212;
@@ -31,8 +33,6 @@
   --font-size-xl: 1.5rem;
   --font-size-xxl: 3rem;
 }
-
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
 
 body {
   margin: 0;
