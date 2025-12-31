@@ -8,15 +8,26 @@ body {
     background-color: #121212;
     color: #e0e0e0;
     font-family: "Inter", system-ui, sans-serif;
-    overflow: hidden;
-    touch-action: pan-x pan-y;
+    overflow: auto;
+    touch-action: pan-y;
 }
 
 /* --- Mobile Scroll Behavior --- */
 @media (max-width: 768px) {
-    body { overflow: auto; height: auto; }
-    .panel { height: auto; min-height: 50vh; overflow: visible; border-radius: 0; border: none; }
-    .scroll-area { overflow: visible; height: auto; }
+    body {
+        overflow: auto;
+        height: 100dvh; /* Use dynamic viewport height for Safari compatibility */
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+    }
+    .panel {
+        height: auto;
+        min-height: 50vh;
+        overflow: visible;
+        border-radius: 0;
+        border: none;
+        padding-bottom: 80px; /* Extra padding for stats bar */
+    }
+    .scroll-area { overflow: visible; height: auto; padding-bottom: 20px; }
     header { position: sticky; top: 0; z-index: 50; }
     .mobile-tabs { position: sticky; top: 70px; z-index: 40; }
     .mobile-hidden { display: none !important; }

@@ -20,7 +20,7 @@
         /* --- Builder-Specific Layout --- */
         .editor-container { display: grid; grid-template-columns: 350px 1fr; grid-template-rows: 1fr; gap: 1.5rem; height: calc(100vh - 70px); padding: 1.5rem; max-width: 1600px; margin: 0 auto; }
 
-        @media (max-width: 768px) {
+        @media (max-width: 1023px) {
             .editor-container { display: block; padding: 0; height: auto; min-height: calc(100vh - 120px); }
             #setlist-area, #library-list, #file-list-sidebar { position: relative; overflow: visible; inset: auto; height: auto; }
 
@@ -63,6 +63,9 @@
             <a href="setlist-viewer.html" id="link-view-mode" class="btn btn-secondary text-xs px-3 bg-[#2c0b0e] border border-[#f87171] text-[#fca5a5] hover:bg-[#333]" title="Switch to View Mode">
                 <i class="fas fa-eye"></i> <span class="hidden md:inline">View Mode</span>
             </a>
+            <a id="headerAblesetLink" href="#" target="_blank" class="text-gray-400 hover:text-rose-400 transition-colors p-2 rounded-lg hover:bg-[#333]" title="Launch AbleSet">
+                <i class="fas fa-circle-play"></i>
+            </a>
             <button onclick="openSettings()" class="btn btn-secondary text-xs px-3" title="Settings">
                 <i class="fas fa-cog"></i>
             </button>
@@ -73,12 +76,12 @@
     </header>
 
     <!-- Mobile Tabs -->
-    <div class="md:hidden flex border-b border-[#333] bg-[#1e1e1e] h-[50px]">
+    <div class="lg:hidden flex border-b border-[#333] bg-[#1e1e1e] h-[50px]">
         <button onclick="switchMobileTab('library')" id="tab-library" class="flex-1 text-sm font-bold text-[#fbbf24] border-b-2 border-[#fbbf24] transition-colors">
             <i class="fas fa-music mr-2"></i>Library
         </button>
         <button onclick="switchMobileTab('setlist')" id="tab-setlist" class="flex-1 text-sm font-bold text-gray-500 border-b-2 border-transparent transition-colors">
-            <i class="fas fa-list mr-2"></i>Setlist 
+            <i class="fas fa-list mr-2"></i>Setlist
             <span id="mobile-count" class="ml-1 text-[10px] bg-[#333] px-2 py-0.5 rounded-full text-white">0</span>
         </button>
     </div>
@@ -152,7 +155,7 @@
             
             <!-- List Area -->
             <div class="relative flex-1 bg-[#181818] overflow-hidden">
-                <div id="setlist-area" class="absolute inset-0 overflow-y-auto p-3 custom-scrollbar pb-20"></div>
+                <div id="setlist-area" class="absolute inset-0 overflow-y-auto p-3 custom-scrollbar pb-16 md:pb-20"></div>
                 <div id="empty-state" class="absolute inset-0 flex flex-col items-center justify-center text-gray-600 pointer-events-none z-10">
                     <i class="fas fa-hand-pointer text-4xl mb-4 opacity-20"></i>
                     <p class="font-medium opacity-50">Drag songs here</p>
@@ -161,7 +164,7 @@
             </div>
 
             <!-- Footer Stats -->
-            <div class="stats-bar-mobile bg-[#252525] p-2 px-4 border-t border-[#333] flex justify-center md:justify-between items-center z-20">
+            <div class="stats-bar-mobile bg-[#252525] p-2 px-4 border-t border-[#333] flex justify-center md:justify-between items-center z-20 flex-shrink-0">
                 <span id="setlist-stats" class="text-[#fbbf24] font-mono text-sm overflow-hidden text-ellipsis whitespace-nowrap">0 items</span>
             </div>
         </div>
@@ -171,23 +174,22 @@
     <div id="settings-modal" class="modal-overlay">
         <div class="modal-content">
             <h2 class="text-xl font-bold text-white mb-4">Settings</h2>
-            <div class="form-group">
-                <label class="form-label">GitHub Username / Owner</label>
-                <input type="text" id="gh-owner" class="form-input">
-            </div>
-            <div class="form-group">
-                <label class="form-label">Repository Name</label>
-                <input type="text" id="gh-repo" class="form-input">
-            </div>
+
+            <!-- Personal Access Token -->
             <div class="form-group">
                 <label class="form-label">Personal Access Token (Requires 'repo' scope)</label>
                 <input type="password" id="gh-token" class="form-input">
+                <p class="text-gray-500 text-xs mt-1">Required for saving setlists to GitHub</p>
             </div>
+
+            <!-- AbleSet Settings -->
             <div class="form-group">
-                <label class="form-label">Setlists Folder</label>
-                <input type="text" id="gh-path" class="form-input">
+                <label class="form-label">AbleSet Host URL</label>
+                <input type="text" id="ableset-url" class="form-input" placeholder="http://192.168.1.243">
+                <p class="text-gray-500 text-xs mt-1">Example: http://192.168.1.243, http://Karls-MacBook.local</p>
             </div>
-            <div class="flex justify-end gap-3 mt-4">
+
+            <div class="flex justify-end gap-3 mt-6">
                 <button onclick="document.getElementById('settings-modal').classList.remove('active')" class="btn btn-secondary">Cancel</button>
                 <button onclick="saveSettings()" class="btn btn-primary">Save Config</button>
             </div>
@@ -271,9 +273,10 @@
 
         // --- INIT ---
         document.addEventListener('DOMContentLoaded', async () => {
-            loadConfig(); 
+            loadConfig();
             await loadMasterData();
             updateUI();
+            updateAbleSetLink();
             setupDragAndDrop();
             
             // Auto-load Logic
@@ -325,18 +328,44 @@
             }
         };
 
+        // --- ABLESET LINK UPDATE ---
+        function updateAbleSetLink() {
+            const DEFAULT_ABLESET_URL = 'http://192.168.1.243';
+            const storedUrl = localStorage.getItem('ableset_url');
+            const url = storedUrl || DEFAULT_ABLESET_URL;
+            document.getElementById('headerAblesetLink').href = url;
+        }
+
         // --- SETTINGS ---
         function openSettings() {
-            document.getElementById('gh-owner').value = window.AppState.config.owner;
-            document.getElementById('gh-repo').value = window.AppState.config.repo;
+            // Load GitHub token
             document.getElementById('gh-token').value = window.AppState.config.token;
-            document.getElementById('gh-path').value = window.AppState.config.folder;
+
+            // Load AbleSet URL
+            const DEFAULT_ABLESET_URL = 'http://192.168.1.243';
+            const storedUrl = localStorage.getItem('ableset_url');
+            document.getElementById('ableset-url').value = storedUrl || DEFAULT_ABLESET_URL;
+
             document.getElementById('settings-modal').classList.add('active');
         }
 
         function saveSettings() {
-            saveSettingsFromUI('gh-owner', 'gh-repo', 'gh-token', 'gh-path', 'settings-modal');
+            // Save GitHub token (keep other settings unchanged)
+            const token = document.getElementById('gh-token').value.trim();
+            window.AppState.config.token = token;
+            localStorage.setItem('up_gh_config', JSON.stringify(window.AppState.config));
+
+            // Save AbleSet URL
+            let ablesetUrl = document.getElementById('ableset-url').value.trim();
+            if (!ablesetUrl) ablesetUrl = 'http://192.168.1.243';
+            if (!ablesetUrl.startsWith('http://') && !ablesetUrl.startsWith('https://')) {
+                ablesetUrl = 'http://' + ablesetUrl;
+            }
+            localStorage.setItem('ableset_url', ablesetUrl);
+
+            document.getElementById('settings-modal').classList.remove('active');
             updateUI();
+            updateAbleSetLink();
             refreshFileList();
         }
 
@@ -579,6 +608,12 @@
 
         async function loadRemoteFile(fileObj) {
             showLoader('main-loader', 'loader-text', true, `Loading ${fileObj.name}...`);
+
+            // Update URL with file parameter for sharing
+            const url = new URL(window.location);
+            url.searchParams.set('file', fileObj.name);
+            window.history.replaceState({}, '', url);
+
             try {
                 const data = await fetchGithubFileContent(fileObj.download_url);
                 // Parse tags into properties for editing

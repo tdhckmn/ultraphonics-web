@@ -249,10 +249,10 @@
                     <label class="block text-stone-400 text-xs font-bold mb-2" for="ablesetUrl">
                         AbleSet Host URL
                     </label>
-                    <input class="appearance-none border border-stone-700 rounded w-full py-3 px-3 text-stone-200 bg-stone-800 leading-tight focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500" 
-                        id="ablesetUrlInput" type="text" placeholder="http://10.0.0.102">
+                    <input class="appearance-none border border-stone-700 rounded w-full py-3 px-3 text-stone-200 bg-stone-800 leading-tight focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+                        id="ablesetUrlInput" type="text" placeholder="http://192.168.1.243">
                     <p class="text-stone-500 text-xs mt-2 italic">
-                        Example: http://10.0.0.102, http://Karls-MacBook.local
+                        Example: http://192.168.1.243, http://Karls-MacBook.local
                     </p>
                 </div>
 
@@ -272,7 +272,7 @@
             const ablesetLink = document.getElementById('ablesetLink');
             const ablesetUrlDisplay = document.getElementById('ablesetUrlDisplay');
             const ablesetUrlInput = document.getElementById('ablesetUrlInput');
-            
+
             const openSettingsBtn = document.getElementById('openSettings');
             const closeModalBtn = document.getElementById('closeModal');
             const modalOverlay = document.querySelector('.modal-overlay');
@@ -280,14 +280,14 @@
             const saveSettingsBtn = document.getElementById('saveSettings');
 
             // Default
-            const DEFAULT_ABLESET_URL = 'http://10.0.0.102';
-            
+            const DEFAULT_ABLESET_URL = 'http://192.168.1.243';
+
             // --- Helper Functions ---
 
             function loadSettings() {
                 const storedUrl = localStorage.getItem('ableset_url');
                 const url = storedUrl || DEFAULT_ABLESET_URL;
-                
+
                 // Update Link
                 ablesetLink.href = url;
                 // Update Display text
@@ -298,7 +298,7 @@
 
             function saveSettings() {
                 let url = ablesetUrlInput.value.trim();
-                
+
                 // Basic validation/cleanup
                 if (!url) {
                     url = DEFAULT_ABLESET_URL;

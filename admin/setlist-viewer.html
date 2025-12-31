@@ -16,20 +16,49 @@
 
     <style>
         /* --- Viewer-Specific Layout --- */
-        .viewer-container { display: grid; grid-template-columns: 300px 1fr; grid-template-rows: 1fr; gap: 1.5rem; height: calc(100vh - 70px); padding: 1.5rem; max-width: 1600px; margin: 0 auto; }
+        /* Ensure body can scroll */
+        body {
+            overflow-y: auto !important;
+            height: auto !important;
+        }
+
+        .viewer-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 1.5rem;
+            padding-bottom: 80px; /* Space for stats bar */
+            min-height: calc(100vh - 70px);
+        }
 
         @media (max-width: 768px) {
-            .viewer-container { display: block; padding: 0; height: auto; min-height: calc(100vh - 120px); }
-            #view-area { position: relative; overflow: visible; inset: auto; height: auto; }
-
-            /* Pin stats bar to bottom on mobile */
-            .stats-bar-mobile {
-                position: fixed !important;
-                bottom: 0 !important;
-                left: 0 !important;
-                right: 0 !important;
-                z-index: 50 !important;
+            .viewer-container {
+                padding: 0;
+                padding-bottom: 80px; /* Space for stats bar */
             }
+        }
+
+        /* Sticky header */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        /* Sticky tabs */
+        .tabs-container {
+            position: sticky;
+            top: 70px; /* Height of header */
+            z-index: 40;
+            background: #1e1e1e;
+        }
+
+        /* Fixed stats bar at bottom */
+        .stats-bar-mobile {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 50;
         }
 
         /* --- Viewer-Specific: Active File State (Blue) --- */
@@ -63,6 +92,9 @@
             <a href="setlist-builder.html" id="link-edit-mode" class="btn btn-secondary text-xs px-3 bg-[#1e3a8a] border border-blue-500 text-blue-200 hover:bg-[#1e40af]" title="Switch to Edit Mode">
                 <i class="fas fa-edit"></i> <span class="hidden md:inline">Edit Mode</span>
             </a>
+            <a id="headerAblesetLink" href="#" target="_blank" class="text-gray-400 hover:text-rose-400 transition-colors p-2 rounded-lg hover:bg-[#333]" title="Launch AbleSet">
+                <i class="fas fa-circle-play"></i>
+            </a>
             <button onclick="openSettings()" class="btn btn-secondary text-xs px-3" title="Settings">
                 <i class="fas fa-cog"></i>
             </button>
@@ -72,91 +104,87 @@
         </div>
     </header>
 
-    <!-- Mobile Tabs -->
-    <div class="md:hidden flex border-b border-[#333] bg-[#1e1e1e] h-[50px]">
-        <button onclick="switchMobileTab('files')" id="tab-files" class="flex-1 text-sm font-bold text-[#3b82f6] border-b-2 border-[#3b82f6] transition-colors">
-            <i class="fas fa-folder mr-2"></i>Files
-        </button>
-        <button onclick="switchMobileTab('view')" id="tab-view" class="flex-1 text-sm font-bold text-gray-500 border-b-2 border-transparent transition-colors">
-            <i class="fas fa-list-ul mr-2"></i>Setlist 
-        </button>
-    </div>
-
     <!-- Main Content -->
     <main class="viewer-container">
-        
-        <!-- LEFT: File Browser -->
-        <div class="panel" id="panel-files">
-            <div class="panel-header">
-                <!-- Compact Header for Mobile -->
-                <div class="flex flex-col md:flex-row md:items-center justify-between gap-1">
-                    <h2 class="font-bold text-white flex items-center gap-2 text-sm md:text-base"><i class="fas fa-folder-open text-[#3b82f6]"></i> <span class="md:inline hidden">Setlists</span><span class="md:hidden inline">Setlists</span></h2>
-                    <div class="text-[10px] md:text-xs text-gray-500 font-mono truncate max-w-[150px] md:max-w-none" id="folder-path-display">...</div>
-                </div>
-            </div>
-            
-            <div id="file-list" class="scroll-area flex flex-col gap-2">
-                <div class="text-center text-gray-500 mt-10"><i class="fas fa-circle-notch fa-spin"></i> Loading...</div>
-            </div>
-            
-             <div class="p-3 border-t border-[#333]">
-                <button onclick="fetchFiles()" class="btn btn-secondary w-full text-xs"><i class="fas fa-sync mr-2"></i> Refresh List</button>
-            </div>
-        </div>
-
-        <!-- RIGHT: Viewer -->
-        <div class="panel border-blue-900 border-opacity-30 mobile-hidden" id="panel-view">
+        <div class="panel">
             <div class="loading-overlay" id="main-loader">
                 <div class="text-[#3b82f6] font-bold animate-pulse" id="loader-text"><i class="fas fa-sync fa-spin mr-2"></i> Loading...</div>
             </div>
 
-            <div class="panel-header !flex-row !justify-between !items-center sticky top-0 bg-[#1e1e1e] z-10">
-                <div class="flex items-center gap-3 overflow-hidden">
+            <!-- Header with Title and Download -->
+            <div class="panel-header !flex-row !justify-between !items-center">
+                <div class="flex items-center gap-3 overflow-hidden flex-1">
                     <div class="font-bold text-lg text-white truncate" id="view-title">Select a Setlist</div>
                     <button id="btn-download" onclick="downloadCurrent()" class="text-gray-400 hover:text-[#3b82f6] hidden" title="Download JSON">
                         <i class="fas fa-download"></i>
                     </button>
                 </div>
             </div>
-            
-            <div class="relative flex-1 bg-[#181818] overflow-hidden" id="view-area-container">
-                <div id="view-area" class="absolute inset-0 overflow-y-auto p-4 custom-scrollbar pb-20">
-                    <div class="flex flex-col items-center justify-center h-full text-gray-600">
-                        <i class="fas fa-arrow-left text-4xl mb-4 opacity-20 md:hidden"></i>
-                        <i class="fas fa-folder-open text-4xl mb-4 opacity-20 hidden md:block"></i>
-                        <p>Select a file to view</p>
+
+            <!-- Tabs (Sets / Songs) - Sticky -->
+            <div class="tabs-container">
+                <div class="p-3 border-b border-[#333] bg-[#252525]">
+                    <div class="flex bg-[#121212] p-1 rounded-lg">
+                        <button onclick="switchTab('sets')" id="tab-sets" class="flex-1 py-2 text-sm font-bold rounded-md transition-all bg-[#333] text-[#3b82f6] shadow-sm">
+                            <i class="fas fa-folder mr-2"></i>Sets
+                        </button>
+                        <button onclick="switchTab('songs')" id="tab-songs" class="flex-1 py-2 text-sm font-bold rounded-md transition-all text-gray-400 hover:text-white">
+                            <i class="fas fa-list-ul mr-2"></i>Songs
+                        </button>
                     </div>
                 </div>
             </div>
 
-            <!-- Footer Stats (Moved from Header) -->
-            <div class="stats-bar-mobile bg-[#252525] p-2 px-4 border-t border-[#333] flex justify-center md:justify-between items-center z-20">
-                 <span id="view-stats" class="text-[#3b82f6] font-mono text-sm overflow-hidden text-ellipsis whitespace-nowrap">0 items</span>
+            <!-- Sets View -->
+            <div id="view-sets">
+                <div class="p-3 border-b border-[#333] flex justify-between items-center bg-[#252525]">
+                    <span class="text-xs text-gray-400 font-mono truncate" id="folder-path-display">...</span>
+                </div>
+                <div id="file-list" class="flex flex-col gap-2 p-3">
+                    <div class="text-center text-gray-500 mt-10"><i class="fas fa-circle-notch fa-spin"></i> Loading...</div>
+                </div>
+                <div class="p-3 border-t border-[#333]">
+                    <button onclick="fetchFiles()" class="btn btn-secondary w-full text-sm"><i class="fas fa-sync mr-2"></i> Refresh List</button>
+                </div>
+            </div>
+
+            <!-- Songs View -->
+            <div id="view-songs" class="hidden">
+                <div id="view-area" class="p-4 pb-20">
+                    <div class="flex flex-col items-center justify-center text-gray-600 py-20">
+                        <i class="fas fa-folder-open text-4xl mb-4 opacity-20"></i>
+                        <p>Select a setlist to view songs</p>
+                    </div>
+                </div>
             </div>
         </div>
     </main>
+
+    <!-- Footer Stats - Fixed at bottom -->
+    <div class="stats-bar-mobile bg-[#252525] p-2 px-4 border-t border-[#333] flex justify-center md:justify-between items-center">
+        <span id="view-stats" class="text-[#3b82f6] font-mono text-sm overflow-hidden text-ellipsis whitespace-nowrap">0 items</span>
+    </div>
 
     <!-- SETTINGS MODAL -->
     <div id="settings-modal" class="modal-overlay">
         <div class="modal-content">
             <h2 class="text-xl font-bold text-white mb-4">Settings</h2>
-            <div class="form-group">
-                <label class="form-label">GitHub Username / Owner</label>
-                <input type="text" id="gh-owner" class="form-input">
-            </div>
-            <div class="form-group">
-                <label class="form-label">Repository Name</label>
-                <input type="text" id="gh-repo" class="form-input">
-            </div>
+
+            <!-- Personal Access Token -->
             <div class="form-group">
                 <label class="form-label">Personal Access Token (Requires 'repo' scope)</label>
                 <input type="password" id="gh-token" class="form-input">
+                <p class="text-gray-500 text-xs mt-1">Optional - required only for saving/editing setlists</p>
             </div>
+
+            <!-- AbleSet Settings -->
             <div class="form-group">
-                <label class="form-label">Setlists Folder</label>
-                <input type="text" id="gh-path" class="form-input">
+                <label class="form-label">AbleSet Host URL</label>
+                <input type="text" id="ableset-url" class="form-input" placeholder="http://192.168.1.243">
+                <p class="text-gray-500 text-xs mt-1">Example: http://192.168.1.243, http://Karls-MacBook.local</p>
             </div>
-            <div class="flex justify-end gap-3 mt-4">
+
+            <div class="flex justify-end gap-3 mt-6">
                 <button onclick="document.getElementById('settings-modal').classList.remove('active')" class="btn btn-secondary">Cancel</button>
                 <button onclick="saveSettings()" class="btn btn-primary">Save Config</button>
             </div>
@@ -174,15 +202,24 @@
             title: document.getElementById('view-title'),
             stats: document.getElementById('view-stats'),
             folderPath: document.getElementById('folder-path-display'),
-            panels: { files: document.getElementById('panel-files'), view: document.getElementById('panel-view') },
-            tabs: { files: document.getElementById('tab-files'), view: document.getElementById('tab-view') }
+            tabs: { sets: document.getElementById('tab-sets'), songs: document.getElementById('tab-songs') },
+            views: { sets: document.getElementById('view-sets'), songs: document.getElementById('view-songs') }
         };
 
         let currentSetlist = [];
         let currentFileObj = null;
 
+        // --- ABLESET LINK UPDATE ---
+        function updateAbleSetLink() {
+            const DEFAULT_ABLESET_URL = 'http://192.168.1.243';
+            const storedUrl = localStorage.getItem('ableset_url');
+            const url = storedUrl || DEFAULT_ABLESET_URL;
+            document.getElementById('headerAblesetLink').href = url;
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             const hasConfig = loadConfig();
+            updateAbleSetLink();
             if (hasConfig) fetchFiles();
             else openSettings();
         });
@@ -233,7 +270,11 @@
             if(itemEl) itemEl.classList.add('active');
 
             showLoader('main-loader', 'loader-text', true, `Loading ${fileObj.name}...`);
-            if(window.innerWidth < 768) switchMobileTab('view');
+
+            // Update URL with file parameter for sharing
+            const url = new URL(window.location);
+            url.searchParams.set('file', fileObj.name);
+            window.history.replaceState({}, '', url);
 
             try {
                 const data = await fetchGithubFileContent(fileObj.download_url);
@@ -251,6 +292,9 @@
                 document.getElementById('btn-download').classList.remove('hidden');
 
                 renderSetlist(parsedData);
+
+                // Switch to songs view after loading
+                switchTab('songs');
             } catch (err) {
                 alert("Error: " + err.message);
             } finally {
@@ -261,7 +305,7 @@
         function renderSetlist(data) {
             els.viewArea.innerHTML = '';
             els.stats.textContent = generateStats(data);
-            
+
             if (!Array.isArray(data) || data.length === 0) {
                  els.viewArea.innerHTML = '<div class="text-center text-gray-500 mt-10">Empty Setlist</div>';
                  return;
@@ -271,14 +315,14 @@
                 const isSet = song.lastKnownName.toLowerCase().startsWith('set');
                 const isSegue = (song.stop === false);
                 const nextIsSet = data[index+1] && data[index+1].lastKnownName.toLowerCase().startsWith('set');
-                
+
                 const div = document.createElement('div');
                 div.className = 'song-item';
                 div.setAttribute('data-name', song.lastKnownName);
-                
+
                 // Visual Indicator for Segue
                 if (isSegue && !isSet) div.classList.add('segue-active');
-                
+
                 let icon = '';
                 if (isSegue) icon = '<i class="fas fa-arrow-down text-xs text-[#3b82f6] ml-2" title="Segue into next"></i>';
                 if (isSet) icon = '';
@@ -326,35 +370,59 @@
 
         // --- SETTINGS ---
         function openSettings() {
-            document.getElementById('gh-owner').value = window.AppState.config.owner;
-            document.getElementById('gh-repo').value = window.AppState.config.repo;
+            // Load GitHub token
             document.getElementById('gh-token').value = window.AppState.config.token;
-            document.getElementById('gh-path').value = window.AppState.config.folder;
+
+            // Load AbleSet URL
+            const DEFAULT_ABLESET_URL = 'http://192.168.1.243';
+            const storedUrl = localStorage.getItem('ableset_url');
+            document.getElementById('ableset-url').value = storedUrl || DEFAULT_ABLESET_URL;
+
             document.getElementById('settings-modal').classList.add('active');
         }
 
         function saveSettings() {
-            if(saveSettingsFromUI('gh-owner', 'gh-repo', 'gh-token', 'gh-path', 'settings-modal')) {
-                fetchFiles();
+            // Save GitHub token (keep other settings unchanged)
+            const token = document.getElementById('gh-token').value.trim();
+            window.AppState.config.token = token;
+            localStorage.setItem('up_gh_config', JSON.stringify(window.AppState.config));
+            updateConnectionStatus(!!(window.AppState.config.owner && window.AppState.config.repo));
+
+            // Save AbleSet URL
+            let ablesetUrl = document.getElementById('ableset-url').value.trim();
+            if (!ablesetUrl) ablesetUrl = 'http://192.168.1.243';
+            if (!ablesetUrl.startsWith('http://') && !ablesetUrl.startsWith('https://')) {
+                ablesetUrl = 'http://' + ablesetUrl;
             }
+            localStorage.setItem('ableset_url', ablesetUrl);
+
+            updateAbleSetLink();
+            document.getElementById('settings-modal').classList.remove('active');
+            fetchFiles();
         }
 
-        // --- MOBILE TABS ---
-        window.switchMobileTab = (tab) => {
-            if (tab === 'files') {
-                els.panels.files.classList.remove('mobile-hidden');
-                els.panels.view.classList.add('mobile-hidden');
-                els.tabs.files.classList.replace('text-gray-500', 'text-[#3b82f6]');
-                els.tabs.files.classList.replace('border-transparent', 'border-[#3b82f6]');
-                els.tabs.view.classList.replace('text-[#3b82f6]', 'text-gray-500');
-                els.tabs.view.classList.replace('border-[#3b82f6]', 'border-transparent');
+        // --- TAB SWITCHING ---
+        window.switchTab = (tab) => {
+            if (tab === 'sets') {
+                // Show sets view, hide songs
+                els.views.sets.classList.remove('hidden');
+                els.views.songs.classList.add('hidden');
+
+                // Update tab button styling
+                els.tabs.sets.classList.add('bg-[#333]', 'text-[#3b82f6]', 'shadow-sm');
+                els.tabs.sets.classList.remove('text-gray-400', 'hover:text-white');
+                els.tabs.songs.classList.remove('bg-[#333]', 'text-[#3b82f6]', 'shadow-sm');
+                els.tabs.songs.classList.add('text-gray-400', 'hover:text-white');
             } else {
-                els.panels.files.classList.add('mobile-hidden');
-                els.panels.view.classList.remove('mobile-hidden');
-                els.tabs.view.classList.replace('text-gray-500', 'text-[#3b82f6]');
-                els.tabs.view.classList.replace('border-transparent', 'border-[#3b82f6]');
-                els.tabs.files.classList.replace('text-[#3b82f6]', 'text-gray-500');
-                els.tabs.files.classList.replace('border-[#3b82f6]', 'border-transparent');
+                // Show songs view, hide sets
+                els.views.sets.classList.add('hidden');
+                els.views.songs.classList.remove('hidden');
+
+                // Update tab button styling
+                els.tabs.songs.classList.add('bg-[#333]', 'text-[#3b82f6]', 'shadow-sm');
+                els.tabs.songs.classList.remove('text-gray-400', 'hover:text-white');
+                els.tabs.sets.classList.remove('bg-[#333]', 'text-[#3b82f6]', 'shadow-sm');
+                els.tabs.sets.classList.add('text-gray-400', 'hover:text-white');
             }
         };
     </script>
