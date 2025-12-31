@@ -1,0 +1,20 @@
+{
+  "name": "Ultraphonics",
+  "short_name": "Ultraphonics",
+  "description": "High-energy variety band for weddings, events, and bars in Detroit, Ann Arbor, and Toledo",
+  "icons": [
+    {
+      "src": "/assets/images/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/images/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#008c8d",
+  "background_color": "#000000",
+  "display": "standalone"
+}

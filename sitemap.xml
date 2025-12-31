@@ -2,22 +2,32 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://www.ultraphonicsmusic.com/</loc>
-    <lastmod>2025-12-18</lastmod>
+    <lastmod>2025-12-31</lastmod>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://www.ultraphonicsmusic.com/services.html</loc>
-    <lastmod>2025-12-18</lastmod>
-    <priority>0.8</priority>
+    <lastmod>2025-12-31</lastmod>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.ultraphonicsmusic.com/weddings.html</loc>
+    <lastmod>2025-12-31</lastmod>
+    <priority>0.9</priority>
   </url>
   <url>
     <loc>https://www.ultraphonicsmusic.com/quote-request.html</loc>
-    <lastmod>2025-12-18</lastmod>
+    <lastmod>2025-12-31</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.ultraphonicsmusic.com/contact.html</loc>
-    <lastmod>2025-12-18</lastmod>
-    <priority>0.8</priority>
+    <lastmod>2025-12-31</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.ultraphonicsmusic.com/media-kit.html</loc>
+    <lastmod>2025-12-31</lastmod>
+    <priority>0.6</priority>
   </url>
 </urlset>

@@ -35,13 +35,6 @@ export const config = {
       title: "Our Services",
       lead: "High-energy live entertainment tailored to your specific event needs."
     },
-    mediaKit: {
-      label: "Media Kit",
-      link: "media-kit.html",
-      title: "Electronic Press Kit",
-      lead: "Official photos, promotional assets, and resources.",
-      hide: true,
-    },
     quote: {
       label: "Request a Quote",
       link: "quote-request.html",
@@ -62,7 +55,13 @@ export const config = {
     newsletter: {
       label: "Email List",
       link: "index.html#newsletter",
-    }
+    },
+    mediaKit: {
+      label: "Media",
+      link: "media-kit.html",
+      title: "Media Kit",
+      lead: "Official photos, promotional assets, and resources.",
+    },
   },
 
   // Hero Section Content
