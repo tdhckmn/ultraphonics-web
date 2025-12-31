@@ -246,7 +246,33 @@
 
                 <!-- Body -->
                 <div class="my-5">
-                    <label class="block text-stone-400 text-xs font-bold mb-2" for="ablesetUrl">
+                    <!-- GitHub Authentication -->
+                    <label class="block text-stone-400 text-xs font-bold mb-2">
+                        GitHub Authentication
+                    </label>
+
+                    <!-- Helper link -->
+                    <a href="https://github.com/settings/tokens/new?description=Ultraphonics%20Setlist%20Builder&scopes=repo"
+                       target="_blank"
+                       class="block w-full px-4 py-3 bg-indigo-600 rounded-lg text-white hover:bg-indigo-500 font-bold transition-colors mb-2 text-center">
+                        <i class="fab fa-github mr-2"></i> Create GitHub Token
+                    </a>
+                    <p class="text-stone-500 text-xs mb-3 italic">
+                        Opens GitHub with the token form pre-filled. Copy the token and paste below.
+                    </p>
+
+                    <!-- Token Input -->
+                    <label class="block text-stone-400 text-xs font-bold mb-2" for="gh-token">
+                        Personal Access Token
+                    </label>
+                    <input class="appearance-none border border-stone-700 rounded w-full py-3 px-3 text-stone-200 bg-stone-800 leading-tight focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 mb-1"
+                        id="gh-token" type="password" placeholder="ghp_...">
+                    <p class="text-stone-500 text-xs mt-1 italic mb-4">
+                        Required for saving setlists to GitHub
+                    </p>
+
+                    <!-- AbleSet Settings -->
+                    <label class="block text-stone-400 text-xs font-bold mb-2 mt-5" for="ablesetUrl">
                         AbleSet Host URL
                     </label>
                     <input class="appearance-none border border-stone-700 rounded w-full py-3 px-3 text-stone-200 bg-stone-800 leading-tight focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
@@ -266,12 +292,14 @@
         </div>
     </div>
 
-    <!-- Logic -->
+    <!-- Scripts -->
     <script>
+        // --- MAIN LOGIC ---
         document.addEventListener('DOMContentLoaded', () => {
             const ablesetLink = document.getElementById('ablesetLink');
             const ablesetUrlDisplay = document.getElementById('ablesetUrlDisplay');
             const ablesetUrlInput = document.getElementById('ablesetUrlInput');
+            const ghTokenInput = document.getElementById('gh-token');
 
             const openSettingsBtn = document.getElementById('openSettings');
             const closeModalBtn = document.getElementById('closeModal');
@@ -285,29 +313,38 @@
             // --- Helper Functions ---
 
             function loadSettings() {
+                // Load AbleSet URL
                 const storedUrl = localStorage.getItem('ableset_url');
                 const url = storedUrl || DEFAULT_ABLESET_URL;
-
-                // Update Link
                 ablesetLink.href = url;
-                // Update Display text
                 ablesetUrlDisplay.textContent = url;
-                // Update Input value
                 ablesetUrlInput.value = url;
+
+                // Load GitHub token
+                const config = JSON.parse(localStorage.getItem('up_gh_config') || '{}');
+                ghTokenInput.value = config.token || '';
             }
 
             function saveSettings() {
+                // Save AbleSet URL
                 let url = ablesetUrlInput.value.trim();
-
-                // Basic validation/cleanup
                 if (!url) {
                     url = DEFAULT_ABLESET_URL;
                 }
                 if (!url.startsWith('http://') && !url.startsWith('https://')) {
                     url = 'http://' + url;
                 }
-
                 localStorage.setItem('ableset_url', url);
+
+                // Save GitHub token
+                const token = ghTokenInput.value.trim();
+                const config = JSON.parse(localStorage.getItem('up_gh_config') || '{}');
+                config.token = token;
+                config.owner = config.owner || 'tdhckmn';
+                config.repo = config.repo || 'ultraphonics-web';
+                config.folder = config.folder || 'content/setlists';
+                localStorage.setItem('up_gh_config', JSON.stringify(config));
+
                 loadSettings();
                 toggleModal();
             }

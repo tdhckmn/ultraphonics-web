@@ -170,11 +170,24 @@
         <div class="modal-content">
             <h2 class="text-xl font-bold text-white mb-4">Settings</h2>
 
-            <!-- Personal Access Token -->
+            <!-- GitHub Authentication -->
             <div class="form-group">
-                <label class="form-label">Personal Access Token (Requires 'repo' scope)</label>
-                <input type="password" id="gh-token" class="form-input">
-                <p class="text-gray-500 text-xs mt-1">Optional - required only for saving/editing setlists</p>
+                <label class="form-label">GitHub Authentication</label>
+
+                <!-- Helper link -->
+                <a href="https://github.com/settings/tokens/new?description=Ultraphonics%20Setlist%20Builder&scopes=repo"
+                   target="_blank"
+                   class="block w-full btn btn-primary mb-2 text-center">
+                    <i class="fab fa-github mr-2"></i> Create GitHub Token
+                </a>
+                <p class="text-gray-500 text-xs mb-3">
+                    Opens GitHub with the token form pre-filled. Copy the token and paste below.
+                </p>
+
+                <!-- Token Input -->
+                <label class="form-label text-sm">Personal Access Token</label>
+                <input type="password" id="gh-token" class="form-input" placeholder="ghp_...">
+                <p class="text-gray-500 text-xs mt-1">Optional - only needed for editing setlists</p>
             </div>
 
             <!-- AbleSet Settings -->
