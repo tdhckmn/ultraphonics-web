@@ -14,10 +14,21 @@ export function initMailerLite() {
 
     let isAdminMode = false;
 
-    // Detect "secret code" for admin
+    // Admin access emails and secret code
+    const adminEmails = [
+      'dishwasher',
+      'tomh@duck.com',
+      'thomasdhickman@gmail.com',
+      'an.fiolek@gmail.com',
+      'lesterburton17@gmail.com',
+      'davidbigham1@gmail.com',
+      'shelleycatalan@gmail.com'
+    ];
+
+    // Detect "secret code" or band member email for admin
     emailInput.addEventListener('input', () => {
-      const currentValue = emailInput.value.toLowerCase();
-      if (currentValue === 'dishwasher') {
+      const currentValue = emailInput.value.toLowerCase().trim();
+      if (adminEmails.includes(currentValue)) {
         submitButton.textContent = 'Go to Admin';
         isAdminMode = true;
       } else {
