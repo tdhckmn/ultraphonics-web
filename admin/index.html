@@ -12,6 +12,12 @@
     <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/apple-touch-icon.png">
     <link rel="manifest" href="/site.webmanifest">
 
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#008c8d">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="UP Admin">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -36,6 +42,174 @@
         body.modal-active {
             overflow-x: hidden;
             overflow-y: visible !important;
+        }
+
+        /* Install Banner Styles */
+        .install-banner {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #008c8d 0%, #00aeb0 100%);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 140, 141, 0.4);
+            z-index: 1000;
+            max-width: 90%;
+            width: 500px;
+            display: none;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        .install-banner.show {
+            display: block;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateX(-50%) translateY(100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(-50%) translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .install-banner-content {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .install-banner-icon {
+            font-size: 2rem;
+            flex-shrink: 0;
+        }
+
+        .install-banner-text {
+            flex-grow: 1;
+        }
+
+        .install-banner-title {
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .install-banner-subtitle {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+
+        .install-banner-buttons {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .install-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+        }
+
+        .install-btn-primary {
+            background: white;
+            color: #008c8d;
+        }
+
+        .install-btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.3);
+        }
+
+        .install-btn-secondary {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .install-btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* iOS Instructions Modal */
+        .ios-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(4px);
+        }
+
+        .ios-modal.show {
+            display: flex;
+        }
+
+        .ios-modal-content {
+            background: #1e1e1e;
+            border-radius: 16px;
+            padding: 2rem;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .ios-modal-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: white;
+        }
+
+        .ios-instructions {
+            list-style: none;
+            padding: 0;
+            margin: 1.5rem 0;
+        }
+
+        .ios-instructions li {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            color: #ccc;
+        }
+
+        .ios-step-number {
+            background: #008c8d;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        .ios-step-text {
+            flex-grow: 1;
+            padding-top: 4px;
+        }
+
+        .ios-step-icon {
+            font-size: 1.2rem;
+            margin: 0 0.25rem;
+            color: #00ddde;
         }
     </style>
 </head>
@@ -221,6 +395,7 @@
                     <i class="fa-solid fa-file-code mr-2 text-stone-500"></i> Ultraphonics V3 JSON
                 </a>
             </div>
+            <br>
         </div>
 
         <!-- Brand Resources -->
@@ -316,8 +491,174 @@
         </div>
     </div>
 
+    <!-- Install Banner -->
+    <div id="installBanner" class="install-banner">
+        <div class="install-banner-content">
+            <div class="install-banner-icon">
+                <i class="fa-solid fa-mobile-screen-button"></i>
+            </div>
+            <div class="install-banner-text">
+                <div class="install-banner-title">Install Ultraphonics Admin</div>
+                <div class="install-banner-subtitle">Add to your home screen for quick access</div>
+            </div>
+        </div>
+        <div class="install-banner-buttons">
+            <button id="installButton" class="install-btn install-btn-primary">
+                <i class="fa-solid fa-download"></i> Install
+            </button>
+            <button id="dismissInstall" class="install-btn install-btn-secondary">
+                Maybe Later
+            </button>
+        </div>
+    </div>
+
+    <!-- iOS Instructions Modal -->
+    <div id="iosModal" class="ios-modal">
+        <div class="ios-modal-content">
+            <div class="ios-modal-title">
+                <i class="fa-brands fa-apple"></i> Install on iOS
+            </div>
+            <p style="color: #aaa; margin-bottom: 1rem;">Follow these steps to add Ultraphonics Admin to your home screen:</p>
+            <ol class="ios-instructions">
+                <li>
+                    <div class="ios-step-number">1</div>
+                    <div class="ios-step-text">
+                        Tap the <strong>Share</strong> button <i class="fa-solid fa-arrow-up-from-bracket ios-step-icon"></i> at the bottom of Safari
+                    </div>
+                </li>
+                <li>
+                    <div class="ios-step-number">2</div>
+                    <div class="ios-step-text">
+                        Scroll down and tap <strong>"Add to Home Screen"</strong> <i class="fa-solid fa-plus-square ios-step-icon"></i>
+                    </div>
+                </li>
+                <li>
+                    <div class="ios-step-number">3</div>
+                    <div class="ios-step-text">
+                        Tap <strong>"Add"</strong> in the top right corner
+                    </div>
+                </li>
+            </ol>
+            <button onclick="closeIOSModal()" class="install-btn install-btn-primary" style="width: 100%; margin-top: 1rem;">
+                Got it!
+            </button>
+        </div>
+    </div>
+
     <!-- Scripts -->
     <script>
+        // --- PWA INSTALL LOGIC ---
+        let deferredPrompt;
+        const installBanner = document.getElementById('installBanner');
+        const installButton = document.getElementById('installButton');
+        const dismissButton = document.getElementById('dismissInstall');
+        const iosModal = document.getElementById('iosModal');
+
+        // Check if app is already installed or dismissed
+        function shouldShowInstallPrompt() {
+            // Check if running in standalone mode (already installed)
+            if (window.matchMedia('(display-mode: standalone)').matches) {
+                return false;
+            }
+
+            // Check if user dismissed the prompt
+            if (localStorage.getItem('installDismissed') === 'true') {
+                return false;
+            }
+
+            // Check URL parameter
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('installed') === 'true') {
+                localStorage.setItem('installDismissed', 'true');
+                return false;
+            }
+
+            return true;
+        }
+
+        // Detect iOS
+        function isIOS() {
+            return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        }
+
+        // Detect if it's in standalone mode on iOS
+        function isInStandaloneMode() {
+            return ('standalone' in window.navigator) && (window.navigator.standalone);
+        }
+
+        // Show iOS instructions
+        function showIOSInstructions() {
+            iosModal.classList.add('show');
+            // Mark as dismissed so we don't show again
+            localStorage.setItem('installDismissed', 'true');
+            installBanner.classList.remove('show');
+        }
+
+        // Close iOS modal
+        function closeIOSModal() {
+            iosModal.classList.remove('show');
+        }
+        window.closeIOSModal = closeIOSModal; // Make it global for onclick
+
+        // Listen for the beforeinstallprompt event (Chrome, Edge, etc.)
+        window.addEventListener('beforeinstallprompt', (e) => {
+            // Prevent the mini-infobar from appearing on mobile
+            e.preventDefault();
+            // Stash the event so it can be triggered later
+            deferredPrompt = e;
+
+            // Show the install banner if conditions are met
+            if (shouldShowInstallPrompt()) {
+                setTimeout(() => {
+                    installBanner.classList.add('show');
+                }, 2000); // Show after 2 seconds
+            }
+        });
+
+        // Install button click handler
+        installButton.addEventListener('click', async () => {
+            if (isIOS()) {
+                // Show iOS instructions
+                showIOSInstructions();
+            } else if (deferredPrompt) {
+                // Show the install prompt
+                deferredPrompt.prompt();
+                // Wait for the user to respond to the prompt
+                const { outcome } = await deferredPrompt.userChoice;
+
+                if (outcome === 'accepted') {
+                    console.log('User accepted the install prompt');
+                    localStorage.setItem('installDismissed', 'true');
+                } else {
+                    console.log('User dismissed the install prompt');
+                }
+
+                // Clear the deferredPrompt
+                deferredPrompt = null;
+                installBanner.classList.remove('show');
+            }
+        });
+
+        // Dismiss button click handler
+        dismissButton.addEventListener('click', () => {
+            installBanner.classList.remove('show');
+            localStorage.setItem('installDismissed', 'true');
+        });
+
+        // Show install prompt on iOS if not already installed
+        if (isIOS() && !isInStandaloneMode() && shouldShowInstallPrompt()) {
+            setTimeout(() => {
+                installBanner.classList.add('show');
+            }, 2000);
+        }
+
+        // Register service worker
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/admin/sw.js')
+                .then(registration => console.log('Service Worker registered'))
+                .catch(error => console.log('Service Worker registration failed:', error));
+        }
+
         // --- MAIN LOGIC ---
         document.addEventListener('DOMContentLoaded', () => {
             const ablesetLink = document.getElementById('ablesetLink');
