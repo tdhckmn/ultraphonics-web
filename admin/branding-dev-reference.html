@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultraphonics Brand Guide - Developer Reference</title>
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="/assets/images/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/apple-touch-icon.png">
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap">
+    <style>
+        :root {
+            --color-primary-blue: #008c8d;
+            --color-primary-red: #f60403;
+            --color-accent-cyan: #00ddde;
+            --color-bg-dark: #121212;
+            --color-bg: #1a1a1a;
+            --color-text: #ffffff;
+            --color-text-secondary: #cccccc;
+            --color-text-tertiary: #aaaaaa;
+            --shadow-glow: 0 0 10px rgba(0, 221, 222, 0.5),
+                           0 0 20px rgba(0, 221, 222, 0.3),
+                           0 0 30px rgba(0, 221, 222, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background-color: var(--color-bg-dark);
+            color: var(--color-text);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            padding: 4rem 2rem;
+            border-bottom: 2px solid var(--color-primary-blue);
+            margin-bottom: 4rem;
+        }
+
+        .logo-display {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 2rem;
+            border-radius: 50%;
+            box-shadow: var(--shadow-glow);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--color-text);
+        }
+
+        h2 {
+            font-size: 2rem;
+            color: var(--color-accent-cyan);
+            margin: 3rem 0 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--color-primary-blue);
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            color: var(--color-accent-cyan);
+            margin: 2rem 0 1rem;
+        }
+
+        h4 {
+            font-size: 1.2rem;
+            color: var(--color-text-secondary);
+            margin: 1.5rem 0 0.75rem;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 1rem;
+            color: var(--color-text-secondary);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--color-text-secondary);
+        }
+
+        code {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: var(--color-accent-cyan);
+        }
+
+        pre {
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1rem 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+            display: block;
+            line-height: 1.8;
+            white-space: pre;
+        }
+
+        .element-card {
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin: 2rem 0;
+        }
+
+        .back-link {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background-color: var(--color-primary-blue);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            margin: 2rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover {
+            background-color: #00aeb0;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        ul {
+            list-style-position: inside;
+            margin: 1rem 0;
+            padding-left: 1rem;
+        }
+
+        li {
+            margin: 0.5rem 0;
+            color: var(--color-text-secondary);
+        }
+
+        .section {
+            margin-bottom: 4rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        th {
+            background-color: rgba(0, 140, 141, 0.2);
+            color: var(--color-accent-cyan);
+            font-weight: 600;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="/assets/images/logo-color.png" alt="Ultraphonics Logo" class="logo-display">
+        <h1>Developer Reference</h1>
+        <p class="subtitle">Technical implementation guide for Ultraphonics branding</p>
+        <a href="branding-guide.html" class="back-link">← Back to Brand Guide</a>
+    </header>
+
+    <div class="container">
+        <!-- CSS VARIABLES -->
+        <section class="section">
+            <h2>CSS Variables</h2>
+            <p>Use these CSS custom properties for consistent styling across the website.</p>
+
+            <h3>Color Variables</h3>
+            <pre><code>:root {
+  /* Primary Colors */
+  --color-primary-blue: #008c8d;
+  --color-primary-red: #f60403;
+  --color-accent-cyan: #00ddde;
+  --color-accent-hover: #33ddff;
+
+  /* Button-specific */
+  --color-btn-bg: #008c8d;
+  --color-btn-hover: #00aeb0;
+
+  /* Backgrounds */
+  --color-background: #1a1a1a;
+  --color-background-dark: #121212;
+
+  /* Text Colors */
+  --color-text: #ffffff;
+  --color-text-secondary: #cccccc;
+  --color-text-tertiary: #aaaaaa;
+  --color-white: #ffffff;
+}</code></pre>
+
+            <h3>Shadow Variables</h3>
+            <pre><code>:root {
+  /* Glow effect - signature cyan glow */
+  --shadow-glow: 0 0 10px rgba(0, 221, 222, 0.5),
+                 0 0 20px rgba(0, 221, 222, 0.3),
+                 0 0 30px rgba(0, 221, 222, 0.2);
+
+  /* Standard shadows */
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.3);
+}</code></pre>
+
+            <h3>Spacing Variables</h3>
+            <pre><code>:root {
+  --spacing-xs: 0.25rem;    /* 4px */
+  --spacing-sm: 0.5rem;     /* 8px */
+  --spacing-md: 1rem;       /* 16px */
+  --spacing-lg: 1.5rem;     /* 24px */
+  --spacing-xl: 2rem;       /* 32px */
+  --spacing-xxl: 3rem;      /* 48px */
+  --spacing-xxxl: 4rem;     /* 64px */
+}</code></pre>
+
+            <h3>Typography Variables</h3>
+            <pre><code>:root {
+  --font-size-base: 1rem;     /* 16px */
+  --font-size-sm: 0.9rem;     /* 14.4px */
+  --font-size-lg: 1.2rem;     /* 19.2px */
+  --font-size-xl: 1.5rem;     /* 24px */
+  --font-size-xxl: 3rem;      /* 48px */
+}</code></pre>
+        </section>
+
+        <!-- TYPOGRAPHY -->
+        <section class="section">
+            <h2>Typography</h2>
+
+            <h3>Font Import</h3>
+            <p>Add this to the top of your CSS file or in the <code>&lt;head&gt;</code> of your HTML:</p>
+            <pre><code>@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');</code></pre>
+
+            <h3>Font Stack</h3>
+            <pre><code>body {
+  font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+}</code></pre>
+
+            <h3>Type Scale Reference</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Element</th>
+                        <th>Size</th>
+                        <th>Weight</th>
+                        <th>Usage</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>H1 / Page Title</td>
+                        <td>3rem (48px)</td>
+                        <td>700 (Bold)</td>
+                        <td>Main page headings</td>
+                    </tr>
+                    <tr>
+                        <td>H2 / Section</td>
+                        <td>1.5rem (24px)</td>
+                        <td>600 (Semi-Bold)</td>
+                        <td>Section headings</td>
+                    </tr>
+                    <tr>
+                        <td>H3 / Subsection</td>
+                        <td>1.2rem (19.2px)</td>
+                        <td>500 (Medium)</td>
+                        <td>Subsection headings</td>
+                    </tr>
+                    <tr>
+                        <td>Body Text</td>
+                        <td>1rem (16px)</td>
+                        <td>400 (Regular)</td>
+                        <td>Paragraphs, general content</td>
+                    </tr>
+                    <tr>
+                        <td>Small Text</td>
+                        <td>0.9rem (14.4px)</td>
+                        <td>400 (Regular)</td>
+                        <td>Captions, labels, metadata</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- COMPONENTS -->
+        <section class="section">
+            <h2>Component Patterns</h2>
+
+            <h3>Buttons</h3>
+            <h4>Primary Button</h4>
+            <pre><code>.button {
+  background-color: var(--color-btn-bg);
+  color: var(--color-white);
+  border: none;
+  padding: 12px 24px;
+  font-size: var(--font-size-base);
+  border-radius: 5px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  display: inline-block;
+  font-weight: bold;
+}
+
+.button:hover {
+  background-color: var(--color-btn-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}</code></pre>
+
+            <h4>Outline Button</h4>
+            <pre><code>.button-outline {
+  background-color: transparent;
+  border: 2px solid var(--color-btn-bg);
+  color: var(--color-text);
+  padding: 12px 24px;
+  font-size: var(--font-size-base);
+  border-radius: 5px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  display: inline-block;
+  font-weight: bold;
+}
+
+.button-outline:hover {
+  background-color: var(--color-btn-bg);
+  color: var(--color-white);
+}</code></pre>
+
+            <h3>Logo Display</h3>
+            <pre><code>.logo {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  box-shadow: var(--shadow-glow);
+  background-color: var(--color-background-dark);
+}</code></pre>
+
+            <h3>Cards / Containers</h3>
+            <pre><code>.card {
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: var(--spacing-lg);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  border-color: var(--color-accent-cyan);
+  box-shadow: var(--shadow-glow);
+}</code></pre>
+
+            <h3>Links</h3>
+            <pre><code>a {
+  color: var(--color-accent-cyan);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: var(--color-accent-hover);
+  text-decoration: underline;
+}</code></pre>
+        </section>
+
+        <!-- COLOR USAGE -->
+        <section class="section">
+            <h2>Color Usage Map</h2>
+            <p>Quick reference for when to use each color:</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Color</th>
+                        <th>Hex</th>
+                        <th>Use For</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Primary Blue</td>
+                        <td><code>#008c8d</code></td>
+                        <td>Buttons, CTAs, interactive elements, section borders</td>
+                    </tr>
+                    <tr>
+                        <td>Primary Red</td>
+                        <td><code>#f60403</code></td>
+                        <td>Logo accent, critical alerts, special emphasis (use sparingly)</td>
+                    </tr>
+                    <tr>
+                        <td>Bright Cyan</td>
+                        <td><code>#00ddde</code></td>
+                        <td>Text accents, headings, links, hover states, glow effects</td>
+                    </tr>
+                    <tr>
+                        <td>Dark Background</td>
+                        <td><code>#121212</code></td>
+                        <td>Primary backgrounds, footer</td>
+                    </tr>
+                    <tr>
+                        <td>Background</td>
+                        <td><code>#1a1a1a</code></td>
+                        <td>Secondary backgrounds, cards</td>
+                    </tr>
+                    <tr>
+                        <td>White</td>
+                        <td><code>#ffffff</code></td>
+                        <td>Primary text, important content</td>
+                    </tr>
+                    <tr>
+                        <td>Light Gray</td>
+                        <td><code>#cccccc</code></td>
+                        <td>Secondary text, descriptions</td>
+                    </tr>
+                    <tr>
+                        <td>Medium Gray</td>
+                        <td><code>#aaaaaa</code></td>
+                        <td>Tertiary text, labels, metadata</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- RESPONSIVE DESIGN -->
+        <section class="section">
+            <h2>Responsive Design</h2>
+
+            <h3>Breakpoints</h3>
+            <p>Standard breakpoint used across the site:</p>
+            <pre><code>/* Mobile-first approach */
+
+/* Small devices (landscape phones, less than 768px) */
+/* Default styles apply */
+
+/* Medium devices and up (tablets, 768px and up) */
+@media (min-width: 768px) {
+  /* Tablet and desktop styles */
+}</code></pre>
+
+            <h3>Responsive Logo</h3>
+            <pre><code>:root {
+  --logo-size: 100px;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --logo-size: 150px;
+  }
+}
+
+.logo {
+  width: var(--logo-size);
+  height: var(--logo-size);
+}</code></pre>
+        </section>
+
+        <!-- ACCESSIBILITY -->
+        <section class="section">
+            <h2>Accessibility Considerations</h2>
+
+            <div class="element-card">
+                <h3>Color Contrast</h3>
+                <ul>
+                    <li><strong>White text on dark backgrounds:</strong> Meets WCAG AAA standards</li>
+                    <li><strong>Cyan (#00ddde) on dark backgrounds:</strong> Meets WCAG AA standards</li>
+                    <li><strong>Blue (#008c8d) buttons with white text:</strong> Meets WCAG AAA standards</li>
+                </ul>
+
+                <h3 style="margin-top: 1.5rem;">Best Practices</h3>
+                <ul>
+                    <li>Always test color combinations for sufficient contrast</li>
+                    <li>Don't rely on color alone to convey information</li>
+                    <li>Ensure focus states are visible (use cyan glow effect)</li>
+                    <li>Maintain minimum font size of 0.9rem (14.4px)</li>
+                    <li>Use semantic HTML elements</li>
+                    <li>Provide alt text for all images</li>
+                </ul>
+
+                <h3 style="margin-top: 1.5rem;">Focus States</h3>
+                <pre><code>button:focus,
+a:focus,
+input:focus {
+  outline: none;
+  border-color: var(--color-accent-cyan);
+  box-shadow: var(--shadow-glow);
+}</code></pre>
+            </div>
+        </section>
+
+        <!-- ASSETS -->
+        <section class="section">
+            <h2>Asset Paths</h2>
+
+            <h3>Logo Files</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>File</th>
+                        <th>Path</th>
+                        <th>Usage</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Primary Logo</td>
+                        <td><code>/assets/images/logo-color.png</code></td>
+                        <td>Main logo, profile pictures, website header</td>
+                    </tr>
+                    <tr>
+                        <td>Social Share</td>
+                        <td><code>/assets/images/logo-share.png</code></td>
+                        <td>OG images, social media posts</td>
+                    </tr>
+                    <tr>
+                        <td>Favicon</td>
+                        <td><code>/assets/images/favicon.ico</code></td>
+                        <td>Browser tab icon</td>
+                    </tr>
+                    <tr>
+                        <td>Apple Touch Icon</td>
+                        <td><code>/assets/images/apple-touch-icon.png</code></td>
+                        <td>iOS home screen icon</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Favicon Implementation</h3>
+            <pre><code>&lt;!-- In &lt;head&gt; tag --&gt;
+&lt;link rel="icon" type="image/x-icon" href="/assets/images/favicon.ico"&gt;
+&lt;link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon-16x16.png"&gt;
+&lt;link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32x32.png"&gt;
+&lt;link rel="apple-touch-icon" sizes="180x180" href="/assets/images/apple-touch-icon.png"&gt;</code></pre>
+        </section>
+
+        <!-- FOOTER -->
+        <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 2px solid var(--color-primary-blue); text-align: center;">
+            <p style="color: var(--color-text-tertiary); margin-bottom: 2rem;">
+                For technical questions or implementation support, contact the development team.
+            </p>
+            <a href="branding-guide.html" class="back-link">← Back to Brand Guide</a>
+            <a href="index.html" class="back-link" style="margin-left: 1rem;">← Back to Admin</a>
+        </footer>
+    </div>
+</body>
+</html>

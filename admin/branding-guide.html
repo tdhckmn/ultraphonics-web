@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultraphonics Brand Guide</title>
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="/assets/images/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/apple-touch-icon.png">
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap">
+    <style>
+        :root {
+            --color-primary-blue: #008c8d;
+            --color-primary-red: #f60403;
+            --color-accent-cyan: #00ddde;
+            --color-bg-dark: #121212;
+            --color-bg: #1a1a1a;
+            --color-text: #ffffff;
+            --color-text-secondary: #cccccc;
+            --color-text-tertiary: #aaaaaa;
+            --shadow-glow: 0 0 10px rgba(0, 221, 222, 0.5),
+                           0 0 20px rgba(0, 221, 222, 0.3),
+                           0 0 30px rgba(0, 221, 222, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background-color: var(--color-bg-dark);
+            color: var(--color-text);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            padding: 4rem 2rem;
+            border-bottom: 2px solid var(--color-primary-blue);
+            margin-bottom: 4rem;
+        }
+
+        .logo-display {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 2rem;
+            border-radius: 50%;
+            box-shadow: var(--shadow-glow);
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            color: var(--color-text);
+        }
+
+        h2 {
+            font-size: 2rem;
+            color: var(--color-accent-cyan);
+            margin: 3rem 0 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--color-primary-blue);
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            color: var(--color-accent-cyan);
+            margin: 2rem 0 1rem;
+        }
+
+        h4 {
+            font-size: 1.2rem;
+            color: var(--color-text-secondary);
+            margin: 1.5rem 0 0.75rem;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 1rem;
+            color: var(--color-text-secondary);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--color-text-secondary);
+        }
+
+        .color-palette {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .color-swatch {
+            text-align: center;
+        }
+
+        .color-box {
+            height: 150px;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .color-info {
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 1rem;
+            border-radius: 8px;
+        }
+
+        .color-name {
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .color-hex {
+            font-family: 'Courier New', monospace;
+            color: var(--color-accent-cyan);
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .color-usage {
+            font-size: 0.9rem;
+            color: var(--color-text-tertiary);
+            font-style: italic;
+        }
+
+        .typography-sample {
+            margin: 2rem 0;
+            padding: 2rem;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            border-left: 4px solid var(--color-accent-cyan);
+        }
+
+        .font-display-xl {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .font-display-lg {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .font-display-md {
+            font-size: 1.5rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+
+        .font-display-base {
+            font-size: 1rem;
+            font-weight: 400;
+            margin-bottom: 1rem;
+        }
+
+        .logo-variations {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .logo-variation {
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .logo-variation.dark-bg {
+            background-color: var(--color-bg-dark);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logo-variation.light-bg {
+            background-color: #ffffff;
+            border: 2px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .logo-variation img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin-bottom: 1rem;
+        }
+
+        .logo-variation p {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .logo-variation.light-bg p {
+            color: #1a1a1a;
+        }
+
+        .design-elements {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .element-card {
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .element-card h4 {
+            color: var(--color-accent-cyan);
+        }
+
+        .glow-example {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background-color: var(--color-primary-blue);
+            color: white;
+            border-radius: 8px;
+            box-shadow: var(--shadow-glow);
+            font-weight: 700;
+            margin: 1rem 0;
+        }
+
+        .shadow-example-sm {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            margin: 0.5rem;
+        }
+
+        .shadow-example-md {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            margin: 0.5rem;
+        }
+
+        .border-examples {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .border-example {
+            padding: 1rem;
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 2px solid var(--color-accent-cyan);
+            text-align: center;
+            min-width: 100px;
+        }
+
+        .spacing-scale {
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 12px;
+        }
+
+        .spacing-item {
+            display: flex;
+            align-items: center;
+            margin: 1rem 0;
+            gap: 1rem;
+        }
+
+        .spacing-label {
+            font-family: 'Courier New', monospace;
+            color: var(--color-accent-cyan);
+            min-width: 150px;
+        }
+
+        .spacing-visual {
+            height: 20px;
+            background-color: var(--color-primary-blue);
+            border-radius: 4px;
+        }
+
+        .dos-donts {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .do-card, .dont-card {
+            padding: 2rem;
+            border-radius: 12px;
+            border: 2px solid;
+        }
+
+        .do-card {
+            border-color: #22c55e;
+            background-color: rgba(34, 197, 94, 0.1);
+        }
+
+        .dont-card {
+            border-color: #ef4444;
+            background-color: rgba(239, 68, 68, 0.1);
+        }
+
+        .do-card h4 {
+            color: #22c55e;
+        }
+
+        .dont-card h4 {
+            color: #ef4444;
+        }
+
+        ul {
+            list-style-position: inside;
+            margin: 1rem 0;
+            padding-left: 1rem;
+        }
+
+        li {
+            margin: 0.5rem 0;
+            color: var(--color-text-secondary);
+        }
+
+        code {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: var(--color-accent-cyan);
+        }
+
+        .back-link {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background-color: var(--color-primary-blue);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            margin: 2rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover {
+            background-color: #00aeb0;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            .dos-donts {
+                grid-template-columns: 1fr;
+            }
+
+            .color-palette {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .section {
+            margin-bottom: 4rem;
+        }
+ 
+        /* Navigation link styles */
+        nav a:hover {
+            background-color: rgba(0, 221, 222, 0.1);
+            color: var(--color-accent-cyan) !important;
+        }
+
+        /* Smooth scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="/assets/images/logo-color.png" alt="Ultraphonics Logo" class="logo-display">
+        <h1>Ultraphonics Brand Guide</h1>
+        <p class="subtitle">Official branding guidelines and visual identity standards</p>
+        <p>These guidelines were created with AI and can be tweaked as we see fit.</p>
+        <a href="index.html" class="back-link">← Back to Admin</a>
+    </header>
+
+    <div class="container">
+        <!-- QUICK NAVIGATION -->
+        <nav style="background-color: rgba(255, 255, 255, 0.05); padding: 1.5rem; border-radius: 12px; margin-bottom: 3rem; border: 1px solid rgba(0, 221, 222, 0.2);">
+            <h3 style="margin-top: 0; margin-bottom: 1rem; color: var(--color-accent-cyan); font-size: 1.2rem;">Quick Navigation</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.5rem; font-size: 0.95rem;">
+                <a href="#logo" style="color: var(--color-text-secondary); text-decoration: none; padding: 0.5rem; border-radius: 4px; transition: all 0.2s;">Logo & Visual Identity</a>
+                <a href="#photography" style="color: var(--color-text-secondary); text-decoration: none; padding: 0.5rem; border-radius: 4px; transition: all 0.2s;">Photography & Imagery</a>
+                <a href="#colors" style="color: var(--color-text-secondary); text-decoration: none; padding: 0.5rem; border-radius: 4px; transition: all 0.2s;">Color Palette</a>
+                <a href="#typography" style="color: var(--color-text-secondary); text-decoration: none; padding: 0.5rem; border-radius: 4px; transition: all 0.2s;">Typography</a>
+                <a href="#voice" style="color: var(--color-text-secondary); text-decoration: none; padding: 0.5rem; border-radius: 4px; transition: all 0.2s;">Voice & Tone</a>
+                <a href="#chromatic" style="color: var(--color-text-secondary); text-decoration: none; padding: 0.5rem; border-radius: 4px; transition: all 0.2s;">Chromatic Effect</a>
+                <a href="#design-elements" style="color: var(--color-text-secondary); text-decoration: none; padding: 0.5rem; border-radius: 4px; transition: all 0.2s;">Design Elements</a>
+                <a href="#dos-donts" style="color: var(--color-text-secondary); text-decoration: none; padding: 0.5rem; border-radius: 4px; transition: all 0.2s;">Do's & Don'ts</a>
+                <a href="#social" style="color: var(--color-text-secondary); text-decoration: none; padding: 0.5rem; border-radius: 4px; transition: all 0.2s;">Social Media</a>
+                <a href="branding-dev-reference.html" style="color: var(--color-accent-cyan); text-decoration: none; padding: 0.5rem; border-radius: 4px; transition: all 0.2s; font-weight: 600;">→ Developer Reference</a>
+            </div>
+        </nav>
+
+        <!-- LOGO SECTION -->
+        <section class="section" id="logo">
+            <h2>Logo & Visual Identity</h2>
+            <p>The Ultraphonics logo features a circular design with chromatic aberration effect (red/cyan offset) creating a dynamic, energetic visual identity. The text circles the spiral design.</p>
+
+            <h3>Primary Logo</h3>
+            <p>The full-color version is our primary logo and should be used whenever possible.</p>
+
+            <div class="logo-variations">
+                <div class="logo-variation dark-bg">
+                    <img src="/assets/images/logo-color.png" alt="Logo on Dark">
+                    <p style="color: white;">On Dark Backgrounds</p>
+                    <p style="color: var(--color-text-tertiary); font-size: 0.8rem;">Preferred usage</p>
+                </div>
+                <div class="logo-variation light-bg">
+                    <img src="/assets/images/logo-color.png" alt="Logo on Light">
+                    <p>On Light Backgrounds</p>
+                    <p style="color: #666; font-size: 0.8rem;">Use with caution</p>
+                </div>
+            </div>
+
+            <h3>Logo Specifications</h3>
+            <div class="element-card">
+                <h4>Minimum Size</h4>
+                <p><strong>Digital:</strong> 100px × 100px minimum</p>
+                <p><strong>Print:</strong> 1 inch × 1 inch minimum</p>
+
+                <h4 style="margin-top: 1.5rem;">Clear Space</h4>
+                <p>Maintain a clear space equal to the height of the letter "U" in the logo on all sides. No text, graphics, or other elements should appear within this space.</p>
+
+                <h4 style="margin-top: 1.5rem;">Format</h4>
+                <p><strong>Circular display:</strong> Preferred for digital use</p>
+                <p><strong>Glow effect:</strong> Use our signature cyan glow for enhanced presence</p>
+            </div>
+        </section>
+
+        <!-- PHOTOGRAPHY & IMAGERY -->
+        <section class="section" id="photography">
+            <h2>Photography & Imagery</h2>
+            <p>Our photography style balances energy and professionalism, showing the band in action while maintaining brand consistency.</p>
+
+            <h3>Logo with Photography</h3>
+            <p>A great example of combining our logo with band photography is our social share image (logo-share.png), which demonstrates the proper technique:</p>
+
+            <div style="margin: 2rem 0; text-align: center;">
+                <img src="/assets/images/logo-share.png" alt="Ultraphonics Social Share Image" style="max-width: 100%; border-radius: 12px; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5); border: 2px solid rgba(0, 221, 222, 0.3);">
+            </div>
+
+            <div class="design-elements">
+                <div class="element-card">
+                    <h4>Background Photography</h4>
+                    <ul>
+                        <li>Use live performance shots when possible</li>
+                        <li>Apply dark overlay/blur for text readability</li>
+                        <li>Desaturate or add subtle color grading</li>
+                        <li>Ensure background doesn't compete with logo/text</li>
+                    </ul>
+                </div>
+
+                <div class="element-card">
+                    <h4>Logo Placement on Photos</h4>
+                    <ul>
+                        <li>Center logo prominently</li>
+                        <li>Ensure adequate contrast with background</li>
+                        <li>Use full-color logo version</li>
+                        <li>Maintain clear space around logo</li>
+                    </ul>
+                </div>
+
+                <div class="element-card">
+                    <h4>Text Overlay</h4>
+                    <ul>
+                        <li>Use Montserrat Bold for headlines</li>
+                        <li>White text with subtle shadow for readability</li>
+                        <li>Keep messaging concise and clear</li>
+                        <li>Center-align for social graphics</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>Photography Guidelines</h3>
+            <div class="element-card">
+                <h4>Image Style</h4>
+                <ul>
+                    <li><strong>Subject:</strong> Band performing, high-energy moments, crowd engagement</li>
+                    <li><strong>Lighting:</strong> Dramatic stage lighting, colorful but not oversaturated</li>
+                    <li><strong>Composition:</strong> Dynamic angles, action shots, authentic moments</li>
+                    <li><strong>Quality:</strong> High resolution, sharp focus, professional quality</li>
+                </ul>
+
+                <h4 style="margin-top: 1.5rem;">Color Treatment</h4>
+                <p>When using photos in branded materials:</p>
+                <ul>
+                    <li>Slight desaturation to let brand colors stand out</li>
+                    <li>Dark overlay (40-60% black) when placing text over images</li>
+                    <li>Optional: Subtle cyan or blue color grading to match brand palette</li>
+                    <li>Maintain enough contrast for accessibility</li>
+                </ul>
+
+                <h4 style="margin-top: 1.5rem;">Social Share Images</h4>
+                <p>For social media OG images and promotional graphics:</p>
+                <ul>
+                    <li><strong>Dimensions:</strong> 1200 × 630px (Facebook/LinkedIn), 1200 × 1200px (Instagram)</li>
+                    <li><strong>Layout:</strong> Logo centered top, tagline below, band photo background</li>
+                    <li><strong>Background:</strong> Blurred/darkened band performance photo</li>
+                    <li><strong>Text:</strong> Bold, white, centered, with subtle shadow</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- COLOR PALETTE -->
+        <section class="section" id="colors">
+            <h2>Color Palette</h2>
+            <p>Our color palette reflects energy, creativity, and professionalism. Use these colors consistently across all brand materials.</p>
+
+            <h3>Primary Colors</h3>
+            <div class="color-palette">
+                <div class="color-swatch">
+                    <div class="color-box" style="background-color: #00ddde;"></div>
+                    <div class="color-info">
+                        <div class="color-name">Primary Cyan</div>
+                        <div class="color-hex">#00ddde</div>
+                        <div class="color-usage">Text accents, hover states, glows</div>
+                    </div>
+                </div>
+
+                <div class="color-swatch">
+                    <div class="color-box" style="background-color: #f60403;"></div>
+                    <div class="color-info">
+                        <div class="color-name">Primary Red</div>
+                        <div class="color-hex">#f60403</div>
+                        <div class="color-usage">Logo, special emphasis</div>
+                    </div>
+                </div>
+
+                <div class="color-swatch">
+                    <div class="color-box" style="background-color: #008c8d;"></div>
+                    <div class="color-info">
+                        <div class="color-name">Accent Teal</div>
+                        <div class="color-hex">#008c8d</div>
+                        <div class="color-usage">Buttons, CTAs, accents</div>
+                    </div>
+                </div>
+            </div>
+
+            <h3>Neutral Colors</h3>
+            <div class="color-palette">
+                <div class="color-swatch">
+                    <div class="color-box" style="background-color: #121212;"></div>
+                    <div class="color-info">
+                        <div class="color-name">Dark Background</div>
+                        <div class="color-hex">#121212</div>
+                        <div class="color-usage">Primary backgrounds</div>
+                    </div>
+                </div>
+
+                <div class="color-swatch">
+                    <div class="color-box" style="background-color: #1a1a1a;"></div>
+                    <div class="color-info">
+                        <div class="color-name">Background</div>
+                        <div class="color-hex">#1a1a1a</div>
+                        <div class="color-usage">Secondary backgrounds</div>
+                    </div>
+                </div>
+
+                <div class="color-swatch">
+                    <div class="color-box" style="background-color: #ffffff; border: 2px solid #333;"></div>
+                    <div class="color-info">
+                        <div class="color-name">White</div>
+                        <div class="color-hex">#ffffff</div>
+                        <div class="color-usage">Primary text, borders</div>
+                    </div>
+                </div>
+
+                <div class="color-swatch">
+                    <div class="color-box" style="background-color: #cccccc;"></div>
+                    <div class="color-info">
+                        <div class="color-name">Light Gray</div>
+                        <div class="color-hex">#cccccc</div>
+                        <div class="color-usage">Secondary text</div>
+                    </div>
+                </div>
+
+                <div class="color-swatch">
+                    <div class="color-box" style="background-color: #aaaaaa;"></div>
+                    <div class="color-info">
+                        <div class="color-name">Medium Gray</div>
+                        <div class="color-hex">#aaaaaa</div>
+                        <div class="color-usage">Tertiary text, labels</div>
+                    </div>
+                </div>
+            </div>
+
+            <h3>Color Usage Guidelines</h3>
+            <div class="design-elements">
+                <div class="element-card">
+                    <h4>Primary Cyan (#00ddde)</h4>
+                    <ul>
+                        <li>Text highlights and headings</li>
+                        <li>Hover states</li>
+                        <li>Glow effects</li>
+                        <li>Active/selected states</li>
+                    </ul>
+                </div>
+
+                <div class="element-card">
+                    <h4>Primary Red (#f60403)</h4>
+                    <ul>
+                        <li>Logo only (limited use)</li>
+                        <li>Critical alerts</li>
+                        <li>Special announcements</li>
+                        <li>Chromatic effect offset</li>
+                    </ul>
+                </div>
+
+                <div class="element-card">
+                    <h4>Accent Teal (#008c8d)</h4>
+                    <ul>
+                        <li>Call-to-action buttons</li>
+                        <li>Interactive elements</li>
+                        <li>Section borders</li>
+                        <li>Focus states</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- TYPOGRAPHY -->
+        <section class="section" id="typography">
+            <h2>Typography</h2>
+            <p>Montserrat is our primary typeface, providing a modern, geometric aesthetic that complements our brand identity.</p>
+
+            <h3>Font Family</h3>
+            <div class="element-card">
+                <h4>Montserrat</h4>
+                <p><strong>Weights available:</strong> 400 (Regular), 500 (Medium), 600 (Semi-Bold), 700 (Bold)</p>
+                <p><strong>Fallback stack:</strong> <code>Montserrat, -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif</code></p>
+            </div>
+
+            <h3>Type Scale</h3>
+            <div class="typography-sample">
+                <div class="font-display-xl" style="color: var(--color-text);">
+                    Heading 1 — 3rem / Bold
+                </div>
+                <div class="font-display-lg" style="color: var(--color-text-secondary);">
+                    Heading 2 — 2rem / Semi-Bold
+                </div>
+                <div class="font-display-md" style="color: var(--color-text-secondary);">
+                    Heading 3 — 1.5rem / Medium
+                </div>
+                <div class="font-display-base" style="color: var(--color-text);">
+                    Body Text — 1rem / Regular
+                </div>
+                <div style="font-size: 0.9rem; color: var(--color-text-tertiary);">
+                    Small Text — 0.9rem / Regular
+                </div>
+            </div>
+
+            <h3>Typography Guidelines</h3>
+            <div class="design-elements">
+                <div class="element-card">
+                    <h4>Headings</h4>
+                    <ul>
+                        <li>Use bold (700) or semi-bold (600) weights</li>
+                        <li>Section headings in bright cyan (#00ddde)</li>
+                        <li>Add letter-spacing for emphasis (1-2px)</li>
+                        <li>Use text-transform: uppercase sparingly</li>
+                    </ul>
+                </div>
+
+                <div class="element-card">
+                    <h4>Body Text</h4>
+                    <ul>
+                        <li>Regular (400) weight for body copy</li>
+                        <li>Line-height: 1.6 for readability</li>
+                        <li>White (#ffffff) for primary text</li>
+                        <li>Gray (#cccccc) for secondary text</li>
+                    </ul>
+                </div>
+
+                <div class="element-card">
+                    <h4>Interactive Text</h4>
+                    <ul>
+                        <li>Bold (700) weight for buttons</li>
+                        <li>Cyan (#00ddde) for links</li>
+                        <li>Underline on hover for links</li>
+                        <li>Uppercase for CTAs (with letter-spacing)</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- VOICE & TONE -->
+        <section class="section" id="voice">
+            <h2>Voice & Tone</h2>
+            <p>Our brand voice reflects our personality and how we communicate with our audience.</p>
+
+            <div class="design-elements">
+                <div class="element-card">
+                    <h4>Brand Personality</h4>
+                    <ul>
+                        <li><strong>Energetic:</strong> We bring excitement to every event</li>
+                        <li><strong>Professional:</strong> Reliable and polished</li>
+                        <li><strong>Modern:</strong> Contemporary sound and approach</li>
+                        <li><strong>Versatile:</strong> Adaptable to any venue or audience</li>
+                    </ul>
+                </div>
+
+                <div class="element-card">
+                    <h4>Communication Style</h4>
+                    <ul>
+                        <li>Clear and direct</li>
+                        <li>Confident but approachable</li>
+                        <li>Enthusiastic without being over-the-top</li>
+                        <li>Professional with personality</li>
+                    </ul>
+                </div>
+
+                <div class="element-card">
+                    <h4>Writing Guidelines</h4>
+                    <ul>
+                        <li>Use active voice</li>
+                        <li>Keep sentences concise</li>
+                        <li>Focus on benefits to the client</li>
+                        <li>Avoid jargon and technical music terms</li>
+                        <li>Be specific about what we offer</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- CHROMATIC ABERRATION EFFECT -->
+        <section class="section" id="chromatic">
+            <h2>Chromatic Aberration Effect</h2>
+            <p>Our signature visual effect uses red/cyan offset to create a dynamic, energetic aesthetic reminiscent of 3D glasses and vintage print techniques.</p>
+
+            <div class="element-card">
+                <h4>The Effect</h4>
+                <p>The chromatic aberration creates a sense of motion and energy. It's most prominently featured in our logo where the red and cyan create a spiral effect with a slight offset.</p>
+
+                <h4 style="margin-top: 1.5rem;">Usage</h4>
+                <ul>
+                    <li><strong>Primary use:</strong> Logo design</li>
+                    <li><strong>Secondary use:</strong> Special graphics and promotional materials</li>
+                    <li><strong>Avoid:</strong> Body text, small text, or excessive use that reduces readability</li>
+                </ul>
+
+                <h4 style="margin-top: 1.5rem;">Implementation</h4>
+                <p>When creating graphics with this effect:</p>
+                <ul>
+                    <li>Red layer offset slightly to one side</li>
+                    <li>Cyan layer offset to the opposite side</li>
+                    <li>White/black central layer for definition</li>
+                    <li>Keep offset subtle (2-5px for most uses)</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- DESIGN ELEMENTS -->
+        <section class="section" id="design-elements">
+            <h2>Design Elements</h2>
+            <p>Consistent use of design elements creates a cohesive brand experience.</p>
+
+            <h3>Glow Effect</h3>
+            <p>Our signature cyan glow effect creates visual depth and energy.</p>
+            <div class="element-card">
+                <div class="glow-example">Cyan Glow Effect</div>
+                <p style="margin-top: 1rem;"><strong>CSS:</strong></p>
+                <code style="display: block; margin-top: 0.5rem;">
+                    box-shadow: 0 0 10px rgba(0, 221, 222, 0.5),<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;0 0 20px rgba(0, 221, 222, 0.3),<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;0 0 30px rgba(0, 221, 222, 0.2);
+                </code>
+                <p style="margin-top: 1rem;"><strong>Usage:</strong> Logo displays, active elements, hover states, featured content</p>
+            </div>
+
+            <h3>Shadows</h3>
+            <div class="element-card">
+                <div class="shadow-example-sm">Small Shadow</div>
+                <div class="shadow-example-md">Medium Shadow</div>
+                <p style="margin-top: 1rem;">
+                    <strong>Small:</strong> <code>0 2px 4px rgba(0, 0, 0, 0.2)</code><br>
+                    <strong>Medium:</strong> <code>0 4px 8px rgba(0, 0, 0, 0.3)</code>
+                </p>
+            </div>
+
+            <h3>Border Radius</h3>
+            <div class="border-examples">
+                <div class="border-example" style="border-radius: 4px;">4px</div>
+                <div class="border-example" style="border-radius: 5px;">5px</div>
+                <div class="border-example" style="border-radius: 8px;">8px</div>
+                <div class="border-example" style="border-radius: 12px;">12px</div>
+                <div class="border-example" style="border-radius: 20px;">20px (pill)</div>
+                <div class="border-example" style="border-radius: 50%; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center;">50% (circle)</div>
+            </div>
+            <p style="margin-top: 1rem;">Use consistent border-radius values: 4px, 5px, 8px, 12px, 20px (pills), 50% (circles)</p>
+
+            <h3>Spacing Scale</h3>
+            <div class="spacing-scale">
+                <div class="spacing-item">
+                    <span class="spacing-label">--spacing-xs</span>
+                    <div class="spacing-visual" style="width: 0.25rem;"></div>
+                    <span>0.25rem (4px)</span>
+                </div>
+                <div class="spacing-item">
+                    <span class="spacing-label">--spacing-sm</span>
+                    <div class="spacing-visual" style="width: 0.5rem;"></div>
+                    <span>0.5rem (8px)</span>
+                </div>
+                <div class="spacing-item">
+                    <span class="spacing-label">--spacing-md</span>
+                    <div class="spacing-visual" style="width: 1rem;"></div>
+                    <span>1rem (16px)</span>
+                </div>
+                <div class="spacing-item">
+                    <span class="spacing-label">--spacing-lg</span>
+                    <div class="spacing-visual" style="width: 1.5rem;"></div>
+                    <span>1.5rem (24px)</span>
+                </div>
+                <div class="spacing-item">
+                    <span class="spacing-label">--spacing-xl</span>
+                    <div class="spacing-visual" style="width: 2rem;"></div>
+                    <span>2rem (32px)</span>
+                </div>
+                <div class="spacing-item">
+                    <span class="spacing-label">--spacing-xxl</span>
+                    <div class="spacing-visual" style="width: 3rem;"></div>
+                    <span>3rem (48px)</span>
+                </div>
+                <div class="spacing-item">
+                    <span class="spacing-label">--spacing-xxxl</span>
+                    <div class="spacing-visual" style="width: 4rem;"></div>
+                    <span>4rem (64px)</span>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- DO'S AND DON'TS -->
+        <section class="section" id="dos-donts">
+            <h2>Do's and Don'ts</h2>
+
+            <h3>Logo Usage</h3>
+            <div class="dos-donts">
+                <div class="do-card">
+                    <h4>✓ Do</h4>
+                    <ul>
+                        <li>Use the official logo files</li>
+                        <li>Maintain aspect ratio</li>
+                        <li>Ensure adequate clear space</li>
+                        <li>Use on dark backgrounds primarily</li>
+                        <li>Apply circular presentation when appropriate</li>
+                    </ul>
+                </div>
+                <div class="dont-card">
+                    <h4>✗ Don't</h4>
+                    <ul>
+                        <li>Stretch or distort the logo</li>
+                        <li>Change the colors</li>
+                        <li>Recreate or modify the logo</li>
+                        <li>Use the logo smaller than minimum size</li>
+                        <li>Add effects or outlines</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>Color Usage</h3>
+            <div class="dos-donts">
+                <div class="do-card">
+                    <h4>✓ Do</h4>
+                    <ul>
+                        <li>Use Primary Blue for CTAs</li>
+                        <li>Use Bright Cyan for text accents</li>
+                        <li>Maintain contrast for readability</li>
+                        <li>Follow the established color hierarchy</li>
+                        <li>Test colors for accessibility</li>
+                    </ul>
+                </div>
+                <div class="dont-card">
+                    <h4>✗ Don't</h4>
+                    <ul>
+                        <li>Introduce new brand colors</li>
+                        <li>Use low contrast combinations</li>
+                        <li>Overuse the Primary Red</li>
+                        <li>Use colors at wrong opacities</li>
+                        <li>Mix color schemes inconsistently</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>Typography</h3>
+            <div class="dos-donts">
+                <div class="do-card">
+                    <h4>✓ Do</h4>
+                    <ul>
+                        <li>Use Montserrat across all materials</li>
+                        <li>Maintain proper line-height (1.6)</li>
+                        <li>Use appropriate font weights</li>
+                        <li>Ensure text is readable</li>
+                        <li>Follow the type scale</li>
+                    </ul>
+                </div>
+                <div class="dont-card">
+                    <h4>✗ Don't</h4>
+                    <ul>
+                        <li>Use other fonts without approval</li>
+                        <li>Create overly long lines of text</li>
+                        <li>Use too many font weights</li>
+                        <li>Set body text in all caps</li>
+                        <li>Use text smaller than 0.9rem</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- SOCIAL MEDIA -->
+        <section class="section" id="social">
+            <h2>Social Media Guidelines</h2>
+
+            <h3>Profile Images</h3>
+            <div class="element-card">
+                <p>Use the circular logo (logo-color.png) as the profile picture across all platforms.</p>
+                <p><strong>Recommended dimensions:</strong></p>
+                <ul>
+                    <li>Facebook: 180 × 180px (displays at 170 × 170px)</li>
+                    <li>Instagram: 320 × 320px</li>
+                    <li>Twitter/X: 400 × 400px</li>
+                    <li>YouTube: 800 × 800px</li>
+                </ul>
+            </div>
+
+            <h3>Post Formatting</h3>
+            <div class="design-elements">
+                <div class="element-card">
+                    <h4>Visual Posts</h4>
+                    <ul>
+                        <li>Use brand colors consistently</li>
+                        <li>Include logo when appropriate</li>
+                        <li>Maintain high image quality</li>
+                        <li>Apply filters consistently (if any)</li>
+                    </ul>
+                </div>
+                <div class="element-card">
+                    <h4>Text Posts</h4>
+                    <ul>
+                        <li>Keep brand voice consistent</li>
+                        <li>Use emojis sparingly</li>
+                        <li>Include clear calls-to-action</li>
+                        <li>Tag relevant accounts</li>
+                    </ul>
+                </div>
+                <div class="element-card">
+                    <h4>Hashtag Strategy</h4>
+                    <ul>
+                        <li>#Ultraphonics (always)</li>
+                        <li>Event-specific hashtags</li>
+                        <li>Local/regional hashtags</li>
+                        <li>Genre-specific tags</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 2px solid var(--color-primary-blue); text-align: center;">
+            <p style="color: var(--color-text-tertiary); margin-bottom: 2rem;">
+                For questions about brand usage or to request additional assets, contact the band management.
+            </p>
+            <a href="index.html" class="back-link">← Back to Admin</a>
+        </footer>
+    </div>
+</body>
+</html>
