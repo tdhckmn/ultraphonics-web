@@ -174,60 +174,70 @@
     "venue": "Riverbillies",
     "city": "Gibraltar",
     "state": "MI",
-    "startTime": "9:45 AM",
+    "startTime": "8:00 PM",
     "endTime": "11:00 PM",
     "isPrivate": false,
-    "eventLink": ""
+    "eventLink": "https://www.facebook.com/events/715141581162906/"
   },
   {
     "date": "2/20/2026",
     "venue": "Riverbillies",
     "city": "Gibraltar",
     "state": "MI",
-    "startTime": "9:45 AM",
+    "startTime": "8:00 PM",
     "endTime": "11:00 PM",
     "isPrivate": false,
-    "eventLink": ""
+    "eventLink": "https://fb.me/e/5s4sMg2kh"
   },
   {
-    "date": "2/28/2026",
+    "date": "2/21/2026",
     "venue": "Hell Saloon",
-    "city": "Hell",
+    "city": "Pinckney",
     "state": "MI",
     "startTime": "8:00 PM",
-    "endTime": "11:59 PM",
+    "endTime": "12:00 AM",
     "isPrivate": false,
-    "eventLink": "https://fb.me/e/38NuvVM0w"
+    "eventLink": "https://fb.me/e/8THzX8Ay3"
   },
   {
     "date": "3/14/2026",
     "venue": "Riverbillies",
     "city": "Gibraltar",
     "state": "MI",
-    "startTime": "9:45 AM",
+    "startTime": "8:00 PM",
     "endTime": "11:00 PM",
     "isPrivate": false,
-    "eventLink": ""
+    "eventLink": "https://www.facebook.com/share/1DcNd8pWn7/"
   },
   {
     "date": "4/18/2026",
     "venue": "Hell Saloon",
-    "city": "Hell",
+    "city": "Pinckney",
     "state": "MI",
     "startTime": "8:00 PM",
-    "endTime": "11:59 PM",
+    "endTime": "12:00 AM",
     "isPrivate": false,
-    "eventLink": "https://fb.me/e/38NuvVM0w"
+    "eventLink": "https://www.facebook.com/share/17gL1j57xs/"
   },
   {
     "date": "5/9/2026",
-    "venue": "Uncle Lyle’s Tavern",
-    "city": "",
-    "state": "",
-    "startTime": "12:34 AM",
-    "endTime": "",
+    "venue": "Uncle Lyle's Tavern",
+    "city": "Dundee",
+    "state": "MI",
+    "startTime": "8:00 PM",
+    "endTime": "11:00 PM",
     "isPrivate": false,
-    "eventLink": ""
+    "eventLink": "https://fb.me/e/5qG9tajDK"
+  },
+  {
+    "date": "6/6/2025",
+    "venue": "The Sandtrap",
+    "city": "Riverview",
+    "state": "MI",
+    "startTime": "8:00 PM",
+    "endTime": "11:00 PM",
+    "isPrivate": false,
+    "eventLink": "https://www.facebook.com/share/1CNXEzQEpZ/"
   },
   {
     "date": "6/14/2026",
@@ -241,22 +251,32 @@
   },
   {
     "date": "7/17/2026",
-    "venue": "Sandbar Grille",
+    "venue": "SandBar Grille",
     "city": "LaSalle",
     "state": "MI",
-    "startTime": "8:30 PM",
-    "endTime": "11:59 PM",
+    "startTime": "8:00 PM",
+    "endTime": "12:00 AM",
     "isPrivate": false,
-    "eventLink": ""
+    "eventLink": "https://fb.me/e/48LpTC6Um"
+  },
+  {
+    "date": "8/8/2026",
+    "venue": "Bier Stube Bar and Grille",
+    "city": "Toledo",
+    "state": "OH",
+    "startTime": "8:00 PM",
+    "endTime": "11:00 PM",
+    "isPrivate": false,
+    "eventLink": "https://fb.me/e/5zTpW4P98"
   },
   {
     "date": "8/28/2026",
-    "venue": "Sandbar Grille",
+    "venue": "SandBar Grille",
     "city": "LaSalle",
     "state": "MI",
-    "startTime": "8:30 PM",
-    "endTime": "11:59 PM",
+    "startTime": "8:00 PM",
+    "endTime": "12:00 AM",
     "isPrivate": false,
-    "eventLink": ""
+    "eventLink": "https://fb.me/e/3YQf98oCO"
   }
 ]
