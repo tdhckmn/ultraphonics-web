@@ -26,15 +26,16 @@
             width: 8px;
         }
         ::-webkit-scrollbar-track {
-            background: #0f172a; 
+            background: #0f172a;
         }
         ::-webkit-scrollbar-thumb {
-            background: #334155; 
+            background: #334155;
             border-radius: 4px;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: #475569; 
+            background: #475569;
         }
+
         /* Modal transition */
         .modal {
             transition: opacity 0.25s ease;
@@ -42,6 +43,20 @@
         body.modal-active {
             overflow-x: hidden;
             overflow-y: visible !important;
+        }
+
+        /* Tab Navigation */
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease-in;
+        }
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         /* Install Banner Styles */
@@ -239,178 +254,277 @@
         </div>
     </nav>
 
+    <!-- Tab Navigation -->
+    <div class="bg-stone-900/50 border-b border-stone-800 sticky top-16 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex gap-1 overflow-x-auto">
+                <button class="tab-btn active px-6 py-4 text-sm font-semibold transition-all border-b-2 border-teal-500 text-teal-400" data-tab="performance">
+                    <i class="fa-solid fa-music mr-2"></i>Performance
+                </button>
+                <button class="tab-btn px-6 py-4 text-sm font-semibold transition-all border-b-2 border-transparent text-stone-400 hover:text-stone-200" data-tab="tools">
+                    <i class="fa-solid fa-wrench mr-2"></i>Tools
+                </button>
+                <button class="tab-btn px-6 py-4 text-sm font-semibold transition-all border-b-2 border-transparent text-stone-400 hover:text-stone-200" data-tab="marketing">
+                    <i class="fa-solid fa-bullhorn mr-2"></i>Marketing
+                </button>
+                <button class="tab-btn px-6 py-4 text-sm font-semibold transition-all border-b-2 border-transparent text-stone-400 hover:text-stone-200" data-tab="data">
+                    <i class="fa-solid fa-database mr-2"></i>Data & Brand
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Main Content -->
     <main class="flex-grow container mx-auto px-4 py-8 max-w-7xl">
-        
-        <!-- App Management Section -->
-        <div class="mb-10">
-            <h2 class="text-xs font-bold text-stone-500 uppercase tracking-wider mb-4 px-1">Setlist Management</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-                <!-- Setlist Builder Card (Yellow/Amber with Hammer) -->
-                <a href="setlist-builder.html" class="group relative flex flex-col p-6 bg-stone-900 border border-stone-800 rounded-2xl hover:border-amber-500 hover:shadow-2xl hover:shadow-amber-900/20 transition-all duration-300">
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="p-3 bg-amber-500/10 text-amber-500 rounded-xl group-hover:bg-amber-500 group-hover:text-white transition-all duration-300">
-                            <i class="fa-solid fa-hammer text-xl"></i>
-                        </div>
-                        <i class="fa-solid fa-arrow-right text-stone-700 group-hover:text-amber-500 group-hover:transtone-x-1 transition-all"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-white mb-2 group-hover:text-amber-500 transition-colors">Setlist Builder</h3>
-                    <p class="text-stone-400 text-sm leading-relaxed">Create, edit, and organize setlists. Export JSON for AbleSet.</p>
-                </a>
+        <!-- Performance Tab -->
+        <div id="performance" class="tab-content active">
+            <h2 class="text-2xl font-bold text-white mb-6">Performance Tools</h2>
 
-                <!-- Setlist Viewer Card (Blue/Indigo with Eye) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Setlist Viewer Card -->
                 <a href="setlist-viewer.html" class="group relative flex flex-col p-6 bg-stone-900 border border-stone-800 rounded-2xl hover:border-indigo-500 hover:shadow-2xl hover:shadow-indigo-900/20 transition-all duration-300">
                     <div class="flex items-center justify-between mb-4">
                         <div class="p-3 bg-indigo-500/10 text-indigo-400 rounded-xl group-hover:bg-indigo-600 group-hover:text-white transition-all duration-300">
-                            <i class="fa-solid fa-eye text-xl"></i>
+                            <i class="fa-solid fa-eye text-2xl"></i>
                         </div>
-                        <i class="fa-solid fa-arrow-right text-stone-700 group-hover:text-indigo-400 group-hover:transtone-x-1 transition-all"></i>
+                        <i class="fa-solid fa-arrow-right text-stone-700 group-hover:text-indigo-400 transition-all"></i>
                     </div>
                     <h3 class="text-xl font-bold text-white mb-2 group-hover:text-indigo-400 transition-colors">Setlist Viewer</h3>
-                    <p class="text-stone-400 text-sm leading-relaxed">Live performance display. High contrast, large text view for use on stage.</p>
+                    <p class="text-stone-400 text-sm leading-relaxed">Live performance display with setlist builder access</p>
                 </a>
 
                 <!-- AbleSet Launcher -->
                 <a id="ablesetLink" href="#" target="_blank" class="group relative flex flex-col p-6 bg-stone-900 border border-stone-800 rounded-2xl hover:border-rose-500 hover:shadow-2xl hover:shadow-rose-900/20 transition-all duration-300">
                     <div class="flex items-center justify-between mb-4">
                         <div class="p-3 bg-rose-500/10 text-rose-400 rounded-xl group-hover:bg-rose-600 group-hover:text-white transition-all duration-300">
-                            <i class="fa-solid fa-circle-play text-xl"></i>
+                            <i class="fa-solid fa-circle-play text-2xl"></i>
                         </div>
-                        <i class="fa-solid fa-arrow-right text-stone-700 group-hover:text-rose-400 group-hover:transtone-x-1 transition-all"></i>
+                        <i class="fa-solid fa-arrow-right text-stone-700 group-hover:text-rose-400 transition-all"></i>
                     </div>
                     <h3 class="text-xl font-bold text-white mb-2 group-hover:text-rose-400 transition-colors">AbleSet</h3>
-                    <p class="text-stone-400 text-sm leading-relaxed">Launch AbleSet.</p>
+                    <p class="text-stone-400 text-sm leading-relaxed">Launch AbleSet performance software</p>
                     <div class="mt-auto pt-4 border-t border-stone-800/50 text-[10px] text-stone-600 font-mono truncate" id="ablesetUrlDisplay">Loading...</div>
                 </a>
-
-
             </div>
         </div>
 
-        <!-- External Tools Section -->
-        <div class="mb-10">
-            <h2 class="text-xs font-bold text-stone-500 uppercase tracking-wider mb-4 px-1">External Tools</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Tools Tab -->
+        <div id="tools" class="tab-content">
+            <h2 class="text-2xl font-bold text-white mb-6">External Tools</h2>
 
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <!-- Discord -->
-                <a href="https://discord.com/channels/1450501228462215208" target="_blank" class="group relative flex flex-col p-5 bg-stone-900 border border-stone-800 rounded-xl hover:border-indigo-500 hover:shadow-xl hover:shadow-indigo-900/10 transition-all duration-300">
-                    <div class="flex items-center gap-4 mb-3">
-                        <div class="p-2 bg-indigo-500/10 text-indigo-400 rounded-lg group-hover:bg-indigo-600 group-hover:text-white transition-colors">
-                            <i class="fa-brands fa-discord text-lg"></i>
+                <a href="https://discord.com/channels/1450501228462215208" target="_blank" class="group relative flex flex-col p-6 bg-stone-900 border border-stone-800 rounded-xl hover:border-indigo-500 hover:shadow-xl hover:shadow-indigo-900/10 transition-all duration-300">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center gap-3">
+                            <div class="p-3 bg-indigo-500/10 text-indigo-400 rounded-lg group-hover:bg-indigo-600 group-hover:text-white transition-colors">
+                                <i class="fa-brands fa-discord text-xl"></i>
+                            </div>
+                            <h3 class="text-lg font-bold text-white group-hover:text-indigo-400 transition-colors">Discord</h3>
                         </div>
-                        <h3 class="text-lg font-bold text-white group-hover:text-indigo-400 transition-colors">Discord</h3>
+                        <i class="fa-solid fa-external-link-alt text-stone-700 group-hover:text-indigo-500 transition-colors text-sm"></i>
                     </div>
-                    <p class="text-stone-400 text-xs">Ultraphonics Discord server.</p>
-                    <div class="absolute top-5 right-5 text-stone-700 group-hover:text-indigo-500 transition-colors">
-                        <i class="fa-solid fa-external-link-alt text-xs"></i>
-                    </div>
+                    <p class="text-stone-400 text-sm">Ultraphonics Discord server</p>
                 </a>
 
                 <!-- Ultrasheet -->
-                <a href="https://docs.google.com/spreadsheets/d/1csJb56jnisEb_37pYMVTOY6kSt6J-HqN5X7IYYRgH20/edit?usp=sharing" target="_blank" class="group relative flex flex-col p-5 bg-stone-900 border border-stone-800 rounded-xl hover:border-emerald-500 hover:shadow-xl hover:shadow-emerald-900/10 transition-all duration-300">
-                    <div class="flex items-center gap-4 mb-3">
-                        <div class="p-2 bg-emerald-500/10 text-emerald-400 rounded-lg group-hover:bg-emerald-600 group-hover:text-white transition-colors">
-                            <i class="fa-solid fa-file-excel text-lg"></i>
+                <a href="https://docs.google.com/spreadsheets/d/1csJb56jnisEb_37pYMVTOY6kSt6J-HqN5X7IYYRgH20/edit?usp=sharing" target="_blank" class="group relative flex flex-col p-6 bg-stone-900 border border-stone-800 rounded-xl hover:border-emerald-500 hover:shadow-xl hover:shadow-emerald-900/10 transition-all duration-300">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center gap-3">
+                            <div class="p-3 bg-emerald-500/10 text-emerald-400 rounded-lg group-hover:bg-emerald-600 group-hover:text-white transition-colors">
+                                <i class="fa-solid fa-file-excel text-xl"></i>
+                            </div>
+                            <h3 class="text-lg font-bold text-white group-hover:text-emerald-400 transition-colors">Ultrasheet</h3>
                         </div>
-                        <h3 class="text-lg font-bold text-white group-hover:text-emerald-400 transition-colors">Ultrasheet</h3>
+                        <i class="fa-solid fa-external-link-alt text-stone-700 group-hover:text-emerald-500 transition-colors text-sm"></i>
                     </div>
-                    <p class="text-stone-400 text-xs">Main Google Sheet for band management.</p>
-                    <div class="absolute top-5 right-5 text-stone-700 group-hover:text-emerald-500 transition-colors">
-                        <i class="fa-solid fa-external-link-alt text-xs"></i>
-                    </div>
+                    <p class="text-stone-400 text-sm">Main Google Sheet for band management</p>
                 </a>
 
-                <!-- Google Analytics -->
-                <a href="https://analytics.google.com/" target="_blank" class="group relative flex flex-col p-5 bg-stone-900 border border-stone-800 rounded-xl hover:border-orange-500 hover:shadow-xl hover:shadow-orange-900/10 transition-all duration-300">
-                    <div class="flex items-center gap-4 mb-3">
-                        <div class="p-2 bg-orange-500/10 text-orange-400 rounded-lg group-hover:bg-orange-600 group-hover:text-white transition-colors">
-                            <i class="fa-solid fa-chart-line text-lg"></i>
+                <!-- Weddings Flyer -->
+                <a href="https://drive.google.com/drive/u/0/folders/1OySLOkCsj3OjSc-RhlZmlAPYN9J-yInD" target="_blank" class="group relative flex flex-col p-6 bg-stone-900 border border-stone-800 rounded-xl hover:border-pink-500 hover:shadow-xl hover:shadow-pink-900/10 transition-all duration-300">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center gap-3">
+                            <div class="p-3 bg-pink-500/10 text-pink-400 rounded-lg group-hover:bg-pink-600 group-hover:text-white transition-colors">
+                                <i class="fa-solid fa-heart text-xl"></i>
+                            </div>
+                            <h3 class="text-lg font-bold text-white group-hover:text-pink-400 transition-colors">Weddings Flyer</h3>
                         </div>
-                        <h3 class="text-lg font-bold text-white group-hover:text-orange-400 transition-colors">Analytics</h3>
+                        <i class="fa-solid fa-external-link-alt text-stone-700 group-hover:text-pink-500 transition-colors text-sm"></i>
                     </div>
-                    <p class="text-stone-400 text-xs">Traffic and visitor statistics.</p>
-                    <div class="absolute top-5 right-5 text-stone-700 group-hover:text-orange-500 transition-colors">
-                        <i class="fa-solid fa-external-link-alt text-xs"></i>
+                    <p class="text-stone-400 text-sm">Wedding promotion materials</p>
+                </a>
+
+                <!-- Event Pricing -->
+                <a href="https://drive.google.com/drive/u/0/folders/1ZITYFWoKwoxLbY6j_ejq-Cgxg8unlMk4" target="_blank" class="group relative flex flex-col p-6 bg-stone-900 border border-stone-800 rounded-xl hover:border-amber-500 hover:shadow-xl hover:shadow-amber-900/10 transition-all duration-300">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center gap-3">
+                            <div class="p-3 bg-amber-500/10 text-amber-400 rounded-lg group-hover:bg-amber-600 group-hover:text-white transition-colors">
+                                <i class="fa-solid fa-dollar-sign text-xl"></i>
+                            </div>
+                            <h3 class="text-lg font-bold text-white group-hover:text-amber-400 transition-colors">Event Pricing</h3>
+                        </div>
+                        <i class="fa-solid fa-external-link-alt text-stone-700 group-hover:text-amber-500 transition-colors text-sm"></i>
                     </div>
+                    <p class="text-stone-400 text-sm">Event pricing documents</p>
+                </a>
+
+                <!-- Insta360 Cloud -->
+                <a href="https://www.insta360.com/account/login-standalone" target="_blank" class="group relative flex flex-col p-6 bg-stone-900 border border-stone-800 rounded-xl hover:border-purple-500 hover:shadow-xl hover:shadow-purple-900/10 transition-all duration-300">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center gap-3">
+                            <div class="p-3 bg-purple-500/10 text-purple-400 rounded-lg group-hover:bg-purple-600 group-hover:text-white transition-colors">
+                                <i class="fa-solid fa-video text-xl"></i>
+                            </div>
+                            <h3 class="text-lg font-bold text-white group-hover:text-purple-400 transition-colors">Insta360 Cloud</h3>
+                        </div>
+                        <i class="fa-solid fa-external-link-alt text-stone-700 group-hover:text-purple-500 transition-colors text-sm"></i>
+                    </div>
+                    <p class="text-stone-400 text-sm">Manage 360° video content and cloud storage</p>
+                </a>
+            </div>
+        </div>
+
+        <!-- Marketing Tab -->
+        <div id="marketing" class="tab-content">
+            <h2 class="text-2xl font-bold text-white mb-6">Marketing & Analytics</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Google Analytics -->
+                <a href="https://analytics.google.com/" target="_blank" class="group relative flex flex-col p-6 bg-stone-900 border border-stone-800 rounded-xl hover:border-orange-500 hover:shadow-xl hover:shadow-orange-900/10 transition-all duration-300">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center gap-3">
+                            <div class="p-3 bg-orange-500/10 text-orange-400 rounded-lg group-hover:bg-orange-600 group-hover:text-white transition-colors">
+                                <i class="fa-solid fa-chart-line text-xl"></i>
+                            </div>
+                            <h3 class="text-lg font-bold text-white group-hover:text-orange-400 transition-colors">Analytics</h3>
+                        </div>
+                        <i class="fa-solid fa-external-link-alt text-stone-700 group-hover:text-orange-500 transition-colors text-sm"></i>
+                    </div>
+                    <p class="text-stone-400 text-sm">Traffic and visitor statistics</p>
                 </a>
 
                 <!-- Search Console -->
-                <a href="https://search.google.com/search-console" target="_blank" class="group relative flex flex-col p-5 bg-stone-900 border border-stone-800 rounded-xl hover:border-blue-500 hover:shadow-xl hover:shadow-blue-900/10 transition-all duration-300">
-                    <div class="flex items-center gap-4 mb-3">
-                        <div class="p-2 bg-blue-500/10 text-blue-400 rounded-lg group-hover:bg-blue-600 group-hover:text-white transition-colors">
-                            <i class="fa-brands fa-google text-lg"></i>
+                <a href="https://search.google.com/search-console" target="_blank" class="group relative flex flex-col p-6 bg-stone-900 border border-stone-800 rounded-xl hover:border-blue-500 hover:shadow-xl hover:shadow-blue-900/10 transition-all duration-300">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center gap-3">
+                            <div class="p-3 bg-blue-500/10 text-blue-400 rounded-lg group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                                <i class="fa-brands fa-google text-xl"></i>
+                            </div>
+                            <h3 class="text-lg font-bold text-white group-hover:text-blue-400 transition-colors">Search Console</h3>
                         </div>
-                        <h3 class="text-lg font-bold text-white group-hover:text-blue-400 transition-colors">Search Console</h3>
+                        <i class="fa-solid fa-external-link-alt text-stone-700 group-hover:text-blue-500 transition-colors text-sm"></i>
                     </div>
-                    <p class="text-stone-400 text-xs">Search performance and indexing status.</p>
-                    <div class="absolute top-5 right-5 text-stone-700 group-hover:text-blue-500 transition-colors">
-                        <i class="fa-solid fa-external-link-alt text-xs"></i>
-                    </div>
+                    <p class="text-stone-400 text-sm">Search performance and indexing</p>
                 </a>
 
-                                <!-- MailerLite -->
-                <a href="https://dashboard.mailerlite.com/" target="_blank" class="group relative flex flex-col p-5 bg-stone-900 border border-stone-800 rounded-xl hover:border-green-500 hover:shadow-xl hover:shadow-green-900/10 transition-all duration-300">
-                    <div class="flex items-center gap-4 mb-3">
-                        <div class="p-2 bg-green-500/10 text-green-400 rounded-lg group-hover:bg-green-600 group-hover:text-white transition-colors">
-                            <i class="fa-solid fa-envelope text-lg"></i>
+                <!-- MailerLite -->
+                <a href="https://dashboard.mailerlite.com/" target="_blank" class="group relative flex flex-col p-6 bg-stone-900 border border-stone-800 rounded-xl hover:border-green-500 hover:shadow-xl hover:shadow-green-900/10 transition-all duration-300">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center gap-3">
+                            <div class="p-3 bg-green-500/10 text-green-400 rounded-lg group-hover:bg-green-600 group-hover:text-white transition-colors">
+                                <i class="fa-solid fa-envelope text-xl"></i>
+                            </div>
+                            <h3 class="text-lg font-bold text-white group-hover:text-green-400 transition-colors">MailerLite</h3>
                         </div>
-                        <h3 class="text-lg font-bold text-white group-hover:text-green-400 transition-colors">MailerLite</h3>
+                        <i class="fa-solid fa-external-link-alt text-stone-700 group-hover:text-green-500 transition-colors text-sm"></i>
                     </div>
-                    <p class="text-stone-400 text-xs">Email marketing and newsletter campaigns.</p>
-                    <div class="absolute top-5 right-5 text-stone-700 group-hover:text-green-500 transition-colors">
-                        <i class="fa-solid fa-external-link-alt text-xs"></i>
-                    </div>
+                    <p class="text-stone-400 text-sm">Email marketing and newsletters</p>
                 </a>
 
                 <!-- EmailJS -->
-                <a href="https://dashboard.emailjs.com/admin" target="_blank" class="group relative flex flex-col p-5 bg-stone-900 border border-stone-800 rounded-xl hover:border-yellow-500 hover:shadow-xl hover:shadow-yellow-900/10 transition-all duration-300">
-                    <div class="flex items-center gap-4 mb-3">
-                        <div class="p-2 bg-yellow-500/10 text-yellow-400 rounded-lg group-hover:bg-yellow-600 group-hover:text-white transition-colors">
-                            <i class="fa-solid fa-paper-plane text-lg"></i>
+                <a href="https://dashboard.emailjs.com/admin" target="_blank" class="group relative flex flex-col p-6 bg-stone-900 border border-stone-800 rounded-xl hover:border-yellow-500 hover:shadow-xl hover:shadow-yellow-900/10 transition-all duration-300">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center gap-3">
+                            <div class="p-3 bg-yellow-500/10 text-yellow-400 rounded-lg group-hover:bg-yellow-600 group-hover:text-white transition-colors">
+                                <i class="fa-solid fa-paper-plane text-xl"></i>
+                            </div>
+                            <h3 class="text-lg font-bold text-white group-hover:text-yellow-400 transition-colors">EmailJS</h3>
                         </div>
-                        <h3 class="text-lg font-bold text-white group-hover:text-yellow-400 transition-colors">EmailJS</h3>
+                        <i class="fa-solid fa-external-link-alt text-stone-700 group-hover:text-yellow-500 transition-colors text-sm"></i>
                     </div>
-                    <p class="text-stone-400 text-xs">Manage transactional emails and contact forms.</p>
-                    <div class="absolute top-5 right-5 text-stone-700 group-hover:text-yellow-500 transition-colors">
-                        <i class="fa-solid fa-external-link-alt text-xs"></i>
-                    </div>
+                    <p class="text-stone-400 text-sm">Transactional emails and contact forms</p>
                 </a>
-
             </div>
         </div>
 
-        <!-- Data Management -->
-        <div class="pt-6 border-t border-stone-800">
-            <h2 class="text-xs font-bold text-stone-500 uppercase tracking-wider mb-4 px-1">Data Management</h2>
-            <div class="flex flex-wrap gap-3">
-                <!-- Links point to GitHub Edit URL for direct editing -->
-                <a href="https://github.com/tdhckmn/ultraphonics-web/edit/main/content/songs.json" target="_blank" class="inline-flex items-center px-4 py-2 rounded-lg bg-stone-900 border border-stone-700 text-stone-300 hover:text-white hover:border-stone-400 hover:bg-stone-800 transition-all text-xs font-bold">
-                    <i class="fa-solid fa-pen-to-square mr-2 text-blue-400"></i> Edit Songs
-                </a>
-                 <a href="https://github.com/tdhckmn/ultraphonics-web/edit/main/content/shows.json" target="_blank" class="inline-flex items-center px-4 py-2 rounded-lg bg-stone-900 border border-stone-700 text-stone-300 hover:text-white hover:border-stone-400 hover:bg-stone-800 transition-all text-xs font-bold">
-                    <i class="fa-solid fa-pen-to-square mr-2 text-blue-400"></i> Edit Shows
-                </a>
-                <a href="../content/Ultraphonics_V3.json" target="_blank" class="inline-flex items-center px-4 py-2 rounded-lg bg-stone-900 border border-stone-700 text-stone-400 hover:text-white hover:border-stone-500 transition-colors text-xs font-medium">
-                    <i class="fa-solid fa-file-code mr-2 text-stone-500"></i> Ultraphonics V3 JSON
-                </a>
-            </div>
-            <br>
-        </div>
+        <!-- Data & Brand Tab -->
+        <div id="data" class="tab-content">
+            <h2 class="text-2xl font-bold text-white mb-6">Data & Brand Resources</h2>
 
-        <!-- Brand Resources -->
-        <div class="pt-6 border-t border-stone-800">
-            <h2 class="text-xs font-bold text-stone-500 uppercase tracking-wider mb-4 px-1">Brand Resources</h2>
-            <div class="flex flex-wrap gap-3">
-                <a href="branding-guide.html" target="_blank" class="inline-flex items-center px-4 py-2 rounded-lg bg-stone-900 border border-stone-700 text-stone-300 hover:text-white hover:border-teal-400 hover:bg-stone-800 transition-all text-xs font-bold">
-                    <i class="fa-solid fa-palette mr-2 text-teal-400"></i> Brand Guide
-                </a>
-                <a href="branding-dev-reference.html" target="_blank" class="inline-flex items-center px-4 py-2 rounded-lg bg-stone-900 border border-stone-700 text-stone-300 hover:text-white hover:border-purple-400 hover:bg-stone-800 transition-all text-xs font-bold">
-                    <i class="fa-solid fa-code mr-2 text-purple-400"></i> Developer Reference
-                </a>
-                <a href="ai-branding-prompt.html" target="_blank" class="inline-flex items-center px-4 py-2 rounded-lg bg-stone-900 border border-stone-700 text-stone-300 hover:text-white hover:border-pink-400 hover:bg-stone-800 transition-all text-xs font-bold">
-                    <i class="fa-solid fa-robot mr-2 text-pink-400"></i> AI Branding Prompt
-                </a>
+            <!-- Data Management Section -->
+            <div class="mb-8">
+                <h3 class="text-sm font-bold text-stone-400 uppercase tracking-wider mb-4">Data Management</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <a href="https://github.com/tdhckmn/ultraphonics-web/edit/main/content/songs.json" target="_blank" class="flex items-center gap-3 px-5 py-4 rounded-lg bg-stone-900 border border-stone-700 hover:border-blue-400 hover:bg-stone-800 transition-all group">
+                        <div class="p-2 bg-blue-500/10 rounded-lg group-hover:bg-blue-500/20 transition-colors">
+                            <i class="fa-solid fa-pen-to-square text-blue-400 text-lg"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="text-white font-semibold text-sm">Edit Songs</div>
+                            <div class="text-stone-500 text-xs">songs.json</div>
+                        </div>
+                        <i class="fa-solid fa-external-link-alt text-stone-700 group-hover:text-blue-400 transition-colors text-xs"></i>
+                    </a>
+
+                    <a href="https://github.com/tdhckmn/ultraphonics-web/edit/main/content/shows.json" target="_blank" class="flex items-center gap-3 px-5 py-4 rounded-lg bg-stone-900 border border-stone-700 hover:border-blue-400 hover:bg-stone-800 transition-all group">
+                        <div class="p-2 bg-blue-500/10 rounded-lg group-hover:bg-blue-500/20 transition-colors">
+                            <i class="fa-solid fa-pen-to-square text-blue-400 text-lg"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="text-white font-semibold text-sm">Edit Shows</div>
+                            <div class="text-stone-500 text-xs">shows.json</div>
+                        </div>
+                        <i class="fa-solid fa-external-link-alt text-stone-700 group-hover:text-blue-400 transition-colors text-xs"></i>
+                    </a>
+
+                    <a href="../content/Ultraphonics_V3.json" target="_blank" class="flex items-center gap-3 px-5 py-4 rounded-lg bg-stone-900 border border-stone-700 hover:border-stone-500 hover:bg-stone-800 transition-all group">
+                        <div class="p-2 bg-stone-700/50 rounded-lg group-hover:bg-stone-700 transition-colors">
+                            <i class="fa-solid fa-file-code text-stone-400 text-lg"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="text-white font-semibold text-sm">Ultraphonics V3</div>
+                            <div class="text-stone-500 text-xs">Legacy JSON</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Brand Resources Section -->
+            <div>
+                <h3 class="text-sm font-bold text-stone-400 uppercase tracking-wider mb-4">Brand Resources</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <a href="branding-guide.html" target="_blank" class="flex items-center gap-3 px-5 py-4 rounded-lg bg-stone-900 border border-stone-700 hover:border-teal-400 hover:bg-stone-800 transition-all group">
+                        <div class="p-2 bg-teal-500/10 rounded-lg group-hover:bg-teal-500/20 transition-colors">
+                            <i class="fa-solid fa-palette text-teal-400 text-lg"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="text-white font-semibold text-sm">Brand Guide</div>
+                            <div class="text-stone-500 text-xs">Visual identity</div>
+                        </div>
+                    </a>
+
+                    <a href="branding-dev-reference.html" target="_blank" class="flex items-center gap-3 px-5 py-4 rounded-lg bg-stone-900 border border-stone-700 hover:border-purple-400 hover:bg-stone-800 transition-all group">
+                        <div class="p-2 bg-purple-500/10 rounded-lg group-hover:bg-purple-500/20 transition-colors">
+                            <i class="fa-solid fa-code text-purple-400 text-lg"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="text-white font-semibold text-sm">Developer Reference</div>
+                            <div class="text-stone-500 text-xs">Technical specs</div>
+                        </div>
+                    </a>
+
+                    <a href="ai-branding-prompt.html" target="_blank" class="flex items-center gap-3 px-5 py-4 rounded-lg bg-stone-900 border border-stone-700 hover:border-pink-400 hover:bg-stone-800 transition-all group">
+                        <div class="p-2 bg-pink-500/10 rounded-lg group-hover:bg-pink-500/20 transition-colors">
+                            <i class="fa-solid fa-robot text-pink-400 text-lg"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="text-white font-semibold text-sm">AI Branding Prompt</div>
+                            <div class="text-stone-500 text-xs">AI guidelines</div>
+                        </div>
+                    </a>
+                </div>
             </div>
         </div>
 
@@ -423,7 +537,7 @@
                 Ultraphonics Admin Portal
             </p>
             <p class="text-stone-700 text-xs">
-                v2.4
+                v3.0
             </p>
         </div>
     </footer>
@@ -431,9 +545,9 @@
     <!-- Settings Modal -->
     <div id="settingsModal" class="modal opacity-0 pointer-events-none fixed w-full h-full top-0 left-0 flex items-center justify-center z-[100]">
         <div class="modal-overlay absolute w-full h-full bg-stone-950/80 backdrop-blur-sm"></div>
-        
+
         <div class="modal-container bg-stone-900 w-11/12 md:max-w-md mx-auto rounded-xl shadow-2xl border border-stone-700 z-50 overflow-y-auto">
-            
+
             <div class="modal-content py-4 text-left px-6">
                 <!-- Title -->
                 <div class="flex justify-between items-center pb-3 border-b border-stone-800">
@@ -547,6 +661,30 @@
 
     <!-- Scripts -->
     <script>
+        // --- TAB NAVIGATION ---
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const targetTab = btn.getAttribute('data-tab');
+
+                // Remove active from all buttons and content
+                tabBtns.forEach(b => {
+                    b.classList.remove('active', 'border-teal-500', 'text-teal-400');
+                    b.classList.add('border-transparent', 'text-stone-400');
+                });
+                tabContents.forEach(content => {
+                    content.classList.remove('active');
+                });
+
+                // Add active to clicked button and corresponding content
+                btn.classList.add('active', 'border-teal-500', 'text-teal-400');
+                btn.classList.remove('border-transparent', 'text-stone-400');
+                document.getElementById(targetTab).classList.add('active');
+            });
+        });
+
         // --- PWA INSTALL LOGIC ---
         let deferredPrompt;
         const installBanner = document.getElementById('installBanner');
@@ -556,23 +694,17 @@
 
         // Check if app is already installed or dismissed
         function shouldShowInstallPrompt() {
-            // Check if running in standalone mode (already installed)
             if (window.matchMedia('(display-mode: standalone)').matches) {
                 return false;
             }
-
-            // Check if user dismissed the prompt
             if (localStorage.getItem('installDismissed') === 'true') {
                 return false;
             }
-
-            // Check URL parameter
             const urlParams = new URLSearchParams(window.location.search);
             if (urlParams.get('installed') === 'true') {
                 localStorage.setItem('installDismissed', 'true');
                 return false;
             }
-
             return true;
         }
 
@@ -589,7 +721,6 @@
         // Show iOS instructions
         function showIOSInstructions() {
             iosModal.classList.add('show');
-            // Mark as dismissed so we don't show again
             localStorage.setItem('installDismissed', 'true');
             installBanner.classList.remove('show');
         }
@@ -598,42 +729,29 @@
         function closeIOSModal() {
             iosModal.classList.remove('show');
         }
-        window.closeIOSModal = closeIOSModal; // Make it global for onclick
+        window.closeIOSModal = closeIOSModal;
 
-        // Listen for the beforeinstallprompt event (Chrome, Edge, etc.)
+        // Listen for the beforeinstallprompt event
         window.addEventListener('beforeinstallprompt', (e) => {
-            // Prevent the mini-infobar from appearing on mobile
             e.preventDefault();
-            // Stash the event so it can be triggered later
             deferredPrompt = e;
-
-            // Show the install banner if conditions are met
             if (shouldShowInstallPrompt()) {
                 setTimeout(() => {
                     installBanner.classList.add('show');
-                }, 2000); // Show after 2 seconds
+                }, 2000);
             }
         });
 
         // Install button click handler
         installButton.addEventListener('click', async () => {
             if (isIOS()) {
-                // Show iOS instructions
                 showIOSInstructions();
             } else if (deferredPrompt) {
-                // Show the install prompt
                 deferredPrompt.prompt();
-                // Wait for the user to respond to the prompt
                 const { outcome } = await deferredPrompt.userChoice;
-
                 if (outcome === 'accepted') {
-                    console.log('User accepted the install prompt');
                     localStorage.setItem('installDismissed', 'true');
-                } else {
-                    console.log('User dismissed the install prompt');
                 }
-
-                // Clear the deferredPrompt
                 deferredPrompt = null;
                 installBanner.classList.remove('show');
             }
@@ -672,26 +790,20 @@
             const modal = document.getElementById('settingsModal');
             const saveSettingsBtn = document.getElementById('saveSettings');
 
-            // Default
             const DEFAULT_ABLESET_URL = 'http://192.168.1.243';
 
-            // --- Helper Functions ---
-
             function loadSettings() {
-                // Load AbleSet URL
                 const storedUrl = localStorage.getItem('ableset_url');
                 const url = storedUrl || DEFAULT_ABLESET_URL;
                 ablesetLink.href = url;
                 ablesetUrlDisplay.textContent = url;
                 ablesetUrlInput.value = url;
 
-                // Load GitHub token
                 const config = JSON.parse(localStorage.getItem('up_gh_config') || '{}');
                 ghTokenInput.value = config.token || '';
             }
 
             function saveSettings() {
-                // Save AbleSet URL
                 let url = ablesetUrlInput.value.trim();
                 if (!url) {
                     url = DEFAULT_ABLESET_URL;
@@ -701,7 +813,6 @@
                 }
                 localStorage.setItem('ableset_url', url);
 
-                // Save GitHub token
                 const token = ghTokenInput.value.trim();
                 const config = JSON.parse(localStorage.getItem('up_gh_config') || '{}');
                 config.token = token;
@@ -721,8 +832,6 @@
                 body.classList.toggle('modal-active');
             }
 
-            // --- Event Listeners ---
-
             openSettingsBtn.addEventListener('click', (e) => {
                 e.preventDefault();
                 toggleModal();
@@ -730,7 +839,6 @@
 
             closeModalBtn.addEventListener('click', toggleModal);
             modalOverlay.addEventListener('click', toggleModal);
-
             saveSettingsBtn.addEventListener('click', saveSettings);
 
             // Close on Escape key
@@ -741,7 +849,6 @@
                 }
             };
 
-            // --- Init ---
             loadSettings();
         });
     </script>
