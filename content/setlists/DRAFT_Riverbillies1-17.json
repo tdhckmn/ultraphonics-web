@@ -9,7 +9,10 @@
     "id": "6911bbe3-ba25-4af7-97f4-37e184cd63ef",
     "lastKnownName": "Play That Funky Music - E",
     "time": 24549.71875,
-    "stop": true
+    "stop": true,
+    "tags": [
+      "vocals:Shelley"
+    ]
   },
   {
     "id": "6cdd82e7-ec98-4f95-81a4-d556184229ec",
@@ -24,13 +27,19 @@
     "id": "965f1d1c-8fc9-460f-a806-9779b5f61a1a",
     "lastKnownName": "Mary Jane's Last Dance - Am",
     "time": 12570.5,
-    "stop": true
+    "stop": true,
+    "tags": [
+      "vocals:Tom"
+    ]
   },
   {
     "id": "097f8288-3509-46cd-a8f1-c9972e841609",
     "lastKnownName": "24K Magic - Fm",
     "time": 0,
-    "stop": true
+    "stop": true,
+    "tags": [
+      "vocals:Kelsey"
+    ]
   },
   {
     "id": "9143f0c2-f941-4f4c-9fd7-1c33aca4c9d4",
@@ -41,12 +50,6 @@
       "vocals:Shelley",
       "eflat:true"
     ]
-  },
-  {
-    "id": "30f571a1-e991-41a5-8022-cb41ed48e6b3",
-    "lastKnownName": "As Good As I Once Was - F",
-    "time": 1678,
-    "stop": true
   },
   {
     "id": "9ca155d3-b9e9-4bad-a47c-025dd73f0c77",
@@ -93,6 +96,7 @@
     "time": 19859.25,
     "stop": true,
     "tags": [
+      "vocals:Kelsey",
       "capo:2"
     ]
   },
@@ -112,6 +116,7 @@
     "time": 10310,
     "stop": true,
     "tags": [
+      "vocals:Kelsey",
       "capo:2"
     ]
   },
@@ -134,7 +139,10 @@
     "id": "f4a2b1db-2dea-42a8-be40-61b6e30431fc",
     "lastKnownName": "December 1963 - Db",
     "time": 29021.7890625,
-    "stop": true
+    "stop": true,
+    "tags": [
+      "vocals:Kelsey"
+    ]
   },
   {
     "id": "25a4b300-664f-4072-bedb-b17e277426e4",
@@ -149,7 +157,10 @@
     "id": "a4c0e95c-cb3f-4498-a0a8-bda8f5153ff6",
     "lastKnownName": "Friends In Low Places - A",
     "time": 7727,
-    "stop": true
+    "stop": true,
+    "tags": [
+      "vocals:Kelsey"
+    ]
   },
   {
     "id": "2f5d98e8-67f4-4cfd-983c-c179cb07d47c",
@@ -170,6 +181,15 @@
     ]
   },
   {
+    "id": "5b0bc018-491e-4562-b52f-ab8a76eb43d0",
+    "lastKnownName": "The Way You Make Me Feel - F",
+    "time": 19372,
+    "stop": true,
+    "tags": [
+      "vocals:Shelley"
+    ]
+  },
+  {
     "id": "b93e6177-fe8f-4694-b10c-12ac0582dc90",
     "lastKnownName": "I Wanna Dance With Somebody - Gb - Ab",
     "time": 9710.75,
@@ -179,9 +199,9 @@
     ]
   },
   {
-    "id": "5b0bc018-491e-4562-b52f-ab8a76eb43d0",
-    "lastKnownName": "The Way You Make Me Feel - F",
-    "time": 19372,
+    "id": "c3ad1ea8-05ae-4f95-86f9-fbcf75570899",
+    "lastKnownName": "Isn't She Lovely - E",
+    "time": 10745.9375,
     "stop": true,
     "tags": [
       "vocals:Kelsey"
@@ -195,16 +215,6 @@
     "tags": [
       "vocals:Shelley",
       "capo:3"
-    ]
-  },
-  {
-    "id": "615fc292-fb59-4f7d-b63b-8078c31cb3be",
-    "lastKnownName": "Beer Never Broke My Heart - Db",
-    "time": 2140,
-    "stop": true,
-    "tags": [
-      "eflat:true",
-      "drop:true"
     ]
   },
   {
@@ -245,6 +255,12 @@
     ]
   },
   {
+    "id": "510ebd7a-d7e9-4784-87d9-1a30667ca7e7",
+    "lastKnownName": "Set 3",
+    "time": 23424,
+    "stop": true
+  },
+  {
     "id": "7b583910-85ae-4d87-89ae-3840bd237be7",
     "lastKnownName": "Mash_About Damn Time/ Superstition",
     "time": 23680,
@@ -262,12 +278,6 @@
     "tags": [
       "vocals:Kelsey"
     ]
-  },
-  {
-    "id": "510ebd7a-d7e9-4784-87d9-1a30667ca7e7",
-    "lastKnownName": "Set 3",
-    "time": 23424,
-    "stop": true
   },
   {
     "id": "243acb02-7b68-4e40-b228-65b6de82f071",
@@ -328,6 +338,24 @@
     ]
   },
   {
+    "id": "941d1e8c-b712-49aa-b2ee-d859d2da07c4",
+    "lastKnownName": "Sparks Fly - F",
+    "time": 17764,
+    "stop": true,
+    "tags": [
+      "vocals:Shelley"
+    ]
+  },
+  {
+    "id": "2c1f79d0-0349-48ad-8efe-390b08504946",
+    "lastKnownName": "Neon Moon - A",
+    "time": 13978.25,
+    "stop": true,
+    "tags": [
+      "vocals:Kelsey"
+    ]
+  },
+  {
     "id": "93a84c41-44d8-4670-8709-0da3d84edce0",
     "lastKnownName": "Uptown Funk - Dm",
     "time": 30933.612438603064,
@@ -353,26 +381,5 @@
     "lastKnownName": "Don't Stop Believing",
     "time": 5069.625,
     "stop": true
-  },
-  {
-    "id": "c3ad1ea8-05ae-4f95-86f9-fbcf75570899",
-    "lastKnownName": "Isn't She Lovely - E",
-    "time": 10745.9375,
-    "stop": true
-  },
-  {
-    "id": "2c1f79d0-0349-48ad-8efe-390b08504946",
-    "lastKnownName": "Neon Moon - A",
-    "time": 13978.25,
-    "stop": true
-  },
-  {
-    "id": "941d1e8c-b712-49aa-b2ee-d859d2da07c4",
-    "lastKnownName": "Sparks Fly - F",
-    "time": 17764,
-    "stop": true,
-    "tags": [
-      "vocals:Shelley"
-    ]
   }
 ]
