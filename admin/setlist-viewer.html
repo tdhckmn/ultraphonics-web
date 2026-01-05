@@ -123,8 +123,13 @@
             <div class="panel-header !flex-row !justify-between !items-center">
                 <div class="flex items-center gap-3 overflow-hidden flex-1">
                     <div class="font-bold text-lg text-white truncate" id="view-title">Select a Setlist</div>
-                    <button id="btn-download" onclick="downloadCurrent()" class="text-gray-400 hover:text-[#3b82f6] hidden" title="Download JSON">
-                        <i class="fas fa-download"></i>
+                </div>
+                <div class="flex items-center gap-1">
+                    <button id="btn-share" onclick="shareSetlist()" class="text-gray-400 hover:text-[#3b82f6] hidden p-3 -m-1" title="Share Setlist">
+                        <i class="fas fa-share-nodes text-base"></i>
+                    </button>
+                    <button id="btn-download" onclick="downloadCurrent()" class="text-gray-400 hover:text-[#3b82f6] hidden p-3 -m-1" title="Download JSON">
+                        <i class="fas fa-download text-base"></i>
                     </button>
                 </div>
             </div>
@@ -309,8 +314,9 @@
                 // Update Edit Mode Link to pass this file
                 document.getElementById('link-edit-mode').href = `setlist-builder.html?file=${encodeURIComponent(fileObj.name)}`;
 
-                // Show download button
+                // Show download and share buttons
                 document.getElementById('btn-download').classList.remove('hidden');
+                document.getElementById('btn-share').classList.remove('hidden');
 
                 renderSetlist(parsedData);
 
@@ -387,6 +393,39 @@
             a.href = URL.createObjectURL(blob);
             a.download = currentFileObj.name;
             a.click();
+        }
+
+        async function shareSetlist() {
+            if(!currentFileObj) return;
+
+            const url = window.location.href;
+
+            try {
+                if (navigator.share) {
+                    // Use native share if available (mobile devices)
+                    await navigator.share({
+                        title: `Ultraphonics - ${currentFileObj.name.replace('.json', '').replace('_', ' ')}`,
+                        url: url
+                    });
+                } else {
+                    // Fallback to clipboard
+                    await navigator.clipboard.writeText(url);
+
+                    // Visual feedback
+                    const btn = document.getElementById('btn-share');
+                    const icon = btn.querySelector('i');
+                    const originalClass = icon.className;
+                    icon.className = 'fas fa-check';
+                    btn.classList.add('text-green-400');
+
+                    setTimeout(() => {
+                        icon.className = originalClass;
+                        btn.classList.remove('text-green-400');
+                    }, 2000);
+                }
+            } catch (err) {
+                console.error('Share failed:', err);
+            }
         }
 
         // --- SETTINGS ---

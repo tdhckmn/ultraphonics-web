@@ -149,15 +149,36 @@
             <!-- Toolbar -->
             <div class="panel-header !flex-row !justify-between !items-center !gap-2 !bg-[#181818] !p-2 md:!p-4 sticky top-0 z-10">
                 <div class="flex items-center gap-2 overflow-hidden flex-1">
-                    <div id="current-filename" class="text-[#fbbf24] font-mono text-sm truncate px-2 py-1 bg-[#222] rounded border border-[#333] w-full text-center md:text-left">
+                    <div id="current-filename" class="text-[#fbbf24] font-mono text-sm truncate px-2 py-1 bg-[#222] rounded border border-[#333] flex-1 text-center md:text-left">
                         (Unsaved)
                     </div>
                 </div>
-                <div class="flex gap-1 md:gap-2">
-                    <button onclick="resetToNew()" class="btn btn-secondary !px-2 md:!px-4" title="New"><i class="fas fa-file"></i></button>
-                    <button onclick="saveCurrent()" class="btn btn-primary !px-2 md:!px-4" title="Save" id="btn-save" disabled><i class="fas fa-save"></i></button>
-                    <button onclick="saveAs()" class="btn btn-secondary !px-2 md:!px-4" title="Save As" id="btn-save-as" disabled><i class="fas fa-copy"></i></button>
-                    <button onclick="downloadLocalJSON()" class="btn btn-secondary !px-2 md:!px-4 text-[#fbbf24] border border-[#fbbf24] border-opacity-30 hover:bg-[#451a03]" title="Download JSON"><i class="fas fa-download"></i></button>
+                <div class="flex items-center gap-1">
+                    <button onclick="shareSetlist()" class="text-gray-400 hover:text-[#fbbf24] p-3 -m-1" title="Share">
+                        <i class="fas fa-share-nodes text-base"></i>
+                    </button>
+                    <button onclick="downloadLocalJSON()" class="text-gray-400 hover:text-[#fbbf24] p-3 -m-1" title="Download JSON">
+                        <i class="fas fa-download text-base"></i>
+                    </button>
+                    <div class="relative">
+                        <button onclick="toggleToolbarMenu(event)" id="toolbar-menu-toggle" class="text-gray-400 hover:text-[#fbbf24] p-3 -m-1" title="Actions">
+                            <i class="fas fa-ellipsis-v text-base"></i>
+                        </button>
+                        <div id="toolbar-menu" class="hidden absolute right-0 top-full mt-2 w-48 bg-[#1e1e1e] border border-[#333] rounded-lg shadow-lg overflow-hidden z-50">
+                            <button onclick="resetToNew()" class="w-full flex items-center gap-3 px-4 py-3 text-sm text-gray-300 hover:bg-[#333] transition-colors border-b border-[#333]">
+                                <i class="fas fa-file w-4 text-center"></i>
+                                <span>New</span>
+                            </button>
+                            <button onclick="saveCurrent()" id="menu-btn-save" disabled class="w-full flex items-center gap-3 px-4 py-3 text-sm text-gray-300 hover:bg-[#333] transition-colors border-b border-[#333] disabled:opacity-50 disabled:cursor-not-allowed">
+                                <i class="fas fa-save w-4 text-center"></i>
+                                <span>Save</span>
+                            </button>
+                            <button onclick="saveAs()" id="menu-btn-save-as" disabled class="w-full flex items-center gap-3 px-4 py-3 text-sm text-gray-300 hover:bg-[#333] transition-colors">
+                                <i class="fas fa-copy w-4 text-center"></i>
+                                <span>Save As</span>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
             
@@ -349,6 +370,50 @@
             }
         };
 
+        // --- TOOLBAR MENU ---
+        window.toggleToolbarMenu = (e) => {
+            if (e) e.stopPropagation();
+            const menu = document.getElementById('toolbar-menu');
+            if (menu) {
+                menu.classList.toggle('hidden');
+            }
+        };
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            const menu = document.getElementById('toolbar-menu');
+            const toggle = document.getElementById('toolbar-menu-toggle');
+            if (menu && toggle && !menu.contains(e.target) && !toggle.contains(e.target)) {
+                menu.classList.add('hidden');
+            }
+        });
+
+        // --- SHARE SETLIST ---
+        window.shareSetlist = async () => {
+            const url = window.location.href;
+
+            try {
+                if (navigator.share) {
+                    // Use native share if available (mobile devices)
+                    const title = state.currentFile
+                        ? `Ultraphonics - ${state.currentFile.replace('.json', '').replace('_', ' ')}`
+                        : 'Ultraphonics Setlist Builder';
+                    await navigator.share({ title, url });
+                } else {
+                    // Fallback to clipboard
+                    await navigator.clipboard.writeText(url);
+                    alert('Link copied to clipboard!');
+                }
+                // Close menu after sharing
+                const menu = document.getElementById('toolbar-menu');
+                if (menu) menu.classList.add('hidden');
+            } catch (err) {
+                if (err.name !== 'AbortError') {
+                    console.error('Share failed:', err);
+                }
+            }
+        };
+
         // --- ABLESET LINK UPDATE ---
         function updateAbleSetLink() {
             const DEFAULT_ABLESET_URL = 'http://192.168.1.243';
@@ -502,9 +567,13 @@
         function updateUI() {
             els.currentFilename.textContent = state.currentFile || "(Unsaved)";
             const connected = !!(window.AppState.config.token && window.AppState.config.repo);
-            document.getElementById('btn-save').disabled = !connected;
-            document.getElementById('btn-save-as').disabled = !connected;
-            
+
+            // Update menu button states
+            const menuSaveBtn = document.getElementById('menu-btn-save');
+            const menuSaveAsBtn = document.getElementById('menu-btn-save-as');
+            if (menuSaveBtn) menuSaveBtn.disabled = !connected;
+            if (menuSaveAsBtn) menuSaveAsBtn.disabled = !connected;
+
             // Update "View Mode" link query param
             if (state.currentFile) {
                 els.viewModeLink.href = `setlist-viewer.html?file=${encodeURIComponent(state.currentFile)}`;
