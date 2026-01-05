@@ -355,7 +355,8 @@
   box-shadow: var(--shadow-md);
 }</code></pre>
 
-            <h4>Outline Button</h4>
+            <h4>Secondary CTA / Outline Button</h4>
+            <p><strong>Usage:</strong> Use <code>.button-outline</code> or <code>.button.button-outline</code> for secondary CTAs (e.g., "Request a Song", "Download Wedding Flyer"). This provides a transparent button with colored border that fills on hover.</p>
             <pre><code>.button-outline {
   background-color: transparent;
   border: 2px solid var(--color-btn-bg);
@@ -373,7 +374,19 @@
 .button-outline:hover {
   background-color: var(--color-btn-bg);
   color: var(--color-white);
-}</code></pre>
+}
+
+/* HTML Example */
+&lt;a href="link.html" class="button button-outline"&gt;Secondary Action&lt;/a&gt;</code></pre>
+
+            <div class="element-card">
+                <h4>CTA Button Guidelines</h4>
+                <ul>
+                    <li><strong>Primary CTA:</strong> Use <code>.button</code> for main actions (e.g., "Book Us", "Get a Quote", "Request a Quote"). Filled background with hover lift effect.</li>
+                    <li><strong>Secondary CTA:</strong> Use <code>.button-outline</code> for supporting actions (e.g., "Request a Song", "Download Wedding Flyer", "View Services"). Transparent with border that fills on hover.</li>
+                    <li><strong>When asked to create a new CTA:</strong> Clarify if it should be primary (filled) or secondary (outline) based on its importance in the user journey.</li>
+                </ul>
+            </div>
 
             <h3>Logo Display</h3>
             <pre><code>.logo {

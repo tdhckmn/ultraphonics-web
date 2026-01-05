@@ -1,5 +1,6 @@
 import { config } from '../content/config.js';
 import { setupCommonElements } from './utils.js';
+import { trackEvent } from './analytics.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
     // 1. Setup Navigation, Footer, etc.
@@ -36,6 +37,14 @@ document.addEventListener('DOMContentLoaded', async () => {
             a.style.maxWidth = '350px';
             a.style.textAlign = 'center';
             a.style.margin = "0"; // CSS gap handles spacing
+
+            // Add analytics tracking
+            a.addEventListener('click', () => {
+                trackEvent('media_kit_download', {
+                    asset_type: link.label,
+                    asset_url: href
+                });
+            });
 
             downloadsContainer.appendChild(a);
         });
@@ -104,12 +113,23 @@ document.addEventListener('DOMContentLoaded', async () => {
             downloadBtn.innerHTML = '⇩'; 
             downloadBtn.setAttribute('aria-label', 'Download image');
             downloadBtn.title = 'Download';
-            
+
+            // Add analytics tracking for image downloads
+            downloadBtn.addEventListener('click', () => {
+                trackEvent('gallery_image_download', {
+                    image_src: image.src,
+                    image_alt: image.alt
+                });
+            });
+
             div.appendChild(img);
             div.appendChild(downloadBtn);
             galleryContainer.appendChild(div);
         });
     }
+
+    // Setup analytics for genre filter
+    setupMediaKitAnalytics();
 });
 
 function renderSongs(songs) {
@@ -225,4 +245,16 @@ function formatTime(seconds) {
     const m = Math.floor(seconds / 60);
     const s = Math.floor(seconds % 60);
     return `${m}:${s.toString().padStart(2, '0')}`;
+}
+
+function setupMediaKitAnalytics() {
+    // Track genre filter usage
+    const genreFilter = document.getElementById('genre-filter');
+    if (genreFilter) {
+        genreFilter.addEventListener('change', (e) => {
+            trackEvent('genre_filter_change', {
+                selected_genre: e.target.value
+            });
+        });
+    }
 }
