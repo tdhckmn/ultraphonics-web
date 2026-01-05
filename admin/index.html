@@ -245,7 +245,7 @@
                     <button id="openSettings" class="text-stone-400 hover:text-white transition-colors p-2 rounded-lg hover:bg-stone-800" title="Admin Settings">
                         <i class="fa-solid fa-gear"></i>
                     </button>
-                    <a href="../index.html?qa=true" target="_blank" rel="noopener noreferrer" class="text-stone-400 hover:text-white transition-colors text-sm font-medium flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-stone-800">
+                    <a href="#" onclick="viewSiteWithCacheBust(event)" class="text-stone-400 hover:text-white transition-colors text-sm font-medium flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-stone-800">
                         <span>View Site</span>
                         <i class="fa-solid fa-arrow-right-from-bracket"></i>
                     </a>
@@ -609,6 +609,20 @@
                     <p class="text-stone-500 text-xs mt-2 italic">
                         Example: http://192.168.1.243, http://Karls-MacBook.local
                     </p>
+
+                    <!-- Cache Buster -->
+                    <div class="border-t border-stone-800 mt-5 pt-5">
+                        <label class="block text-stone-400 text-xs font-bold mb-2">
+                            Refresh Page
+                        </label>
+                        <button onclick="clearCacheAndReload()" class="w-full px-4 py-3 bg-stone-800 border border-stone-700 rounded-lg text-white hover:bg-stone-700 font-semibold transition-colors flex items-center justify-center gap-2">
+                            <i class="fas fa-sync-alt"></i>
+                            <span>Clear Cache & Reload</span>
+                        </button>
+                        <p class="text-stone-500 text-xs mt-2 italic">
+                            Use this if you don't see recent updates or changes
+                        </p>
+                    </div>
                 </div>
 
                 <!-- Footer -->
@@ -867,6 +881,22 @@
 
             loadSettings();
         });
+
+        // --- CACHE BUSTER ---
+        window.clearCacheAndReload = () => {
+            // Add cache busting timestamp to URL and reload
+            const url = new URL(window.location);
+            url.searchParams.set('cachebust', Date.now());
+            window.location.href = url.toString();
+        };
+
+        // --- VIEW SITE WITH CACHE BUST ---
+        window.viewSiteWithCacheBust = (e) => {
+            e.preventDefault();
+            // Add cache busting timestamp to the URL
+            const cacheBuster = Date.now();
+            window.open(`../index.html?qa=true&cachebust=${cacheBuster}`, '_blank', 'noopener,noreferrer');
+        };
 
         // --- FORCE REFRESH FUNCTIONALITY ---
         document.getElementById('forceRefreshBtn').addEventListener('click', async () => {
