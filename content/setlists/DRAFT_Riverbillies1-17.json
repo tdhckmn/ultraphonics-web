@@ -9,10 +9,7 @@
     "id": "6911bbe3-ba25-4af7-97f4-37e184cd63ef",
     "lastKnownName": "Play That Funky Music - E",
     "time": 24549.71875,
-    "stop": true,
-    "tags": [
-      "vocals:David"
-    ]
+    "stop": true
   },
   {
     "id": "6cdd82e7-ec98-4f95-81a4-d556184229ec",
@@ -27,19 +24,13 @@
     "id": "965f1d1c-8fc9-460f-a806-9779b5f61a1a",
     "lastKnownName": "Mary Jane's Last Dance - Am",
     "time": 12570.5,
-    "stop": true,
-    "tags": [
-      "vocals:Tom"
-    ]
+    "stop": true
   },
   {
     "id": "097f8288-3509-46cd-a8f1-c9972e841609",
     "lastKnownName": "24K Magic - Fm",
     "time": 0,
-    "stop": true,
-    "tags": [
-      "vocals:David"
-    ]
+    "stop": true
   },
   {
     "id": "9143f0c2-f941-4f4c-9fd7-1c33aca4c9d4",
@@ -55,10 +46,7 @@
     "id": "30f571a1-e991-41a5-8022-cb41ed48e6b3",
     "lastKnownName": "As Good As I Once Was - F",
     "time": 1678,
-    "stop": true,
-    "tags": [
-      "vocals:David"
-    ]
+    "stop": true
   },
   {
     "id": "9ca155d3-b9e9-4bad-a47c-025dd73f0c77",
@@ -76,7 +64,7 @@
     "time": 21808.75,
     "stop": true,
     "tags": [
-      "vocals:David"
+      "vocals:Kelsey"
     ]
   },
   {
@@ -85,7 +73,7 @@
     "time": 30129.875,
     "stop": true,
     "tags": [
-      "vocals:David",
+      "vocals:Shelley",
       "capo:2"
     ]
   },
@@ -95,7 +83,7 @@
     "time": 4703.21875,
     "stop": true,
     "tags": [
-      "vocals:Shelley",
+      "vocals:Kelsey",
       "capo:2"
     ]
   },
@@ -105,7 +93,6 @@
     "time": 19859.25,
     "stop": true,
     "tags": [
-      "vocals:David",
       "capo:2"
     ]
   },
@@ -125,7 +112,6 @@
     "time": 10310,
     "stop": true,
     "tags": [
-      "vocals:David",
       "capo:2"
     ]
   },
@@ -148,10 +134,7 @@
     "id": "f4a2b1db-2dea-42a8-be40-61b6e30431fc",
     "lastKnownName": "December 1963 - Db",
     "time": 29021.7890625,
-    "stop": true,
-    "tags": [
-      "vocals:David"
-    ]
+    "stop": true
   },
   {
     "id": "25a4b300-664f-4072-bedb-b17e277426e4",
@@ -166,10 +149,7 @@
     "id": "a4c0e95c-cb3f-4498-a0a8-bda8f5153ff6",
     "lastKnownName": "Friends In Low Places - A",
     "time": 7727,
-    "stop": true,
-    "tags": [
-      "vocals:David"
-    ]
+    "stop": true
   },
   {
     "id": "2f5d98e8-67f4-4cfd-983c-c179cb07d47c",
@@ -186,7 +166,7 @@
     "time": 11577,
     "stop": true,
     "tags": [
-      "vocals:David"
+      "vocals:Kelsey"
     ]
   },
   {
@@ -204,7 +184,7 @@
     "time": 19372,
     "stop": true,
     "tags": [
-      "vocals:David"
+      "vocals:Kelsey"
     ]
   },
   {
@@ -223,7 +203,6 @@
     "time": 2140,
     "stop": true,
     "tags": [
-      "vocals:David",
       "eflat:true",
       "drop:true"
     ]
@@ -234,7 +213,7 @@
     "time": 14476.5,
     "stop": true,
     "tags": [
-      "vocals:Shelley"
+      "vocals:Kelsey"
     ]
   },
   {
@@ -253,7 +232,6 @@
     "time": 8236.125,
     "stop": true,
     "tags": [
-      "vocals:David",
       "drop:true"
     ]
   },
@@ -263,15 +241,8 @@
     "time": 34336,
     "stop": true,
     "tags": [
-      "vocals:David",
       "drop:true"
     ]
-  },
-  {
-    "id": "510ebd7a-d7e9-4784-87d9-1a30667ca7e7",
-    "lastKnownName": "Set 3",
-    "time": 23424,
-    "stop": true
   },
   {
     "id": "7b583910-85ae-4d87-89ae-3840bd237be7",
@@ -282,6 +253,21 @@
       "vocals:Shelley",
       "eflat:true"
     ]
+  },
+  {
+    "id": "5d6f75f3-f8ca-4063-a1d1-63d27063df8e",
+    "lastKnownName": "Superstition - Ebm",
+    "time": 18286,
+    "stop": true,
+    "tags": [
+      "vocals:Kelsey"
+    ]
+  },
+  {
+    "id": "510ebd7a-d7e9-4784-87d9-1a30667ca7e7",
+    "lastKnownName": "Set 3",
+    "time": 23424,
+    "stop": true
   },
   {
     "id": "243acb02-7b68-4e40-b228-65b6de82f071",
@@ -296,10 +282,7 @@
     "id": "9c48153b-2827-4c5f-8988-b334f882b2e2",
     "lastKnownName": "My Own Worst Enemy - E",
     "time": 34656,
-    "stop": true,
-    "tags": [
-      "vocals:David"
-    ]
+    "stop": true
   },
   {
     "id": "ce22043b-9ef0-4074-bdc9-8ca10f8f3dcb",
@@ -307,7 +290,6 @@
     "time": 13588.203125,
     "stop": true,
     "tags": [
-      "vocals:David",
       "capo:2"
     ]
   },
@@ -315,10 +297,7 @@
     "id": "a74e15b5-a08b-44a7-9922-9e051fec8e76",
     "lastKnownName": "Shut Up And Dance With Me - Db",
     "time": 16891,
-    "stop": true,
-    "tags": [
-      "vocals:David"
-    ]
+    "stop": true
   },
   {
     "id": "06e4d108-33e7-413d-a721-e4584df709e4",
@@ -326,7 +305,7 @@
     "time": 18787.75,
     "stop": true,
     "tags": [
-      "vocals:David"
+      "vocals:Kelsey"
     ]
   },
   {
@@ -344,7 +323,7 @@
     "time": 20201.984375,
     "stop": true,
     "tags": [
-      "vocals:David",
+      "vocals:Kelsey",
       "capo:1"
     ]
   },
@@ -352,19 +331,13 @@
     "id": "93a84c41-44d8-4670-8709-0da3d84edce0",
     "lastKnownName": "Uptown Funk - Dm",
     "time": 30933.612438603064,
-    "stop": true,
-    "tags": [
-      "vocals:David"
-    ]
+    "stop": true
   },
   {
     "id": "c281bcf8-df34-429d-a66c-4b47fa839bc9",
     "lastKnownName": "Country Girl - Em",
     "time": 4247.0078125,
-    "stop": true,
-    "tags": [
-      "vocals:David"
-    ]
+    "stop": true
   },
   {
     "id": "7222eeed-6f9a-4216-9ae3-88c058dafd90",
@@ -372,7 +345,6 @@
     "time": 13142,
     "stop": true,
     "tags": [
-      "vocals:David",
       "eflat:true"
     ]
   },
@@ -380,6 +352,24 @@
     "id": "71622b32-714e-43d2-b983-61ba4e3c6a9d",
     "lastKnownName": "Don't Stop Believing",
     "time": 5069.625,
+    "stop": true
+  },
+  {
+    "id": "c3ad1ea8-05ae-4f95-86f9-fbcf75570899",
+    "lastKnownName": "Isn't She Lovely - E",
+    "time": 10745.9375,
+    "stop": true
+  },
+  {
+    "id": "2c1f79d0-0349-48ad-8efe-390b08504946",
+    "lastKnownName": "Neon Moon - A",
+    "time": 13978.25,
+    "stop": true
+  },
+  {
+    "id": "941d1e8c-b712-49aa-b2ee-d859d2da07c4",
+    "lastKnownName": "Sparks Fly - F",
+    "time": 17764,
     "stop": true,
     "tags": [
       "vocals:Shelley"
