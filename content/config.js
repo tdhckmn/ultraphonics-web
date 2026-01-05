@@ -1,7 +1,7 @@
 export const config = {
   // Global Contact Info
   siteInfo: {
-    copyrightName: "Ultraphonics"
+    copyrightName: "Ultraphonics, LLC"
   },
 
   // API Keys and IDs
