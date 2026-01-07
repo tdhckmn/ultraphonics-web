@@ -50,16 +50,6 @@
     "eventLink": "https://www.facebook.com/events/731665099543941/"
   },
   {
-    "date": "7/10/2025",
-    "venue": "Chateau Aeronautique Winery",
-    "city": "Onsted",
-    "state": "MI",
-    "startTime": "8:00 PM",
-    "endTime": "11:00 PM",
-    "isPrivate": false,
-    "eventLink": ""
-  },
-  {
     "date": "7/12/2025",
     "venue": "Original Gravity",
     "city": "Milan",
@@ -257,6 +247,16 @@
     "startTime": "12:00 AM",
     "endTime": "",
     "isPrivate": true,
+    "eventLink": ""
+  },
+  {
+    "date": "7/10/2026",
+    "venue": "Chateau Aeronautique Winery",
+    "city": "Onsted",
+    "state": "MI",
+    "startTime": "8:00 PM",
+    "endTime": "11:00 PM",
+    "isPrivate": false,
     "eventLink": ""
   },
   {
