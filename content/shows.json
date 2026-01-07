@@ -50,6 +50,16 @@
     "eventLink": "https://www.facebook.com/events/731665099543941/"
   },
   {
+    "date": "7/10/2025",
+    "venue": "Chateau Aeronautique Winery",
+    "city": "Onsted",
+    "state": "MI",
+    "startTime": "8:00 PM",
+    "endTime": "11:00 PM",
+    "isPrivate": false,
+    "eventLink": ""
+  },
+  {
     "date": "7/12/2025",
     "venue": "Original Gravity",
     "city": "Milan",
@@ -230,7 +240,7 @@
     "eventLink": "https://fb.me/e/5qG9tajDK"
   },
   {
-    "date": "6/6/2025",
+    "date": "6/6/2026",
     "venue": "The Sandtrap",
     "city": "Riverview",
     "state": "MI",
