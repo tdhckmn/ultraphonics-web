@@ -258,41 +258,69 @@ a.venue-link:hover {
   text-decoration: underline;
 }
 
-.setlist-promo-section {
+.weddings-promo-section {
+  position: relative;
   width: 100%;
-  padding: var(--spacing-xxl) var(--spacing-md);
+  min-height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: url('../images/Reception.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   margin-bottom: var(--spacing-xs);
   margin-top: var(--spacing-md);
+  overflow: hidden;
 }
 
-.setlist-content {
-  max-width: 800px;
-  margin: 0 auto;
+.weddings-promo-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.55) 100%);
+  z-index: 1;
 }
 
-.setlist-title {
+.weddings-promo-content {
+  position: relative;
+  z-index: 2;
+  max-width: 900px;
+  padding: var(--spacing-xxl) var(--spacing-md);
+  text-align: center;
+}
+
+.weddings-promo-title {
   color: var(--color-accent);
-  font-size: var(--font-size-xl);
-  font-weight: bold;
+  font-size: 2.5rem;
+  font-weight: 700;
   margin-bottom: var(--spacing-md);
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
 }
 
-.setlist-content p {
-  font-size: var(--font-size-lg);
-  color: var(--color-text-secondary);
-  margin-bottom: var(--spacing-lg);
+.weddings-promo-text {
+  font-size: 1.25rem;
+  color: #f0f0f0;
+  margin-bottom: var(--spacing-xl);
+  line-height: 1.6;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.7);
 }
 
-.setlist-button {
-  background-color: transparent;
-  border: 2px solid var(--color-btn-bg);
-  font-weight: bold;
-}
+@media (max-width: 768px) {
+  .weddings-promo-section {
+    min-height: 350px;
+  }
 
-.setlist-button:hover {
-  background-color: var(--color-btn-bg);
-  color: var(--color-white);
+  .weddings-promo-title {
+    font-size: 1.8rem;
+  }
+
+  .weddings-promo-text {
+    font-size: 1.1rem;
+  }
 }
 
 /* --- Shared Page Styles (Contact, Services, Quote) --- */

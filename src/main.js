@@ -341,6 +341,19 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
+  function setupWeddingsPromoTracking() {
+    const weddingsPromoButton = document.getElementById('weddings-promo-button');
+    if (weddingsPromoButton) {
+      weddingsPromoButton.addEventListener('click', () => {
+        trackEvent('weddings_promo_click', {
+          page: 'home',
+          button_text: 'Explore Wedding Services',
+          button_location: 'weddings_promo_section'
+        });
+      });
+    }
+  }
+
   injectStructuredData();
   populateTextContent();
   setupEventListeners();
@@ -348,6 +361,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   setupSectionTracking();
   setupTippingModal();
   setupRequestModal();
+  setupWeddingsPromoTracking();
   loadShowSchedule();
   setupAdminCode();
   ensureMobileVideoAutoplay();

@@ -7,6 +7,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Quote Form Specific Logic ---
 
+    /* --- Auto-select event type from URL parameter --- */
+    const urlParams = new URLSearchParams(window.location.search);
+    const eventType = urlParams.get('event_type');
+    if (eventType) {
+        const eventTypeValue = eventType.charAt(0).toUpperCase() + eventType.slice(1).toLowerCase();
+        const radioButton = document.querySelector(`input[name="event_type"][value="${eventTypeValue}"]`);
+        if (radioButton) {
+            radioButton.checked = true;
+            // Trigger change event in case there's any dependent logic
+            radioButton.dispatchEvent(new Event('change'));
+        }
+    }
+
     /* --- Initialize EmailJS --- */
     if (config.ids && config.ids.emailjs) {
         emailjs.init({
