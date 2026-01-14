@@ -9,7 +9,7 @@
     <link rel="icon" type="image/x-icon" href="/assets/images/favicon.ico">
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon-16x16.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32x32.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/Ultraphonics-Spiral-512.png">
     <link rel="manifest" href="/site.webmanifest">
 
     <link rel="manifest" href="manifest.json">
@@ -18,9 +18,28 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="UP Admin">
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Montserrat', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* Apply Montserrat font globally, but exclude Font Awesome icons */
+        body, button, input, select, textarea, h1, h2, h3, h4, h5, h6, p, a, span:not([class*="fa-"]), div:not([class*="fa-"]) {
+            font-family: 'Montserrat', sans-serif !important;
+        }
+
         /* Custom scrollbar for webkit */
         ::-webkit-scrollbar {
             width: 8px;
@@ -234,12 +253,10 @@
     <nav class="bg-stone-900 border-b border-stone-800 shadow-lg sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
-                <!-- Speaker Icon / Admin Header -->
+                <!-- Band Logo / Admin Header -->
                 <div class="flex items-center gap-3">
-                    <div class="bg-teal-700 p-2 rounded-lg shadow-lg shadow-indigo-900/50">
-                        <i class="fa-solid fa-volume-up text-white"></i>
-                    </div>
-                    <span class="font-bold text-xl tracking-tight text-white">Ultraphonics Admin</span>
+                    <img src="/assets/images/Ultraphonics-Spiral-512.png" alt="Ultraphonics" class="h-10 w-auto">
+                    <span class="font-bold text-xl tracking-tight text-white">Admin</span>
                 </div>
                 <div class="flex items-center gap-3">
                     <button id="openSettings" class="text-stone-400 hover:text-white transition-colors p-2 rounded-lg hover:bg-stone-800" title="Admin Settings">
@@ -315,7 +332,7 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <!-- Discord -->
-                <a href="https://discord.com/channels/1450501228462215208/1450501230353842350" target="_blank" rel="noopener noreferrer" class="group relative flex flex-col p-6 bg-stone-900 border border-stone-800 rounded-xl hover:border-indigo-500 hover:shadow-xl hover:shadow-indigo-900/10 transition-all duration-300">
+                <a href="https://discord.com/channels/1450501228462215208/1450501230353842350" target="_blank" rel="external noopener noreferrer" class="group relative flex flex-col p-6 bg-stone-900 border border-stone-800 rounded-xl hover:border-indigo-500 hover:shadow-xl hover:shadow-indigo-900/10 transition-all duration-300">
                     <div class="flex items-center justify-between mb-3">
                         <div class="flex items-center gap-3">
                             <div class="p-3 bg-indigo-500/10 text-indigo-400 rounded-lg group-hover:bg-indigo-600 group-hover:text-white transition-colors">
@@ -329,7 +346,7 @@
                 </a>
 
                 <!-- Ultrasheet -->
-                <a href="https://docs.google.com/spreadsheets/d/1csJb56jnisEb_37pYMVTOY6kSt6J-HqN5X7IYYRgH20/edit?usp=sharing" target="_blank" rel="noopener noreferrer" class="group relative flex flex-col p-6 bg-stone-900 border border-stone-800 rounded-xl hover:border-emerald-500 hover:shadow-xl hover:shadow-emerald-900/10 transition-all duration-300">
+                <a href="https://docs.google.com/spreadsheets/d/1csJb56jnisEb_37pYMVTOY6kSt6J-HqN5X7IYYRgH20/edit?usp=sharing" target="_blank" rel="external noopener noreferrer" class="group relative flex flex-col p-6 bg-stone-900 border border-stone-800 rounded-xl hover:border-emerald-500 hover:shadow-xl hover:shadow-emerald-900/10 transition-all duration-300">
                     <div class="flex items-center justify-between mb-3">
                         <div class="flex items-center gap-3">
                             <div class="p-3 bg-emerald-500/10 text-emerald-400 rounded-lg group-hover:bg-emerald-600 group-hover:text-white transition-colors">
@@ -343,7 +360,7 @@
                 </a>
 
                 <!-- Weddings Flyer -->
-                <a href="https://drive.google.com/drive/u/0/folders/1OySLOkCsj3OjSc-RhlZmlAPYN9J-yInD" target="_blank" rel="noopener noreferrer" class="group relative flex flex-col p-6 bg-stone-900 border border-stone-800 rounded-xl hover:border-pink-500 hover:shadow-xl hover:shadow-pink-900/10 transition-all duration-300">
+                <a href="https://drive.google.com/drive/u/0/folders/1OySLOkCsj3OjSc-RhlZmlAPYN9J-yInD" target="_blank" rel="external noopener noreferrer" class="group relative flex flex-col p-6 bg-stone-900 border border-stone-800 rounded-xl hover:border-pink-500 hover:shadow-xl hover:shadow-pink-900/10 transition-all duration-300">
                     <div class="flex items-center justify-between mb-3">
                         <div class="flex items-center gap-3">
                             <div class="p-3 bg-pink-500/10 text-pink-400 rounded-lg group-hover:bg-pink-600 group-hover:text-white transition-colors">
@@ -357,7 +374,7 @@
                 </a>
 
                 <!-- Event Pricing -->
-                <a href="https://drive.google.com/drive/u/0/folders/1ZITYFWoKwoxLbY6j_ejq-Cgxg8unlMk4" target="_blank" rel="noopener noreferrer" class="group relative flex flex-col p-6 bg-stone-900 border border-stone-800 rounded-xl hover:border-amber-500 hover:shadow-xl hover:shadow-amber-900/10 transition-all duration-300">
+                <a href="https://drive.google.com/drive/u/0/folders/1ZITYFWoKwoxLbY6j_ejq-Cgxg8unlMk4" target="_blank" rel="external noopener noreferrer" class="group relative flex flex-col p-6 bg-stone-900 border border-stone-800 rounded-xl hover:border-amber-500 hover:shadow-xl hover:shadow-amber-900/10 transition-all duration-300">
                     <div class="flex items-center justify-between mb-3">
                         <div class="flex items-center gap-3">
                             <div class="p-3 bg-amber-500/10 text-amber-400 rounded-lg group-hover:bg-amber-600 group-hover:text-white transition-colors">
@@ -371,7 +388,7 @@
                 </a>
 
                 <!-- Insta360 Cloud -->
-                <a href="https://www.insta360.com/account/login" target="_blank" rel="noopener noreferrer" class="group relative flex flex-col p-6 bg-stone-900 border border-stone-800 rounded-xl hover:border-purple-500 hover:shadow-xl hover:shadow-purple-900/10 transition-all duration-300">
+                <a href="https://www.insta360.com/account/login" target="_blank" rel="external noopener noreferrer" class="group relative flex flex-col p-6 bg-stone-900 border border-stone-800 rounded-xl hover:border-purple-500 hover:shadow-xl hover:shadow-purple-900/10 transition-all duration-300">
                     <div class="flex items-center justify-between mb-3">
                         <div class="flex items-center gap-3">
                             <div class="p-3 bg-purple-500/10 text-purple-400 rounded-lg group-hover:bg-purple-600 group-hover:text-white transition-colors">
@@ -392,7 +409,7 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <!-- Google Analytics -->
-                <a href="https://analytics.google.com/" target="_blank" rel="noopener noreferrer" class="group relative flex flex-col p-6 bg-stone-900 border border-stone-800 rounded-xl hover:border-orange-500 hover:shadow-xl hover:shadow-orange-900/10 transition-all duration-300">
+                <a href="https://analytics.google.com/" target="_blank" rel="external noopener noreferrer" class="group relative flex flex-col p-6 bg-stone-900 border border-stone-800 rounded-xl hover:border-orange-500 hover:shadow-xl hover:shadow-orange-900/10 transition-all duration-300">
                     <div class="flex items-center justify-between mb-3">
                         <div class="flex items-center gap-3">
                             <div class="p-3 bg-orange-500/10 text-orange-400 rounded-lg group-hover:bg-orange-600 group-hover:text-white transition-colors">
@@ -406,7 +423,7 @@
                 </a>
 
                 <!-- Search Console -->
-                <a href="https://search.google.com/search-console" target="_blank" rel="noopener noreferrer" class="group relative flex flex-col p-6 bg-stone-900 border border-stone-800 rounded-xl hover:border-blue-500 hover:shadow-xl hover:shadow-blue-900/10 transition-all duration-300">
+                <a href="https://search.google.com/search-console" target="_blank" rel="external noopener noreferrer" class="group relative flex flex-col p-6 bg-stone-900 border border-stone-800 rounded-xl hover:border-blue-500 hover:shadow-xl hover:shadow-blue-900/10 transition-all duration-300">
                     <div class="flex items-center justify-between mb-3">
                         <div class="flex items-center gap-3">
                             <div class="p-3 bg-blue-500/10 text-blue-400 rounded-lg group-hover:bg-blue-600 group-hover:text-white transition-colors">
@@ -420,7 +437,7 @@
                 </a>
 
                 <!-- MailerLite -->
-                <a href="https://dashboard.mailerlite.com/" target="_blank" rel="noopener noreferrer" class="group relative flex flex-col p-6 bg-stone-900 border border-stone-800 rounded-xl hover:border-green-500 hover:shadow-xl hover:shadow-green-900/10 transition-all duration-300">
+                <a href="https://dashboard.mailerlite.com/" target="_blank" rel="external noopener noreferrer" class="group relative flex flex-col p-6 bg-stone-900 border border-stone-800 rounded-xl hover:border-green-500 hover:shadow-xl hover:shadow-green-900/10 transition-all duration-300">
                     <div class="flex items-center justify-between mb-3">
                         <div class="flex items-center gap-3">
                             <div class="p-3 bg-green-500/10 text-green-400 rounded-lg group-hover:bg-green-600 group-hover:text-white transition-colors">
@@ -434,7 +451,7 @@
                 </a>
 
                 <!-- EmailJS -->
-                <a href="https://dashboard.emailjs.com/admin" target="_blank" rel="noopener noreferrer" class="group relative flex flex-col p-6 bg-stone-900 border border-stone-800 rounded-xl hover:border-yellow-500 hover:shadow-xl hover:shadow-yellow-900/10 transition-all duration-300">
+                <a href="https://dashboard.emailjs.com/admin" target="_blank" rel="external noopener noreferrer" class="group relative flex flex-col p-6 bg-stone-900 border border-stone-800 rounded-xl hover:border-yellow-500 hover:shadow-xl hover:shadow-yellow-900/10 transition-all duration-300">
                     <div class="flex items-center justify-between mb-3">
                         <div class="flex items-center gap-3">
                             <div class="p-3 bg-yellow-500/10 text-yellow-400 rounded-lg group-hover:bg-yellow-600 group-hover:text-white transition-colors">
@@ -559,12 +576,12 @@
     </footer>
 
     <!-- Settings Modal -->
-    <div id="settingsModal" class="modal opacity-0 pointer-events-none fixed w-full h-full top-0 left-0 flex items-center justify-center z-[100]">
+    <div id="settingsModal" class="modal opacity-0 pointer-events-none fixed w-full h-full top-0 left-0 flex items-center justify-center z-[100] p-4">
         <div class="modal-overlay absolute w-full h-full bg-stone-950/80 backdrop-blur-sm"></div>
 
-        <div class="modal-container bg-stone-900 w-11/12 md:max-w-md mx-auto rounded-xl shadow-2xl border border-stone-700 z-50 overflow-y-auto">
+        <div class="modal-container bg-stone-900 w-full md:max-w-md mx-auto rounded-xl shadow-2xl border border-stone-700 z-50 overflow-hidden max-h-[90vh] flex flex-col">
 
-            <div class="modal-content py-4 text-left px-6">
+            <div class="modal-content py-4 text-left px-6 overflow-y-auto flex-1">
                 <!-- Title -->
                 <div class="flex justify-between items-center pb-3 border-b border-stone-800">
                     <p class="text-lg font-bold text-white">Admin Settings</p>
@@ -610,6 +627,17 @@
                         Example: http://192.168.1.243, http://Karls-MacBook.local
                     </p>
 
+                    <!-- AbleSet External Link Option -->
+                    <div class="mt-4">
+                        <label class="flex items-center gap-3 cursor-pointer">
+                            <input type="checkbox" id="ablesetExternalCheckbox" class="w-5 h-5 text-indigo-600 bg-stone-800 border-stone-700 rounded focus:ring-indigo-500 focus:ring-2 cursor-pointer">
+                            <div class="flex-1">
+                                <span class="text-stone-300 text-sm font-semibold">Open AbleSet externally</span>
+                                <p class="text-stone-500 text-xs mt-1">Opens in system browser instead of staying in the app</p>
+                            </div>
+                        </label>
+                    </div>
+
                     <!-- Cache Buster -->
                     <div class="border-t border-stone-800 mt-5 pt-5">
                         <label class="block text-stone-400 text-xs font-bold mb-2">
@@ -624,13 +652,13 @@
                         </p>
                     </div>
                 </div>
+            </div>
 
-                <!-- Footer -->
-                <div class="flex justify-end pt-2">
-                    <button id="saveSettings" class="px-4 py-2 bg-indigo-600 p-3 rounded-lg text-white hover:bg-indigo-500 font-bold transition-colors">
-                        Save Changes
-                    </button>
-                </div>
+            <!-- Footer - Fixed at bottom -->
+            <div class="border-t border-stone-800 bg-stone-900 px-6 py-4 flex justify-end">
+                <button id="saveSettings" class="px-6 py-3 bg-indigo-600 rounded-lg text-white hover:bg-indigo-500 font-bold transition-colors">
+                    Save Changes
+                </button>
             </div>
         </div>
     </div>
@@ -812,6 +840,7 @@
             const ablesetLink = document.getElementById('ablesetLink');
             const ablesetUrlDisplay = document.getElementById('ablesetUrlDisplay');
             const ablesetUrlInput = document.getElementById('ablesetUrlInput');
+            const ablesetExternalCheckbox = document.getElementById('ablesetExternalCheckbox');
             const ghTokenInput = document.getElementById('gh-token');
 
             const openSettingsBtn = document.getElementById('openSettings');
@@ -822,6 +851,16 @@
 
             const DEFAULT_ABLESET_URL = 'http://192.168.1.243';
 
+            function updateAblesetLinkBehavior() {
+                const isExternal = ablesetExternalCheckbox.checked;
+                if (isExternal) {
+                    ablesetLink.setAttribute('rel', 'external noopener noreferrer');
+                } else {
+                    ablesetLink.setAttribute('rel', 'noopener noreferrer');
+                }
+                localStorage.setItem('ableset_external', isExternal);
+            }
+
             function loadSettings() {
                 const storedUrl = localStorage.getItem('ableset_url');
                 const url = storedUrl || DEFAULT_ABLESET_URL;
@@ -831,7 +870,15 @@
 
                 const config = JSON.parse(localStorage.getItem('up_gh_config') || '{}');
                 ghTokenInput.value = config.token || '';
+
+                // Load AbleSet external checkbox state
+                const isExternal = localStorage.getItem('ableset_external') === 'true';
+                ablesetExternalCheckbox.checked = isExternal;
+                updateAblesetLinkBehavior();
             }
+
+            // Handle AbleSet external checkbox changes
+            ablesetExternalCheckbox.addEventListener('change', updateAblesetLinkBehavior);
 
             function saveSettings() {
                 let url = ablesetUrlInput.value.trim();

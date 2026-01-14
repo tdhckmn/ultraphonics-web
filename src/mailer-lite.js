@@ -20,6 +20,7 @@ export function initMailerLite() {
       'tomh@duck.com',
       'thomasdhickman@gmail.com',
       'an.fiolek@gmail.com',
+      'keletate@gmail.com',
       'lesterburton17@gmail.com',
       'davidbigham1@gmail.com',
       'shelleycatalan@gmail.com'
