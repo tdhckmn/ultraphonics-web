@@ -167,6 +167,7 @@
     "startTime": "9:00 PM",
     "endTime": "11:59 PM",
     "isPrivate": false,
+    "personnel": ["David", "Shelley", "Tom", "Lester", "Anthony"],
     "eventLink": "https://www.facebook.com/events/1237030125141573/"
   },
   {
@@ -177,7 +178,10 @@
     "startTime": "8:00 PM",
     "endTime": "11:00 PM",
     "isPrivate": false,
-    "eventLink": "https://www.facebook.com/events/715141581162906/"
+    "published": true,
+    "eventHandler": "Anthony",
+    "eventLink": "https://www.facebook.com/events/715141581162906/",
+    "setlist": "Riverbillies1-17.json"
   },
   {
     "date": "2/20/2026",
@@ -187,6 +191,8 @@
     "startTime": "8:00 PM",
     "endTime": "11:00 PM",
     "isPrivate": false,
+    "eventHandler": "Anthony",
+    "published": true,
     "eventLink": "https://fb.me/e/5s4sMg2kh"
   },
   {
@@ -194,9 +200,11 @@
     "venue": "Hell Saloon",
     "city": "Pinckney",
     "state": "MI",
+    "published": true,
     "startTime": "8:00 PM",
     "endTime": "12:00 AM",
     "isPrivate": false,
+    "eventHandler": "Anthony",
     "eventLink": "https://fb.me/e/8THzX8Ay3"
   },
   {
@@ -204,19 +212,23 @@
     "venue": "Riverbillies",
     "city": "Gibraltar",
     "state": "MI",
+    "published": true,
     "startTime": "8:00 PM",
     "endTime": "11:00 PM",
     "isPrivate": false,
+    "eventHandler": "Anthony",
     "eventLink": "https://www.facebook.com/share/1DcNd8pWn7/"
   },
   {
     "date": "4/18/2026",
     "venue": "Hell Saloon",
     "city": "Pinckney",
+    "published": true,
     "state": "MI",
     "startTime": "8:00 PM",
     "endTime": "12:00 AM",
     "isPrivate": false,
+    "eventHandler": "Anthony",
     "eventLink": "https://www.facebook.com/share/17gL1j57xs/"
   },
   {
@@ -224,39 +236,47 @@
     "venue": "Uncle Lyle's Tavern",
     "city": "Dundee",
     "state": "MI",
+    "published": true,
     "startTime": "8:00 PM",
     "endTime": "11:00 PM",
     "isPrivate": false,
+    "eventHandler": "Anthony",
     "eventLink": "https://fb.me/e/5qG9tajDK"
   },
   {
     "date": "6/6/2026",
     "venue": "The Sandtrap",
     "city": "Riverview",
+    "published": true,
     "state": "MI",
     "startTime": "8:00 PM",
     "endTime": "11:00 PM",
     "isPrivate": false,
+    "eventHandler": "Anthony",
     "eventLink": "https://www.facebook.com/share/1CNXEzQEpZ/"
   },
   {
     "date": "6/14/2026",
+    "published": true,
     "venue": "Graduation Party",
     "city": "",
     "state": "",
     "startTime": "12:00 AM",
     "endTime": "",
     "isPrivate": true,
+    "eventHandler": "Anthony",
     "eventLink": ""
   },
   {
     "date": "7/17/2026",
+    "published": true,
     "venue": "SandBar Grille",
     "city": "LaSalle",
     "state": "MI",
     "startTime": "8:00 PM",
     "endTime": "12:00 AM",
     "isPrivate": false,
+    "eventHandler": "Anthony",
     "eventLink": "https://fb.me/e/48LpTC6Um"
   },
   {
@@ -266,17 +286,21 @@
     "state": "OH",
     "startTime": "8:00 PM",
     "endTime": "11:00 PM",
+    "published": true,
     "isPrivate": false,
+    "eventHandler": "Anthony",
     "eventLink": "https://fb.me/e/5zTpW4P98"
   },
   {
     "date": "8/28/2026",
     "venue": "SandBar Grille",
     "city": "LaSalle",
+    "published": true,
     "state": "MI",
     "startTime": "8:00 PM",
     "endTime": "12:00 AM",
     "isPrivate": false,
+    "eventHandler": "Anthony",
     "eventLink": "https://fb.me/e/3YQf98oCO"
   }
 ]
