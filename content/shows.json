@@ -214,10 +214,18 @@
     "endTime": "11:00 PM",
     "isPrivate": false,
     "published": true,
-    "eventHandler": "Anthony",
     "eventLink": "https://www.facebook.com/events/715141581162906/",
+    "clientId": "c1f8e6d0-4a2b-4c5d-8e9f-1a2b3c4d5e6f",
     "setlist": "Riverbillies1-17.json",
-    "clientId": "c1f8e6d0-4a2b-4c5d-8e9f-1a2b3c4d5e6f"
+    "itinerary": "Load-in: 6:00\nSet 1: 8:00 - 8:50\nSet 2:  9:05 - 9:55\nSet 3: 10:10 - 11:00",
+    "personnel": [
+      "Anthony",
+      "Tom",
+      "Lester",
+      "Shelley",
+      "Kelsey"
+    ],
+    "eventHandler": "Anthony"
   },
   {
     "id": "2cd3bad1-5321-43e2-970f-19e53e0ef5a4",
@@ -315,7 +323,8 @@
     "isPrivate": true,
     "eventHandler": "Anthony",
     "eventLink": "",
-    "clientId": "e2f3a4b5-5c6d-4e7f-9a8b-2c3d4e5f6a7b"
+    "clientId": "e2f3a4b5-5c6d-4e7f-9a8b-2c3d4e5f6a7b",
+    "quote": "Graduation_Party_6-14-2026.json"
   },
   {
     "id": "52628fdf-04d9-4d36-8faa-984818833c6e",
