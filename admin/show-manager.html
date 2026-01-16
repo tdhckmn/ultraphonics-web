@@ -232,6 +232,10 @@
                         <h2 class="text-xl md:text-2xl font-bold text-white truncate" id="show-title">Show Details</h2>
                     </div>
                     <div class="flex items-center gap-1 md:gap-2 flex-shrink-0">
+                        <button id="download-cal-btn" class="p-2 md:px-3 md:py-2 bg-stone-700 text-white rounded-lg hover:bg-stone-600 transition-colors flex items-center gap-2" title="Download Calendar Event">
+                            <i class="fa-solid fa-calendar-plus text-sm"></i>
+                            <span class="hidden md:inline text-sm font-semibold">Calendar</span>
+                        </button>
                         <button id="edit-btn" class="p-2 md:px-3 md:py-2 bg-accent-teal text-white rounded-lg hover:bg-teal-600 transition-colors flex items-center gap-2" title="Edit">
                             <i class="fa-solid fa-pen text-sm"></i>
                             <span class="hidden md:inline text-sm font-semibold">Edit</span>
@@ -506,12 +510,16 @@
             const date = new Date(show.date);
             const formattedDate = date.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 
-            // Get client name
+            // Get client info
             let clientName = '<span class="text-stone-600">—</span>';
+            let clientAddress = '<span class="text-stone-600">—</span>';
             if (show.clientId) {
                 const client = clients.find(c => c.id === show.clientId);
                 if (client) {
                     clientName = client.name;
+                    if (client.address) {
+                        clientAddress = `<a href="https://maps.google.com/?q=${encodeURIComponent(client.address)}" target="_blank" rel="noopener noreferrer" class="text-accent-teal hover:underline">${client.address}</a>`;
+                    }
                 }
             }
 
@@ -535,6 +543,10 @@
                     <div>
                         <label class="text-xs text-stone-500 uppercase tracking-wide">Client</label>
                         <div class="text-lg text-white">${clientName}</div>
+                    </div>
+                    <div>
+                        <label class="text-xs text-stone-500 uppercase tracking-wide">Address</label>
+                        <div class="text-lg text-white">${clientAddress}</div>
                     </div>
                     <div>
                         <label class="text-xs text-stone-500 uppercase tracking-wide">Location</label>
@@ -776,6 +788,99 @@
             window.open(`quote-generator.html?show=${show.id}&new=true`, '_blank');
         }
 
+        // Download calendar event as .ics file
+        function downloadCalendarEvent() {
+            const show = shows.find(s => s.id === selectedShowId);
+            if (!show) return;
+
+            // Get client info for address
+            let location = '';
+            let clientName = '';
+            if (show.clientId) {
+                const client = clients.find(c => c.id === show.clientId);
+                if (client) {
+                    clientName = client.name;
+                    if (client.address) {
+                        location = client.address;
+                    }
+                }
+            }
+            // Fallback to city/state if no address
+            if (!location && show.city && show.state) {
+                location = `${show.city}, ${show.state}`;
+            }
+
+            // Parse date and times
+            const dateParts = show.date.split('/');
+            const month = dateParts[0].padStart(2, '0');
+            const day = dateParts[1].padStart(2, '0');
+            const year = dateParts[2];
+
+            // Parse time strings like "8:00 PM" to 24hr format
+            function parseTime(timeStr) {
+                if (!timeStr) return null;
+                const match = timeStr.match(/(\d{1,2}):(\d{2})\s*(AM|PM)?/i);
+                if (!match) return null;
+                let hours = parseInt(match[1]);
+                const minutes = match[2];
+                const period = match[3]?.toUpperCase();
+                if (period === 'PM' && hours !== 12) hours += 12;
+                if (period === 'AM' && hours === 12) hours = 0;
+                return `${hours.toString().padStart(2, '0')}${minutes}00`;
+            }
+
+            const startTime = parseTime(show.startTime) || '200000';
+            const endTime = parseTime(show.endTime) || '230000';
+
+            // Format dates for ICS (YYYYMMDDTHHMMSS)
+            const dtStart = `${year}${month}${day}T${startTime}`;
+            const dtEnd = `${year}${month}${day}T${endTime}`;
+            const dtStamp = new Date().toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+
+            // Build description
+            const showManagerUrl = `${window.location.origin}/admin/show-manager.html?show=${show.id}`;
+            let description = `Ultraphonics @ ${show.venue}`;
+            description += `\\n\\nShow Details: ${showManagerUrl}`;
+            if (clientName) description += `\\n\\nClient: ${clientName}`;
+            if (show.startTime) description += `\\nStart: ${show.startTime}`;
+            if (show.endTime) description += `\\nEnd: ${show.endTime}`;
+            if (show.itinerary) description += `\\n\\nItinerary:\\n${show.itinerary.replace(/\n/g, '\\n')}`;
+            if (show.notes) description += `\\n\\nNotes:\\n${show.notes.replace(/\n/g, '\\n')}`;
+            if (show.personnel && show.personnel.length > 0) description += `\\n\\nPersonnel: ${show.personnel.join(', ')}`;
+            if (show.eventHandler) description += `\\nEvent Handler: ${show.eventHandler}`;
+            if (show.eventLink) description += `\\n\\nEvent Link: ${show.eventLink}`;
+
+            // Create ICS content
+            const icsContent = [
+                'BEGIN:VCALENDAR',
+                'VERSION:2.0',
+                'PRODID:-//Ultraphonics//Show Manager//EN',
+                'CALSCALE:GREGORIAN',
+                'METHOD:PUBLISH',
+                'BEGIN:VEVENT',
+                `UID:${show.id}@ultraphonicsmusic.com`,
+                `DTSTAMP:${dtStamp}`,
+                `DTSTART:${dtStart}`,
+                `DTEND:${dtEnd}`,
+                `SUMMARY:Ultraphonics @ ${show.venue}`,
+                `DESCRIPTION:${description}`,
+                location ? `LOCATION:${location}` : '',
+                'END:VEVENT',
+                'END:VCALENDAR'
+            ].filter(line => line).join('\r\n');
+
+            // Download the file
+            const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Ultraphonics_${show.venue.replace(/\s+/g, '_')}_${year}${month}${day}.ics`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
         // Back to list on mobile/tablet
         function backToList() {
             if (window.innerWidth < 1024) {
@@ -925,6 +1030,7 @@
         document.getElementById('delete-btn').addEventListener('click', deleteShow);
         document.getElementById('add-show-btn').addEventListener('click', addNewShow);
         document.getElementById('save-btn').addEventListener('click', saveToGitHub);
+        document.getElementById('download-cal-btn').addEventListener('click', downloadCalendarEvent);
         document.getElementById('back-to-list-btn').addEventListener('click', backToList);
         document.getElementById('back-to-list-btn-edit').addEventListener('click', backToList);
 
