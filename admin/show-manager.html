@@ -228,6 +228,9 @@
             <div id="shows-list-container" class="flex-1 overflow-y-auto">
                 <!-- Shows will be populated here -->
             </div>
+            <div class="p-3 border-t border-stone-800 bg-stone-800 flex justify-center">
+                <span id="events-counter" class="text-accent-teal font-mono text-sm">0 events</span>
+            </div>
         </div>
 
         <!-- Right: Show Editor -->
@@ -434,6 +437,12 @@
                 option.textContent = year;
                 yearFilter.appendChild(option);
             });
+
+            // Auto-select the most current year (first in sorted array)
+            if (sortedYears.length > 0) {
+                selectedYear = sortedYears[0].toString();
+                yearFilter.value = selectedYear;
+            }
         }
 
         // Render shows list
@@ -467,6 +476,10 @@
                     </div>
                 `;
             }).join('');
+
+            // Update events counter
+            const eventsCounter = document.getElementById('events-counter');
+            eventsCounter.textContent = `${filteredShows.length} event${filteredShows.length !== 1 ? 's' : ''}`;
 
             // Add click handlers
             document.querySelectorAll('.show-item').forEach(item => {

@@ -30,6 +30,8 @@
     </script>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- jsPDF for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
     <style>
         /* Apply Montserrat font globally, but exclude Font Awesome icons */
@@ -57,6 +59,10 @@
         <div class="flex items-center gap-3">
             <button id="settings-btn" class="text-stone-400 hover:text-white transition-colors p-2 rounded-lg hover:bg-stone-800" title="Admin Settings">
                 <i class="fa-solid fa-gear"></i>
+            </button>
+            <button id="download-pdf-btn" class="px-4 py-2 bg-teal-600 text-white rounded-lg font-semibold hover:bg-teal-500 transition-colors flex items-center gap-2">
+                <i class="fa-solid fa-file-pdf"></i>
+                Download PDF
             </button>
             <button id="save-quote-btn" class="px-4 py-2 bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-500 transition-colors flex items-center gap-2">
                 <i class="fa-solid fa-save"></i>
@@ -146,7 +152,7 @@
                             <select id="members" class="w-full px-4 py-3 bg-stone-800 border border-stone-700 rounded-lg text-white focus:outline-none focus:border-indigo-500">
                                 <option value="4">4 members</option>
                                 <option value="5">5 members</option>
-                                <option value="6">6 members</option>
+                                <option value="6" selected>6 members</option>
                             </select>
                             <p class="text-xs text-stone-500 mt-2">
                                 Premium gigs ($1,000+ base) typically use 6 members
@@ -933,6 +939,171 @@
         document.getElementById('musician-rate').addEventListener('input', updateCalculations);
 
         document.getElementById('save-quote-btn').addEventListener('click', saveQuote);
+
+        // PDF Download
+        document.getElementById('download-pdf-btn').addEventListener('click', downloadPDF);
+
+        function downloadPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            // Get current values
+            const duration = parseInt(document.getElementById('duration').value);
+            const members = parseInt(document.getElementById('members').value);
+            const musicianBase = parseInt(document.getElementById('musician-base').value) || 0;
+            const earlyArrival = document.getElementById('early-arrival').checked;
+            const travelDistance = parseInt(document.getElementById('travel-distance').value);
+            const totalQuote = document.getElementById('total-quote').textContent;
+            const perMember = document.getElementById('per-member').textContent;
+            const notes = document.getElementById('quote-notes').value;
+
+            // Header
+            doc.setFontSize(20);
+            doc.setFont(undefined, 'bold');
+            doc.text('ULTRAPHONICS', 105, 20, { align: 'center' });
+
+            doc.setFontSize(16);
+            doc.text('Performance Quote', 105, 28, { align: 'center' });
+            doc.text('(THIS FEATURE IS A WORK IN PROGRESS)', 105, 28, { align: 'center' });
+
+            // Show info
+            if (show) {
+                doc.setFontSize(12);
+                doc.setFont(undefined, 'normal');
+                doc.text(`${show.venue}`, 105, 38, { align: 'center' });
+                doc.text(`${show.date}`, 105, 44, { align: 'center' });
+            }
+
+            // Line separator
+            doc.setDrawColor(100, 100, 100);
+            doc.line(20, 50, 190, 50);
+
+            let yPos = 60;
+
+            // Event Details
+            doc.setFontSize(14);
+            doc.setFont(undefined, 'bold');
+            doc.text('Event Details', 20, yPos);
+            yPos += 8;
+
+            doc.setFontSize(11);
+            doc.setFont(undefined, 'normal');
+            doc.text(`Performance Duration: ${duration} hours`, 25, yPos);
+            yPos += 6;
+            doc.text(`Number of Band Members: ${members}`, 25, yPos);
+            yPos += 6;
+            if (earlyArrival) {
+                doc.text(`Early Arrival Premium: Included`, 25, yPos);
+                yPos += 6;
+            }
+            if (travelDistance > 0) {
+                const travelLabels = ['Within 1.5 hours', '1.5 - 2.5 hours', '2.5 - 3.5 hours', '3.5 - 4.5 hours', '4.5+ hours'];
+                doc.text(`Travel Distance: ${travelLabels[travelDistance]}`, 25, yPos);
+                yPos += 6;
+            }
+
+            yPos += 4;
+
+            // Add-ons
+            let hasAddons = false;
+            if (document.getElementById('cocktail-hour').checked) {
+                if (!hasAddons) {
+                    doc.setFontSize(14);
+                    doc.setFont(undefined, 'bold');
+                    doc.text('Add-On Services', 20, yPos);
+                    yPos += 8;
+                    hasAddons = true;
+                }
+                const hours = parseFloat(document.getElementById('cocktail-hours').value);
+                doc.setFontSize(11);
+                doc.setFont(undefined, 'normal');
+                doc.text(`Cocktail Hour Live Trio: ${hours} hour${hours !== 1 ? 's' : ''}`, 25, yPos);
+                yPos += 6;
+            }
+
+            if (document.getElementById('additional-audio').checked) {
+                if (!hasAddons) {
+                    doc.setFontSize(14);
+                    doc.setFont(undefined, 'bold');
+                    doc.text('Add-On Services', 20, yPos);
+                    yPos += 8;
+                    hasAddons = true;
+                }
+                const basic = parseInt(document.getElementById('audio-basic').value) || 0;
+                const premium = parseInt(document.getElementById('audio-premium').value) || 0;
+                doc.setFontSize(11);
+                doc.setFont(undefined, 'normal');
+                if (basic > 0) {
+                    doc.text(`Additional Audio (Basic): ${basic} location${basic !== 1 ? 's' : ''}`, 25, yPos);
+                    yPos += 6;
+                }
+                if (premium > 0) {
+                    doc.text(`Additional Audio (Premium): ${premium} location${premium !== 1 ? 's' : ''}`, 25, yPos);
+                    yPos += 6;
+                }
+            }
+
+            if (document.getElementById('additional-musicians').checked) {
+                if (!hasAddons) {
+                    doc.setFontSize(14);
+                    doc.setFont(undefined, 'bold');
+                    doc.text('Add-On Services', 20, yPos);
+                    yPos += 8;
+                    hasAddons = true;
+                }
+                const count = parseInt(document.getElementById('musicians-count').value) || 0;
+                const musicianNotes = document.getElementById('musicians-notes').value.trim();
+                doc.setFontSize(11);
+                doc.setFont(undefined, 'normal');
+                doc.text(`Additional Musicians: ${count} musician${count !== 1 ? 's' : ''}`, 25, yPos);
+                yPos += 6;
+                if (musicianNotes) {
+                    const splitNotes = doc.splitTextToSize(musicianNotes, 160);
+                    doc.text(splitNotes, 25, yPos);
+                    yPos += (splitNotes.length * 6);
+                }
+            }
+
+            if (hasAddons) yPos += 4;
+
+            // Line separator
+            doc.setDrawColor(100, 100, 100);
+            doc.line(20, yPos, 190, yPos);
+            yPos += 10;
+
+            // Quote Summary
+            doc.setFontSize(16);
+            doc.setFont(undefined, 'bold');
+            doc.text('Total Quote:', 20, yPos);
+            doc.text(totalQuote, 190, yPos, { align: 'right' });
+            yPos += 10;
+
+            doc.setFontSize(12);
+            doc.setFont(undefined, 'normal');
+            doc.text(`Per Member: ${perMember}`, 20, yPos);
+            yPos += 10;
+
+            // Notes
+            if (notes) {
+                doc.setFontSize(12);
+                doc.setFont(undefined, 'bold');
+                doc.text('Notes:', 20, yPos);
+                yPos += 6;
+                doc.setFontSize(10);
+                doc.setFont(undefined, 'normal');
+                const splitNotes = doc.splitTextToSize(notes, 170);
+                doc.text(splitNotes, 20, yPos);
+            }
+
+            // Footer
+            doc.setFontSize(8);
+            doc.setTextColor(150, 150, 150);
+            doc.text('Generated by Ultraphonics Quote Generator', 105, 285, { align: 'center' });
+
+            // Save the PDF
+            const filename = show ? `Ultraphonics_Quote_${show.venue.replace(/\s+/g, '_')}_${show.date.replace(/\//g, '-')}.pdf` : 'Ultraphonics_Quote.pdf';
+            doc.save(filename);
+        }
 
         // Settings modal handlers
         const settingsModal = document.getElementById('settings-modal');
