@@ -177,7 +177,18 @@
     "startTime": "8:00 PM",
     "endTime": "11:00 PM",
     "isPrivate": false,
-    "eventLink": "https://www.facebook.com/events/715141581162906/"
+    "published": true,
+    "eventLink": "https://www.facebook.com/events/715141581162906/",
+    "setlist": "Riverbillies1-17.json",
+    "itinerary": "Load-in: 6:00\nSet 1: 8:00 - 8:50\nSet 2:  9:05 - 9:55\nSet 3: 10:10 - 11:00",
+    "personnel": [
+      "Anthony",
+      "Tom",
+      "Lester",
+      "Shelley",
+      "Kelsey"
+    ],
+    "eventHandler": "Anthony"
   },
   {
     "date": "2/20/2026",
