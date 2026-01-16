@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Quote Generator - Ultraphonics</title>
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="/assets/images/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/Ultraphonics-Spiral-512.png">
+
+    <!-- Google Fonts - Montserrat -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Montserrat', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* Apply Montserrat font globally, but exclude Font Awesome icons */
+        body, button, input, select, textarea, h1, h2, h3, h4, h5, h6, p, a, span:not([class*="fa-"]), div:not([class*="fa-"]) {
+            font-family: 'Montserrat', sans-serif !important;
+        }
+
+        .quote-section {
+            border-left: 3px solid #6366f1;
+            background: rgba(99, 102, 241, 0.05);
+        }
+    </style>
+</head>
+<body class="bg-stone-950 text-stone-100 h-full">
+
+    <!-- Top Bar -->
+    <div class="bg-stone-900 border-b border-stone-800 px-6 py-4 flex items-center justify-between sticky top-0 z-50">
+        <div class="flex items-center gap-3">
+            <a href="show-manager.html" class="text-stone-400 hover:text-white transition-colors">
+                <i class="fa-solid fa-arrow-left"></i>
+            </a>
+            <h1 class="text-xl font-bold text-white">Quote Generator</h1>
+            <span class="text-sm text-stone-500" id="show-name"></span>
+        </div>
+        <div class="flex items-center gap-3">
+            <button id="settings-btn" class="text-stone-400 hover:text-white transition-colors p-2 rounded-lg hover:bg-stone-800" title="Admin Settings">
+                <i class="fa-solid fa-gear"></i>
+            </button>
+            <button id="save-quote-btn" class="px-4 py-2 bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-500 transition-colors flex items-center gap-2">
+                <i class="fa-solid fa-save"></i>
+                Save Quote
+            </button>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[100] hidden">
+        <div class="bg-stone-900 w-full max-w-md mx-auto rounded-xl shadow-2xl border border-stone-700 overflow-hidden m-4">
+            <div class="p-6">
+                <div class="flex justify-between items-center pb-3 border-b border-stone-800">
+                    <p class="text-lg font-bold text-white">Admin Settings</p>
+                    <button id="close-settings" class="text-stone-400 hover:text-white transition-colors">
+                        <i class="fa-solid fa-times"></i>
+                    </button>
+                </div>
+
+                <div class="my-5">
+                    <!-- GitHub Authentication -->
+                    <label class="block text-stone-400 text-xs font-bold mb-2">
+                        GitHub Authentication
+                    </label>
+
+                    <a href="https://github.com/settings/tokens/new?description=Ultraphonics%20Admin&scopes=repo"
+                       target="_blank"
+                       class="block w-full px-4 py-3 bg-indigo-600 rounded-lg text-white hover:bg-indigo-500 font-bold transition-colors mb-2 text-center">
+                        <i class="fab fa-github mr-2"></i> Create GitHub Token
+                    </a>
+                    <p class="text-stone-500 text-xs mb-3 italic">
+                        Opens GitHub with the token form pre-filled. Copy the token and paste below.
+                    </p>
+
+                    <label class="block text-stone-400 text-xs font-bold mb-2">
+                        Personal Access Token
+                    </label>
+                    <input class="appearance-none border border-stone-700 rounded w-full py-3 px-3 text-stone-200 bg-stone-800 leading-tight focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 mb-1"
+                        id="settings-gh-token" type="password" placeholder="ghp_...">
+                    <p class="text-stone-500 text-xs mt-1 italic mb-4">
+                        Required for saving quotes to GitHub
+                    </p>
+
+                    <!-- Cache Buster -->
+                    <div class="border-t border-stone-800 mt-5 pt-5">
+                        <label class="block text-stone-400 text-xs font-bold mb-2">
+                            Refresh Page
+                        </label>
+                        <button id="clear-cache-btn" class="w-full px-4 py-3 bg-stone-800 border border-stone-700 rounded-lg text-white hover:bg-stone-700 font-semibold transition-colors flex items-center justify-center gap-2">
+                            <i class="fas fa-sync-alt"></i>
+                            <span>Clear Cache & Reload</span>
+                        </button>
+                        <p class="text-stone-500 text-xs mt-2 italic">
+                            Use this if you don't see recent updates or changes
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t border-stone-800 bg-stone-900 px-6 py-4 flex justify-end">
+                <button id="save-settings-btn" class="px-6 py-3 bg-indigo-600 rounded-lg text-white hover:bg-indigo-500 font-bold transition-colors">
+                    Save Changes
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="max-w-6xl mx-auto p-6">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Left: Quote Builder -->
+            <div class="space-y-6">
+                <div class="bg-stone-900 rounded-xl border border-stone-800 p-6">
+                    <h2 class="text-xl font-bold text-white mb-4">Event Details</h2>
+
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-semibold text-stone-300 mb-2">Performance Duration</label>
+                            <select id="duration" class="w-full px-4 py-3 bg-stone-800 border border-stone-700 rounded-lg text-white focus:outline-none focus:border-indigo-500">
+                                <option value="3">3 hours</option>
+                                <option value="4">4 hours</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold text-stone-300 mb-2">Number of Band Members</label>
+                            <select id="members" class="w-full px-4 py-3 bg-stone-800 border border-stone-700 rounded-lg text-white focus:outline-none focus:border-indigo-500">
+                                <option value="4">4 members</option>
+                                <option value="5">5 members</option>
+                                <option value="6">6 members</option>
+                            </select>
+                            <p class="text-xs text-stone-500 mt-2">
+                                Premium gigs ($1,000+ base) typically use 6 members
+                            </p>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold text-stone-300 mb-2">Musician Base Rate</label>
+                            <div class="flex items-center gap-2">
+                                <span class="text-stone-400">$</span>
+                                <input type="number" id="musician-base" min="0" step="50" class="flex-1 px-4 py-3 bg-stone-800 border border-stone-700 rounded-lg text-white focus:outline-none focus:border-indigo-500" readonly>
+                            </div>
+                            <p class="text-xs text-stone-500 mt-2" id="base-recommendation">
+                                Auto-calculated based on operational agreement
+                            </p>
+                            <div class="mt-2">
+                                <label class="flex items-center gap-3 cursor-pointer">
+                                    <input type="checkbox" id="custom-rate" class="w-5 h-5 text-indigo-600 bg-stone-800 border-stone-700 rounded focus:ring-indigo-500 focus:ring-2 cursor-pointer">
+                                    <span class="text-xs font-semibold text-stone-300">Use custom rate</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="flex items-center gap-3 cursor-pointer">
+                                <input type="checkbox" id="early-arrival" class="w-5 h-5 text-indigo-600 bg-stone-800 border-stone-700 rounded focus:ring-indigo-500 focus:ring-2 cursor-pointer">
+                                <div class="flex-1">
+                                    <span class="text-sm font-semibold text-stone-300">Early Arrival Premium (+$300)</span>
+                                    <p class="text-stone-500 text-xs mt-1">Arrival before 5:00 PM or early venue setup</p>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Travel -->
+                <div class="bg-stone-900 rounded-xl border border-stone-800 p-6">
+                    <h2 class="text-xl font-bold text-white mb-4">Travel & Lodging</h2>
+
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-semibold text-stone-300 mb-2">Travel Distance from Detroit</label>
+                            <select id="travel-distance" class="w-full px-4 py-3 bg-stone-800 border border-stone-700 rounded-lg text-white focus:outline-none focus:border-indigo-500">
+                                <option value="0">Within 1.5 hours (included)</option>
+                                <option value="1">1.5 - 2.5 hours</option>
+                                <option value="2">2.5 - 3.5 hours</option>
+                                <option value="3">3.5 - 4.5 hours</option>
+                                <option value="4">4.5+ hours</option>
+                            </select>
+                        </div>
+
+                        <div id="lodging-section" class="hidden">
+                            <label class="flex items-center gap-3 cursor-pointer">
+                                <input type="checkbox" id="lodging-required" class="w-5 h-5 text-indigo-600 bg-stone-800 border-stone-700 rounded focus:ring-indigo-500 focus:ring-2 cursor-pointer">
+                                <div class="flex-1">
+                                    <span class="text-sm font-semibold text-stone-300">Lodging Required</span>
+                                    <p class="text-stone-500 text-xs mt-1">2+ hour one-way travel</p>
+                                </div>
+                            </label>
+
+                            <div id="lodging-details" class="mt-4 hidden">
+                                <label class="block text-sm font-semibold text-stone-300 mb-2">Number of Rooms</label>
+                                <input type="number" id="lodging-rooms" min="1" max="6" value="2" class="w-full px-4 py-3 bg-stone-800 border border-stone-700 rounded-lg text-white focus:outline-none focus:border-indigo-500">
+
+                                <label class="block text-sm font-semibold text-stone-300 mb-2 mt-4">Estimated Room Rate</label>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-stone-400">$</span>
+                                    <input type="number" id="room-rate" min="0" value="175" class="flex-1 px-4 py-3 bg-stone-800 border border-stone-700 rounded-lg text-white focus:outline-none focus:border-indigo-500">
+                                    <span class="text-stone-400">per room</span>
+                                </div>
+                                <p class="text-xs text-stone-500 mt-2">Target: $150-$200/room, mid-tier hotel</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Add-ons -->
+                <div class="bg-stone-900 rounded-xl border border-stone-800 p-6">
+                    <h2 class="text-xl font-bold text-white mb-4">Add-On Services</h2>
+
+                    <div class="space-y-4">
+                        <div>
+                            <label class="flex items-center gap-3 cursor-pointer">
+                                <input type="checkbox" id="cocktail-hour" class="w-5 h-5 text-indigo-600 bg-stone-800 border-stone-700 rounded focus:ring-indigo-500 focus:ring-2 cursor-pointer">
+                                <div class="flex-1">
+                                    <span class="text-sm font-semibold text-stone-300">Cocktail Hour Live Trio</span>
+                                </div>
+                            </label>
+                            <div id="cocktail-details" class="ml-8 mt-2 hidden">
+                                <label class="block text-xs text-stone-500 mb-1">Duration (hours)</label>
+                                <input type="number" id="cocktail-hours" min="1" max="3" value="1" step="0.5" class="w-32 px-3 py-2 bg-stone-800 border border-stone-700 rounded-lg text-white text-sm focus:outline-none focus:border-indigo-500">
+                                <p class="text-xs text-stone-500 mt-1">$300/hr base + $100 per additional musician</p>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="flex items-center gap-3 cursor-pointer">
+                                <input type="checkbox" id="additional-audio" class="w-5 h-5 text-indigo-600 bg-stone-800 border-stone-700 rounded focus:ring-indigo-500 focus:ring-2 cursor-pointer">
+                                <div class="flex-1">
+                                    <span class="text-sm font-semibold text-stone-300">Additional Audio Locations</span>
+                                </div>
+                            </label>
+                            <div id="audio-details" class="ml-8 mt-2 hidden space-y-2">
+                                <div>
+                                    <label class="block text-xs text-stone-500 mb-1">Basic Packages ($200 each)</label>
+                                    <input type="number" id="audio-basic" min="0" max="5" value="0" class="w-32 px-3 py-2 bg-stone-800 border border-stone-700 rounded-lg text-white text-sm focus:outline-none focus:border-indigo-500">
+                                    <p class="text-xs text-stone-500 mt-1">Small PA + wireless mic</p>
+                                </div>
+                                <div>
+                                    <label class="block text-xs text-stone-500 mb-1">Premium Packages ($500 each)</label>
+                                    <input type="number" id="audio-premium" min="0" max="5" value="0" class="w-32 px-3 py-2 bg-stone-800 border border-stone-700 rounded-lg text-white text-sm focus:outline-none focus:border-indigo-500">
+                                    <p class="text-xs text-stone-500 mt-1">Full system with subs</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="flex items-center gap-3 cursor-pointer">
+                                <input type="checkbox" id="additional-musicians" class="w-5 h-5 text-indigo-600 bg-stone-800 border-stone-700 rounded focus:ring-indigo-500 focus:ring-2 cursor-pointer">
+                                <div class="flex-1">
+                                    <span class="text-sm font-semibold text-stone-300">Additional Musicians</span>
+                                </div>
+                            </label>
+                            <div id="musicians-details" class="ml-8 mt-2 hidden space-y-3">
+                                <div>
+                                    <label class="block text-xs text-stone-500 mb-1">Number of Musicians</label>
+                                    <input type="number" id="musicians-count" min="1" max="10" value="1" class="w-32 px-3 py-2 bg-stone-800 border border-stone-700 rounded-lg text-white text-sm focus:outline-none focus:border-indigo-500">
+                                    <p class="text-xs text-stone-500 mt-1">e.g., horn section, pianist, etc.</p>
+                                </div>
+                                <div>
+                                    <label class="block text-xs text-stone-500 mb-1">Rate per Musician</label>
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-stone-400 text-sm">$</span>
+                                        <input type="number" id="musician-rate" min="0" step="50" value="150" class="w-32 px-3 py-2 bg-stone-800 border border-stone-700 rounded-lg text-white text-sm focus:outline-none focus:border-indigo-500">
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-xs text-stone-500 mb-1">Notes (instruments, names, etc.)</label>
+                                    <textarea id="musicians-notes" rows="2" class="w-full px-3 py-2 bg-stone-800 border border-stone-700 rounded-lg text-white text-sm focus:outline-none focus:border-indigo-500 resize-y" placeholder="e.g., Saxophone and trumpet for cocktail hour and first set"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Quote Summary -->
+            <div class="lg:sticky lg:top-24 h-fit">
+                <div class="bg-stone-900 rounded-xl border border-stone-800 p-6">
+                    <h2 class="text-xl font-bold text-white mb-6">Quote Summary</h2>
+
+                    <div class="space-y-3 mb-6">
+                        <div class="flex justify-between text-stone-300">
+                            <span>Musician Base</span>
+                            <span id="summary-base">$0</span>
+                        </div>
+                        <div class="flex justify-between text-stone-300" id="summary-early-row" style="display: none;">
+                            <span>Early Arrival Premium</span>
+                            <span>$300</span>
+                        </div>
+                        <div class="flex justify-between text-stone-300" id="summary-travel-row" style="display: none;">
+                            <span>Travel Compensation</span>
+                            <span id="summary-travel">$0</span>
+                        </div>
+                        <div class="flex justify-between text-stone-300" id="summary-lodging-row" style="display: none;">
+                            <span>Lodging</span>
+                            <span id="summary-lodging">$0</span>
+                        </div>
+                        <div class="flex justify-between text-stone-300" id="summary-cocktail-row" style="display: none;">
+                            <span>Cocktail Hour</span>
+                            <span id="summary-cocktail">$0</span>
+                        </div>
+                        <div class="flex justify-between text-stone-300" id="summary-audio-row" style="display: none;">
+                            <span>Additional Audio</span>
+                            <span id="summary-audio">$0</span>
+                        </div>
+                        <div class="flex justify-between text-stone-300" id="summary-musicians-row" style="display: none;">
+                            <span>Additional Musicians</span>
+                            <span id="summary-musicians">$0</span>
+                        </div>
+                    </div>
+
+                    <div class="border-t border-stone-700 pt-4 mb-6">
+                        <div class="flex justify-between items-center">
+                            <span class="text-2xl font-bold text-white">Total Quote</span>
+                            <span class="text-3xl font-bold text-indigo-400" id="total-quote">$0</span>
+                        </div>
+                    </div>
+
+                    <div class="quote-section p-4 rounded-lg mb-6">
+                        <h3 class="text-sm font-bold text-indigo-400 mb-2">Per Member Breakdown</h3>
+                        <div class="text-stone-300 text-sm space-y-1">
+                            <div class="flex justify-between">
+                                <span>Each member receives:</span>
+                                <span class="font-semibold" id="per-member">$0</span>
+                            </div>
+                            <p class="text-xs text-stone-500 mt-2">
+                                All performance and add-on revenue distributed evenly among <span id="member-count">5</span> performing members
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="bg-stone-800 rounded-lg p-4">
+                        <h3 class="text-sm font-bold text-stone-300 mb-3">Notes</h3>
+                        <textarea id="quote-notes" rows="4" class="w-full px-3 py-2 bg-stone-900 border border-stone-700 rounded-lg text-white text-sm focus:outline-none focus:border-indigo-500 resize-y" placeholder="Add any special notes or conditions for this quote..."></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Shared Config Script -->
+    <script src="setlist-builder.js"></script>
+
+    <script>
+        let show = null;
+        let showId = null;
+        let shows = []; // Store all shows for reference
+
+        // Get URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        showId = urlParams.get('show');
+        const quoteId = urlParams.get('quote');
+        const isNew = urlParams.get('new') === 'true';
+
+        // UUID generator function
+        function generateUUID() {
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                const r = Math.random() * 16 | 0;
+                const v = c === 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
+            });
+        }
+
+        // Load show data
+        async function loadShowData() {
+            try {
+                const { owner, repo, token } = window.AppState.config;
+                const url = `https://api.github.com/repos/${owner}/${repo}/contents/content/shows.json`;
+
+                const headers = {};
+                if (token) {
+                    headers['Authorization'] = `token ${token}`;
+                }
+
+                // Add timestamp to prevent caching
+                const response = await fetch(`${url}?t=${Date.now()}`, { headers });
+
+                if (!response.ok) {
+                    if (response.status === 404) {
+                        throw new Error("shows.json not found");
+                    }
+                    throw new Error(`GitHub Error: ${response.status}`);
+                }
+
+                const fileData = await response.json();
+                // Decode base64 content from GitHub API
+                const content = atob(fileData.content);
+                shows = JSON.parse(content);
+
+                // Find show by UUID instead of array index
+                if (showId !== null) {
+                    show = shows.find(s => s.id === showId);
+                    if (show) {
+                        document.getElementById('show-name').textContent = `${show.venue} - ${show.date}`;
+
+                        // If editing existing quote, load it
+                        if (quoteId && !isNew) {
+                            await loadExistingQuote(quoteId);
+                        }
+                    } else {
+                        throw new Error(`Show with ID ${showId} not found`);
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading show:', error);
+                alert(`Failed to load show data: ${error.message}`);
+            }
+        }
+
+        // Load existing quote
+        async function loadExistingQuote(quoteId) {
+            try {
+                const { owner, repo, token } = window.AppState.config;
+
+                // First, we need to find the quote file by looking through the show's quoteId
+                // The quoteId passed here is the UUID, but we need to find the filename
+                // We'll search through all shows to find the quote filename associated with this UUID
+                let quoteFilename = null;
+
+                // Find the show that has this quoteId
+                for (const s of shows) {
+                    if (s.quoteId === quoteId) {
+                        // The show should have the quote filename
+                        quoteFilename = s.quote;
+                        break;
+                    }
+                }
+
+                // If we didn't find it via shows, try the current show
+                if (!quoteFilename && show && show.quoteId === quoteId) {
+                    quoteFilename = show.quote;
+                }
+
+                // If we still don't have a filename, try using the quoteId as a filename (fallback for old format)
+                if (!quoteFilename) {
+                    quoteFilename = quoteId;
+                }
+
+                const url = `https://api.github.com/repos/${owner}/${repo}/contents/content/quotes/${quoteFilename}`;
+
+                const headers = {};
+                if (token) {
+                    headers['Authorization'] = `token ${token}`;
+                }
+
+                // Add timestamp to prevent caching
+                const response = await fetch(`${url}?t=${Date.now()}`, { headers });
+
+                if (!response.ok) {
+                    throw new Error(`Quote not found: ${quoteFilename}`);
+                }
+
+                const fileData = await response.json();
+                // Decode base64 content from GitHub API
+                const content = atob(fileData.content);
+                const quote = JSON.parse(content);
+
+                // Populate form with quote data
+                document.getElementById('duration').value = quote.duration;
+                document.getElementById('members').value = quote.members;
+                document.getElementById('musician-base').value = quote.musicianBase;
+                document.getElementById('early-arrival').checked = quote.earlyArrival || false;
+                document.getElementById('travel-distance').value = quote.travelDistance || 0;
+
+                if (quote.lodging) {
+                    document.getElementById('lodging-required').checked = true;
+                    document.getElementById('lodging-rooms').value = quote.lodging.rooms;
+                    document.getElementById('room-rate').value = quote.lodging.roomRate;
+                    document.getElementById('lodging-section').classList.remove('hidden');
+                    document.getElementById('lodging-details').classList.remove('hidden');
+                }
+
+                if (quote.cocktailHour) {
+                    document.getElementById('cocktail-hour').checked = true;
+                    document.getElementById('cocktail-hours').value = quote.cocktailHour.hours;
+                    document.getElementById('cocktail-details').classList.remove('hidden');
+                }
+
+                if (quote.additionalAudio) {
+                    document.getElementById('additional-audio').checked = true;
+                    document.getElementById('audio-basic').value = quote.additionalAudio.basic || 0;
+                    document.getElementById('audio-premium').value = quote.additionalAudio.premium || 0;
+                    document.getElementById('audio-details').classList.remove('hidden');
+                }
+
+                if (quote.additionalMusicians) {
+                    document.getElementById('additional-musicians').checked = true;
+                    document.getElementById('musicians-count').value = quote.additionalMusicians.count || 0;
+                    document.getElementById('musician-rate').value = quote.additionalMusicians.rate || 0;
+                    document.getElementById('musicians-notes').value = quote.additionalMusicians.notes || '';
+                    document.getElementById('musicians-details').classList.remove('hidden');
+                }
+
+                if (quote.notes) {
+                    document.getElementById('quote-notes').value = quote.notes;
+                }
+
+                updateCalculations();
+            } catch (error) {
+                console.error('Error loading quote:', error);
+                alert(`Failed to load quote: ${error.message}`);
+            }
+        }
+
+        // Calculate musician base from operational agreement
+        function calculateMusicianBase(duration, members) {
+            // Based on operational agreement section 3.3
+            if (duration === 3) {
+                if (members === 4) {
+                    // 4-piece, 3-hour: $150 minimum per person
+                    return 600;
+                } else if (members === 5) {
+                    // 5-piece, 3-hour: $750 base
+                    return 750;
+                } else if (members === 6) {
+                    // 6-piece, 3-hour: $1,000 base
+                    return 1000;
+                }
+            } else if (duration === 4) {
+                if (members === 4) {
+                    // 4-piece, 4-hour: $160 minimum per person
+                    return 640;
+                } else if (members === 5) {
+                    // 5-piece, 4-hour: $800 base
+                    return 800;
+                } else if (members === 6) {
+                    // 6-piece, 4-hour: $1,000 base
+                    return 1000;
+                }
+            }
+            // Default fallback
+            return members * 150;
+        }
+
+        // Update all calculations
+        function updateCalculations() {
+            const duration = parseInt(document.getElementById('duration').value);
+            const members = parseInt(document.getElementById('members').value);
+            const customRate = document.getElementById('custom-rate').checked;
+
+            let musicianBase;
+            if (customRate) {
+                musicianBase = parseInt(document.getElementById('musician-base').value) || 0;
+            } else {
+                musicianBase = calculateMusicianBase(duration, members);
+                document.getElementById('musician-base').value = musicianBase;
+            }
+
+            const earlyArrival = document.getElementById('early-arrival').checked;
+            const travelDistance = parseInt(document.getElementById('travel-distance').value);
+
+            // Update recommendation
+            updateRecommendation(duration, members, musicianBase);
+
+            // Calculate travel
+            const travelCost = travelDistance > 0 ? (travelDistance * 60 * members) : 0;
+
+            // Calculate lodging
+            let lodgingCost = 0;
+            if (document.getElementById('lodging-required').checked) {
+                const rooms = parseInt(document.getElementById('lodging-rooms').value) || 0;
+                const roomRate = parseInt(document.getElementById('room-rate').value) || 0;
+                lodgingCost = rooms * roomRate;
+            }
+
+            // Calculate cocktail hour
+            let cocktailCost = 0;
+            if (document.getElementById('cocktail-hour').checked) {
+                const hours = parseFloat(document.getElementById('cocktail-hours').value) || 0;
+                cocktailCost = hours * 300; // Base $300/hr
+            }
+
+            // Calculate additional audio
+            let audioCost = 0;
+            if (document.getElementById('additional-audio').checked) {
+                const basic = parseInt(document.getElementById('audio-basic').value) || 0;
+                const premium = parseInt(document.getElementById('audio-premium').value) || 0;
+                audioCost = (basic * 200) + (premium * 500);
+            }
+
+            // Calculate additional musicians
+            let musiciansCost = 0;
+            if (document.getElementById('additional-musicians').checked) {
+                const count = parseInt(document.getElementById('musicians-count').value) || 0;
+                const rate = parseInt(document.getElementById('musician-rate').value) || 0;
+                musiciansCost = count * rate;
+            }
+
+            // Calculate total
+            let total = musicianBase;
+            if (earlyArrival) total += 300;
+            total += travelCost;
+            total += lodgingCost;
+            total += cocktailCost;
+            total += audioCost;
+            total += musiciansCost;
+
+            // Update summary
+            document.getElementById('summary-base').textContent = `$${musicianBase.toLocaleString()}`;
+
+            document.getElementById('summary-early-row').style.display = earlyArrival ? 'flex' : 'none';
+
+            if (travelCost > 0) {
+                document.getElementById('summary-travel-row').style.display = 'flex';
+                document.getElementById('summary-travel').textContent = `$${travelCost.toLocaleString()}`;
+            } else {
+                document.getElementById('summary-travel-row').style.display = 'none';
+            }
+
+            if (lodgingCost > 0) {
+                document.getElementById('summary-lodging-row').style.display = 'flex';
+                document.getElementById('summary-lodging').textContent = `$${lodgingCost.toLocaleString()}`;
+            } else {
+                document.getElementById('summary-lodging-row').style.display = 'none';
+            }
+
+            if (cocktailCost > 0) {
+                document.getElementById('summary-cocktail-row').style.display = 'flex';
+                document.getElementById('summary-cocktail').textContent = `$${cocktailCost.toLocaleString()}`;
+            } else {
+                document.getElementById('summary-cocktail-row').style.display = 'none';
+            }
+
+            if (audioCost > 0) {
+                document.getElementById('summary-audio-row').style.display = 'flex';
+                document.getElementById('summary-audio').textContent = `$${audioCost.toLocaleString()}`;
+            } else {
+                document.getElementById('summary-audio-row').style.display = 'none';
+            }
+
+            if (musiciansCost > 0) {
+                document.getElementById('summary-musicians-row').style.display = 'flex';
+                document.getElementById('summary-musicians').textContent = `$${musiciansCost.toLocaleString()}`;
+            } else {
+                document.getElementById('summary-musicians-row').style.display = 'none';
+            }
+
+            document.getElementById('total-quote').textContent = `$${total.toLocaleString()}`;
+
+            // Calculate per member (excluding lodging, that's separate)
+            const performanceRevenue = total - lodgingCost;
+            const perMember = Math.round(performanceRevenue / members);
+            document.getElementById('per-member').textContent = `$${perMember.toLocaleString()}`;
+            document.getElementById('member-count').textContent = members;
+        }
+
+        // Update recommendation text
+        function updateRecommendation(duration, members, musicianBase) {
+            const rec = document.getElementById('base-recommendation');
+            const perMember = Math.round(musicianBase / members);
+            const minimum = duration === 3 ? 150 : 160;
+
+            if (document.getElementById('custom-rate').checked) {
+                if (perMember < minimum) {
+                    rec.textContent = `⚠️ Below minimum: $${minimum}/member for ${duration}hr`;
+                    rec.classList.add('text-red-400');
+                } else {
+                    rec.textContent = `Custom rate: $${perMember}/member`;
+                    rec.classList.remove('text-red-400');
+                }
+            } else {
+                rec.textContent = `Auto-calculated: $${perMember}/member (${duration}hr, ${members}-piece)`;
+                rec.classList.remove('text-red-400');
+            }
+        }
+
+        // Save quote
+        async function saveQuote() {
+            if (!show) {
+                alert('No show data available');
+                return;
+            }
+
+            const { owner, repo, token } = window.AppState.config;
+            if (!token) {
+                alert('Please configure your GitHub token in Settings first.');
+                window.open('setlist-builder.html', '_blank');
+                return;
+            }
+
+            const saveBtn = document.getElementById('save-quote-btn');
+            saveBtn.disabled = true;
+            saveBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
+
+            try {
+                // Generate or retrieve quote UUID
+                let quoteUuid;
+                if (quoteId && !isNew) {
+                    // Editing existing quote, use existing UUID
+                    quoteUuid = quoteId;
+                } else {
+                    // Creating new quote, generate new UUID
+                    quoteUuid = generateUUID();
+                }
+
+                const quote = {
+                    id: quoteUuid,
+                    showId: showId,
+                    showVenue: show.venue,
+                    showDate: show.date,
+                    duration: parseInt(document.getElementById('duration').value),
+                    members: parseInt(document.getElementById('members').value),
+                    musicianBase: parseInt(document.getElementById('musician-base').value),
+                    earlyArrival: document.getElementById('early-arrival').checked,
+                    travelDistance: parseInt(document.getElementById('travel-distance').value),
+                    notes: document.getElementById('quote-notes').value,
+                    createdAt: new Date().toISOString(),
+                    total: parseInt(document.getElementById('total-quote').textContent.replace(/[$,]/g, ''))
+                };
+
+                if (document.getElementById('lodging-required').checked) {
+                    quote.lodging = {
+                        rooms: parseInt(document.getElementById('lodging-rooms').value),
+                        roomRate: parseInt(document.getElementById('room-rate').value)
+                    };
+                }
+
+                if (document.getElementById('cocktail-hour').checked) {
+                    quote.cocktailHour = {
+                        hours: parseFloat(document.getElementById('cocktail-hours').value)
+                    };
+                }
+
+                if (document.getElementById('additional-audio').checked) {
+                    quote.additionalAudio = {
+                        basic: parseInt(document.getElementById('audio-basic').value) || 0,
+                        premium: parseInt(document.getElementById('audio-premium').value) || 0
+                    };
+                }
+
+                if (document.getElementById('additional-musicians').checked) {
+                    quote.additionalMusicians = {
+                        count: parseInt(document.getElementById('musicians-count').value) || 0,
+                        rate: parseInt(document.getElementById('musician-rate').value) || 0,
+                        notes: document.getElementById('musicians-notes').value.trim()
+                    };
+                }
+
+                // Generate quote filename
+                const quoteFilename = `${show.venue.replace(/\s+/g, '_')}_${show.date.replace(/\//g, '-')}.json`;
+
+                // Step 1: Save quote file to content/quotes/
+                const quotePath = `content/quotes/${quoteFilename}`;
+                const quoteApiUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${quotePath}`;
+
+                // Get existing quote SHA if it exists
+                let quoteSha = null;
+                try {
+                    const getQuoteRes = await fetch(quoteApiUrl, {
+                        headers: { 'Authorization': `token ${token}` }
+                    });
+                    if (getQuoteRes.ok) {
+                        quoteSha = (await getQuoteRes.json()).sha;
+                    }
+                } catch (e) {
+                    console.warn('Quote does not exist yet, creating new');
+                }
+
+                // Save quote file
+                const quoteContent = btoa(unescape(encodeURIComponent(JSON.stringify(quote, null, 2))));
+                const saveQuoteRes = await fetch(quoteApiUrl, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `token ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: `${quoteSha ? 'Update' : 'Create'} quote for ${show.venue}\n\nCo-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>`,
+                        content: quoteContent,
+                        sha: quoteSha,
+                        branch: 'main'
+                    })
+                });
+
+                if (!saveQuoteRes.ok) {
+                    const errorData = await saveQuoteRes.json();
+                    throw new Error(errorData.message || `Failed to save quote: ${saveQuoteRes.status}`);
+                }
+
+                // Step 2: Update shows.json with quote reference
+                const showsPath = 'content/shows.json';
+                const showsApiUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${showsPath}`;
+
+                // Get current shows.json
+                const getShowsRes = await fetch(showsApiUrl, {
+                    headers: { 'Authorization': `token ${token}` }
+                });
+
+                if (!getShowsRes.ok) {
+                    throw new Error('Failed to fetch shows.json');
+                }
+
+                const showsFileData = await getShowsRes.json();
+                const showsContent = atob(showsFileData.content);
+                const updatedShows = JSON.parse(showsContent);
+
+                // Find and update the show with quote reference (using UUID)
+                const showToUpdate = updatedShows.find(s => s.id === showId);
+                if (showToUpdate) {
+                    showToUpdate.quoteId = quoteUuid;
+                    showToUpdate.quote = quoteFilename; // Keep filename for backward compatibility and file lookups
+                }
+
+                // Save updated shows.json
+                const updatedShowsContent = btoa(unescape(encodeURIComponent(JSON.stringify(updatedShows, null, 2))));
+                const saveShowsRes = await fetch(showsApiUrl, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `token ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: `Link quote to ${show.venue}\n\nCo-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>`,
+                        content: updatedShowsContent,
+                        sha: showsFileData.sha,
+                        branch: 'main'
+                    })
+                });
+
+                if (!saveShowsRes.ok) {
+                    const errorData = await saveShowsRes.json();
+                    throw new Error(errorData.message || `Failed to update shows.json: ${saveShowsRes.status}`);
+                }
+
+                saveBtn.innerHTML = '<i class="fa-solid fa-check"></i> Saved!';
+                setTimeout(() => {
+                    window.close();
+                }, 1500);
+
+            } catch (error) {
+                console.error('Error saving quote:', error);
+                alert(`Failed to save quote: ${error.message}`);
+                saveBtn.disabled = false;
+                saveBtn.innerHTML = '<i class="fa-solid fa-save"></i> Save Quote';
+            }
+        }
+
+        // Event listeners
+        document.getElementById('duration').addEventListener('change', updateCalculations);
+        document.getElementById('members').addEventListener('change', updateCalculations);
+        document.getElementById('custom-rate').addEventListener('change', function() {
+            const musicianBaseInput = document.getElementById('musician-base');
+            if (this.checked) {
+                musicianBaseInput.removeAttribute('readonly');
+                musicianBaseInput.classList.add('bg-stone-800');
+                musicianBaseInput.classList.remove('bg-stone-900');
+            } else {
+                musicianBaseInput.setAttribute('readonly', 'readonly');
+                musicianBaseInput.classList.remove('bg-stone-800');
+                musicianBaseInput.classList.add('bg-stone-900');
+            }
+            updateCalculations();
+        });
+        document.getElementById('musician-base').addEventListener('input', updateCalculations);
+        document.getElementById('early-arrival').addEventListener('change', updateCalculations);
+        document.getElementById('travel-distance').addEventListener('change', function() {
+            const distance = parseInt(this.value);
+            const lodgingSection = document.getElementById('lodging-section');
+            if (distance >= 2) {
+                lodgingSection.classList.remove('hidden');
+            } else {
+                lodgingSection.classList.add('hidden');
+                document.getElementById('lodging-required').checked = false;
+            }
+            updateCalculations();
+        });
+
+        document.getElementById('lodging-required').addEventListener('change', function() {
+            const details = document.getElementById('lodging-details');
+            if (this.checked) {
+                details.classList.remove('hidden');
+            } else {
+                details.classList.add('hidden');
+            }
+            updateCalculations();
+        });
+        document.getElementById('lodging-rooms').addEventListener('input', updateCalculations);
+        document.getElementById('room-rate').addEventListener('input', updateCalculations);
+
+        document.getElementById('cocktail-hour').addEventListener('change', function() {
+            const details = document.getElementById('cocktail-details');
+            if (this.checked) {
+                details.classList.remove('hidden');
+            } else {
+                details.classList.add('hidden');
+            }
+            updateCalculations();
+        });
+        document.getElementById('cocktail-hours').addEventListener('input', updateCalculations);
+
+        document.getElementById('additional-audio').addEventListener('change', function() {
+            const details = document.getElementById('audio-details');
+            if (this.checked) {
+                details.classList.remove('hidden');
+            } else {
+                details.classList.add('hidden');
+            }
+            updateCalculations();
+        });
+        document.getElementById('audio-basic').addEventListener('input', updateCalculations);
+        document.getElementById('audio-premium').addEventListener('input', updateCalculations);
+
+        document.getElementById('additional-musicians').addEventListener('change', function() {
+            const details = document.getElementById('musicians-details');
+            if (this.checked) {
+                details.classList.remove('hidden');
+            } else {
+                details.classList.add('hidden');
+            }
+            updateCalculations();
+        });
+        document.getElementById('musicians-count').addEventListener('input', updateCalculations);
+        document.getElementById('musician-rate').addEventListener('input', updateCalculations);
+
+        document.getElementById('save-quote-btn').addEventListener('click', saveQuote);
+
+        // Settings modal handlers
+        const settingsModal = document.getElementById('settings-modal');
+        const settingsBtn = document.getElementById('settings-btn');
+        const closeSettingsBtn = document.getElementById('close-settings');
+        const saveSettingsBtn = document.getElementById('save-settings-btn');
+        const clearCacheBtn = document.getElementById('clear-cache-btn');
+
+        function openSettingsModal() {
+            // Load current config
+            const ghToken = document.getElementById('settings-gh-token');
+            ghToken.value = window.AppState.config.token || '';
+            settingsModal.classList.remove('hidden');
+        }
+
+        function closeSettingsModal() {
+            settingsModal.classList.add('hidden');
+        }
+
+        function saveSettingsModal() {
+            const token = document.getElementById('settings-gh-token').value.trim();
+            window.AppState.config.token = token;
+            if (!window.AppState.config.owner) window.AppState.config.owner = 'tdhckmn';
+            if (!window.AppState.config.repo) window.AppState.config.repo = 'ultraphonics-web';
+            if (!window.AppState.config.folder) window.AppState.config.folder = 'content/setlists';
+            localStorage.setItem('up_gh_config', JSON.stringify(window.AppState.config));
+            closeSettingsModal();
+        }
+
+        function clearCacheAndReload() {
+            const url = new URL(window.location);
+            url.searchParams.set('cachebust', Date.now());
+            window.location.href = url.toString();
+        }
+
+        settingsBtn.addEventListener('click', openSettingsModal);
+        closeSettingsBtn.addEventListener('click', closeSettingsModal);
+        saveSettingsBtn.addEventListener('click', saveSettingsModal);
+        clearCacheBtn.addEventListener('click', clearCacheAndReload);
+
+        // Close modal on backdrop click
+        settingsModal.addEventListener('click', (e) => {
+            if (e.target === settingsModal) {
+                closeSettingsModal();
+            }
+        });
+
+        // Close modal on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !settingsModal.classList.contains('hidden')) {
+                closeSettingsModal();
+            }
+        });
+
+        // Initialize
+        loadConfig(); // Load GitHub config from localStorage
+        loadShowData();
+        updateCalculations();
+    </script>
+
+</body>
+</html>
