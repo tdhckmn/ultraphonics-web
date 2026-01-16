@@ -200,7 +200,13 @@
     "startTime": "9:00 PM",
     "endTime": "11:59 PM",
     "isPrivate": false,
-    "personnel": ["David", "Shelley", "Tom", "Lester", "Anthony"],
+    "personnel": [
+      "David",
+      "Shelley",
+      "Tom",
+      "Lester",
+      "Anthony"
+    ],
     "eventLink": "https://www.facebook.com/events/1237030125141573/",
     "clientId": "a8b9c0d1-1e2f-4a3b-5c4d-8e9f0a1b2c3d"
   },
@@ -217,7 +223,7 @@
     "eventLink": "https://www.facebook.com/events/715141581162906/",
     "clientId": "c1f8e6d0-4a2b-4c5d-8e9f-1a2b3c4d5e6f",
     "setlist": "Riverbillies1-17.json",
-    "itinerary": "Load-in: 6:00\nSet 1: 8:00 - 8:50\nSet 2:  9:05 - 9:55\nSet 3: 10:10 - 11:00",
+    "itinerary": "Load-in: 6:00\nSet 1: 8:00 - 8:50\nSet 2: 9:05 - 9:55\nSet 3: 10:10 - 11:00",
     "personnel": [
       "Anthony",
       "Tom",
@@ -239,7 +245,15 @@
     "eventHandler": "Anthony",
     "published": true,
     "eventLink": "https://fb.me/e/5s4sMg2kh",
-    "clientId": "c1f8e6d0-4a2b-4c5d-8e9f-1a2b3c4d5e6f"
+    "clientId": "c1f8e6d0-4a2b-4c5d-8e9f-1a2b3c4d5e6f",
+    "itinerary": "Load-in: 6:00\nSet 1: 8:00 - 8:50\nSet 2: 9:05 - 9:55\nSet 3: 10:10 - 11:00",
+    "personnel": [
+      "Anthony",
+      "Tom",
+      "Lester",
+      "David",
+      "Shelley"
+    ]
   },
   {
     "id": "e992c3fd-33d3-4967-8156-0f2591d635b2",
@@ -253,7 +267,15 @@
     "isPrivate": false,
     "eventHandler": "Anthony",
     "eventLink": "https://fb.me/e/8THzX8Ay3",
-    "clientId": "f7a8b9c0-0d1e-4f2a-4b3c-7d8e9f0a1b2c"
+    "clientId": "f7a8b9c0-0d1e-4f2a-4b3c-7d8e9f0a1b2c",
+    "itinerary": "Load-in: 6:00\nSet 1: 8:00 - 8:50\nSet 2: 9:05 - 9:55\nSet 3: 10:10 - 11:00\nSet 4: 11:10 - 12midnight",
+    "personnel": [
+      "Anthony",
+      "Tom",
+      "Lester",
+      "David",
+      "Shelley"
+    ]
   },
   {
     "id": "5e32afdf-d92c-4b00-bdda-5729e2c765c3",
@@ -267,7 +289,15 @@
     "isPrivate": false,
     "eventHandler": "Anthony",
     "eventLink": "https://www.facebook.com/share/1DcNd8pWn7/",
-    "clientId": "c1f8e6d0-4a2b-4c5d-8e9f-1a2b3c4d5e6f"
+    "clientId": "c1f8e6d0-4a2b-4c5d-8e9f-1a2b3c4d5e6f",
+    "itinerary": "Load-in: 6:00\nSet 1: 8:00 - 8:50\nSet 2: 9:05 - 9:55\nSet 3: 10:10 - 11:00",
+    "personnel": [
+      "Anthony",
+      "Tom",
+      "Lester",
+      "David",
+      "Shelley"
+    ]
   },
   {
     "id": "8fdd07f7-29db-485e-9bbe-b3d41df5bbf8",
@@ -281,7 +311,15 @@
     "isPrivate": false,
     "eventHandler": "Anthony",
     "eventLink": "https://www.facebook.com/share/17gL1j57xs/",
-    "clientId": "f7a8b9c0-0d1e-4f2a-4b3c-7d8e9f0a1b2c"
+    "clientId": "f7a8b9c0-0d1e-4f2a-4b3c-7d8e9f0a1b2c",
+    "itinerary": "Load-in: 6:00\nSet 1: 8:00 - 8:50\nSet 2: 9:05 - 9:55\nSet 3: 10:10 - 11:00\nSet 4: 11:10 - 12midnight",
+    "personnel": [
+      "Anthony",
+      "Tom",
+      "Lester",
+      "David",
+      "Shelley"
+    ]
   },
   {
     "id": "797b8978-7ea9-4a51-a042-7e370d386cc1",
@@ -295,7 +333,14 @@
     "isPrivate": false,
     "eventHandler": "Anthony",
     "eventLink": "https://fb.me/e/5qG9tajDK",
-    "clientId": "b9c0d1e2-2f3a-4b4c-6d5e-9f0a1b2c3d4e"
+    "clientId": "b9c0d1e2-2f3a-4b4c-6d5e-9f0a1b2c3d4e",
+    "personnel": [
+      "Anthony",
+      "Tom",
+      "Lester",
+      "Shelley",
+      "Kelsey"
+    ]
   },
   {
     "id": "d5132e25-4e51-48da-9c97-b2e9d2d1fc5c",
@@ -309,7 +354,14 @@
     "isPrivate": false,
     "eventHandler": "Anthony",
     "eventLink": "https://www.facebook.com/share/1CNXEzQEpZ/",
-    "clientId": "c0d1e2f3-3a4b-4c5d-7e6f-0a1b2c3d4e5f"
+    "clientId": "c0d1e2f3-3a4b-4c5d-7e6f-0a1b2c3d4e5f",
+    "personnel": [
+      "Anthony",
+      "Tom",
+      "Lester",
+      "David",
+      "Shelley"
+    ]
   },
   {
     "id": "b16b2108-0b49-42ff-a665-b0343d46f4cf",
@@ -338,7 +390,14 @@
     "isPrivate": false,
     "eventHandler": "Anthony",
     "eventLink": "https://fb.me/e/48LpTC6Um",
-    "clientId": "a2b3c4d5-5e6f-4a7b-9c8d-2e3f4a5b6c7d"
+    "clientId": "a2b3c4d5-5e6f-4a7b-9c8d-2e3f4a5b6c7d",
+    "personnel": [
+      "Anthony",
+      "Tom",
+      "Lester",
+      "David",
+      "Shelley"
+    ]
   },
   {
     "id": "87558bfd-2dad-4b5b-a040-c0a8f44fb092",
@@ -352,7 +411,14 @@
     "isPrivate": false,
     "eventHandler": "Anthony",
     "eventLink": "https://fb.me/e/5zTpW4P98",
-    "clientId": "d1e2f3a4-4b5c-4d6e-8f7a-1b2c3d4e5f6a"
+    "clientId": "d1e2f3a4-4b5c-4d6e-8f7a-1b2c3d4e5f6a",
+    "personnel": [
+      "Anthony",
+      "Tom",
+      "Lester",
+      "David",
+      "Shelley"
+    ]
   },
   {
     "id": "d592e318-c084-4395-bbe0-7a4196848ed6",
@@ -366,6 +432,13 @@
     "isPrivate": false,
     "eventHandler": "Anthony",
     "eventLink": "https://fb.me/e/3YQf98oCO",
-    "clientId": "a2b3c4d5-5e6f-4a7b-9c8d-2e3f4a5b6c7d"
+    "clientId": "a2b3c4d5-5e6f-4a7b-9c8d-2e3f4a5b6c7d",
+    "personnel": [
+      "Anthony",
+      "Tom",
+      "Lester",
+      "David",
+      "Shelley"
+    ]
   }
 ]
