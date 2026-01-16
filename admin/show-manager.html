@@ -117,18 +117,21 @@
 <body class="bg-stone-950 text-stone-100 h-full overflow-hidden">
 
     <!-- Top Bar -->
-    <div class="bg-stone-900 border-b border-stone-800 px-6 py-4 flex items-center justify-between sticky top-0 z-50">
-        <div class="flex items-center gap-3 flex-wrap">
+    <div class="bg-stone-900 border-b border-stone-800 px-4 md:px-6 py-3 md:py-4 flex items-center justify-between sticky top-0 z-50">
+        <div class="flex items-center gap-2 md:gap-3">
             <a href="index.html" class="text-stone-400 hover:text-white transition-colors">
                 <i class="fa-solid fa-arrow-left"></i>
             </a>
-            <h1 class="text-xl font-bold text-white">Show Manager</h1>
-            <span class="text-sm text-stone-500" id="show-count">0 shows</span>
-            <select id="year-filter" class="px-3 py-1.5 bg-stone-800 border border-stone-700 rounded-lg text-white text-sm focus:outline-none focus:border-accent-teal">
+            <h1 class="text-lg md:text-xl font-bold text-white"><span class="hidden md:inline">Show Manager</span><span class="md:hidden">Shows</span></h1>
+            <span class="text-sm text-stone-500 hidden md:inline" id="show-count">0 shows</span>
+            <select id="year-filter" class="px-2 md:px-3 py-1 md:py-1.5 bg-stone-800 border border-stone-700 rounded-lg text-white text-sm focus:outline-none focus:border-accent-teal">
                 <option value="">All Years</option>
             </select>
         </div>
-        <div class="flex items-center gap-2">
+        <div class="flex items-center gap-1 md:gap-2">
+            <span id="connection-status" class="hidden md:inline text-xs px-2 py-1 rounded bg-stone-800 text-stone-400">
+                <i class="fa-solid fa-circle text-[8px] mr-1"></i> <span id="connection-label">Read Only</span>
+            </span>
             <button id="settings-btn" class="text-stone-400 hover:text-white transition-colors p-2 rounded-lg hover:bg-stone-800" title="Admin Settings">
                 <i class="fa-solid fa-gear"></i>
             </button>
@@ -1052,6 +1055,26 @@
             settingsModal.classList.add('hidden');
         }
 
+        function updateConnectionStatus(isConnected) {
+            const statusEl = document.getElementById('connection-status');
+            const labelEl = document.getElementById('connection-label');
+            const indicator = statusEl.querySelector('i');
+
+            if (isConnected) {
+                labelEl.textContent = 'Connected';
+                statusEl.classList.remove('text-stone-400');
+                statusEl.classList.add('text-green-400');
+                indicator.classList.remove('text-stone-500');
+                indicator.classList.add('text-green-400');
+            } else {
+                labelEl.textContent = 'Read Only';
+                statusEl.classList.remove('text-green-400');
+                statusEl.classList.add('text-stone-400');
+                indicator.classList.remove('text-green-400');
+                indicator.classList.add('text-stone-500');
+            }
+        }
+
         function saveSettingsModal() {
             const token = document.getElementById('settings-gh-token').value.trim();
             window.AppState.config.token = token;
@@ -1090,6 +1113,7 @@
 
         // Initialize
         loadConfig(); // Load GitHub config from localStorage
+        updateConnectionStatus(!!window.AppState.config.token);
         loadSetlists();
         loadClients();
         loadShows();
