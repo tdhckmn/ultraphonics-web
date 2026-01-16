@@ -145,6 +145,9 @@
             </select>
         </div>
         <div class="flex items-center gap-3">
+            <button id="settings-btn" class="text-stone-400 hover:text-white transition-colors p-2 rounded-lg hover:bg-stone-800" title="Admin Settings">
+                <i class="fa-solid fa-gear"></i>
+            </button>
             <button id="add-show-btn" class="px-4 py-2 bg-accent-teal text-white rounded-lg font-semibold hover:bg-teal-600 transition-colors flex items-center gap-2">
                 <i class="fa-solid fa-plus"></i>
                 Add Show
@@ -153,6 +156,65 @@
                 <i class="fa-solid fa-save"></i>
                 Save Changes
             </button>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[100] hidden">
+        <div class="bg-stone-900 w-full max-w-md mx-auto rounded-xl shadow-2xl border border-stone-700 overflow-hidden m-4">
+            <div class="p-6">
+                <div class="flex justify-between items-center pb-3 border-b border-stone-800">
+                    <p class="text-lg font-bold text-white">Admin Settings</p>
+                    <button id="close-settings" class="text-stone-400 hover:text-white transition-colors">
+                        <i class="fa-solid fa-times"></i>
+                    </button>
+                </div>
+
+                <div class="my-5">
+                    <!-- GitHub Authentication -->
+                    <label class="block text-stone-400 text-xs font-bold mb-2">
+                        GitHub Authentication
+                    </label>
+
+                    <a href="https://github.com/settings/tokens/new?description=Ultraphonics%20Admin&scopes=repo"
+                       target="_blank"
+                       class="block w-full px-4 py-3 bg-indigo-600 rounded-lg text-white hover:bg-indigo-500 font-bold transition-colors mb-2 text-center">
+                        <i class="fab fa-github mr-2"></i> Create GitHub Token
+                    </a>
+                    <p class="text-stone-500 text-xs mb-3 italic">
+                        Opens GitHub with the token form pre-filled. Copy the token and paste below.
+                    </p>
+
+                    <label class="block text-stone-400 text-xs font-bold mb-2">
+                        Personal Access Token
+                    </label>
+                    <input class="appearance-none border border-stone-700 rounded w-full py-3 px-3 text-stone-200 bg-stone-800 leading-tight focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 mb-1"
+                        id="settings-gh-token" type="password" placeholder="ghp_...">
+                    <p class="text-stone-500 text-xs mt-1 italic mb-4">
+                        Required for saving shows to GitHub
+                    </p>
+
+                    <!-- Cache Buster -->
+                    <div class="border-t border-stone-800 mt-5 pt-5">
+                        <label class="block text-stone-400 text-xs font-bold mb-2">
+                            Refresh Page
+                        </label>
+                        <button id="clear-cache-btn" class="w-full px-4 py-3 bg-stone-800 border border-stone-700 rounded-lg text-white hover:bg-stone-700 font-semibold transition-colors flex items-center justify-center gap-2">
+                            <i class="fas fa-sync-alt"></i>
+                            <span>Clear Cache & Reload</span>
+                        </button>
+                        <p class="text-stone-500 text-xs mt-2 italic">
+                            Use this if you don't see recent updates or changes
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t border-stone-800 bg-stone-900 px-6 py-4 flex justify-end">
+                <button id="save-settings-btn" class="px-6 py-3 bg-indigo-600 rounded-lg text-white hover:bg-indigo-500 font-bold transition-colors">
+                    Save Changes
+                </button>
+            </div>
         </div>
     </div>
 
@@ -186,10 +248,6 @@
                         <h2 class="text-2xl font-bold text-white" id="show-title">Show Details</h2>
                     </div>
                     <div class="flex gap-2 flex-wrap">
-                        <button id="generate-quote-btn" class="px-4 py-2 bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-500 transition-colors flex items-center gap-2 hidden">
-                            <i class="fa-solid fa-file-invoice-dollar"></i>
-                            Generate Quote
-                        </button>
                         <button id="edit-btn" class="px-4 py-2 bg-accent-teal text-white rounded-lg font-semibold hover:bg-teal-600 transition-colors flex items-center gap-2">
                             <i class="fa-solid fa-pen"></i>
                             Edit
@@ -231,26 +289,112 @@
         </div>
     </div>
 
+    <!-- Shared Config Script -->
+    <script src="setlist-builder.js"></script>
+
     <script>
         let shows = [];
-        let selectedShowIndex = null;
+        let clients = [];
+        let selectedShowId = null;
         let hasUnsavedChanges = false;
         let originalShows = [];
         let setlists = [];
         let selectedYear = '';
 
+        // Generate UUID v4
+        function generateUUID() {
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                const r = Math.random() * 16 | 0;
+                const v = c === 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
+            });
+        }
+
         // Load shows from GitHub
         async function loadShows() {
             try {
-                const response = await fetch('/content/shows.json');
-                shows = await response.json();
+                const { owner, repo, token } = window.AppState.config;
+                const url = `https://api.github.com/repos/${owner}/${repo}/contents/content/shows.json`;
+
+                const headers = {};
+                if (token) {
+                    headers['Authorization'] = `token ${token}`;
+                }
+
+                // Add timestamp to prevent caching
+                const response = await fetch(`${url}?t=${Date.now()}`, { headers });
+
+                if (!response.ok) {
+                    if (response.status === 404) {
+                        throw new Error("shows.json not found");
+                    }
+                    throw new Error(`GitHub Error: ${response.status}`);
+                }
+
+                const fileData = await response.json();
+                // Decode base64 content from GitHub API
+                const content = atob(fileData.content);
+                shows = JSON.parse(content);
+
+                // Ensure all shows have UUIDs
+                shows = shows.map(show => {
+                    if (!show.id) {
+                        show.id = generateUUID();
+                    }
+                    return show;
+                });
+
                 originalShows = JSON.parse(JSON.stringify(shows));
                 populateYearFilter();
                 renderShowsList();
                 updateShowCount();
+
+                // Check for show parameter in URL
+                const urlParams = new URLSearchParams(window.location.search);
+                const showId = urlParams.get('show');
+                if (showId) {
+                    selectShow(showId);
+                }
             } catch (error) {
                 console.error('Error loading shows:', error);
-                alert('Failed to load shows');
+                alert(`Failed to load shows: ${error.message}`);
+                // Initialize with empty array on error
+                shows = [];
+                originalShows = [];
+                renderShowsList();
+                updateShowCount();
+            }
+        }
+
+        // Load clients from GitHub
+        async function loadClients() {
+            try {
+                const { owner, repo, token } = window.AppState.config;
+                const url = `https://api.github.com/repos/${owner}/${repo}/contents/content/clients.json`;
+
+                const headers = {};
+                if (token) {
+                    headers['Authorization'] = `token ${token}`;
+                }
+
+                // Add timestamp to prevent caching
+                const response = await fetch(`${url}?t=${Date.now()}`, { headers });
+
+                if (!response.ok) {
+                    if (response.status === 404) {
+                        throw new Error("clients.json not found");
+                    }
+                    throw new Error(`GitHub Error: ${response.status}`);
+                }
+
+                const fileData = await response.json();
+                // Decode base64 content from GitHub API
+                const content = atob(fileData.content);
+                clients = JSON.parse(content);
+            } catch (error) {
+                console.error('Error loading clients:', error);
+                // Initialize with empty array on error
+                clients = [];
             }
         }
 
@@ -309,14 +453,13 @@
                 return matchesSearch && matchesYear;
             });
 
-            container.innerHTML = filteredShows.map((show, index) => {
-                const actualIndex = shows.findIndex(s => s === show);
+            container.innerHTML = filteredShows.map((show) => {
                 const date = new Date(show.date);
                 const formattedDate = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-                const isSelected = selectedShowIndex === actualIndex;
+                const isSelected = selectedShowId === show.id;
 
                 return `
-                    <div class="show-item p-4 border-b border-stone-800 ${isSelected ? 'selected' : ''}" data-index="${actualIndex}">
+                    <div class="show-item p-4 border-b border-stone-800 ${isSelected ? 'selected' : ''}" data-show-id="${show.id}">
                         <div class="font-bold text-white">${show.venue}</div>
                         <div class="text-sm text-stone-400">${show.city}, ${show.state}</div>
                         <div class="text-xs text-accent-teal mt-1">${formattedDate}</div>
@@ -328,15 +471,21 @@
             // Add click handlers
             document.querySelectorAll('.show-item').forEach(item => {
                 item.addEventListener('click', () => {
-                    const index = parseInt(item.dataset.index);
-                    selectShow(index);
+                    const showId = item.dataset.showId;
+                    selectShow(showId);
                 });
             });
         }
 
         // Select a show
-        function selectShow(index) {
-            selectedShowIndex = index;
+        function selectShow(showId) {
+            selectedShowId = showId;
+
+            // Update URL with show parameter
+            const url = new URL(window.location);
+            url.searchParams.set('show', showId);
+            window.history.pushState({}, '', url);
+
             renderShowsList(document.getElementById('search-shows').value);
             showViewMode();
 
@@ -349,23 +498,24 @@
 
         // Show view mode
         function showViewMode() {
-            const show = shows[selectedShowIndex];
+            const show = shows.find(s => s.id === selectedShowId);
             if (!show) return;
 
             document.getElementById('empty-state').classList.add('hidden');
             document.getElementById('show-view').classList.remove('hidden');
             document.getElementById('show-edit').classList.add('hidden');
 
-            // Show/hide generate quote button
-            const generateQuoteBtn = document.getElementById('generate-quote-btn');
-            if (show.quote) {
-                generateQuoteBtn.classList.add('hidden');
-            } else {
-                generateQuoteBtn.classList.remove('hidden');
-            }
-
             const date = new Date(show.date);
             const formattedDate = date.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+
+            // Get client name
+            let clientName = '<span class="text-stone-600">—</span>';
+            if (show.clientId) {
+                const client = clients.find(c => c.id === show.clientId);
+                if (client) {
+                    clientName = client.name;
+                }
+            }
 
             document.getElementById('show-title').textContent = show.venue;
             document.getElementById('show-details').innerHTML = `
@@ -383,6 +533,10 @@
                             <label class="text-xs text-stone-500 uppercase tracking-wide">End Time</label>
                             <div class="text-lg text-white">${show.endTime || '<span class="text-stone-600">—</span>'}</div>
                         </div>
+                    </div>
+                    <div>
+                        <label class="text-xs text-stone-500 uppercase tracking-wide">Client</label>
+                        <div class="text-lg text-white">${clientName}</div>
                     </div>
                     <div>
                         <label class="text-xs text-stone-500 uppercase tracking-wide">Location</label>
@@ -435,11 +589,15 @@
                     <div>
                         <label class="text-xs text-stone-500 uppercase tracking-wide">Quote</label>
                         <div class="text-lg">
-                            ${show.quote ? `
-                                <a href="quote-generator.html?show=${selectedShowIndex}&quote=${show.quote}" target="_blank" rel="noopener noreferrer" class="text-accent-teal hover:underline flex items-center gap-2">
+                            ${show.quoteId ? `
+                                <a href="quote-generator.html?show=${show.id}&quote=${show.quoteId}" target="_blank" rel="noopener noreferrer" class="text-accent-teal hover:underline flex items-center gap-2">
                                     View/Edit Quote <i class="fa-solid fa-external-link text-sm"></i>
                                 </a>
-                            ` : '<span class="text-stone-600">—</span>'}
+                            ` : `
+                                <a href="#" onclick="generateQuote(); return false;" class="text-accent-teal hover:underline flex items-center gap-2">
+                                    Generate Quote <i class="fa-solid fa-plus text-sm"></i>
+                                </a>
+                            `}
                         </div>
                     </div>
                 </div>
@@ -448,7 +606,7 @@
 
         // Show edit mode
         function showEditMode() {
-            const show = shows[selectedShowIndex];
+            const show = shows.find(s => s.id === selectedShowId);
             if (!show) return;
 
             document.getElementById('show-view').classList.add('hidden');
@@ -463,6 +621,13 @@
                     <div>
                         <label class="block text-sm font-semibold text-stone-300 mb-2">Venue Name</label>
                         <input type="text" id="edit-venue" value="${show.venue}" class="w-full px-4 py-3 bg-stone-800 border border-stone-700 rounded-lg text-white focus:outline-none focus:border-accent-teal">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-stone-300 mb-2">Client</label>
+                        <select id="edit-client" class="w-full px-4 py-3 bg-stone-800 border border-stone-700 rounded-lg text-white focus:outline-none focus:border-accent-teal">
+                            <option value="">Select client</option>
+                            ${clients.map(client => `<option value="${client.id}" ${show.clientId === client.id ? 'selected' : ''}>${client.name}</option>`).join('')}
+                        </select>
                     </div>
                     <div class="grid grid-cols-2 gap-4">
                         <div>
@@ -541,6 +706,9 @@
 
         // Save edited show
         function saveEdit() {
+            const show = shows.find(s => s.id === selectedShowId);
+            if (!show) return;
+
             const dateInput = document.getElementById('edit-date').value;
             const dateParts = dateInput.split('-');
             const formattedDate = `${parseInt(dateParts[1])}/${parseInt(dateParts[2])}/${dateParts[0]}`;
@@ -549,28 +717,28 @@
             const itineraryValue = document.getElementById('edit-itinerary').value.trim();
             const notesValue = document.getElementById('edit-notes').value.trim();
             const eventHandlerValue = document.getElementById('edit-event-handler').value;
+            const clientValue = document.getElementById('edit-client').value;
 
             // Get selected personnel
             const personnelCheckboxes = document.querySelectorAll('.personnel-checkbox:checked');
             const personnel = Array.from(personnelCheckboxes).map(cb => cb.value);
 
-            shows[selectedShowIndex] = {
-                date: formattedDate,
-                venue: document.getElementById('edit-venue').value,
-                city: document.getElementById('edit-city').value,
-                state: document.getElementById('edit-state').value,
-                startTime: document.getElementById('edit-start-time').value,
-                endTime: document.getElementById('edit-end-time').value,
-                isPrivate: document.getElementById('edit-is-private').checked,
-                published: document.getElementById('edit-published').checked,
-                eventLink: document.getElementById('edit-event-link').value || undefined,
-                setlist: setlistValue || undefined,
-                itinerary: itineraryValue || undefined,
-                notes: notesValue || undefined,
-                personnel: personnel.length > 0 ? personnel : undefined,
-                eventHandler: eventHandlerValue || undefined,
-                quote: shows[selectedShowIndex].quote || undefined
-            };
+            // Update the show object
+            show.date = formattedDate;
+            show.venue = document.getElementById('edit-venue').value;
+            show.city = document.getElementById('edit-city').value;
+            show.state = document.getElementById('edit-state').value;
+            show.startTime = document.getElementById('edit-start-time').value;
+            show.endTime = document.getElementById('edit-end-time').value;
+            show.isPrivate = document.getElementById('edit-is-private').checked;
+            show.published = document.getElementById('edit-published').checked;
+            show.eventLink = document.getElementById('edit-event-link').value || undefined;
+            show.setlist = setlistValue || undefined;
+            show.itinerary = itineraryValue || undefined;
+            show.notes = notesValue || undefined;
+            show.personnel = personnel.length > 0 ? personnel : undefined;
+            show.eventHandler = eventHandlerValue || undefined;
+            show.clientId = clientValue || undefined;
 
             hasUnsavedChanges = true;
             showSaveButton();
@@ -581,6 +749,7 @@
         // Add new show
         function addNewShow() {
             const newShow = {
+                id: generateUUID(),
                 date: new Date().toLocaleDateString('en-US'),
                 venue: "New Venue",
                 city: "City",
@@ -588,7 +757,8 @@
                 startTime: "8:00 PM",
                 endTime: "11:00 PM",
                 isPrivate: false,
-                published: false
+                published: false,
+                clientId: undefined
             };
 
             shows.unshift(newShow);
@@ -596,18 +766,16 @@
             showSaveButton();
             renderShowsList();
             updateShowCount();
-            selectShow(0);
+            selectShow(newShow.id);
             showEditMode();
         }
 
         // Generate quote for show
         function generateQuote() {
-            const show = shows[selectedShowIndex];
+            const show = shows.find(s => s.id === selectedShowId);
             if (!show) return;
 
-            // Create quote ID based on venue and date
-            const quoteId = `${show.venue.replace(/\s+/g, '_')}_${show.date.replace(/\//g, '-')}`;
-            window.open(`quote-generator.html?show=${selectedShowIndex}&new=true`, '_blank');
+            window.open(`quote-generator.html?show=${show.id}&new=true`, '_blank');
         }
 
         // Back to list on mobile
@@ -622,8 +790,18 @@
         function deleteShow() {
             if (!confirm('Are you sure you want to delete this show?')) return;
 
-            shows.splice(selectedShowIndex, 1);
-            selectedShowIndex = null;
+            const showIndex = shows.findIndex(s => s.id === selectedShowId);
+            if (showIndex !== -1) {
+                shows.splice(showIndex, 1);
+            }
+
+            selectedShowId = null;
+
+            // Remove show parameter from URL
+            const url = new URL(window.location);
+            url.searchParams.delete('show');
+            window.history.pushState({}, '', url);
+
             hasUnsavedChanges = true;
             showSaveButton();
             renderShowsList();
@@ -636,9 +814,10 @@
 
         // Save to GitHub
         async function saveToGitHub() {
-            const config = JSON.parse(localStorage.getItem('up_gh_config') || '{}');
-            if (!config.token) {
-                alert('Please configure your GitHub token in the admin settings first.');
+            const { owner, repo, token } = window.AppState.config;
+            if (!token) {
+                alert('Please configure your GitHub token in Settings first.');
+                window.open('setlist-builder.html', '_blank');
                 return;
             }
 
@@ -647,35 +826,50 @@
             saveBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
 
             try {
-                // Get current file SHA
-                const getResponse = await fetch(`https://api.github.com/repos/${config.owner}/${config.repo}/contents/content/shows.json`, {
-                    headers: {
-                        'Authorization': `token ${config.token}`,
-                        'Accept': 'application/vnd.github.v3+json'
+                // Ensure all shows have UUIDs before saving
+                shows.forEach(show => {
+                    if (!show.id) {
+                        show.id = generateUUID();
                     }
                 });
 
-                const fileData = await getResponse.json();
-                const sha = fileData.sha;
+                const path = 'content/shows.json';
+                const apiUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
+
+                // Get current file SHA
+                let sha = null;
+                try {
+                    const getResponse = await fetch(apiUrl, {
+                        headers: { 'Authorization': `token ${token}` }
+                    });
+                    if (getResponse.ok) {
+                        sha = (await getResponse.json()).sha;
+                    }
+                } catch (e) {
+                    console.warn('Could not fetch existing SHA:', e);
+                }
+
+                // Encode content as base64
+                const content = btoa(unescape(encodeURIComponent(JSON.stringify(shows, null, 2))));
 
                 // Update file
-                const content = btoa(JSON.stringify(shows, null, 2));
-                const updateResponse = await fetch(`https://api.github.com/repos/${config.owner}/${config.repo}/contents/content/shows.json`, {
+                const updateResponse = await fetch(apiUrl, {
                     method: 'PUT',
                     headers: {
-                        'Authorization': `token ${config.token}`,
-                        'Accept': 'application/vnd.github.v3+json',
+                        'Authorization': `token ${token}`,
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
                         message: `Update shows from Show Manager\n\nCo-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>`,
                         content: content,
-                        sha: sha
+                        sha: sha,
+                        branch: 'main'
                     })
                 });
 
                 if (!updateResponse.ok) {
-                    throw new Error('Failed to save to GitHub');
+                    const errorData = await updateResponse.json();
+                    throw new Error(errorData.message || `GitHub Error: ${updateResponse.status}`);
                 }
 
                 originalShows = JSON.parse(JSON.stringify(shows));
@@ -690,7 +884,7 @@
 
             } catch (error) {
                 console.error('Error saving to GitHub:', error);
-                alert('Failed to save shows to GitHub. Please check your token and try again.');
+                alert(`Failed to save shows to GitHub: ${error.message}`);
                 saveBtn.disabled = false;
                 saveBtn.innerHTML = '<i class="fa-solid fa-save"></i> Save Changes';
             }
@@ -725,12 +919,67 @@
         document.getElementById('delete-btn').addEventListener('click', deleteShow);
         document.getElementById('add-show-btn').addEventListener('click', addNewShow);
         document.getElementById('save-btn').addEventListener('click', saveToGitHub);
-        document.getElementById('generate-quote-btn').addEventListener('click', generateQuote);
         document.getElementById('back-to-list-btn').addEventListener('click', backToList);
         document.getElementById('back-to-list-btn-edit').addEventListener('click', backToList);
 
+        // Settings modal handlers
+        const settingsModal = document.getElementById('settings-modal');
+        const settingsBtn = document.getElementById('settings-btn');
+        const closeSettingsBtn = document.getElementById('close-settings');
+        const saveSettingsBtn = document.getElementById('save-settings-btn');
+        const clearCacheBtn = document.getElementById('clear-cache-btn');
+
+        function openSettingsModal() {
+            // Load current config
+            const ghToken = document.getElementById('settings-gh-token');
+            ghToken.value = window.AppState.config.token || '';
+            settingsModal.classList.remove('hidden');
+        }
+
+        function closeSettingsModal() {
+            settingsModal.classList.add('hidden');
+        }
+
+        function saveSettingsModal() {
+            const token = document.getElementById('settings-gh-token').value.trim();
+            window.AppState.config.token = token;
+            if (!window.AppState.config.owner) window.AppState.config.owner = 'tdhckmn';
+            if (!window.AppState.config.repo) window.AppState.config.repo = 'ultraphonics-web';
+            if (!window.AppState.config.folder) window.AppState.config.folder = 'content/setlists';
+            localStorage.setItem('up_gh_config', JSON.stringify(window.AppState.config));
+            closeSettingsModal();
+            updateConnectionStatus(!!token);
+        }
+
+        function clearCacheAndReload() {
+            const url = new URL(window.location);
+            url.searchParams.set('cachebust', Date.now());
+            window.location.href = url.toString();
+        }
+
+        settingsBtn.addEventListener('click', openSettingsModal);
+        closeSettingsBtn.addEventListener('click', closeSettingsModal);
+        saveSettingsBtn.addEventListener('click', saveSettingsModal);
+        clearCacheBtn.addEventListener('click', clearCacheAndReload);
+
+        // Close modal on backdrop click
+        settingsModal.addEventListener('click', (e) => {
+            if (e.target === settingsModal) {
+                closeSettingsModal();
+            }
+        });
+
+        // Close modal on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !settingsModal.classList.contains('hidden')) {
+                closeSettingsModal();
+            }
+        });
+
         // Initialize
+        loadConfig(); // Load GitHub config from localStorage
         loadSetlists();
+        loadClients();
         loadShows();
     </script>
 
