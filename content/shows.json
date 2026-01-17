@@ -231,7 +231,8 @@
       "Shelley",
       "Kelsey"
     ],
-    "eventHandler": "Anthony"
+    "eventHandler": "Anthony",
+    "payout": 750
   },
   {
     "id": "2cd3bad1-5321-43e2-970f-19e53e0ef5a4",
@@ -253,7 +254,8 @@
       "Lester",
       "David",
       "Shelley"
-    ]
+    ],
+    "payout": 750
   },
   {
     "id": "e992c3fd-33d3-4967-8156-0f2591d635b2",
@@ -297,7 +299,8 @@
       "Lester",
       "David",
       "Shelley"
-    ]
+    ],
+    "payout": 750
   },
   {
     "id": "8fdd07f7-29db-485e-9bbe-b3d41df5bbf8",
