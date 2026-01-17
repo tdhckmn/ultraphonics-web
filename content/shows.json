@@ -277,7 +277,8 @@
       "Lester",
       "David",
       "Shelley"
-    ]
+    ],
+    "payout": 800
   },
   {
     "id": "5e32afdf-d92c-4b00-bdda-5729e2c765c3",
@@ -322,7 +323,8 @@
       "Lester",
       "David",
       "Shelley"
-    ]
+    ],
+    "payout": 800
   },
   {
     "id": "797b8978-7ea9-4a51-a042-7e370d386cc1",
@@ -364,7 +366,8 @@
       "Lester",
       "David",
       "Shelley"
-    ]
+    ],
+    "payout": 1000
   },
   {
     "id": "b16b2108-0b49-42ff-a665-b0343d46f4cf",
@@ -421,7 +424,8 @@
       "Lester",
       "David",
       "Shelley"
-    ]
+    ],
+    "payout": 800
   },
   {
     "id": "d592e318-c084-4395-bbe0-7a4196848ed6",
