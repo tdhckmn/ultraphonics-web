@@ -613,6 +613,10 @@
                             `}
                         </div>
                     </div>
+                    <div>
+                        <label class="text-xs text-stone-500 uppercase tracking-wide">Payout (Total)</label>
+                        <div class="text-lg text-white font-semibold ${show.payout ? 'text-green-400' : ''}">${show.payout ? `$${show.payout}` : '<span class="text-stone-600 font-normal">—</span>'}</div>
+                    </div>
                 </div>
             `;
         }
@@ -703,6 +707,16 @@
                             ${['Anthony', 'Tom', 'Lester', 'David', 'Shelley', 'Kelsey'].map(member => `<option value="${member}" ${show.eventHandler === member ? 'selected' : ''}>${member}</option>`).join('')}
                         </select>
                     </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-stone-300 mb-2">Base Musician Payout (Total)</label>
+                        <div class="flex items-center gap-2">
+                            <span class="text-stone-400">$</span>
+                            <input type="number" id="edit-payout" value="${show.payout || ''}" min="0" step="1" class="flex-1 px-4 py-3 bg-stone-800 border border-stone-700 rounded-lg text-white focus:outline-none focus:border-accent-teal" placeholder="e.g., 1000">
+                        </div>
+                        <p class="text-xs text-stone-500 mt-2">
+                            Total expected payout from the event (base musician payout before add-ons)
+                        </p>
+                    </div>
                     <div class="flex gap-6">
                         <label class="flex items-center gap-3 cursor-pointer">
                             <input type="checkbox" id="edit-is-private" ${show.isPrivate ? 'checked' : ''} class="w-5 h-5 text-accent-teal bg-stone-800 border-stone-700 rounded focus:ring-accent-teal focus:ring-2 cursor-pointer">
@@ -731,6 +745,7 @@
             const notesValue = document.getElementById('edit-notes').value.trim();
             const eventHandlerValue = document.getElementById('edit-event-handler').value;
             const clientValue = document.getElementById('edit-client').value;
+            const payoutValue = document.getElementById('edit-payout').value.trim();
 
             // Get selected personnel
             const personnelCheckboxes = document.querySelectorAll('.personnel-checkbox:checked');
@@ -752,6 +767,7 @@
             show.personnel = personnel.length > 0 ? personnel : undefined;
             show.eventHandler = eventHandlerValue || undefined;
             show.clientId = clientValue || undefined;
+            show.payout = payoutValue ? parseInt(payoutValue) : undefined;
 
             hasUnsavedChanges = true;
             showSaveButton();
