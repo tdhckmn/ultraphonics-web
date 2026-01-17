@@ -345,7 +345,8 @@
       "Lester",
       "Shelley",
       "Kelsey"
-    ]
+    ],
+    "payout": 400
   },
   {
     "id": "d5132e25-4e51-48da-9c97-b2e9d2d1fc5c",
@@ -402,8 +403,10 @@
       "Tom",
       "Lester",
       "David",
-      "Shelley"
-    ]
+      "Shelley",
+      "Kelsey"
+    ],
+    "payout": 1200
   },
   {
     "id": "87558bfd-2dad-4b5b-a040-c0a8f44fb092",
@@ -445,7 +448,9 @@
       "Tom",
       "Lester",
       "David",
-      "Shelley"
-    ]
+      "Shelley",
+      "Kelsey"
+    ],
+    "payout": 1200
   }
 ]
