@@ -1,5 +1,23 @@
 [
   {
+    "id": "42290035-86a2-4848-8b3a-e7c91c259684",
+    "date": "1/31/2026",
+    "venue": "Crystal Bar & Grille",
+    "city": "Westland",
+    "state": "MI",
+    "startTime": "8:30 PM",
+    "endTime": "12:30 AM",
+    "isPrivate": false,
+    "published": true,
+    "personnel": [
+      "Anthony",
+      "Tom",
+      "Lester",
+      "David"
+    ],
+    "payout": 750
+  },
+  {
     "id": "00e76754-294a-456d-935b-679cd532d26b",
     "date": "4/5/2025",
     "venue": "Riverbillies",
