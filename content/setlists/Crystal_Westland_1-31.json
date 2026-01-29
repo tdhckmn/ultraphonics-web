@@ -15,21 +15,22 @@
     ]
   },
   {
+    "id": "cc424727-eb2f-42f0-8ecf-3707a958d9dc",
+    "lastKnownName": "Juice - Dm",
+    "time": 26825.170521665834,
+    "stop": true,
+    "tags": [
+      "vocals:Kelsey",
+      "capo:3"
+    ]
+  },
+  {
     "id": "e9f2a123-295f-4eba-97e7-0f511409c9d3",
     "lastKnownName": "All the small things - C",
     "time": 26496,
     "stop": true,
     "tags": [
       "vocals:David"
-    ]
-  },
-  {
-    "id": "965f1d1c-8fc9-460f-a806-9779b5f61a1a",
-    "lastKnownName": "Mary Jane's Last Dance - Am",
-    "time": 12570.5,
-    "stop": true,
-    "tags": [
-      "vocals:Tom"
     ]
   },
   {
@@ -61,23 +62,30 @@
     ]
   },
   {
-    "id": "cc424727-eb2f-42f0-8ecf-3707a958d9dc",
-    "lastKnownName": "Juice - Dm",
-    "time": 26825.170521665834,
+    "id": "25a4b300-664f-4072-bedb-b17e277426e4",
+    "lastKnownName": "Espresso - Cm",
+    "time": 6564.5,
     "stop": true,
     "tags": [
-      "vocals:David",
-      "capo:3"
+      "vocals:Kelsey"
     ]
   },
   {
-    "id": "7b583910-85ae-4d87-89ae-3840bd237be7",
-    "lastKnownName": "Mash_About Damn Time/ Superstition",
-    "time": 23680,
+    "id": "907c7c94-0bbc-4810-83d8-1882eedac1f0",
+    "lastKnownName": "About Damn Time - Ebm",
+    "time": 26112,
     "stop": true,
     "tags": [
-      "vocals:David",
-      "eflat:true"
+      "vocals:Kelsey"
+    ]
+  },
+  {
+    "id": "5d6f75f3-f8ca-4063-a1d1-63d27063df8e",
+    "lastKnownName": "Superstition - Ebm",
+    "time": 18286,
+    "stop": true,
+    "tags": [
+      "vocals:David"
     ]
   },
   {
@@ -123,16 +131,6 @@
     "stop": true,
     "tags": [
       "vocals:David"
-    ]
-  },
-  {
-    "id": "d71012c3-9e40-44c6-8b25-540056b77e16",
-    "lastKnownName": "Sweetness - F",
-    "time": 34176,
-    "stop": true,
-    "tags": [
-      "vocals:Tom",
-      "drop:true"
     ]
   },
   {
@@ -187,6 +185,15 @@
     ]
   },
   {
+    "id": "416d0320-28ed-473d-9eae-0dbb670f6890",
+    "lastKnownName": "Before He Cheats - F#m",
+    "time": 2518.4,
+    "tags": [
+      "vocals:Kelsey"
+    ],
+    "stop": true
+  },
+  {
     "id": "a4c0e95c-cb3f-4498-a0a8-bda8f5153ff6",
     "lastKnownName": "Friends In Low Places - A",
     "time": 7727,
@@ -205,14 +212,13 @@
     ]
   },
   {
-    "id": "471b1d37-d453-48a2-bc10-d6adc7b1bd6e",
-    "lastKnownName": "MmmBop - A",
-    "time": 30129.875,
-    "stop": true,
+    "id": "ddbd8ec4-0eac-4781-a179-69d24fc00687",
+    "lastKnownName": "Valerie - Amy - Eb",
+    "time": 20885.75,
     "tags": [
-      "vocals:David",
-      "capo:2"
-    ]
+      "vocals:Kelsey"
+    ],
+    "stop": true
   },
   {
     "id": "ce22043b-9ef0-4074-bdc9-8ca10f8f3dcb",
@@ -257,16 +263,7 @@
     "time": 21808.75,
     "stop": true,
     "tags": [
-      "vocals:David"
-    ]
-  },
-  {
-    "id": "5ed4435c-5477-4081-aa08-ba521767b05a",
-    "lastKnownName": "Interstate Love Song",
-    "time": 34496,
-    "stop": true,
-    "tags": [
-      "vocals:Tom"
+      "vocals:Kelsey"
     ]
   },
   {
@@ -278,6 +275,16 @@
       "vocals:David",
       "eflat:true",
       "drop:true"
+    ]
+  },
+  {
+    "id": "e67050c5-da6a-4a96-a5f6-e73ac7d1b306",
+    "lastKnownName": "Tispsy - F#m",
+    "time": 19859.25,
+    "stop": true,
+    "tags": [
+      "vocals:David",
+      "capo:2"
     ]
   },
   {
@@ -297,40 +304,12 @@
     "stop": true
   },
   {
-    "id": "271d96ba-581e-4d9d-b478-8353d7652a4c",
-    "lastKnownName": "Wish I Knew You - Cm",
-    "time": 22160.25,
+    "id": "c281bcf8-df34-429d-a66c-4b47fa839bc9",
+    "lastKnownName": "Country Girl - Em",
+    "time": 4247.0078125,
     "stop": true,
     "tags": [
       "vocals:David"
-    ]
-  },
-  {
-    "id": "4127737c-bda0-4615-849a-5f4c323ec25a",
-    "lastKnownName": "Brown Eyed Lover - G#m",
-    "time": 3301.53125,
-    "stop": true,
-    "tags": [
-      "vocals:David"
-    ]
-  },
-  {
-    "id": "e67050c5-da6a-4a96-a5f6-e73ac7d1b306",
-    "lastKnownName": "Tispsy - F#m",
-    "time": 19859.25,
-    "stop": true,
-    "tags": [
-      "vocals:David",
-      "capo:2"
-    ]
-  },
-  {
-    "id": "2c7d98f6-e0a3-43ce-9afe-f79a023da388",
-    "lastKnownName": "Aeroplane - Gm",
-    "time": 33858.08855441434,
-    "stop": true,
-    "tags": [
-      "vocals:Tom"
     ]
   },
   {
@@ -339,25 +318,7 @@
     "time": 7339.75,
     "stop": true,
     "tags": [
-      "vocals:David"
-    ]
-  },
-  {
-    "id": "941d1e8c-b712-49aa-b2ee-d859d2da07c4",
-    "lastKnownName": "Sparks Fly - F",
-    "time": 17764,
-    "stop": true,
-    "tags": [
-      "vocals:Tom"
-    ]
-  },
-  {
-    "id": "1ebfe064-a7aa-470e-b83a-f0c17efa9fb1",
-    "lastKnownName": "Pink Pony Club - Gb",
-    "time": 14476.5,
-    "stop": true,
-    "tags": [
-      "vocals:David"
+      "vocals:Kelsey"
     ]
   },
   {
@@ -371,12 +332,30 @@
     ]
   },
   {
+    "id": "1ebfe064-a7aa-470e-b83a-f0c17efa9fb1",
+    "lastKnownName": "Pink Pony Club - Gb",
+    "time": 14476.5,
+    "stop": true,
+    "tags": [
+      "vocals:Kelsey"
+    ]
+  },
+  {
     "id": "61d7e0be-6f48-4793-a74a-554ca9366e25",
     "lastKnownName": "Pony - C#m",
     "time": 15586,
     "stop": true,
     "tags": [
       "vocals:David"
+    ]
+  },
+  {
+    "id": "efa89d00-d55d-4a13-9ab8-ded3c18409ec",
+    "lastKnownName": "Toxic - Cm",
+    "time": 28616.76757825508,
+    "stop": true,
+    "tags": [
+      "vocals:Kelsey"
     ]
   },
   {
@@ -390,12 +369,12 @@
     ]
   },
   {
-    "id": "c281bcf8-df34-429d-a66c-4b47fa839bc9",
-    "lastKnownName": "Country Girl - Em",
-    "time": 4247.0078125,
+    "id": "b93e6177-fe8f-4694-b10c-12ac0582dc90",
+    "lastKnownName": "I Wanna Dance With Somebody - Gb - Ab",
+    "time": 9710.75,
     "stop": true,
     "tags": [
-      "vocals:David"
+      "vocals:Kelsey"
     ]
   },
   {
@@ -406,6 +385,15 @@
     "tags": [
       "vocals:David"
     ]
+  },
+  {
+    "id": "6a51803a-77d6-46c9-87c8-ec23c7da6f21",
+    "lastKnownName": "Don't Start Now - Bm",
+    "time": 4703.21875,
+    "tags": [
+      "vocals:Kelsey"
+    ],
+    "stop": true
   },
   {
     "id": "7222eeed-6f9a-4216-9ae3-88c058dafd90",
