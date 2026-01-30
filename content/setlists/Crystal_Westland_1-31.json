@@ -154,6 +154,15 @@
     ]
   },
   {
+    "id": "5d6f75f3-f8ca-4063-a1d1-63d27063df8e",
+    "lastKnownName": "Superstition - Ebm",
+    "time": 18286,
+    "stop": true,
+    "tags": [
+      "vocals:David"
+    ]
+  },
+  {
     "id": "64325fc7-c793-4bb5-8a23-05f323ca7016",
     "lastKnownName": "Set 2",
     "time": 23296,
@@ -474,6 +483,17 @@
     ]
   },
   {
+    "id": "615fc292-fb59-4f7d-b63b-8078c31cb3be",
+    "lastKnownName": "Beer Never Broke My Heart - Db",
+    "time": 2140,
+    "tags": [
+      "vocals:David",
+      "eflat:true",
+      "drop:true"
+    ],
+    "stop": true
+  },
+  {
     "id": "7222eeed-6f9a-4216-9ae3-88c058dafd90",
     "lastKnownName": "Mr. Brightside - Db",
     "time": 13142,
@@ -489,7 +509,7 @@
     "time": 5069.625,
     "stop": true,
     "tags": [
-      "vocals:David"
+      "vocals:Kelsey"
     ]
   }
 ]
