@@ -1,5 +1,24 @@
 [
   {
+    "id": "b0d5943f-3441-453b-9f49-8429bb96ed18",
+    "date": "5/30/2026",
+    "venue": "Original Gravity Brewing",
+    "city": "Milan",
+    "state": "MI",
+    "startTime": "4:00 PM",
+    "endTime": "7:00 PM",
+    "isPrivate": false,
+    "published": true,
+    "clientId": "b3c4d5e6-6f7a-4b8c-0d9e-3f4a5b6c7d8e",
+    "personnel": [
+      "Anthony",
+      "Tom",
+      "Lester",
+      "David"
+    ],
+    "payout": 400
+  },
+  {
     "id": "42290035-86a2-4848-8b3a-e7c91c259684",
     "date": "1/31/2026",
     "venue": "Crystal Bar & Grille",
