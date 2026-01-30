@@ -293,27 +293,17 @@
     "id": "615fc292-fb59-4f7d-b63b-8078c31cb3be",
     "lastKnownName": "Beer Never Broke My Heart - Db",
     "time": 2140,
+    "stop": true,
     "tags": [
       "vocals:David",
       "eflat:true",
       "drop:true"
-    ],
-    "stop": true
+    ]
   },
   {
     "id": "14c66e20-c786-4f99-89ee-e0a3c410e193",
     "lastKnownName": "I Want It That Way - F#m - B",
     "time": 10310,
-    "stop": true,
-    "tags": [
-      "vocals:David",
-      "capo:2"
-    ]
-  },
-  {
-    "id": "471b1d37-d453-48a2-bc10-d6adc7b1bd6e",
-    "lastKnownName": "MmmBop - A",
-    "time": 30129.875,
     "stop": true,
     "tags": [
       "vocals:David",
