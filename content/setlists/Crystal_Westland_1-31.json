@@ -60,15 +60,6 @@
     ]
   },
   {
-    "id": "2c7d98f6-e0a3-43ce-9afe-f79a023da388",
-    "lastKnownName": "Aeroplane - Gm",
-    "time": 33858.08855441434,
-    "stop": true,
-    "tags": [
-      "vocals:Tom"
-    ]
-  },
-  {
     "id": "2c1f79d0-0349-48ad-8efe-390b08504946",
     "lastKnownName": "Neon Moon - A",
     "time": 13978.25,
@@ -96,6 +87,24 @@
     ]
   },
   {
+    "id": "30f571a1-e991-41a5-8022-cb41ed48e6b3",
+    "lastKnownName": "As Good As I Once Was - F",
+    "time": 1678,
+    "stop": true,
+    "tags": [
+      "vocals:David"
+    ]
+  },
+  {
+    "id": "271d96ba-581e-4d9d-b478-8353d7652a4c",
+    "lastKnownName": "Wish I Knew You - Cm",
+    "time": 22160.25,
+    "stop": true,
+    "tags": [
+      "vocals:David"
+    ]
+  },
+  {
     "id": "ddbd8ec4-0eac-4781-a179-69d24fc00687",
     "lastKnownName": "Valerie - Amy - Eb",
     "time": 20885.75,
@@ -116,25 +125,6 @@
     ]
   },
   {
-    "id": "6cdd82e7-ec98-4f95-81a4-d556184229ec",
-    "lastKnownName": "Redneck Woman - F#m",
-    "time": 16052.4140625,
-    "stop": true,
-    "tags": [
-      "vocals:Kelsey"
-    ]
-  },
-  {
-    "id": "9ca155d3-b9e9-4bad-a47c-025dd73f0c77",
-    "lastKnownName": "Man! I Feel Like A Woman - Bb",
-    "time": 12095.25,
-    "stop": true,
-    "tags": [
-      "vocals:Kelsey",
-      "capo:1"
-    ]
-  },
-  {
     "id": "c3ad1ea8-05ae-4f95-86f9-fbcf75570899",
     "lastKnownName": "Isn't She Lovely - E",
     "time": 10745.9375,
@@ -144,12 +134,21 @@
     ]
   },
   {
-    "id": "40a28db7-bd47-4424-b675-e94f71783996",
-    "lastKnownName": "I Feel It Coming - Eb",
-    "time": 8828.375,
+    "id": "6cdd82e7-ec98-4f95-81a4-d556184229ec",
+    "lastKnownName": "Redneck Woman - F#m",
+    "time": 16052.4140625,
     "stop": true,
     "tags": [
-      "vocals:David"
+      "vocals:Kelsey"
+    ]
+  },
+  {
+    "id": "2c7d98f6-e0a3-43ce-9afe-f79a023da388",
+    "lastKnownName": "Aeroplane - Gm",
+    "time": 33858.08855441434,
+    "stop": true,
+    "tags": [
+      "vocals:Tom"
     ]
   },
   {
@@ -189,9 +188,9 @@
     ]
   },
   {
-    "id": "271d96ba-581e-4d9d-b478-8353d7652a4c",
-    "lastKnownName": "Wish I Knew You - Cm",
-    "time": 22160.25,
+    "id": "40a28db7-bd47-4424-b675-e94f71783996",
+    "lastKnownName": "I Feel It Coming - Eb",
+    "time": 8828.375,
     "stop": true,
     "tags": [
       "vocals:David"
@@ -204,15 +203,6 @@
     "stop": true,
     "tags": [
       "vocals:Kelsey"
-    ]
-  },
-  {
-    "id": "5b0bc018-491e-4562-b52f-ab8a76eb43d0",
-    "lastKnownName": "The Way You Make Me Feel - F",
-    "time": 19372,
-    "stop": true,
-    "tags": [
-      "vocals:David"
     ]
   },
   {
@@ -236,36 +226,9 @@
     ]
   },
   {
-    "id": "06e4d108-33e7-413d-a721-e4584df709e4",
-    "lastKnownName": "Tennessee Whiskey - A",
-    "time": 18787.75,
-    "stop": true,
-    "tags": [
-      "vocals:David"
-    ]
-  },
-  {
-    "id": "f4a2b1db-2dea-42a8-be40-61b6e30431fc",
-    "lastKnownName": "December 1963 - Db",
-    "time": 29021.7890625,
-    "stop": true,
-    "tags": [
-      "vocals:Kelsey"
-    ]
-  },
-  {
-    "id": "6911bbe3-ba25-4af7-97f4-37e184cd63ef",
-    "lastKnownName": "Play That Funky Music - E",
-    "time": 24549.71875,
-    "stop": true,
-    "tags": [
-      "vocals:David"
-    ]
-  },
-  {
-    "id": "30f571a1-e991-41a5-8022-cb41ed48e6b3",
-    "lastKnownName": "As Good As I Once Was - F",
-    "time": 1678,
+    "id": "5eaa51fc-e874-4bf5-a0da-12e22a8ddfd9",
+    "lastKnownName": "I Had Some Help - C",
+    "time": 9352,
     "stop": true,
     "tags": [
       "vocals:David"
@@ -292,9 +255,19 @@
     ]
   },
   {
-    "id": "5eaa51fc-e874-4bf5-a0da-12e22a8ddfd9",
-    "lastKnownName": "I Had Some Help - C",
-    "time": 9352,
+    "id": "14c66e20-c786-4f99-89ee-e0a3c410e193",
+    "lastKnownName": "I Want It That Way - F#m - B",
+    "time": 10310,
+    "stop": true,
+    "tags": [
+      "vocals:David",
+      "capo:2"
+    ]
+  },
+  {
+    "id": "5b0bc018-491e-4562-b52f-ab8a76eb43d0",
+    "lastKnownName": "The Way You Make Me Feel - F",
+    "time": 19372,
     "stop": true,
     "tags": [
       "vocals:David"
@@ -310,13 +283,40 @@
     ]
   },
   {
-    "id": "14c66e20-c786-4f99-89ee-e0a3c410e193",
-    "lastKnownName": "I Want It That Way - F#m - B",
-    "time": 10310,
+    "id": "06e4d108-33e7-413d-a721-e4584df709e4",
+    "lastKnownName": "Tennessee Whiskey - A",
+    "time": 18787.75,
     "stop": true,
     "tags": [
-      "vocals:David",
-      "capo:2"
+      "vocals:David"
+    ]
+  },
+  {
+    "id": "f4a2b1db-2dea-42a8-be40-61b6e30431fc",
+    "lastKnownName": "December 1963 - Db",
+    "time": 29021.7890625,
+    "stop": true,
+    "tags": [
+      "vocals:Kelsey"
+    ]
+  },
+  {
+    "id": "9ca155d3-b9e9-4bad-a47c-025dd73f0c77",
+    "lastKnownName": "Man! I Feel Like A Woman - Bb",
+    "time": 12095.25,
+    "stop": true,
+    "tags": [
+      "vocals:Kelsey",
+      "capo:1"
+    ]
+  },
+  {
+    "id": "6911bbe3-ba25-4af7-97f4-37e184cd63ef",
+    "lastKnownName": "Play That Funky Music - E",
+    "time": 24549.71875,
+    "stop": true,
+    "tags": [
+      "vocals:David"
     ]
   },
   {
