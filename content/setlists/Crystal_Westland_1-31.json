@@ -320,6 +320,15 @@
     ]
   },
   {
+    "id": "d71012c3-9e40-44c6-8b25-540056b77e16",
+    "lastKnownName": "Sweetness - F",
+    "time": 34176,
+    "stop": true,
+    "tags": [
+      "vocals:Tom"
+    ]
+  },
+  {
     "id": "61d7e0be-6f48-4793-a74a-554ca9366e25",
     "lastKnownName": "Pony - C#m",
     "time": 15586,
@@ -429,13 +438,10 @@
     ]
   },
   {
-    "id": "d71012c3-9e40-44c6-8b25-540056b77e16",
-    "lastKnownName": "Sweetness - F",
-    "time": 34176,
-    "stop": true,
-    "tags": [
-      "vocals:Tom"
-    ]
+    "id": "9c48153b-2827-4c5f-8988-b334f882b2e2",
+    "lastKnownName": "My Own Worst Enemy - E",
+    "time": 34656,
+    "stop": true
   },
   {
     "id": "93a84c41-44d8-4670-8709-0da3d84edce0",
