@@ -134,6 +134,15 @@
     ]
   },
   {
+    "id": "5eaa51fc-e874-4bf5-a0da-12e22a8ddfd9",
+    "lastKnownName": "I Had Some Help - C",
+    "time": 9352,
+    "stop": true,
+    "tags": [
+      "vocals:David"
+    ]
+  },
+  {
     "id": "6cdd82e7-ec98-4f95-81a4-d556184229ec",
     "lastKnownName": "Redneck Woman - F#m",
     "time": 16052.4140625,
@@ -223,15 +232,6 @@
     "tags": [
       "vocals:David",
       "capo:2"
-    ]
-  },
-  {
-    "id": "5eaa51fc-e874-4bf5-a0da-12e22a8ddfd9",
-    "lastKnownName": "I Had Some Help - C",
-    "time": 9352,
-    "stop": true,
-    "tags": [
-      "vocals:David"
     ]
   },
   {
