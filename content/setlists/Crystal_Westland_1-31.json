@@ -116,6 +116,15 @@
     ]
   },
   {
+    "id": "6cdd82e7-ec98-4f95-81a4-d556184229ec",
+    "lastKnownName": "Redneck Woman - F#m",
+    "time": 16052.4140625,
+    "stop": true,
+    "tags": [
+      "vocals:Kelsey"
+    ]
+  },
+  {
     "id": "9ca155d3-b9e9-4bad-a47c-025dd73f0c77",
     "lastKnownName": "Man! I Feel Like A Woman - Bb",
     "time": 12095.25,
@@ -141,16 +150,6 @@
     "stop": true,
     "tags": [
       "vocals:David"
-    ]
-  },
-  {
-    "id": "7b583910-85ae-4d87-89ae-3840bd237be7",
-    "lastKnownName": "Mash_About Damn Time/ Superstition",
-    "time": 23680,
-    "stop": true,
-    "tags": [
-      "vocals:Kelsey",
-      "eflat:true"
     ]
   },
   {
@@ -224,30 +223,21 @@
     ]
   },
   {
+    "id": "4127737c-bda0-4615-849a-5f4c323ec25a",
+    "lastKnownName": "Brown Eyed Lover - G#m",
+    "time": 3301.53125,
+    "stop": true,
+    "tags": [
+      "vocals:David"
+    ]
+  },
+  {
     "id": "06e4d108-33e7-413d-a721-e4584df709e4",
     "lastKnownName": "Tennessee Whiskey - A",
     "time": 18787.75,
     "stop": true,
     "tags": [
       "vocals:David"
-    ]
-  },
-  {
-    "id": "a4c0e95c-cb3f-4498-a0a8-bda8f5153ff6",
-    "lastKnownName": "Friends In Low Places - A",
-    "time": 7727,
-    "stop": true,
-    "tags": [
-      "vocals:David"
-    ]
-  },
-  {
-    "id": "6cdd82e7-ec98-4f95-81a4-d556184229ec",
-    "lastKnownName": "Redneck Woman - F#m",
-    "time": 16052.4140625,
-    "stop": true,
-    "tags": [
-      "vocals:Kelsey"
     ]
   },
   {
@@ -270,6 +260,16 @@
     ]
   },
   {
+    "id": "7b583910-85ae-4d87-89ae-3840bd237be7",
+    "lastKnownName": "Mash_About Damn Time/ Superstition",
+    "time": 23680,
+    "stop": true,
+    "tags": [
+      "vocals:Kelsey",
+      "eflat:true"
+    ]
+  },
+  {
     "id": "ce22043b-9ef0-4074-bdc9-8ca10f8f3dcb",
     "lastKnownName": "Need A Favor - G#m",
     "time": 13588.203125,
@@ -280,13 +280,32 @@
     ]
   },
   {
-    "id": "e67050c5-da6a-4a96-a5f6-e73ac7d1b306",
-    "lastKnownName": "Tispsy - F#m",
-    "time": 19859.25,
+    "id": "1ebfe064-a7aa-470e-b83a-f0c17efa9fb1",
+    "lastKnownName": "Pink Pony Club - Gb",
+    "time": 14476.5,
+    "stop": true,
+    "tags": [
+      "vocals:Kelsey"
+    ]
+  },
+  {
+    "id": "615fc292-fb59-4f7d-b63b-8078c31cb3be",
+    "lastKnownName": "Beer Never Broke My Heart - Db",
+    "time": 2140,
     "stop": true,
     "tags": [
       "vocals:David",
-      "capo:2"
+      "eflat:true",
+      "drop:true"
+    ]
+  },
+  {
+    "id": "27fe4d86-bebb-4d8f-b349-7ef88bba027d",
+    "lastKnownName": "Lose Control",
+    "time": 11577,
+    "stop": true,
+    "tags": [
+      "vocals:Kelsey"
     ]
   },
   {
@@ -297,25 +316,6 @@
     "tags": [
       "vocals:David",
       "capo:2"
-    ]
-  },
-  {
-    "id": "471b1d37-d453-48a2-bc10-d6adc7b1bd6e",
-    "lastKnownName": "MmmBop - A",
-    "time": 30129.875,
-    "stop": true,
-    "tags": [
-      "vocals:David",
-      "capo:2"
-    ]
-  },
-  {
-    "id": "27fe4d86-bebb-4d8f-b349-7ef88bba027d",
-    "lastKnownName": "Lose Control",
-    "time": 11577,
-    "stop": true,
-    "tags": [
-      "vocals:Kelsey"
     ]
   },
   {
@@ -343,9 +343,9 @@
     ]
   },
   {
-    "id": "b93e6177-fe8f-4694-b10c-12ac0582dc90",
-    "lastKnownName": "I Wanna Dance With Somebody - Gb - Ab",
-    "time": 9710.75,
+    "id": "25a4b300-664f-4072-bedb-b17e277426e4",
+    "lastKnownName": "Espresso - Cm",
+    "time": 6564.5,
     "stop": true,
     "tags": [
       "vocals:Kelsey"
@@ -362,18 +362,18 @@
     ]
   },
   {
-    "id": "1ebfe064-a7aa-470e-b83a-f0c17efa9fb1",
-    "lastKnownName": "Pink Pony Club - Gb",
-    "time": 14476.5,
+    "id": "efa89d00-d55d-4a13-9ab8-ded3c18409ec",
+    "lastKnownName": "Toxic - Cm",
+    "time": 28616.76757825508,
     "stop": true,
     "tags": [
       "vocals:Kelsey"
     ]
   },
   {
-    "id": "4127737c-bda0-4615-849a-5f4c323ec25a",
-    "lastKnownName": "Brown Eyed Lover - G#m",
-    "time": 3301.53125,
+    "id": "a4c0e95c-cb3f-4498-a0a8-bda8f5153ff6",
+    "lastKnownName": "Friends In Low Places - A",
+    "time": 7727,
     "stop": true,
     "tags": [
       "vocals:David"
@@ -390,30 +390,32 @@
     ]
   },
   {
-    "id": "25a4b300-664f-4072-bedb-b17e277426e4",
-    "lastKnownName": "Espresso - Cm",
-    "time": 6564.5,
+    "id": "e67050c5-da6a-4a96-a5f6-e73ac7d1b306",
+    "lastKnownName": "Tispsy - F#m",
+    "time": 19859.25,
+    "stop": true,
+    "tags": [
+      "vocals:David",
+      "capo:2"
+    ]
+  },
+  {
+    "id": "32962ca3-c7c5-4bae-8279-64d0e5a95a4b",
+    "lastKnownName": "Ain't It Fun - C#m",
+    "time": 412,
     "stop": true,
     "tags": [
       "vocals:Kelsey"
     ]
   },
   {
-    "id": "93a84c41-44d8-4670-8709-0da3d84edce0",
-    "lastKnownName": "Uptown Funk - Dm",
-    "time": 30933.612438603064,
+    "id": "5637f222-46fc-404b-9e36-87ce21337f55",
+    "lastKnownName": "Higher - D",
+    "time": 8236.125,
     "stop": true,
     "tags": [
-      "vocals:David"
-    ]
-  },
-  {
-    "id": "efa89d00-d55d-4a13-9ab8-ded3c18409ec",
-    "lastKnownName": "Toxic - Cm",
-    "time": 28616.76757825508,
-    "stop": true,
-    "tags": [
-      "vocals:Kelsey"
+      "vocals:David",
+      "drop:true"
     ]
   },
   {
@@ -426,9 +428,18 @@
     ]
   },
   {
-    "id": "32962ca3-c7c5-4bae-8279-64d0e5a95a4b",
-    "lastKnownName": "Ain't It Fun - C#m",
-    "time": 412,
+    "id": "93a84c41-44d8-4670-8709-0da3d84edce0",
+    "lastKnownName": "Uptown Funk - Dm",
+    "time": 30933.612438603064,
+    "stop": true,
+    "tags": [
+      "vocals:David"
+    ]
+  },
+  {
+    "id": "b93e6177-fe8f-4694-b10c-12ac0582dc90",
+    "lastKnownName": "I Wanna Dance With Somebody - Gb - Ab",
+    "time": 9710.75,
     "stop": true,
     "tags": [
       "vocals:Kelsey"
@@ -454,15 +465,6 @@
     ]
   },
   {
-    "id": "a74e15b5-a08b-44a7-9922-9e051fec8e76",
-    "lastKnownName": "Shut Up And Dance With Me - Db",
-    "time": 16891,
-    "stop": true,
-    "tags": [
-      "vocals:David"
-    ]
-  },
-  {
     "id": "cc424727-eb2f-42f0-8ecf-3707a958d9dc",
     "lastKnownName": "Juice - Dm",
     "time": 26825.170521665834,
@@ -473,25 +475,13 @@
     ]
   },
   {
-    "id": "5637f222-46fc-404b-9e36-87ce21337f55",
-    "lastKnownName": "Higher - D",
-    "time": 8236.125,
+    "id": "a74e15b5-a08b-44a7-9922-9e051fec8e76",
+    "lastKnownName": "Shut Up And Dance With Me - Db",
+    "time": 16891,
     "stop": true,
     "tags": [
-      "vocals:David",
-      "drop:true"
+      "vocals:David"
     ]
-  },
-  {
-    "id": "615fc292-fb59-4f7d-b63b-8078c31cb3be",
-    "lastKnownName": "Beer Never Broke My Heart - Db",
-    "time": 2140,
-    "tags": [
-      "vocals:David",
-      "eflat:true",
-      "drop:true"
-    ],
-    "stop": true
   },
   {
     "id": "7222eeed-6f9a-4216-9ae3-88c058dafd90",
