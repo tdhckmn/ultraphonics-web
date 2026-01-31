@@ -33,12 +33,21 @@
     ]
   },
   {
-    "id": "2c7d98f6-e0a3-43ce-9afe-f79a023da388",
-    "lastKnownName": "Aeroplane - Gm",
-    "time": 33858.08855441434,
+    "id": "5ed4435c-5477-4081-aa08-ba521767b05a",
+    "lastKnownName": "Interstate Love Song",
+    "time": 34496,
     "stop": true,
     "tags": [
       "vocals:Tom"
+    ]
+  },
+  {
+    "id": "ea941ca6-2a47-48b0-a067-219b8855d757",
+    "lastKnownName": "Ain't No Sunshine - Am",
+    "time": 950.5,
+    "stop": true,
+    "tags": [
+      "vocals:David"
     ]
   },
   {
@@ -48,6 +57,15 @@
     "stop": true,
     "tags": [
       "vocals:Kelsey"
+    ]
+  },
+  {
+    "id": "2c7d98f6-e0a3-43ce-9afe-f79a023da388",
+    "lastKnownName": "Aeroplane - Gm",
+    "time": 33858.08855441434,
+    "stop": true,
+    "tags": [
+      "vocals:Tom"
     ]
   },
   {
@@ -98,24 +116,6 @@
     ]
   },
   {
-    "id": "5ed4435c-5477-4081-aa08-ba521767b05a",
-    "lastKnownName": "Interstate Love Song",
-    "time": 34496,
-    "stop": true,
-    "tags": [
-      "vocals:Tom"
-    ]
-  },
-  {
-    "id": "ea941ca6-2a47-48b0-a067-219b8855d757",
-    "lastKnownName": "Ain't No Sunshine - Am",
-    "time": 950.5,
-    "stop": true,
-    "tags": [
-      "vocals:David"
-    ]
-  },
-  {
     "id": "6cdd82e7-ec98-4f95-81a4-d556184229ec",
     "lastKnownName": "Redneck Woman - F#m",
     "time": 16052.4140625,
@@ -153,9 +153,9 @@
     ]
   },
   {
-    "id": "5d6f75f3-f8ca-4063-a1d1-63d27063df8e",
-    "lastKnownName": "Superstition - Ebm",
-    "time": 18286,
+    "id": "4127737c-bda0-4615-849a-5f4c323ec25a",
+    "lastKnownName": "Brown Eyed Lover - G#m",
+    "time": 3301.53125,
     "stop": true,
     "tags": [
       "vocals:David"
@@ -168,21 +168,24 @@
     "stop": true
   },
   {
-    "id": "6911bbe3-ba25-4af7-97f4-37e184cd63ef",
-    "lastKnownName": "Play That Funky Music - E",
-    "time": 24549.71875,
+    "id": "cc424727-eb2f-42f0-8ecf-3707a958d9dc",
+    "lastKnownName": "Juice - Dm",
+    "time": 26825.170521665834,
     "stop": true,
     "tags": [
-      "vocals:David"
+      "vocals:Kelsey",
+      "capo:3"
     ]
   },
   {
-    "id": "f4a2b1db-2dea-42a8-be40-61b6e30431fc",
-    "lastKnownName": "December 1963 - Db",
-    "time": 29021.7890625,
+    "id": "615fc292-fb59-4f7d-b63b-8078c31cb3be",
+    "lastKnownName": "Beer Never Broke My Heart - Db",
+    "time": 2140,
     "stop": true,
     "tags": [
-      "vocals:Kelsey"
+      "vocals:David",
+      "eflat:true",
+      "drop:true"
     ]
   },
   {
@@ -195,18 +198,18 @@
     ]
   },
   {
-    "id": "5b0bc018-491e-4562-b52f-ab8a76eb43d0",
-    "lastKnownName": "The Way You Make Me Feel - F",
-    "time": 19372,
+    "id": "27fe4d86-bebb-4d8f-b349-7ef88bba027d",
+    "lastKnownName": "Lose Control",
+    "time": 11577,
     "stop": true,
     "tags": [
-      "vocals:David"
+      "vocals:Kelsey"
     ]
   },
   {
-    "id": "5eaa51fc-e874-4bf5-a0da-12e22a8ddfd9",
-    "lastKnownName": "I Had Some Help - C",
-    "time": 9352,
+    "id": "5b0bc018-491e-4562-b52f-ab8a76eb43d0",
+    "lastKnownName": "The Way You Make Me Feel - F",
+    "time": 19372,
     "stop": true,
     "tags": [
       "vocals:David"
@@ -223,18 +226,37 @@
     ]
   },
   {
-    "id": "4127737c-bda0-4615-849a-5f4c323ec25a",
-    "lastKnownName": "Brown Eyed Lover - G#m",
-    "time": 3301.53125,
+    "id": "ce22043b-9ef0-4074-bdc9-8ca10f8f3dcb",
+    "lastKnownName": "Need A Favor - G#m",
+    "time": 13588.203125,
     "stop": true,
     "tags": [
-      "vocals:David"
+      "vocals:David",
+      "capo:2"
     ]
   },
   {
     "id": "06e4d108-33e7-413d-a721-e4584df709e4",
     "lastKnownName": "Tennessee Whiskey - A",
     "time": 18787.75,
+    "stop": true,
+    "tags": [
+      "vocals:David"
+    ]
+  },
+  {
+    "id": "f4a2b1db-2dea-42a8-be40-61b6e30431fc",
+    "lastKnownName": "December 1963 - Db",
+    "time": 29021.7890625,
+    "stop": true,
+    "tags": [
+      "vocals:Kelsey"
+    ]
+  },
+  {
+    "id": "6911bbe3-ba25-4af7-97f4-37e184cd63ef",
+    "lastKnownName": "Play That Funky Music - E",
+    "time": 24549.71875,
     "stop": true,
     "tags": [
       "vocals:David"
@@ -270,39 +292,18 @@
     ]
   },
   {
-    "id": "ce22043b-9ef0-4074-bdc9-8ca10f8f3dcb",
-    "lastKnownName": "Need A Favor - G#m",
-    "time": 13588.203125,
+    "id": "5eaa51fc-e874-4bf5-a0da-12e22a8ddfd9",
+    "lastKnownName": "I Had Some Help - C",
+    "time": 9352,
     "stop": true,
     "tags": [
-      "vocals:David",
-      "capo:2"
+      "vocals:David"
     ]
   },
   {
     "id": "1ebfe064-a7aa-470e-b83a-f0c17efa9fb1",
     "lastKnownName": "Pink Pony Club - Gb",
     "time": 14476.5,
-    "stop": true,
-    "tags": [
-      "vocals:Kelsey"
-    ]
-  },
-  {
-    "id": "615fc292-fb59-4f7d-b63b-8078c31cb3be",
-    "lastKnownName": "Beer Never Broke My Heart - Db",
-    "time": 2140,
-    "stop": true,
-    "tags": [
-      "vocals:David",
-      "eflat:true",
-      "drop:true"
-    ]
-  },
-  {
-    "id": "27fe4d86-bebb-4d8f-b349-7ef88bba027d",
-    "lastKnownName": "Lose Control",
-    "time": 11577,
     "stop": true,
     "tags": [
       "vocals:Kelsey"
@@ -371,12 +372,13 @@
     ]
   },
   {
-    "id": "a4c0e95c-cb3f-4498-a0a8-bda8f5153ff6",
-    "lastKnownName": "Friends In Low Places - A",
-    "time": 7727,
+    "id": "e67050c5-da6a-4a96-a5f6-e73ac7d1b306",
+    "lastKnownName": "Tispsy - F#m",
+    "time": 19859.25,
     "stop": true,
     "tags": [
-      "vocals:David"
+      "vocals:David",
+      "capo:2"
     ]
   },
   {
@@ -390,13 +392,22 @@
     ]
   },
   {
-    "id": "e67050c5-da6a-4a96-a5f6-e73ac7d1b306",
-    "lastKnownName": "Tispsy - F#m",
-    "time": 19859.25,
+    "id": "a4c0e95c-cb3f-4498-a0a8-bda8f5153ff6",
+    "lastKnownName": "Friends In Low Places - A",
+    "time": 7727,
+    "stop": true,
+    "tags": [
+      "vocals:David"
+    ]
+  },
+  {
+    "id": "5637f222-46fc-404b-9e36-87ce21337f55",
+    "lastKnownName": "Higher - D",
+    "time": 8236.125,
     "stop": true,
     "tags": [
       "vocals:David",
-      "capo:2"
+      "drop:true"
     ]
   },
   {
@@ -409,13 +420,12 @@
     ]
   },
   {
-    "id": "5637f222-46fc-404b-9e36-87ce21337f55",
-    "lastKnownName": "Higher - D",
-    "time": 8236.125,
+    "id": "c281bcf8-df34-429d-a66c-4b47fa839bc9",
+    "lastKnownName": "Country Girl - Em",
+    "time": 4247.0078125,
     "stop": true,
     "tags": [
-      "vocals:David",
-      "drop:true"
+      "vocals:David"
     ]
   },
   {
@@ -434,15 +444,6 @@
     "stop": true,
     "tags": [
       "vocals:David"
-    ]
-  },
-  {
-    "id": "b93e6177-fe8f-4694-b10c-12ac0582dc90",
-    "lastKnownName": "I Wanna Dance With Somebody - Gb - Ab",
-    "time": 9710.75,
-    "stop": true,
-    "tags": [
-      "vocals:Kelsey"
     ]
   },
   {
@@ -465,13 +466,12 @@
     ]
   },
   {
-    "id": "cc424727-eb2f-42f0-8ecf-3707a958d9dc",
-    "lastKnownName": "Juice - Dm",
-    "time": 26825.170521665834,
+    "id": "b93e6177-fe8f-4694-b10c-12ac0582dc90",
+    "lastKnownName": "I Wanna Dance With Somebody - Gb - Ab",
+    "time": 9710.75,
     "stop": true,
     "tags": [
-      "vocals:Kelsey",
-      "capo:3"
+      "vocals:Kelsey"
     ]
   },
   {
