@@ -1,0 +1,26 @@
+{
+  "name": "ultraphonics",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Ultraphonics Band Website",
+  "main": "index.js",
+  "scripts": {
+    "build": "esbuild src/firebase-bundle.js --bundle --outfile=dist/firebase-bundle.js --format=iife --global-name=UltraphonicsFirebase --minify",
+    "build:dev": "esbuild src/firebase-bundle.js --bundle --outfile=dist/firebase-bundle.js --format=iife --global-name=UltraphonicsFirebase --sourcemap",
+    "serve": "npm run build && npx firebase serve --only hosting",
+    "preview": "npm run build && npx firebase hosting:channel:deploy preview",
+    "deploy": "npm run build && npx firebase deploy --only hosting",
+    "deploy:rules": "npx firebase deploy --only firestore:rules",
+    "migrate": "node scripts/migrate-to-firestore.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "firebase": "^12.8.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.27.2",
+    "firebase-tools": "^15.5.1"
+  }
+}

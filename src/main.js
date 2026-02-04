@@ -1,33 +1,48 @@
 import { config } from '../content/config.js';
 import { trackEvent } from './analytics.js';
 import { initMailerLite } from './mailer-lite.js';
-import { 
-    setupCommonElements, 
-    parseLocalDateOnly, 
-    parseTimeToHM, 
-    dateToIsoWithLocalTz, 
-    toIsoWithTz, 
-    firstUrl, 
-    formatCityState 
+import {
+    setupCommonElements,
+    parseLocalDateOnly,
+    parseTimeToHM,
+    dateToIsoWithLocalTz,
+    toIsoWithTz,
+    firstUrl,
+    formatCityState
 } from './utils.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
   // 1. Setup Navigation, Analytics, Footer
-  setupCommonElements('home'); 
+  setupCommonElements('home');
 
   // 2. Setup MailerLite
   initMailerLite();
 
   // --- Home Page Specific Logic ---
-  
+
   let shows = [];
   try {
-    const response = await fetch(`content/shows.json?v=${new Date().getTime()}`);
-    if (response.ok) {
-      shows = await response.json();
+    // Try to fetch from Firestore via the global FirestoreService (if bundle is loaded)
+    if (window.FirestoreService) {
+      shows = await window.FirestoreService.getPublishedShows();
+    } else {
+      // Fallback to static JSON
+      const response = await fetch(`content/shows.json?v=${new Date().getTime()}`);
+      if (response.ok) {
+        shows = (await response.json()).filter(s => s.published);
+      }
     }
   } catch (error) {
-    console.error(error);
+    console.error('Error loading shows:', error);
+    // Fallback to static JSON if Firestore fails
+    try {
+      const response = await fetch(`content/shows.json?v=${new Date().getTime()}`);
+      if (response.ok) {
+        shows = (await response.json()).filter(s => s.published);
+      }
+    } catch (fallbackError) {
+      console.error('Fallback also failed:', fallbackError);
+    }
   }
 
   const { tipping, selectors, hero, services, links } = config;

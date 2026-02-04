@@ -1,108 +1,102 @@
 /**
  * Shared logic for Setlist Builder and Viewer
+ * Uses Firebase Firestore for data storage
  */
 
 const SHARED_CONFIG = {
-    masterUrl: '../content/Ultraphonics_V3.json',
-    defaultOwner: 'tdhckmn',
-    defaultRepo: 'ultraphonics-web',
-    defaultFolder: 'content/setlists'
+    masterUrl: '../content/Ultraphonics_V3.json'
 };
 
 // Global State wrapper
 window.AppState = {
-    config: {
-        owner: '',
-        repo: '',
-        token: '',
-        folder: ''
-    }
+    isAuthenticated: false
 };
 
 // --- CONFIGURATION ---
 
 function loadConfig() {
-    const saved = localStorage.getItem('up_gh_config');
-    if (saved) {
-        window.AppState.config = JSON.parse(saved);
-        updateConnectionStatus(true);
-        return true;
-    } else {
-        window.AppState.config.owner = SHARED_CONFIG.defaultOwner;
-        window.AppState.config.repo = SHARED_CONFIG.defaultRepo;
-        window.AppState.config.folder = SHARED_CONFIG.defaultFolder;
-        // Return true to allow Viewer to load with defaults (Public Mode)
-        updateConnectionStatus(false);
-        return true; 
+    // Check if Firebase is available and user is authenticated
+    if (window.FirebaseAuth) {
+        const user = window.FirebaseAuth.getCurrentUser();
+        window.AppState.isAuthenticated = !!user;
+    }
+    return true;
+}
+
+// --- FIRESTORE HELPERS ---
+
+async function fetchSetlistFiles() {
+    // Get setlists from Firestore
+    if (!window.FirestoreService) {
+        throw new Error("Firebase not loaded");
+    }
+
+    try {
+        const setlists = await window.FirestoreService.getSetlists();
+        // Transform to match expected format
+        return setlists.map(doc => ({
+            name: doc.id + '.json',
+            id: doc.id,
+            download_url: null // Will fetch directly from Firestore
+        }));
+    } catch (error) {
+        console.error('Error fetching setlists:', error);
+        throw new Error("Failed to load setlists");
     }
 }
 
-function saveSettingsFromUI(ownerId, repoId, tokenId, pathId, modalId) {
-    const owner = document.getElementById(ownerId).value.trim();
-    const repo = document.getElementById(repoId).value.trim();
-    const token = document.getElementById(tokenId).value.trim();
-    const folder = document.getElementById(pathId).value.trim();
-
-    window.AppState.config = { owner, repo, token, folder };
-    localStorage.setItem('up_gh_config', JSON.stringify(window.AppState.config));
-    
-    if (modalId) {
-        document.getElementById(modalId).classList.remove('active');
+async function fetchSetlistContent(setlistId) {
+    // Get setlist content from Firestore
+    if (!window.FirestoreService) {
+        throw new Error("Firebase not loaded");
     }
-    
-    updateConnectionStatus(true);
-    return true; 
-}
 
-function updateConnectionStatus(hasSavedConfig) {
-    const el = document.getElementById('connection-status');
-    if (!el) return;
-    
-    const { token, owner, repo } = window.AppState.config;
-
-    if (token) {
-        el.innerHTML = `<span class="text-green-500"><i class="fas fa-check-circle"></i> Connected</span>`;
-    } else if (owner && repo) {
-        // Public / Read-Only Mode
-        el.innerHTML = `<span class="text-yellow-500">Read-only</span>`;
-    } else {
-        el.innerHTML = `<span class="text-red-500"><i class="fas fa-times-circle"></i> Config Required</span>`;
+    try {
+        const setlist = await window.FirestoreService.getSetlist(setlistId);
+        if (!setlist) {
+            throw new Error("Setlist not found");
+        }
+        return setlist.songs || [];
+    } catch (error) {
+        console.error('Error fetching setlist content:', error);
+        throw new Error("Failed to load setlist");
     }
 }
 
-// --- GITHUB API HELPERS ---
-
-async function fetchGithubFiles() {
-    const { owner, repo, token, folder } = window.AppState.config;
-    // Removed strict token check to allow public repo access
-
-    const url = `https://api.github.com/repos/${owner}/${repo}/contents/${folder}`;
-    
-    const headers = {};
-    if (token) {
-        headers['Authorization'] = `token ${token}`;
+async function saveSetlist(name, songs) {
+    // Save setlist to Firestore
+    if (!window.FirestoreService) {
+        throw new Error("Firebase not loaded");
     }
 
-    // Add timestamp to prevent caching
-    const res = await fetch(`${url}?t=${Date.now()}`, { headers });
+    if (!window.FirebaseAuth?.isAuthenticated()) {
+        throw new Error("Please sign in to save setlists");
+    }
 
-    if (res.status === 404) throw new Error("Folder not found");
-    if (res.status === 403 && !token) throw new Error("API Rate Limit. Add Token in Settings.");
-    if (!res.ok) throw new Error(`GitHub Error: ${res.status}`);
-
-    const files = await res.json();
-    // Filter for JSON files and sort by name
-    return files
-        .filter(f => f.name.endsWith('.json'))
-        .sort((a, b) => a.name.localeCompare(b.name));
+    try {
+        await window.FirestoreService.saveSetlist(name, songs);
+    } catch (error) {
+        console.error('Error saving setlist:', error);
+        throw new Error("Failed to save setlist: " + error.message);
+    }
 }
 
-async function fetchGithubFileContent(url) {
-    // Add timestamp to prevent caching
-    // Note: If url is raw.githubusercontent.com, it works without token for public repos
-    const res = await fetch(`${url}?t=${Date.now()}`);
-    if (!res.ok) throw new Error("Failed to download file");
-    return await res.json();
+async function deleteSetlist(setlistName) {
+    // Delete setlist from Firestore
+    if (!window.FirestoreService) {
+        throw new Error("Firebase not loaded");
+    }
+
+    if (!window.FirebaseAuth?.isAuthenticated()) {
+        throw new Error("Please sign in to delete setlists");
+    }
+
+    try {
+        await window.FirestoreService.deleteSetlist(setlistName);
+    } catch (error) {
+        console.error('Error deleting setlist:', error);
+        throw new Error("Failed to delete setlist: " + error.message);
+    }
 }
 
 // --- UTILS ---
@@ -111,7 +105,7 @@ function showLoader(elId, textId, show, msg) {
     const el = document.getElementById(elId);
     const txt = document.getElementById(textId);
     if (!el) return;
-    
+
     el.classList.toggle('active', show);
     if (msg && txt) txt.innerHTML = `<i class="fas fa-sync fa-spin mr-2"></i> ${msg}`;
 }

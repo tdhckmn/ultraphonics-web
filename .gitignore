@@ -1,19 +1,33 @@
-# Operating System Files
-.DS_Store
-Thumbs.db
+# --- Claude ---
+settings.local.json
 
-# Editor Directories
-.vscode/
-.idea/
-
-# Log files
-*.log
-
-# Environment Variables
+# --- Environment & Secrets ---
+# Never commit your actual production secrets if you move to a .env setup
 .env
+.env.local
+.env.*.local
 
-# Dependencies
+# --- Firebase ---
+# Local Firebase cache and configuration
+.firebase/
+# Firebase CLI debug logs
+firebase-debug.log*
+firestore-debug.log*
+ui-debug.log*
+
+# --- Dependencies ---
+# If you eventually use npm/yarn for Firebase SDKs or local scripts
 node_modules/
 
-# Claude
-settings.local.json
+# --- IDE & System Files ---
+.DS_Store
+.vscode/
+.idea/
+*.swp
+*.log
+Thumbs.db
+
+# --- Project Specific ---
+# Your current app stores GitHub config in localStorage, but if you 
+# create local temp files for the Firestore migration, ignore them here:
+scripts/migration_temp/

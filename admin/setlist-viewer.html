@@ -110,7 +110,6 @@
             </div>
             <div>
                 <h1 class="text-base md:text-lg font-bold text-white tracking-wide">Viewer</h1>
-                <p id="connection-status" class="text-[10px] md:text-xs text-gray-500 whitespace-nowrap">Checking...</p>
             </div>
         </div>
         <div class="flex items-center gap-2">
@@ -200,26 +199,6 @@
         <div class="modal-content">
             <h2 class="text-xl font-bold text-white mb-4">Settings</h2>
 
-            <!-- GitHub Authentication -->
-            <div class="form-group">
-                <label class="form-label">GitHub Authentication</label>
-
-                <!-- Helper link -->
-                <a href="https://github.com/settings/tokens/new?description=Ultraphonics%20Setlist%20Builder&scopes=repo"
-                   target="_blank"
-                   class="block w-full btn btn-primary mb-2 text-center">
-                    <i class="fab fa-github mr-2"></i> Create GitHub Token
-                </a>
-                <p class="text-gray-500 text-xs mb-3">
-                    Opens GitHub with the token form pre-filled. Copy the token and paste below.
-                </p>
-
-                <!-- Token Input -->
-                <label class="form-label text-sm">Personal Access Token</label>
-                <input type="password" id="gh-token" class="form-input" placeholder="ghp_...">
-                <p class="text-gray-500 text-xs mt-1">Optional - only needed for editing setlists</p>
-            </div>
-
             <!-- AbleSet Settings -->
             <div class="form-group">
                 <label class="form-label">AbleSet Host URL</label>
@@ -238,11 +217,13 @@
             </div>
 
             <div class="flex justify-end gap-3 mt-6">
-                <button onclick="document.getElementById('settings-modal').classList.remove('active')" class="btn btn-secondary">Cancel</button>
-                <button onclick="saveSettings()" class="btn btn-primary">Save Config</button>
+                <button onclick="document.getElementById('settings-modal').classList.remove('active')" class="btn btn-secondary">Close</button>
             </div>
         </div>
     </div>
+
+    <!-- Firebase Bundle -->
+    <script src="/dist/firebase-bundle.js"></script>
 
     <!-- SHARED SCRIPT -->
     <script src="setlist-builder.js"></script>
@@ -271,22 +252,21 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            const hasConfig = loadConfig();
+            loadConfig();
             updateAbleSetLink();
-            if (hasConfig) fetchFiles();
-            else openSettings();
+            fetchFiles();
         });
 
         // --- FETCHING ---
         async function fetchFiles() {
             els.files.innerHTML = '<div class="text-center text-gray-500 mt-10"><i class="fas fa-circle-notch fa-spin"></i> Fetching...</div>';
-            els.folderPath.textContent = window.AppState.config.folder;
-            
+            els.folderPath.textContent = 'Firestore / setlists';
+
             try {
-                const files = await fetchGithubFiles();
+                const files = await fetchSetlistFiles();
                 renderFileList(files);
-                
-                // NEW: Auto-load file from URL params
+
+                // Auto-load file from URL params
                 const urlParams = new URLSearchParams(window.location.search);
                 const fileParam = urlParams.get('file');
                 if (fileParam) {
@@ -330,7 +310,8 @@
             window.history.replaceState({}, '', url);
 
             try {
-                const data = await fetchGithubFileContent(fileObj.download_url);
+                const setlistId = fileObj.id || fileObj.name.replace('.json', '');
+                const data = await fetchSetlistContent(setlistId);
                 // Parse tags into properties for display
                 const parsedData = parseSetlistFromImport(data);
                 currentSetlist = parsedData;
@@ -465,9 +446,6 @@
 
         // --- SETTINGS ---
         function openSettings() {
-            // Load GitHub token
-            document.getElementById('gh-token').value = window.AppState.config.token;
-
             // Load AbleSet URL
             const DEFAULT_ABLESET_URL = 'http://192.168.1.243';
             const storedUrl = localStorage.getItem('ableset_url');
@@ -477,12 +455,6 @@
         }
 
         function saveSettings() {
-            // Save GitHub token (keep other settings unchanged)
-            const token = document.getElementById('gh-token').value.trim();
-            window.AppState.config.token = token;
-            localStorage.setItem('up_gh_config', JSON.stringify(window.AppState.config));
-            updateConnectionStatus(!!(window.AppState.config.owner && window.AppState.config.repo));
-
             // Save AbleSet URL
             let ablesetUrl = document.getElementById('ableset-url').value.trim();
             if (!ablesetUrl) ablesetUrl = 'http://192.168.1.243';

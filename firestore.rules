@@ -1,0 +1,40 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Shows: Public read, authenticated write
+    match /shows/{showId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+
+    // Songs: Public read, authenticated write
+    match /songs/{songId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+
+    // Setlists: Public read, authenticated write
+    match /setlists/{setlistId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+
+    // Clients: Authenticated read/write only (contains contact info)
+    match /clients/{clientId} {
+      allow read, write: if request.auth != null;
+    }
+
+    // Quotes: Authenticated read/write only
+    match /quotes/{quoteId} {
+      allow read, write: if request.auth != null;
+    }
+
+    // Admin users collection for role management
+    match /adminUsers/{userId} {
+      allow read: if request.auth != null && request.auth.uid == userId;
+      allow write: if false; // Only settable via Admin SDK
+    }
+  }
+}

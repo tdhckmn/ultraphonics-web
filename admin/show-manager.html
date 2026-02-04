@@ -129,9 +129,6 @@
             </select>
         </div>
         <div class="flex items-center gap-1 md:gap-2">
-            <span id="connection-status" class="hidden md:inline text-xs px-2 py-1 rounded bg-stone-800 text-stone-400">
-                <i class="fa-solid fa-circle text-[8px] mr-1"></i> <span id="connection-label">Read Only</span>
-            </span>
             <button id="settings-btn" class="text-stone-400 hover:text-white transition-colors p-2 rounded-lg hover:bg-stone-800" title="Admin Settings">
                 <i class="fa-solid fa-gear"></i>
             </button>
@@ -143,6 +140,31 @@
                 <i class="fa-solid fa-save text-sm"></i>
                 <span class="hidden md:inline text-sm font-semibold">Save</span>
             </button>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-[100] hidden">
+        <div class="bg-stone-900 w-full max-w-md mx-auto rounded-xl shadow-2xl border border-stone-700 overflow-hidden m-4">
+            <div class="p-6">
+                <div class="text-center mb-6">
+                    <img src="/assets/images/Ultraphonics-Spiral-512.png" alt="Ultraphonics" class="h-16 w-auto mx-auto mb-4">
+                    <h2 class="text-xl font-bold text-white">Admin Login</h2>
+                    <p class="text-stone-400 text-sm mt-1">Sign in to manage shows</p>
+                </div>
+
+                <div id="login-error" class="text-red-400 text-sm hidden mb-4 text-center"></div>
+                <button id="google-sign-in-btn"
+                    class="w-full px-4 py-3 bg-white rounded-lg text-gray-800 hover:bg-gray-100 font-semibold transition-colors flex items-center justify-center gap-3">
+                    <svg class="w-5 h-5" viewBox="0 0 24 24">
+                        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                        <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                        <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                    </svg>
+                    Sign in with Google
+                </button>
+            </div>
         </div>
     </div>
 
@@ -158,31 +180,27 @@
                 </div>
 
                 <div class="my-5">
-                    <!-- GitHub Authentication -->
-                    <label class="block text-stone-400 text-xs font-bold mb-2">
-                        GitHub Authentication
-                    </label>
+                    <!-- User Info -->
+                    <div id="user-info" class="mb-5 p-4 bg-stone-800 rounded-lg">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-teal-600 rounded-full flex items-center justify-center">
+                                <i class="fa-solid fa-user text-white"></i>
+                            </div>
+                            <div>
+                                <div class="text-white font-semibold" id="user-email">Loading...</div>
+                                <div class="text-stone-400 text-xs">Signed in</div>
+                            </div>
+                        </div>
+                    </div>
 
-                    <a href="https://github.com/settings/tokens/new?description=Ultraphonics%20Admin&scopes=repo"
-                       target="_blank"
-                       class="block w-full px-4 py-3 bg-indigo-600 rounded-lg text-white hover:bg-indigo-500 font-bold transition-colors mb-2 text-center">
-                        <i class="fab fa-github mr-2"></i> Create GitHub Token
-                    </a>
-                    <p class="text-stone-500 text-xs mb-3 italic">
-                        Opens GitHub with the token form pre-filled. Copy the token and paste below.
-                    </p>
-
-                    <label class="block text-stone-400 text-xs font-bold mb-2">
-                        Personal Access Token
-                    </label>
-                    <input class="appearance-none border border-stone-700 rounded w-full py-3 px-3 text-stone-200 bg-stone-800 leading-tight focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 mb-1"
-                        id="settings-gh-token" type="password" placeholder="ghp_...">
-                    <p class="text-stone-500 text-xs mt-1 italic mb-4">
-                        Required for saving shows to GitHub
-                    </p>
+                    <!-- Sign Out -->
+                    <button id="sign-out-btn" class="w-full px-4 py-3 bg-red-600/20 border border-red-600/50 rounded-lg text-red-400 hover:bg-red-600/30 font-semibold transition-colors flex items-center justify-center gap-2 mb-5">
+                        <i class="fa-solid fa-sign-out-alt"></i>
+                        <span>Sign Out</span>
+                    </button>
 
                     <!-- Cache Buster -->
-                    <div class="border-t border-stone-800 mt-5 pt-5">
+                    <div class="border-t border-stone-800 pt-5">
                         <label class="block text-stone-400 text-xs font-bold mb-2">
                             Refresh Page
                         </label>
@@ -198,8 +216,8 @@
             </div>
 
             <div class="border-t border-stone-800 bg-stone-900 px-6 py-4 flex justify-end">
-                <button id="save-settings-btn" class="px-6 py-3 bg-indigo-600 rounded-lg text-white hover:bg-indigo-500 font-bold transition-colors">
-                    Save Changes
+                <button id="close-settings-btn" class="px-6 py-3 bg-stone-700 rounded-lg text-white hover:bg-stone-600 font-bold transition-colors">
+                    Close
                 </button>
             </div>
         </div>
@@ -283,8 +301,8 @@
         </div>
     </div>
 
-    <!-- Shared Config Script -->
-    <script src="setlist-builder.js"></script>
+    <!-- Firebase Bundle -->
+    <script src="/dist/firebase-bundle.js"></script>
 
     <script>
         let shows = [];
@@ -294,6 +312,7 @@
         let originalShows = [];
         let setlists = [];
         let selectedYear = '';
+        let isAuthenticated = false;
 
         // Generate UUID v4
         function generateUUID() {
@@ -304,31 +323,10 @@
             });
         }
 
-        // Load shows from GitHub
+        // Load shows from Firestore
         async function loadShows() {
             try {
-                const { owner, repo, token } = window.AppState.config;
-                const url = `https://api.github.com/repos/${owner}/${repo}/contents/content/shows.json`;
-
-                const headers = {};
-                if (token) {
-                    headers['Authorization'] = `token ${token}`;
-                }
-
-                // Add timestamp to prevent caching
-                const response = await fetch(`${url}?t=${Date.now()}`, { headers });
-
-                if (!response.ok) {
-                    if (response.status === 404) {
-                        throw new Error("shows.json not found");
-                    }
-                    throw new Error(`GitHub Error: ${response.status}`);
-                }
-
-                const fileData = await response.json();
-                // Decode base64 content from GitHub API
-                const content = atob(fileData.content);
-                shows = JSON.parse(content);
+                shows = await FirestoreService.getShows();
 
                 // Ensure all shows have UUIDs
                 shows = shows.map(show => {
@@ -352,7 +350,6 @@
             } catch (error) {
                 console.error('Error loading shows:', error);
                 alert(`Failed to load shows: ${error.message}`);
-                // Initialize with empty array on error
                 shows = [];
                 originalShows = [];
                 renderShowsList();
@@ -360,53 +357,27 @@
             }
         }
 
-        // Load clients from GitHub
+        // Load clients from Firestore
         async function loadClients() {
             try {
-                const { owner, repo, token } = window.AppState.config;
-                const url = `https://api.github.com/repos/${owner}/${repo}/contents/content/clients.json`;
-
-                const headers = {};
-                if (token) {
-                    headers['Authorization'] = `token ${token}`;
-                }
-
-                // Add timestamp to prevent caching
-                const response = await fetch(`${url}?t=${Date.now()}`, { headers });
-
-                if (!response.ok) {
-                    if (response.status === 404) {
-                        throw new Error("clients.json not found");
-                    }
-                    throw new Error(`GitHub Error: ${response.status}`);
-                }
-
-                const fileData = await response.json();
-                // Decode base64 content from GitHub API
-                const content = atob(fileData.content);
-                clients = JSON.parse(content);
+                clients = await FirestoreService.getClients();
             } catch (error) {
                 console.error('Error loading clients:', error);
-                // Initialize with empty array on error
                 clients = [];
             }
         }
 
-        // Load available setlists
+        // Load available setlists from Firestore
         async function loadSetlists() {
             try {
-                const setlistFiles = [
-                    'Complete_Collection.json',
-                    'DRAFT_Riverbillies1-17.json',
-                    'NYE_ActionDetroit.json',
-                    'Riverbillies1-17.json'
-                ];
-                setlists = setlistFiles.map(filename => ({
-                    filename,
-                    name: filename.replace('.json', '').replace(/_/g, ' ')
+                const setlistDocs = await FirestoreService.getSetlists();
+                setlists = setlistDocs.map(doc => ({
+                    filename: doc.id,
+                    name: doc.name || doc.id.replace(/_/g, ' ')
                 }));
             } catch (error) {
                 console.error('Error loading setlists:', error);
+                setlists = [];
             }
         }
 
@@ -909,37 +880,47 @@
         }
 
         // Delete show
-        function deleteShow() {
+        async function deleteShow() {
             if (!confirm('Are you sure you want to delete this show?')) return;
 
-            const showIndex = shows.findIndex(s => s.id === selectedShowId);
-            if (showIndex !== -1) {
-                shows.splice(showIndex, 1);
+            if (!isAuthenticated) {
+                alert('Please sign in to delete shows.');
+                showLoginModal();
+                return;
             }
 
-            selectedShowId = null;
+            try {
+                await FirestoreService.deleteShow(selectedShowId);
 
-            // Remove show parameter from URL
-            const url = new URL(window.location);
-            url.searchParams.delete('show');
-            window.history.pushState({}, '', url);
+                const showIndex = shows.findIndex(s => s.id === selectedShowId);
+                if (showIndex !== -1) {
+                    shows.splice(showIndex, 1);
+                }
 
-            hasUnsavedChanges = true;
-            showSaveButton();
-            renderShowsList();
-            updateShowCount();
+                selectedShowId = null;
 
-            document.getElementById('show-view').classList.add('hidden');
-            document.getElementById('show-edit').classList.add('hidden');
-            document.getElementById('empty-state').classList.remove('hidden');
+                // Remove show parameter from URL
+                const url = new URL(window.location);
+                url.searchParams.delete('show');
+                window.history.pushState({}, '', url);
+
+                renderShowsList();
+                updateShowCount();
+
+                document.getElementById('show-view').classList.add('hidden');
+                document.getElementById('show-edit').classList.add('hidden');
+                document.getElementById('empty-state').classList.remove('hidden');
+            } catch (error) {
+                console.error('Error deleting show:', error);
+                alert(`Failed to delete show: ${error.message}`);
+            }
         }
 
-        // Save to GitHub
-        async function saveToGitHub() {
-            const { owner, repo, token } = window.AppState.config;
-            if (!token) {
-                alert('Please configure your GitHub token in Settings first.');
-                window.open('setlist-builder.html', '_blank');
+        // Save to Firestore
+        async function saveToFirestore() {
+            if (!isAuthenticated) {
+                alert('Please sign in to save changes.');
+                showLoginModal();
                 return;
             }
 
@@ -955,44 +936,8 @@
                     }
                 });
 
-                const path = 'content/shows.json';
-                const apiUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
-
-                // Get current file SHA
-                let sha = null;
-                try {
-                    const getResponse = await fetch(apiUrl, {
-                        headers: { 'Authorization': `token ${token}` }
-                    });
-                    if (getResponse.ok) {
-                        sha = (await getResponse.json()).sha;
-                    }
-                } catch (e) {
-                    console.warn('Could not fetch existing SHA:', e);
-                }
-
-                // Encode content as base64
-                const content = btoa(unescape(encodeURIComponent(JSON.stringify(shows, null, 2))));
-
-                // Update file
-                const updateResponse = await fetch(apiUrl, {
-                    method: 'PUT',
-                    headers: {
-                        'Authorization': `token ${token}`,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        message: `Update shows from Show Manager\n\nCo-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>`,
-                        content: content,
-                        sha: sha,
-                        branch: 'main'
-                    })
-                });
-
-                if (!updateResponse.ok) {
-                    const errorData = await updateResponse.json();
-                    throw new Error(errorData.message || `GitHub Error: ${updateResponse.status}`);
-                }
+                // Save all shows to Firestore
+                await FirestoreService.saveShowsBatch(shows);
 
                 originalShows = JSON.parse(JSON.stringify(shows));
                 hasUnsavedChanges = false;
@@ -1001,14 +946,14 @@
                 saveBtn.disabled = false;
                 saveBtn.innerHTML = '<i class="fa-solid fa-check"></i> Saved!';
                 setTimeout(() => {
-                    saveBtn.innerHTML = '<i class="fa-solid fa-save"></i> Save Changes';
+                    saveBtn.innerHTML = '<i class="fa-solid fa-save"></i> Save';
                 }, 2000);
 
             } catch (error) {
-                console.error('Error saving to GitHub:', error);
-                alert(`Failed to save shows to GitHub: ${error.message}`);
+                console.error('Error saving to Firestore:', error);
+                alert(`Failed to save shows: ${error.message}`);
                 saveBtn.disabled = false;
-                saveBtn.innerHTML = '<i class="fa-solid fa-save"></i> Save Changes';
+                saveBtn.innerHTML = '<i class="fa-solid fa-save"></i> Save';
             }
         }
 
@@ -1048,22 +993,64 @@
         document.getElementById('cancel-edit-btn').addEventListener('click', showViewMode);
         document.getElementById('delete-btn').addEventListener('click', deleteShow);
         document.getElementById('add-show-btn').addEventListener('click', addNewShow);
-        document.getElementById('save-btn').addEventListener('click', saveToGitHub);
+        document.getElementById('save-btn').addEventListener('click', saveToFirestore);
         document.getElementById('download-cal-btn').addEventListener('click', downloadCalendarEvent);
         document.getElementById('back-to-list-btn').addEventListener('click', backToList);
         document.getElementById('back-to-list-btn-edit').addEventListener('click', backToList);
+
+        // Login modal handlers
+        const loginModal = document.getElementById('login-modal');
+        const googleSignInBtn = document.getElementById('google-sign-in-btn');
+        const loginError = document.getElementById('login-error');
+
+        function showLoginModal() {
+            loginModal.classList.remove('hidden');
+            loginError.classList.add('hidden');
+        }
+
+        function hideLoginModal() {
+            loginModal.classList.add('hidden');
+        }
+
+        googleSignInBtn.addEventListener('click', async () => {
+            googleSignInBtn.disabled = true;
+            googleSignInBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Signing in...';
+            loginError.classList.add('hidden');
+
+            try {
+                await FirebaseAuth.loginWithGoogle();
+                hideLoginModal();
+            } catch (error) {
+                console.error('Login error:', error);
+                loginError.textContent = error.message || 'Sign in failed';
+                loginError.classList.remove('hidden');
+            } finally {
+                googleSignInBtn.disabled = false;
+                googleSignInBtn.innerHTML = `
+                    <svg class="w-5 h-5" viewBox="0 0 24 24">
+                        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                        <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                        <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                    </svg>
+                    Sign in with Google
+                `;
+            }
+        });
 
         // Settings modal handlers
         const settingsModal = document.getElementById('settings-modal');
         const settingsBtn = document.getElementById('settings-btn');
         const closeSettingsBtn = document.getElementById('close-settings');
-        const saveSettingsBtn = document.getElementById('save-settings-btn');
+        const closeSettingsBtn2 = document.getElementById('close-settings-btn');
+        const signOutBtn = document.getElementById('sign-out-btn');
         const clearCacheBtn = document.getElementById('clear-cache-btn');
 
         function openSettingsModal() {
-            // Load current config
-            const ghToken = document.getElementById('settings-gh-token');
-            ghToken.value = window.AppState.config.token || '';
+            const user = FirebaseAuth.getCurrentUser();
+            if (user) {
+                document.getElementById('user-email').textContent = user.email;
+            }
             settingsModal.classList.remove('hidden');
         }
 
@@ -1071,35 +1058,17 @@
             settingsModal.classList.add('hidden');
         }
 
-        function updateConnectionStatus(isConnected) {
-            const statusEl = document.getElementById('connection-status');
-            const labelEl = document.getElementById('connection-label');
-            const indicator = statusEl.querySelector('i');
-
-            if (isConnected) {
-                labelEl.textContent = 'Connected';
-                statusEl.classList.remove('text-stone-400');
-                statusEl.classList.add('text-green-400');
-                indicator.classList.remove('text-stone-500');
-                indicator.classList.add('text-green-400');
-            } else {
-                labelEl.textContent = 'Read Only';
-                statusEl.classList.remove('text-green-400');
-                statusEl.classList.add('text-stone-400');
-                indicator.classList.remove('text-green-400');
-                indicator.classList.add('text-stone-500');
-            }
+        function updateConnectionStatus(authenticated) {
+            isAuthenticated = authenticated;
         }
 
-        function saveSettingsModal() {
-            const token = document.getElementById('settings-gh-token').value.trim();
-            window.AppState.config.token = token;
-            if (!window.AppState.config.owner) window.AppState.config.owner = 'tdhckmn';
-            if (!window.AppState.config.repo) window.AppState.config.repo = 'ultraphonics-web';
-            if (!window.AppState.config.folder) window.AppState.config.folder = 'content/setlists';
-            localStorage.setItem('up_gh_config', JSON.stringify(window.AppState.config));
-            closeSettingsModal();
-            updateConnectionStatus(!!token);
+        async function handleSignOut() {
+            try {
+                await FirebaseAuth.logout();
+                closeSettingsModal();
+            } catch (error) {
+                console.error('Sign out error:', error);
+            }
         }
 
         function clearCacheAndReload() {
@@ -1110,7 +1079,8 @@
 
         settingsBtn.addEventListener('click', openSettingsModal);
         closeSettingsBtn.addEventListener('click', closeSettingsModal);
-        saveSettingsBtn.addEventListener('click', saveSettingsModal);
+        closeSettingsBtn2.addEventListener('click', closeSettingsModal);
+        signOutBtn.addEventListener('click', handleSignOut);
         clearCacheBtn.addEventListener('click', clearCacheAndReload);
 
         // Close modal on backdrop click
@@ -1122,14 +1092,22 @@
 
         // Close modal on Escape key
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && !settingsModal.classList.contains('hidden')) {
-                closeSettingsModal();
+            if (e.key === 'Escape') {
+                if (!settingsModal.classList.contains('hidden')) {
+                    closeSettingsModal();
+                }
             }
         });
 
-        // Initialize
-        loadConfig(); // Load GitHub config from localStorage
-        updateConnectionStatus(!!window.AppState.config.token);
+        // Firebase Auth state listener
+        FirebaseAuth.onAuthChange((user) => {
+            updateConnectionStatus(!!user);
+            if (user) {
+                hideLoginModal();
+            }
+        });
+
+        // Initialize - load data from Firestore
         loadSetlists();
         loadClients();
         loadShows();
