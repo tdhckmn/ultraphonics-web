@@ -95,15 +95,30 @@
         .auth-spinner {
             animation: spin 1.5s linear infinite;
         }
+
+        /* Auth loading overlay - matches page background for seamless experience */
+        .auth-overlay {
+            position: fixed;
+            inset: 0;
+            background: #121212;
+            z-index: 200;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.3s ease-out;
+        }
+        .auth-overlay.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
     </style>
 </head>
 <body class="bg-[#121212]">
 
     <!-- Auth Loading Overlay -->
-    <div id="auth-loading" class="fixed inset-0 bg-[#121212] z-[200] flex items-center justify-center">
+    <div id="auth-loading" class="auth-overlay">
         <div class="text-center">
-            <img src="/assets/images/Ultraphonics-Spiral-512.png" alt="Loading" class="h-20 w-auto mx-auto auth-spinner">
-            <p class="text-gray-400 text-sm mt-4">Loading...</p>
+            <img src="/assets/images/Ultraphonics-Spiral-192.png" alt="Loading" class="h-16 w-auto mx-auto auth-spinner">
         </div>
     </div>
 
@@ -352,10 +367,8 @@
     <div id="login-modal" class="modal-overlay">
         <div class="modal-content">
             <div class="text-center mb-6">
-                <div class="w-16 h-16 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-xl flex items-center justify-center text-black font-bold mx-auto mb-4">
-                    <i class="fas fa-hammer text-2xl"></i>
-                </div>
-                <h2 class="text-xl font-bold text-white">Setlist Builder</h2>
+                <img src="/assets/images/Ultraphonics-Spiral-192.png" alt="Ultraphonics" class="h-16 w-auto mx-auto mb-4">
+                <h2 class="text-xl font-bold text-white">Admin Login</h2>
                 <p class="text-gray-400 text-sm mt-1">Sign in to build and save setlists</p>
             </div>
 
@@ -575,12 +588,16 @@
 
             // Auth state listener
             window.FirebaseAuth.onAuthChange((user) => {
-                // Hide loading overlay once auth state is determined
+                // Fade out loading overlay once auth state is determined
                 const authLoading = document.getElementById('auth-loading');
-                if (authLoading) authLoading.style.display = 'none';
+                if (authLoading) {
+                    authLoading.classList.add('fade-out');
+                    setTimeout(() => { authLoading.style.display = 'none'; }, 300);
+                }
 
                 if (!user) {
-                    loginModal.classList.add('active');
+                    // Show login modal after loading fades
+                    setTimeout(() => { loginModal.classList.add('active'); }, 300);
                     userInfo.classList.add('hidden');
                     signOutBtn.classList.add('hidden');
                 } else {

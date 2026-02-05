@@ -402,20 +402,22 @@ NOW, based on these guidelines, please:</div>
     <style>
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         .auth-spinner { animation: spin 1.5s linear infinite; }
+        .auth-overlay { position: fixed; inset: 0; background: #0f0f0f; z-index: 1000; display: flex; align-items: center; justify-content: center; transition: opacity 0.3s ease-out; }
+        .auth-overlay.fade-out { opacity: 0; pointer-events: none; }
     </style>
 
-    <!-- Login Modal -->
-    <div id="login-modal" style="display: flex; position: fixed; inset: 0; background: rgba(0,0,0,0.9); backdrop-filter: blur(4px); z-index: 1000; align-items: center; justify-content: center;">
-        <!-- Loading State -->
-        <div id="auth-loading" style="text-align: center;">
-            <img src="/assets/images/Ultraphonics-Spiral-512.png" alt="Loading" class="auth-spinner" style="height: 80px; width: auto; margin: 0 auto;">
-            <p style="color: #999; font-size: 0.875rem; margin-top: 1rem;">Loading...</p>
+    <!-- Auth Loading Overlay - shows spinning logo while checking auth -->
+    <div id="auth-loading" class="auth-overlay">
+        <div style="text-align: center;">
+            <img src="/assets/images/Ultraphonics-Spiral-192.png" alt="Loading" class="auth-spinner" style="height: 64px; width: auto; margin: 0 auto;">
         </div>
+    </div>
 
-        <!-- Login Form (hidden until auth state confirmed as not authenticated) -->
-        <div id="login-form" style="display: none; background: #1a1a1a; width: 100%; max-width: 400px; margin: 1rem; border-radius: 12px; border: 1px solid #333; padding: 2rem; text-align: center;">
-            <img src="/assets/images/Ultraphonics-Spiral-512.png" alt="Ultraphonics" style="height: 64px; width: auto; margin: 0 auto 1rem;">
-            <h2 style="color: white; font-size: 1.25rem; margin-bottom: 0.5rem;">AI Branding Prompt</h2>
+    <!-- Login Modal - only shown if not authenticated -->
+    <div id="login-modal" style="display: none; position: fixed; inset: 0; background: #0f0f0f; z-index: 1000; align-items: center; justify-content: center;">
+        <div id="login-form" style="background: #1a1a1a; width: 100%; max-width: 400px; margin: 1rem; border-radius: 12px; border: 1px solid #333; padding: 2rem; text-align: center;">
+            <img src="/assets/images/Ultraphonics-Spiral-192.png" alt="Ultraphonics" style="height: 64px; width: auto; margin: 0 auto 1rem;">
+            <h2 style="color: white; font-size: 1.25rem; margin-bottom: 0.5rem;">Admin Login</h2>
             <p style="color: #999; font-size: 0.875rem; margin-bottom: 1.5rem;">Sign in to view AI guidelines</p>
             <div id="login-error" style="display: none; color: #f87171; font-size: 0.875rem; margin-bottom: 1rem;"></div>
             <button id="google-sign-in-btn" style="width: 100%; padding: 0.75rem 1rem; background: white; border: none; border-radius: 8px; color: #333; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.75rem;">
@@ -439,13 +441,21 @@ NOW, based on these guidelines, please:</div>
             const loginError = document.getElementById('login-error');
 
             function showLoginForm() {
-                // Hide loading, show login form
-                authLoading.style.display = 'none';
-                loginForm.style.display = 'block';
+                // Fade out loading overlay, then show login modal
+                authLoading.classList.add('fade-out');
+                setTimeout(() => {
+                    authLoading.style.display = 'none';
+                    loginModal.style.display = 'flex';
+                }, 300);
                 loginError.style.display = 'none';
             }
 
             function hideLoginModal() {
+                // Fade out the loading overlay smoothly
+                authLoading.classList.add('fade-out');
+                setTimeout(() => {
+                    authLoading.style.display = 'none';
+                }, 300);
                 loginModal.style.display = 'none';
             }
 
