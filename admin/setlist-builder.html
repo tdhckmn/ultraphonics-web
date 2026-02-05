@@ -115,7 +115,7 @@
             <button onclick="toggleViewMode()" id="btn-view-mode" class="btn btn-secondary text-xs px-3 bg-[#1e3a8a] border border-blue-500 text-blue-200 hover:bg-[#1e40af]" title="Toggle View Mode">
                 <i class="fas fa-eye" id="view-mode-icon"></i> <span class="hidden md:inline" id="view-mode-text">View</span>
             </button>
-            <a id="headerAblesetLink" href="#" target="_blank" class="text-gray-400 hover:text-rose-400 transition-colors p-2 rounded-lg hover:bg-[#333]" title="Launch AbleSet">
+            <a id="headerAblesetLink" href="#" target="_blank" onclick="return handleAblesetClick(event)" class="text-gray-400 hover:text-rose-400 transition-colors p-2 rounded-lg hover:bg-[#333]" title="Launch AbleSet">
                 <i class="fas fa-circle-play"></i>
             </a>
             <button onclick="openSettings()" class="btn btn-secondary text-xs px-3" title="Settings">
@@ -670,6 +670,17 @@
             document.getElementById('headerAblesetLink').href = url;
         }
 
+        // Handle AbleSet link click with unsaved changes warning
+        window.handleAblesetClick = (e) => {
+            if (state.hasUnsavedChanges) {
+                if (!confirm('You have unsaved changes. Are you sure you want to leave?')) {
+                    e.preventDefault();
+                    return false;
+                }
+            }
+            return true;
+        };
+
         // --- CACHE BUSTER ---
         window.clearCacheAndReload = () => {
             // Add cache busting timestamp to URL and reload
@@ -947,6 +958,13 @@
                 div.onclick = (e) => {
                      // If clicked on delete button, don't load
                      if(e.target.closest('.delete-file-btn')) return;
+
+                     // Warn if there are unsaved changes
+                     if (state.hasUnsavedChanges) {
+                         if (!confirm('You have unsaved changes. Discard and load a different setlist?')) {
+                             return;
+                         }
+                     }
 
                      loadRemoteFile(file);
                      switchSidebarTab('library');
