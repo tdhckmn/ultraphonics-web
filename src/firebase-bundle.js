@@ -40,17 +40,20 @@ setPersistence(auth, browserLocalPersistence).catch(console.error);
 
 let currentUser = null;
 let authStateListeners = [];
+let authStateResolved = false; // Track if initial auth state has been determined
 
 onAuthStateChanged(auth, async (user) => {
   // If user is signed in but not in allowlist, sign them out
   if (user && !ALLOWED_EMAILS.includes(user.email.toLowerCase())) {
     await signOut(auth);
     currentUser = null;
+    authStateResolved = true;
     authStateListeners.forEach(listener => listener(null));
     return;
   }
 
   currentUser = user;
+  authStateResolved = true;
   authStateListeners.forEach(listener => listener(user));
 });
 
@@ -90,14 +93,26 @@ const FirebaseAuth = {
 
   onAuthChange(listener) {
     authStateListeners.push(listener);
-    listener(currentUser);
+    // Only call listener immediately if auth state is already resolved
+    // Otherwise, wait for onAuthStateChanged to fire first
+    if (authStateResolved) {
+      listener(currentUser);
+    }
     return () => {
       authStateListeners = authStateListeners.filter(l => l !== listener);
     };
   },
 
+  isAuthResolved() {
+    return authStateResolved;
+  },
+
   waitForAuth() {
     return new Promise((resolve) => {
+      if (authStateResolved) {
+        resolve(currentUser);
+        return;
+      }
       const unsubscribe = onAuthStateChanged(auth, (user) => {
         unsubscribe();
         resolve(user);

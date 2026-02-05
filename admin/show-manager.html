@@ -591,7 +591,7 @@
                         <label class="text-xs text-stone-500 uppercase tracking-wide">Setlist</label>
                         <div class="text-lg">
                             ${show.setlist ? `
-                                <a href="setlist-viewer.html?setlist=${show.setlist}" target="_blank" rel="noopener noreferrer" class="text-accent-teal hover:underline flex items-center gap-2">
+                                <a href="setlist-manager.html?file=${show.setlist}.json" target="_blank" rel="noopener noreferrer" class="text-accent-teal hover:underline flex items-center gap-2">
                                     ${show.setlist.replace('.json', '').replace(/_/g, ' ')} <i class="fa-solid fa-external-link text-sm"></i>
                                 </a>
                             ` : '<span class="text-stone-600">—</span>'}

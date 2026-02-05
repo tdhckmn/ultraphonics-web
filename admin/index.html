@@ -281,7 +281,7 @@
                 <!-- Band Logo / Admin Header -->
                 <div class="flex items-center gap-3">
                     <img src="/assets/images/Ultraphonics-Spiral-512.png" alt="Ultraphonics" class="h-10 w-auto">
-                    <span class="font-bold text-xl tracking-tight text-white">Admin</span>
+                    <span id="header-greeting" class="font-bold text-xl tracking-tight text-white">Admin</span>
                 </div>
                 <div class="flex items-center gap-3">
                     <button id="openSettings" class="text-stone-400 hover:text-white transition-colors p-2 rounded-lg hover:bg-stone-800" title="Admin Settings">
@@ -324,16 +324,21 @@
             <h2 class="text-2xl font-bold text-white mb-6">Performance Tools</h2>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Setlist Builder Card -->
-                <a href="setlist-builder.html" rel="noopener noreferrer" class="group relative flex flex-col p-6 bg-stone-900 border border-stone-800 rounded-2xl hover:border-amber-500 hover:shadow-2xl hover:shadow-amber-900/20 transition-all duration-300">
+                <!-- Setlist Manager Card -->
+                <a href="setlist-manager.html" rel="noopener noreferrer" class="group relative flex flex-col p-6 bg-stone-900 border border-stone-800 rounded-2xl hover:border-amber-500 hover:shadow-2xl hover:shadow-amber-900/20 transition-all duration-300">
                     <div class="flex items-center justify-between mb-4">
                         <div class="p-3 bg-amber-500/10 text-amber-400 rounded-xl group-hover:bg-amber-600 group-hover:text-white transition-all duration-300">
-                            <i class="fa-solid fa-hammer text-2xl"></i>
+                            <span class="fa-stack text-lg flex items-center justify-center w-[1em] h-[1em]">
+                                <i class="fa-solid fa-list-ul fa-stack-1x"></i>
+                                <i class="fa-solid fa-music fa-stack-1x" 
+                                style="font-size: 0.55em; margin-top: 10px; margin-left: 10px; filter: drop-shadow(1px 1px 0px rgba(0,0,0,0.2));">
+                                </i>
+                            </span>
                         </div>
                         <i class="fa-solid fa-arrow-right text-stone-700 group-hover:text-amber-400 transition-all"></i>
                     </div>
-                    <h3 class="text-xl font-bold text-white mb-2 group-hover:text-amber-400 transition-colors">Setlist Builder</h3>
-                    <p class="text-stone-400 text-sm leading-relaxed">Build, edit, and view setlists with toggle mode</p>
+                    <h3 class="text-xl font-bold text-white mb-2 group-hover:text-amber-400 transition-colors">Setlists</h3>
+                    <p class="text-stone-400 text-sm leading-relaxed">View and manage setlists</p>
                 </a>
 
                 <!-- AbleSet Launcher -->
@@ -991,12 +996,16 @@
 
             // Auth state listener - show login form only if confirmed not authenticated
             window.FirebaseAuth.onAuthChange((user) => {
+                const headerGreeting = document.getElementById('header-greeting');
                 if (!user) {
                     // Not authenticated - show login form
                     showLoginForm();
+                    headerGreeting.textContent = 'Admin';
                 } else {
-                    // Authenticated - hide the entire modal
+                    // Authenticated - hide the entire modal and show greeting
                     hideLoginModal();
+                    const firstName = user.displayName ? user.displayName.split(' ')[0] : 'there';
+                    headerGreeting.textContent = `Hey, ${firstName}!`;
                 }
             });
 
