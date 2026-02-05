@@ -5,6 +5,18 @@ import { initializeApp } from 'firebase/app';
 import { getFirestore, collection, doc, getDoc, getDocs, setDoc, updateDoc, deleteDoc, query, where, onSnapshot, writeBatch } from 'firebase/firestore';
 import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged, setPersistence, browserLocalPersistence } from 'firebase/auth';
 
+// ============= ALLOWED EMAILS =============
+// Only these email addresses can sign in to admin pages
+const ALLOWED_EMAILS = [
+  'thomasdhickman@gmail.com',
+  'an.fiolek@gmail.com',
+  'keletate@gmail.com',
+  'lesterburton17@gmail.com',
+  'davidbigham1@gmail.com',
+  'shelleycatalan@gmail.com',
+  'ultraphonicsmusic@gmail.com'
+];
+
 // Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyCqMRpeWfpj3Sv2SSd3nT5GkwK7NC3Ir7s",
@@ -29,7 +41,15 @@ setPersistence(auth, browserLocalPersistence).catch(console.error);
 let currentUser = null;
 let authStateListeners = [];
 
-onAuthStateChanged(auth, (user) => {
+onAuthStateChanged(auth, async (user) => {
+  // If user is signed in but not in allowlist, sign them out
+  if (user && !ALLOWED_EMAILS.includes(user.email.toLowerCase())) {
+    await signOut(auth);
+    currentUser = null;
+    authStateListeners.forEach(listener => listener(null));
+    return;
+  }
+
   currentUser = user;
   authStateListeners.forEach(listener => listener(user));
 });
@@ -39,7 +59,21 @@ const googleProvider = new GoogleAuthProvider();
 const FirebaseAuth = {
   async loginWithGoogle() {
     const result = await signInWithPopup(auth, googleProvider);
-    return result.user;
+    const user = result.user;
+
+    // Check if user's email is in the allowlist
+    if (!ALLOWED_EMAILS.includes(user.email.toLowerCase())) {
+      // Sign out unauthorized user
+      await signOut(auth);
+      throw new Error('Access denied. Your account is not authorized to access this admin area.');
+    }
+
+    return user;
+  },
+
+  // Check if an email is allowed
+  isEmailAllowed(email) {
+    return ALLOWED_EMAILS.includes(email.toLowerCase());
   },
 
   async logout() {
