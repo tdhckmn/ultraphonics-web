@@ -1,47 +1,45 @@
 import { config } from '../content/config.js';
 import { trackEvent } from './analytics.js';
 import { initMailerLite } from './mailer-lite.js';
-import {
-    setupCommonElements,
-    parseLocalDateOnly,
-    parseTimeToHM,
-    dateToIsoWithLocalTz,
-    toIsoWithTz,
-    firstUrl,
-    formatCityState
+import { 
+    setupCommonElements, 
+    parseLocalDateOnly, 
+    parseTimeToHM, 
+    dateToIsoWithLocalTz, 
+    toIsoWithTz, 
+    firstUrl, 
+    formatCityState 
 } from './utils.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
   // 1. Setup Navigation, Analytics, Footer
-  setupCommonElements('home');
+  setupCommonElements('home'); 
 
   // 2. Setup MailerLite
   initMailerLite();
 
   // --- Home Page Specific Logic ---
-
+  
   let shows = [];
   try {
-    // Try to fetch from Firestore via the global FirestoreService (if bundle is loaded)
+    // Use the global service provided by the firebase-bundle.js
     if (window.FirestoreService) {
-      shows = await window.FirestoreService.getPublishedShows();
+        shows = await window.FirestoreService.getPublishedShows();
     } else {
-      // Fallback to static JSON
-      const response = await fetch(`content/shows.json?v=${new Date().getTime()}`);
-      if (response.ok) {
-        shows = (await response.json()).filter(s => s.published);
-      }
+        console.error('Firestore Service not available. Did the bundle load?');
+        // Optional: Fallback to a static file if the bundle fails
+        const response = await fetch(`content/shows.json?v=${new Date().getTime()}`);
+        if (response.ok) {
+          shows = (await response.json()).filter(s => s.published);
+        } else {
+          throw new Error('Could not load shows from fallback JSON.');
+        }
     }
   } catch (error) {
     console.error('Error loading shows:', error);
-    // Fallback to static JSON if Firestore fails
-    try {
-      const response = await fetch(`content/shows.json?v=${new Date().getTime()}`);
-      if (response.ok) {
-        shows = (await response.json()).filter(s => s.published);
-      }
-    } catch (fallbackError) {
-      console.error('Fallback also failed:', fallbackError);
+    const showsContainer = document.querySelector(config.selectors.showsContainer);
+    if (showsContainer) {
+      showsContainer.innerHTML = '<p class="error-text">Could not load shows. Please check back later.</p>';
     }
   }
 

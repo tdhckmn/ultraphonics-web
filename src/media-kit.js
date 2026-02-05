@@ -67,16 +67,21 @@ document.addEventListener('DOMContentLoaded', async () => {
         let allSongs = [];
 
         try {
-            // Fetch songs from the separate JSON file
-            const response = await fetch(`content/songs.json?v=${new Date().getTime()}`);
-            if (response.ok) {
-                allSongs = await response.json();
-                renderSongs(allSongs);
+            if (window.FirestoreService) {
+                allSongs = await window.FirestoreService.getSongs();
             } else {
-                songListContainer.innerHTML = '<p class="error-text">Unable to load song list.</p>';
+                console.error('Firestore Service not available. Did the bundle load?');
+                const response = await fetch(`content/songs.json?v=${new Date().getTime()}`);
+                if (response.ok) {
+                    allSongs = await response.json();
+                } else {
+                    throw new Error('Could not load songs from fallback JSON.');
+                }
             }
+            renderSongs(allSongs);
         } catch (error) {
             console.error("Error loading songs:", error);
+            songListContainer.innerHTML = '<p class="error-text">Unable to load song list.</p>';
         }
 
         // Handle Filter Change
