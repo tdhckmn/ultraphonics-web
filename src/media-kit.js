@@ -67,17 +67,20 @@ document.addEventListener('DOMContentLoaded', async () => {
         let allSongs = [];
 
         try {
+            let fetchedSongs = [];
             if (window.FirestoreService) {
-                allSongs = await window.FirestoreService.getSongs();
+                fetchedSongs = await window.FirestoreService.getSongs();
             } else {
                 console.error('Firestore Service not available. Did the bundle load?');
                 const response = await fetch(`content/songs.json?v=${new Date().getTime()}`);
                 if (response.ok) {
-                    allSongs = await response.json();
+                    fetchedSongs = await response.json();
                 } else {
                     throw new Error('Could not load songs from fallback JSON.');
                 }
             }
+            // Only show songs marked for website display
+            allSongs = fetchedSongs.filter(s => s.showOnWebsite === true);
             renderSongs(allSongs);
         } catch (error) {
             console.error("Error loading songs:", error);
