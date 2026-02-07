@@ -79,12 +79,10 @@
                 <i class="fa-solid fa-arrow-left"></i>
             </a>
             <h1 class="text-xl font-bold text-white">Quote Generator</h1>
+            <span class="px-2 py-0.5 bg-amber-500/20 text-amber-400 text-xs font-bold rounded-full border border-amber-500/30">BETA</span>
             <span class="text-sm text-stone-500" id="show-name"></span>
         </div>
         <div class="flex items-center gap-3">
-            <button id="settings-btn" class="text-stone-400 hover:text-white transition-colors p-2 rounded-lg hover:bg-stone-800" title="Admin Settings">
-                <i class="fa-solid fa-gear"></i>
-            </button>
             <button id="download-pdf-btn" class="px-4 py-2 bg-teal-600 text-white rounded-lg font-semibold hover:bg-teal-500 transition-colors flex items-center gap-2">
                 <i class="fa-solid fa-file-pdf"></i>
                 Download PDF
@@ -93,65 +91,6 @@
                 <i class="fa-solid fa-save"></i>
                 Save Quote
             </button>
-        </div>
-    </div>
-
-    <!-- Settings Modal -->
-    <div id="settings-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[100] hidden">
-        <div class="bg-stone-900 w-full max-w-md mx-auto rounded-xl shadow-2xl border border-stone-700 overflow-hidden m-4">
-            <div class="p-6">
-                <div class="flex justify-between items-center pb-3 border-b border-stone-800">
-                    <p class="text-lg font-bold text-white">Admin Settings</p>
-                    <button id="close-settings" class="text-stone-400 hover:text-white transition-colors">
-                        <i class="fa-solid fa-times"></i>
-                    </button>
-                </div>
-
-                <div class="my-5">
-                    <!-- GitHub Authentication -->
-                    <label class="block text-stone-400 text-xs font-bold mb-2">
-                        GitHub Authentication
-                    </label>
-
-                    <a href="https://github.com/settings/tokens/new?description=Ultraphonics%20Admin&scopes=repo"
-                       target="_blank"
-                       class="block w-full px-4 py-3 bg-indigo-600 rounded-lg text-white hover:bg-indigo-500 font-bold transition-colors mb-2 text-center">
-                        <i class="fab fa-github mr-2"></i> Create GitHub Token
-                    </a>
-                    <p class="text-stone-500 text-xs mb-3 italic">
-                        Opens GitHub with the token form pre-filled. Copy the token and paste below.
-                    </p>
-
-                    <label class="block text-stone-400 text-xs font-bold mb-2">
-                        Personal Access Token
-                    </label>
-                    <input class="appearance-none border border-stone-700 rounded w-full py-3 px-3 text-stone-200 bg-stone-800 leading-tight focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 mb-1"
-                        id="settings-gh-token" type="password" placeholder="ghp_...">
-                    <p class="text-stone-500 text-xs mt-1 italic mb-4">
-                        Required for saving quotes to GitHub
-                    </p>
-
-                    <!-- Cache Buster -->
-                    <div class="border-t border-stone-800 mt-5 pt-5">
-                        <label class="block text-stone-400 text-xs font-bold mb-2">
-                            Refresh Page
-                        </label>
-                        <button id="clear-cache-btn" class="w-full px-4 py-3 bg-stone-800 border border-stone-700 rounded-lg text-white hover:bg-stone-700 font-semibold transition-colors flex items-center justify-center gap-2">
-                            <i class="fas fa-sync-alt"></i>
-                            <span>Clear Cache & Reload</span>
-                        </button>
-                        <p class="text-stone-500 text-xs mt-2 italic">
-                            Use this if you don't see recent updates or changes
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="border-t border-stone-800 bg-stone-900 px-6 py-4 flex justify-end">
-                <button id="save-settings-btn" class="px-6 py-3 bg-indigo-600 rounded-lg text-white hover:bg-indigo-500 font-bold transition-colors">
-                    Save Changes
-                </button>
-            </div>
         </div>
     </div>
 
@@ -424,9 +363,6 @@
         </div>
     </div>
 
-    <!-- Shared Config Script -->
-    <script src="setlist-builder.js"></script>
-
     <script>
         let show = null;
         let showId = null;
@@ -447,33 +383,16 @@
             });
         }
 
-        // Load show data
+        // Load show data from Firestore
         async function loadShowData() {
             try {
-                const { owner, repo, token } = window.AppState.config;
-                const url = `https://api.github.com/repos/${owner}/${repo}/contents/content/shows.json`;
-
-                const headers = {};
-                if (token) {
-                    headers['Authorization'] = `token ${token}`;
+                if (!window.FirestoreService) {
+                    throw new Error("Firebase not loaded");
                 }
 
-                // Add timestamp to prevent caching
-                const response = await fetch(`${url}?t=${Date.now()}`, { headers });
+                shows = await window.FirestoreService.getShows();
 
-                if (!response.ok) {
-                    if (response.status === 404) {
-                        throw new Error("shows.json not found");
-                    }
-                    throw new Error(`GitHub Error: ${response.status}`);
-                }
-
-                const fileData = await response.json();
-                // Decode base64 content from GitHub API
-                const content = atob(fileData.content);
-                shows = JSON.parse(content);
-
-                // Find show by UUID instead of array index
+                // Find show by UUID
                 if (showId !== null) {
                     show = shows.find(s => s.id === showId);
                     if (show) {
@@ -493,53 +412,18 @@
             }
         }
 
-        // Load existing quote
+        // Load existing quote from Firestore
         async function loadExistingQuote(quoteId) {
             try {
-                const { owner, repo, token } = window.AppState.config;
-
-                // First, we need to find the quote file by looking through the show's quoteId
-                // The quoteId passed here is the UUID, but we need to find the filename
-                // We'll search through all shows to find the quote filename associated with this UUID
-                let quoteFilename = null;
-
-                // Find the show that has this quoteId
-                for (const s of shows) {
-                    if (s.quoteId === quoteId) {
-                        // The show should have the quote filename
-                        quoteFilename = s.quote;
-                        break;
-                    }
+                if (!window.FirestoreService) {
+                    throw new Error("Firebase not loaded");
                 }
 
-                // If we didn't find it via shows, try the current show
-                if (!quoteFilename && show && show.quoteId === quoteId) {
-                    quoteFilename = show.quote;
+                const quote = await window.FirestoreService.getQuote(quoteId);
+
+                if (!quote) {
+                    throw new Error(`Quote not found: ${quoteId}`);
                 }
-
-                // If we still don't have a filename, try using the quoteId as a filename (fallback for old format)
-                if (!quoteFilename) {
-                    quoteFilename = quoteId;
-                }
-
-                const url = `https://api.github.com/repos/${owner}/${repo}/contents/content/quotes/${quoteFilename}`;
-
-                const headers = {};
-                if (token) {
-                    headers['Authorization'] = `token ${token}`;
-                }
-
-                // Add timestamp to prevent caching
-                const response = await fetch(`${url}?t=${Date.now()}`, { headers });
-
-                if (!response.ok) {
-                    throw new Error(`Quote not found: ${quoteFilename}`);
-                }
-
-                const fileData = await response.json();
-                // Decode base64 content from GitHub API
-                const content = atob(fileData.content);
-                const quote = JSON.parse(content);
 
                 // Populate form with quote data
                 document.getElementById('duration').value = quote.duration;
@@ -750,17 +634,20 @@
             }
         }
 
-        // Save quote
+        // Save quote to Firestore
         async function saveQuote() {
             if (!show) {
                 alert('No show data available');
                 return;
             }
 
-            const { owner, repo, token } = window.AppState.config;
-            if (!token) {
-                alert('Please configure your GitHub token in Settings first.');
-                window.open('setlist-manager.html', '_blank');
+            if (!window.FirestoreService) {
+                alert('Firebase not loaded');
+                return;
+            }
+
+            if (!window.FirebaseAuth?.isAuthenticated()) {
+                alert('Please sign in to save quotes');
                 return;
             }
 
@@ -822,91 +709,12 @@
                     };
                 }
 
-                // Generate quote filename
-                const quoteFilename = `${show.venue.replace(/\s+/g, '_')}_${show.date.replace(/\//g, '-')}.json`;
+                // Save quote to Firestore
+                await window.FirestoreService.saveQuote(quote);
 
-                // Step 1: Save quote file to content/quotes/
-                const quotePath = `content/quotes/${quoteFilename}`;
-                const quoteApiUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${quotePath}`;
-
-                // Get existing quote SHA if it exists
-                let quoteSha = null;
-                try {
-                    const getQuoteRes = await fetch(quoteApiUrl, {
-                        headers: { 'Authorization': `token ${token}` }
-                    });
-                    if (getQuoteRes.ok) {
-                        quoteSha = (await getQuoteRes.json()).sha;
-                    }
-                } catch (e) {
-                    console.warn('Quote does not exist yet, creating new');
-                }
-
-                // Save quote file
-                const quoteContent = btoa(unescape(encodeURIComponent(JSON.stringify(quote, null, 2))));
-                const saveQuoteRes = await fetch(quoteApiUrl, {
-                    method: 'PUT',
-                    headers: {
-                        'Authorization': `token ${token}`,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        message: `${quoteSha ? 'Update' : 'Create'} quote for ${show.venue}\n\nCo-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>`,
-                        content: quoteContent,
-                        sha: quoteSha,
-                        branch: 'main'
-                    })
-                });
-
-                if (!saveQuoteRes.ok) {
-                    const errorData = await saveQuoteRes.json();
-                    throw new Error(errorData.message || `Failed to save quote: ${saveQuoteRes.status}`);
-                }
-
-                // Step 2: Update shows.json with quote reference
-                const showsPath = 'content/shows.json';
-                const showsApiUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${showsPath}`;
-
-                // Get current shows.json
-                const getShowsRes = await fetch(showsApiUrl, {
-                    headers: { 'Authorization': `token ${token}` }
-                });
-
-                if (!getShowsRes.ok) {
-                    throw new Error('Failed to fetch shows.json');
-                }
-
-                const showsFileData = await getShowsRes.json();
-                const showsContent = atob(showsFileData.content);
-                const updatedShows = JSON.parse(showsContent);
-
-                // Find and update the show with quote reference (using UUID)
-                const showToUpdate = updatedShows.find(s => s.id === showId);
-                if (showToUpdate) {
-                    showToUpdate.quoteId = quoteUuid;
-                    showToUpdate.quote = quoteFilename; // Keep filename for backward compatibility and file lookups
-                }
-
-                // Save updated shows.json
-                const updatedShowsContent = btoa(unescape(encodeURIComponent(JSON.stringify(updatedShows, null, 2))));
-                const saveShowsRes = await fetch(showsApiUrl, {
-                    method: 'PUT',
-                    headers: {
-                        'Authorization': `token ${token}`,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        message: `Link quote to ${show.venue}\n\nCo-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>`,
-                        content: updatedShowsContent,
-                        sha: showsFileData.sha,
-                        branch: 'main'
-                    })
-                });
-
-                if (!saveShowsRes.ok) {
-                    const errorData = await saveShowsRes.json();
-                    throw new Error(errorData.message || `Failed to update shows.json: ${saveShowsRes.status}`);
-                }
+                // Update show with quote reference
+                show.quoteId = quoteUuid;
+                await window.FirestoreService.saveShow(show);
 
                 saveBtn.innerHTML = '<i class="fa-solid fa-check"></i> Saved!';
                 setTimeout(() => {
@@ -1165,59 +973,6 @@
             doc.save(filename);
         }
 
-        // Settings modal handlers
-        const settingsModal = document.getElementById('settings-modal');
-        const settingsBtn = document.getElementById('settings-btn');
-        const closeSettingsBtn = document.getElementById('close-settings');
-        const saveSettingsBtn = document.getElementById('save-settings-btn');
-        const clearCacheBtn = document.getElementById('clear-cache-btn');
-
-        function openSettingsModal() {
-            // Load current config
-            const ghToken = document.getElementById('settings-gh-token');
-            ghToken.value = window.AppState.config.token || '';
-            settingsModal.classList.remove('hidden');
-        }
-
-        function closeSettingsModal() {
-            settingsModal.classList.add('hidden');
-        }
-
-        function saveSettingsModal() {
-            const token = document.getElementById('settings-gh-token').value.trim();
-            window.AppState.config.token = token;
-            if (!window.AppState.config.owner) window.AppState.config.owner = 'tdhckmn';
-            if (!window.AppState.config.repo) window.AppState.config.repo = 'ultraphonics-web';
-            if (!window.AppState.config.folder) window.AppState.config.folder = 'content/setlists';
-            localStorage.setItem('up_gh_config', JSON.stringify(window.AppState.config));
-            closeSettingsModal();
-        }
-
-        function clearCacheAndReload() {
-            const url = new URL(window.location);
-            url.searchParams.set('cachebust', Date.now());
-            window.location.href = url.toString();
-        }
-
-        settingsBtn.addEventListener('click', openSettingsModal);
-        closeSettingsBtn.addEventListener('click', closeSettingsModal);
-        saveSettingsBtn.addEventListener('click', saveSettingsModal);
-        clearCacheBtn.addEventListener('click', clearCacheAndReload);
-
-        // Close modal on backdrop click
-        settingsModal.addEventListener('click', (e) => {
-            if (e.target === settingsModal) {
-                closeSettingsModal();
-            }
-        });
-
-        // Close modal on Escape key
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && !settingsModal.classList.contains('hidden')) {
-                closeSettingsModal();
-            }
-        });
-
         // --- Firebase Auth Setup ---
         function setupAuth() {
             const loginModal = document.getElementById('login-modal');
@@ -1285,7 +1040,6 @@
 
         // Initialize
         setupAuth();
-        loadConfig(); // Load GitHub config from localStorage
         loadShowData();
         updateCalculations();
     </script>

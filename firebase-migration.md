@@ -1,42 +1,106 @@
-# 🎸 Ultraphonics Firebase Migration Checklist
+# Firebase Hosting Migration Plan
 
-## Phase 1: Project Initialization
-- [ ] Install Firebase CLI (`npm install -g firebase-tools`)
-- [ ] Run `firebase init` (Hosting, Firestore, Auth)
-- [ ] Create `src/firebase-init.js` with provided config
-- [ ] Add Firebase SDK CDN links to `index.html` and admin pages
+Migrating ultraphonics.com from GitHub Pages to Firebase Hosting.
 
-## Phase 2: Data Migration
-- [ ] Create `scripts/migrate-to-firestore.js`
-- [ ] Migrate `content/songs.json` -> `songs` collection
-- [ ] Migrate `content/shows.json` -> `shows` collection
-- [ ] Migrate `content/setlists/*.json` -> `setlists` collection
-- [ ] Verify data integrity in Firebase Console
+## Current Status
 
-## Phase 3: Authentication & Security
-- [ ] Enable Email/Password Auth in Firebase Console
-- [ ] Create initial admin account (e.g., info@ultraphonicsmusic.com)
-- [ ] Replace GitHub token logic in `admin/index.html` with Auth state observer
-- [ ] Implement Firestore Security Rules:
-    - `shows`: Public Read / Admin Write
-    - `songs`: Public Read / Admin Write
-    - `setlists`: Public Read / Admin Write
+- [x] Firebase project created (`ultraphonics-web`)
+- [x] Firebase Hosting configured
+- [x] Firestore database set up
+- [x] Firebase Auth (Google) configured
+- [x] Deploy scripts in package.json
+- [x] Connect custom domain in Firebase Console
+- [x] Update DNS records at Hover
+- [ ] Verify domain ownership (automatic after DNS)
+- [ ] SSL certificate provisioned (automatic after verification)
 
-## Phase 4: Refactor Admin Functionality
-- [ ] **Show Manager** (`admin/show-manager.html`):
-    - [ ] Replace `loadShows()` with Firestore listener
-    - [ ] Replace `saveToGitHub()` with `setDoc()` or `addDoc()`
-    - [ ] Replace `deleteShow()` with `deleteDoc()`
-- [ ] **Setlist Builder** (`admin/setlist-builder.js`):
-    - [ ] Update `fetchGithubFiles()` to fetch from `setlists` collection
-    - [ ] Update save logic to write to Firestore instead of GitHub API
+---
 
-## Phase 5: Public Site Refactoring
-- [ ] Update `src/main.js` (or relevant display script) to fetch shows from Firestore
-- [ ] Update Setlist Viewer to fetch specific setlist IDs from Firestore
+## Step 1: Connect Custom Domain in Firebase Console
 
-## Phase 6: Deployment & Cleanup
-- [ ] Run `firebase deploy`
-- [ ] Verify custom domain routing
-- [ ] Remove legacy `content/*.json` files from repo
-- [ ] Delete GitHub-specific helper functions and `scripts/upload_to_trello.sh`
+1. Go to [Firebase Console](https://console.firebase.google.com/project/ultraphonics-web/hosting/sites)
+2. Click **Add custom domain**
+3. Enter: `ultraphonics.com`
+4. Firebase will provide verification TXT record and A records
+
+**Firebase will provide:**
+- A TXT record for verification
+- Two A records (typically):
+  - `151.101.1.195`
+  - `151.101.65.195`
+
+## Step 2: Update DNS at Hover
+
+### Records to REMOVE (GitHub Pages):
+| Type | Host | Value |
+|------|------|-------|
+| A | @ | 185.199.109.153 |
+| A | @ | 185.199.111.153 |
+| A | @ | 185.199.108.153 |
+| A | @ | 185.199.110.153 |
+| CNAME | www | tdhckmn.github.io |
+
+### Records to ADD (Firebase):
+| Type | Host | Value |
+|------|------|-------|
+| TXT | @ | *(provided by Firebase for verification)* |
+| A | @ | *(provided by Firebase - typically 151.101.1.195)* |
+| A | @ | *(provided by Firebase - typically 151.101.65.195)* |
+| CNAME | www | ultraphonics-web.web.app |
+
+### Records to KEEP:
+| Type | Host | Value | Purpose |
+|------|------|-------|---------|
+| MX | @ | 10 mx.hover.com.cust.hostedemail.com | Email |
+| TXT | @ | google-site-verification=... | Google verification |
+| TXT | @ | mailerlite-domain-verification=... | MailerLite |
+| TXT | @ | v=spf1 a mx include:_spf.mlsend.com ?all | Email SPF |
+| CNAME | litesrv._domainkey | litesrv._domainkey.mlsend.com | MailerLite DKIM |
+| CNAME | mail | mail.hover.com.cust.hostedemail.com | Hover email |
+
+## Step 3: Verify Domain
+
+After DNS propagation (up to 48 hours, usually faster):
+1. Firebase will automatically verify the domain
+2. SSL certificate will be provisioned automatically
+3. Site will be live at ultraphonics.com
+
+## Step 4: Clean Up
+
+- [ ] Disable GitHub Pages in repo settings (optional)
+- [ ] Update any hardcoded references to tdhckmn.github.io
+
+---
+
+## Commands Reference
+
+```bash
+# Local development
+npm run serve
+
+# Preview deployment (creates temporary URL)
+npm run preview
+
+# Production deployment
+npm run deploy
+
+# Deploy Firestore rules only
+npm run deploy:rules
+```
+
+---
+
+## Rollback Plan
+
+If issues occur, revert DNS at Hover:
+1. Remove Firebase A records
+2. Re-add GitHub Pages A records
+3. Re-add CNAME www -> tdhckmn.github.io
+
+---
+
+## Notes
+
+- DNS propagation can take 15 minutes to 48 hours
+- Firebase provides free SSL certificates
+- The `www` subdomain will redirect to the apex domain

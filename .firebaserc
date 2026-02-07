@@ -1,6 +1,6 @@
 {
   "projects": {
-    "staging": "ultraphonics-web"
+    "default": "ultraphonics-web"
   },
   "targets": {},
   "etags": {}

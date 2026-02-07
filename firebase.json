@@ -8,7 +8,7 @@
       "scripts/**",
       "package*.json",
       "firestore.rules",
-      "firebase-migration.md"
+      "*.md"
     ],
     "headers": [
       {
