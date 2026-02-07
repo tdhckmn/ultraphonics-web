@@ -10,13 +10,23 @@ const state = {
     songsMap: new Map(), // Map of song ID to song data (global properties)
     vocalAssignments: {}, // { songId: vocalist } - per-setlist vocalist assignments
     segues: {}, // { songId: true } - per-setlist segue flags
-    currentFile: null,
+    currentFile: null,   // Firebase document ID (GUID)
+    currentSetlistName: null, // Display name
     fileList: [],
     mobileTab: 'library',
     viewMode: true,
     hasUnsavedChanges: false,
     originalSetlist: []
 };
+
+// Generate a random GUID
+function generateGuid() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        const r = Math.random() * 16 | 0;
+        const v = c === 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+    });
+}
 
 // DOM element references (initialized after DOMContentLoaded)
 let els = {};
@@ -53,16 +63,28 @@ async function fetchSongs() {
     }
 }
 
+// Cache of full setlist data from getSetlists() to avoid redundant fetches
+let setlistCache = new Map();
+
 async function fetchSetlistFiles() {
     if (!window.FirestoreService) {
         throw new Error("Firebase not loaded");
     }
     try {
         const setlists = await window.FirestoreService.getSetlists();
-        return setlists.map(doc => ({
-            name: doc.id,
-            id: doc.id
-        }));
+        setlistCache.clear();
+
+        const files = setlists.map(item => {
+            const id = item.id;
+            const name = item.name || id;
+
+            // Cache the full setlist data for later use
+            setlistCache.set(id, item);
+
+            return { name, id };
+        }).filter(item => item.id);
+
+        return files;
     } catch (error) {
         console.error('Error fetching setlists:', error);
         throw new Error("Failed to load setlists");
@@ -70,27 +92,31 @@ async function fetchSetlistFiles() {
 }
 
 async function fetchSetlistContent(setlistId) {
-    if (!window.FirestoreService) {
-        throw new Error("Firebase not loaded");
+    if (!setlistId) {
+        throw new Error("Invalid Setlist ID");
     }
-    try {
-        const setlist = await window.FirestoreService.getSetlist(setlistId);
-        if (!setlist) {
-            throw new Error("Setlist not found");
-        }
-        // Return full setlist data including vocalAssignments and segues
-        return {
-            songs: setlist.songs || [],
-            vocalAssignments: setlist.vocalAssignments || {},
-            segues: setlist.segues || {}
-        };
-    } catch (error) {
-        console.error('Error fetching setlist content:', error);
-        throw new Error("Failed to load setlist");
+
+    // Try cache first (populated by fetchSetlistFiles)
+    let setlist = setlistCache.get(setlistId);
+
+    // Fallback to direct fetch if not in cache
+    if (!setlist && window.FirestoreService) {
+        setlist = await window.FirestoreService.getSetlist(setlistId);
     }
+
+    if (!setlist) {
+        throw new Error("Setlist not found");
+    }
+
+    return {
+        songs: setlist.songs || [],
+        vocalAssignments: setlist.vocalAssignments || {},
+        segues: setlist.segues || {},
+        name: setlist.name
+    };
 }
 
-async function saveSetlistToFirebase(name, songs, options = {}) {
+async function saveSetlistToFirebase(id, name, songs, options = {}) {
     if (!window.FirestoreService) {
         throw new Error("Firebase not loaded");
     }
@@ -98,14 +124,14 @@ async function saveSetlistToFirebase(name, songs, options = {}) {
         throw new Error("Please sign in to save setlists");
     }
     try {
-        await window.FirestoreService.saveSetlist(name, songs, options);
+        await window.FirestoreService.saveSetlist(id, name, songs, options);
     } catch (error) {
         console.error('Error saving setlist:', error);
         throw new Error("Failed to save setlist: " + error.message);
     }
 }
 
-async function deleteSetlist(setlistName) {
+async function deleteSetlist(setlistId) {
     if (!window.FirestoreService) {
         throw new Error("Firebase not loaded");
     }
@@ -113,7 +139,7 @@ async function deleteSetlist(setlistName) {
         throw new Error("Please sign in to delete setlists");
     }
     try {
-        await window.FirestoreService.deleteSetlist(setlistName);
+        await window.FirestoreService.deleteSetlist(setlistId);
     } catch (error) {
         console.error('Error deleting setlist:', error);
         throw new Error("Failed to delete setlist: " + error.message);
@@ -358,18 +384,20 @@ window.toggleToolbarMenu = (e) => {
 // --- SHARE ---
 
 window.shareSetlist = async () => {
-    const shareUrl = new URL(window.location.href);
+    // Build a clean share URL with just the setlist ID
+    const shareUrl = new URL(window.location.origin + window.location.pathname);
+    if (state.currentFile) {
+        shareUrl.searchParams.set('setlist', state.currentFile);
+    }
     if (state.viewMode) {
         shareUrl.searchParams.set('view', 'true');
-    } else {
-        shareUrl.searchParams.delete('view');
     }
     const url = shareUrl.toString();
 
     try {
         if (navigator.share) {
-            const title = state.currentFile
-                ? `Ultraphonics - ${state.currentFile.replace(/_/g, ' ')}`
+            const title = state.currentSetlistName
+                ? `Ultraphonics - ${state.currentSetlistName}`
                 : 'Ultraphonics Setlist';
             await navigator.share({ title, url });
         } else {
@@ -600,7 +628,8 @@ function addToSetlist(data) {
 
 function updateUI() {
     if (els.currentFilename) {
-        const displayName = state.currentFile ? state.currentFile.replace(/_/g, ' ') : "(Unsaved)";
+        // Use the explicit name if available, otherwise the ID, otherwise Unsaved
+        const displayName = state.currentSetlistName || (state.currentFile ? state.currentFile : "(Unsaved)");
         els.currentFilename.textContent = displayName;
     }
 
@@ -656,7 +685,7 @@ function renderFileListSidebar(files) {
     files.forEach(file => {
         const div = document.createElement('div');
         div.className = 'file-item';
-        if (state.currentFile === file.name) div.classList.add('active');
+        if (state.currentFile === file.id) div.classList.add('active');
 
         let deleteBtn = '';
         if (hasAuth && !state.viewMode) {
@@ -664,7 +693,7 @@ function renderFileListSidebar(files) {
         }
 
         div.innerHTML = `
-            <span class="font-medium text-gray-200 truncate text-sm flex-1"><i class="fas fa-list mr-2 text-gray-500"></i> ${file.name.replace(/_/g, ' ')}</span>
+            <span class="font-medium text-gray-200 truncate text-sm flex-1"><i class="fas fa-list mr-2 text-gray-500"></i> ${file.name}</span>
             ${deleteBtn}
         `;
 
@@ -683,8 +712,7 @@ function renderFileListSidebar(files) {
         if (btn) {
             btn.onclick = async (e) => {
                 e.stopPropagation();
-                const displayName = file.name.replace(/_/g, ' ');
-                if (confirm(`Are you sure you want to delete "${displayName}"? This cannot be undone.`)) {
+                if (confirm(`Are you sure you want to delete "${file.name}"? This cannot be undone.`)) {
                     await deleteRemoteFile(file);
                 }
             };
@@ -695,17 +723,22 @@ function renderFileListSidebar(files) {
 }
 
 async function deleteRemoteFile(fileObj) {
-    const displayName = fileObj.name.replace(/_/g, ' ');
+    const displayName = fileObj.name;
     showLoader('main-loader', 'loader-text', true, `Deleting ${displayName}...`);
     try {
-        const setlistName = fileObj.id || fileObj.name;
-        await deleteSetlist(setlistName);
+        await deleteSetlist(fileObj.id);
 
-        if (state.currentFile === fileObj.name) {
+        if (state.currentFile === fileObj.id) {
             state.currentFile = null;
+            state.currentSetlistName = null;
             state.setlist = [];
             state.vocalAssignments = {};
             state.segues = {};
+
+            // Clear URL params
+            const url = new URL(window.location.origin + window.location.pathname);
+            window.history.replaceState({}, '', url);
+
             renderSetlist();
             refreshLibrary();
             updateUI();
@@ -721,23 +754,27 @@ async function deleteRemoteFile(fileObj) {
 }
 
 async function loadRemoteFile(fileObj) {
-    const displayName = fileObj.name.replace(/_/g, ' ');
+    const displayName = fileObj.name;
     showLoader('main-loader', 'loader-text', true, `Loading ${displayName}...`);
 
+    // UPDATE QUERY PARAM WITH ID
     const url = new URL(window.location);
-    url.searchParams.set('file', fileObj.name);
+    url.searchParams.set('setlist', fileObj.id);
     window.history.replaceState({}, '', url);
 
     try {
-        const setlistId = fileObj.id || fileObj.name;
+        const setlistId = fileObj.id;
         const setlistData = await fetchSetlistContent(setlistId);
 
         // Handle both old format (array) and new format (object with songs, vocalAssignments, segues)
         const songsArray = Array.isArray(setlistData) ? setlistData : (setlistData.songs || []);
         state.vocalAssignments = setlistData.vocalAssignments || {};
         state.segues = setlistData.segues || {};
+        
+        // Update display name from stored data if available, or fallback to list name
+        state.currentSetlistName = setlistData.name || displayName;
 
-        // Normalize song names - Firebase may use 'title' or 'name' instead of 'lastKnownName'
+        // Normalize song names
         const normalizedData = songsArray.map(song => {
             // Handle case where song might be a string (just an ID)
             if (typeof song === 'string') {
@@ -750,12 +787,12 @@ async function loadRemoteFile(fileObj) {
             };
         });
         state.setlist = parseSetlistFromImport(normalizedData);
-        state.currentFile = fileObj.name;
+        state.currentFile = fileObj.id;
         markAsSaved();
         renderSetlist();
         refreshLibrary();
         updateUI();
-        renderFileListSidebar(state.fileList);
+        renderFileListSidebar(state.fileList); // Re-render to update active class based on ID
         if (window.innerWidth < 768) switchMobileTab('setlist');
     } catch (err) {
         alert("Error: " + err.message);
@@ -769,33 +806,43 @@ async function loadRemoteFile(fileObj) {
 window.saveCurrent = async () => {
     closeToolbarMenu();
     if (!state.currentFile) return saveAs();
-    if (!confirm(`Save changes to "${state.currentFile.replace(/_/g, ' ')}"?`)) return;
-    await performSave(state.currentFile);
+    if (!confirm(`Save changes to "${state.currentSetlistName || state.currentFile}"?`)) return;
+    await performSave(state.currentFile, state.currentSetlistName);
 };
 
 window.saveAs = async () => {
     closeToolbarMenu();
-    const defaultName = state.currentFile || "New Setlist";
-    const name = prompt("Setlist name:", defaultName.replace(/_/g, ' '));
+    const defaultName = state.currentSetlistName || "New Setlist";
+    const name = prompt("Setlist name:", defaultName);
     if (!name) return;
-    // Convert spaces to underscores for storage
-    const storageName = name.trim().replace(/\s+/g, '_');
-    await performSave(storageName);
+    
+    // Generate a new GUID for the setlist ID
+    const newId = generateGuid();
+    
+    // Pass new ID and Name to performSave
+    await performSave(newId, name);
 };
 
-async function performSave(setlistName) {
-    const displayName = setlistName.replace(/_/g, ' ');
+async function performSave(setlistId, setlistName) {
+    const displayName = setlistName || setlistId;
     showLoader('main-loader', 'loader-text', true, `Saving ${displayName}...`);
     try {
         const exportData = prepareSetlistForExport(state.setlist);
 
-        // Save with setlist-specific overrides (vocals, segues)
-        await saveSetlistToFirebase(setlistName, exportData, {
+        // Save using GUID as key, name stored in document data
+        await saveSetlistToFirebase(setlistId, setlistName, exportData, {
             vocalAssignments: state.vocalAssignments,
             segues: state.segues
         });
 
-        state.currentFile = setlistName;
+        state.currentFile = setlistId;
+        state.currentSetlistName = setlistName;
+        
+        // Update URL to the new ID
+        const url = new URL(window.location);
+        url.searchParams.set('setlist', setlistId);
+        window.history.replaceState({}, '', url);
+
         markAsSaved();
         updateUI();
         refreshFileList(true);
@@ -813,21 +860,30 @@ window.duplicateSetlist = async () => {
         alert("No setlist loaded to duplicate.");
         return;
     }
-    const currentName = state.currentFile.replace(/_/g, ' ');
+    const currentName = state.currentSetlistName || "Setlist";
     const newName = prompt("Name for duplicate:", currentName + " Copy");
     if (!newName) return;
-    const storageName = newName.trim().replace(/\s+/g, '_');
+    
+    // Generate new GUID for the duplicate
+    const newId = generateGuid();
 
-    // Save as new setlist (don't change current file reference yet)
+    // Save as new setlist
     showLoader('main-loader', 'loader-text', true, `Creating copy...`);
     try {
         const exportData = prepareSetlistForExport(state.setlist);
-        await saveSetlistToFirebase(storageName, exportData, {
+        await saveSetlistToFirebase(newId, newName, exportData, {
             vocalAssignments: state.vocalAssignments,
             segues: state.segues
         });
 
-        state.currentFile = storageName;
+        state.currentFile = newId;
+        state.currentSetlistName = newName;
+        
+        // Update URL
+        const url = new URL(window.location);
+        url.searchParams.set('setlist', newId);
+        window.history.replaceState({}, '', url);
+
         markAsSaved();
         updateUI();
         refreshFileList(true);
@@ -867,6 +923,12 @@ window.resetToNew = () => {
         state.vocalAssignments = {};
         state.segues = {};
         state.currentFile = null;
+        state.currentSetlistName = null;
+
+        // Clear URL params
+        const url = new URL(window.location.origin + window.location.pathname);
+        window.history.replaceState({}, '', url);
+
         markAsSaved();
         renderSetlist();
         refreshLibrary();
@@ -886,7 +948,8 @@ window.downloadSetlist = () => {
     const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    const filename = (state.currentFile || 'setlist').replace(/_/g, '-') + '.json';
+    // Use human readable name for filename
+    const filename = (state.currentSetlistName || 'setlist').replace(/\s+/g, '-').toLowerCase() + '.json';
     a.download = filename;
     a.click();
 };
@@ -1166,21 +1229,22 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Handle URL parameters
     const urlParams = new URLSearchParams(window.location.search);
-    const fileParam = urlParams.get('file');
+    const setlistParam = urlParams.get('setlist') || urlParams.get('file'); // Support legacy 'file' param
     const editParam = urlParams.get('edit');
 
     if (editParam === 'true' || editParam === '1') {
         toggleViewMode();
     }
 
-    if (fileParam) {
+    if (setlistParam) {
         await refreshFileList(true);
-        const fileObj = state.fileList.find(f => f.name === fileParam);
+        // Find file by ID now
+        const fileObj = state.fileList.find(f => f.id === setlistParam);
         if (fileObj) {
             await loadRemoteFile(fileObj);
             switchSidebarTab('library');
         } else {
-            alert(`File "${fileParam}" not found.`);
+            alert(`Setlist not found.`);
             switchSidebarTab('files');
         }
     } else {

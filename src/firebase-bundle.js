@@ -234,8 +234,8 @@ const FirestoreService = {
     });
   },
 
-  async saveSetlist(name, songs, options = {}) {
-    const docRef = doc(db, 'setlists', name);
+  async saveSetlist(id, name, songs, options = {}) {
+    const docRef = doc(db, 'setlists', id);
     const data = {
       name,
       songs,
@@ -255,6 +255,7 @@ const FirestoreService = {
     }
 
     await setDoc(docRef, data);
+    return id;
   },
 
   async deleteSetlist(setlistName) {
