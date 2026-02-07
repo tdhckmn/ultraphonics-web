@@ -155,10 +155,13 @@ function renderSongs(songs) {
     songs.forEach(song => {
         const li = document.createElement('li');
         li.className = 'song-item';
+        // Use 'name' (clean display name) if available, fall back to 'title'
+        const displayName = song.name || song.title || song.lastKnownName || 'Untitled';
+        const genre = song.genre || 'Other';
         // Add genre tag for visual flair
         li.innerHTML = `
-            <span class="song-title">${song.title}</span>
-            <span class="song-genre-tag genre-${song.genre.toLowerCase()}">${song.genre}</span>
+            <span class="song-title">${displayName}</span>
+            <span class="song-genre-tag genre-${genre.toLowerCase()}">${genre}</span>
         `;
         ul.appendChild(li);
     });
