@@ -234,14 +234,27 @@ const FirestoreService = {
     });
   },
 
-  async saveSetlist(name, songs) {
+  async saveSetlist(name, songs, options = {}) {
     const docRef = doc(db, 'setlists', name);
-    await setDoc(docRef, {
+    const data = {
       name,
       songs,
-      songCount: songs.filter(s => !s.lastKnownName?.startsWith('Set ')).length,
+      songCount: songs.filter(s => {
+        const songName = typeof s === 'string' ? '' : (s.lastKnownName || '');
+        return !songName.startsWith('Set ');
+      }).length,
       updatedAt: new Date().toISOString()
-    });
+    };
+
+    // Add setlist-specific overrides (vocals, segues)
+    if (options.vocalAssignments) {
+      data.vocalAssignments = options.vocalAssignments;
+    }
+    if (options.segues) {
+      data.segues = options.segues;
+    }
+
+    await setDoc(docRef, data);
   },
 
   async deleteSetlist(setlistName) {
