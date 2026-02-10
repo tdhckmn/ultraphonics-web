@@ -212,7 +212,11 @@ const FirestoreService = {
   async saveClient(client) {
     const now = new Date().toISOString();
     const docRef = doc(db, 'clients', client.id);
-    await setDoc(docRef, { ...client, updatedAt: now, createdAt: client.createdAt || now });
+    const cleaned = Object.fromEntries(
+      Object.entries({ ...client, updatedAt: now, createdAt: client.createdAt || now })
+        .filter(([, v]) => v !== undefined)
+    );
+    await setDoc(docRef, cleaned);
   },
 
   async getClientDetails(clientId) {

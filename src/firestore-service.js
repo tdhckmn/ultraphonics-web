@@ -199,11 +199,12 @@ export function subscribeToClients(callback) {
 export async function saveClient(client) {
   const now = new Date().toISOString();
   const docRef = doc(db, COLLECTIONS.CLIENTS, client.id);
-  await setDoc(docRef, {
-    ...client,
-    updatedAt: now,
-    createdAt: client.createdAt || now
-  });
+  // Strip undefined values — Firestore rejects them
+  const cleaned = Object.fromEntries(
+    Object.entries({ ...client, updatedAt: now, createdAt: client.createdAt || now })
+      .filter(([, v]) => v !== undefined)
+  );
+  await setDoc(docRef, cleaned);
 }
 
 /**
