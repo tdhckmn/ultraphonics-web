@@ -6,7 +6,7 @@ export const config = {
 
   // API Keys and IDs
   ids: {
-    googleAnalytics: "G-7RFPHXHGBC",
+    googleAnalytics: "G-FEL0XX8F65",
     emailjs: {
       publicKey: "KhA8Z-PRCg69qMpWp",
       serviceId: "service_eujinnf",

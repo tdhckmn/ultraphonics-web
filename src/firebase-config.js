@@ -12,7 +12,7 @@ const firebaseConfig = {
   storageBucket: "ultraphonics-web.firebasestorage.app",
   messagingSenderId: "729950319293",
   appId: "1:729950319293:web:b75843574cc5bcec813dd4",
-  measurementId: "G-PRBQEMNV4H"
+  measurementId: "G-FEL0XX8F65"
 };
 
 // Initialize Firebase

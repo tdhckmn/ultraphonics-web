@@ -284,6 +284,9 @@
                     <span id="header-greeting" class="font-bold text-xl tracking-tight text-white">Admin</span>
                 </div>
                 <div class="flex items-center gap-3">
+                    <a href="https://discord.com/channels/1450501228462215208" target="_blank" rel="noopener noreferrer" class="text-stone-400 hover:text-white transition-colors p-2 rounded-lg hover:bg-stone-800" title="Discord">
+                        <i class="fa-brands fa-discord"></i>
+                    </a>
                     <button id="openSettings" class="text-stone-400 hover:text-white transition-colors p-2 rounded-lg hover:bg-stone-800" title="Admin Settings">
                         <i class="fa-solid fa-gear"></i>
                     </button>
@@ -307,7 +310,7 @@
                     <i class="fa-solid fa-calendar-check mr-2"></i>Booking
                 </button>
                 <button class="tab-btn px-6 py-4 text-sm font-semibold transition-all border-b-2 border-transparent text-stone-400 hover:text-stone-200" data-tab="marketing">
-                    <i class="fa-solid fa-bullhorn mr-2"></i>Marketing
+                    <i class="fa-solid fa-toolbox mr-2"></i>Tools
                 </button>
                 <button class="tab-btn px-6 py-4 text-sm font-semibold transition-all border-b-2 border-transparent text-stone-400 hover:text-stone-200" data-tab="data">
                     <i class="fa-solid fa-palette mr-2"></i>Branding
@@ -437,21 +440,49 @@
 
         <!-- Marketing Tab -->
         <div id="marketing" class="tab-content">
-            <h2 class="text-2xl font-bold text-white mb-6">Marketing & Analytics</h2>
+            <h2 class="text-2xl font-bold text-white mb-6">Tools</h2>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Google Analytics -->
-                <a href="https://analytics.google.com/" target="_blank" rel="external noopener noreferrer" class="group relative flex flex-col p-6 bg-stone-900 border border-stone-800 rounded-xl hover:border-orange-500 hover:shadow-xl hover:shadow-orange-900/10 transition-all duration-300">
+                <!-- Firebase Console -->
+                <a href="https://console.firebase.google.com/project/ultraphonics-web/overview" target="_blank" rel="external noopener noreferrer" class="group relative flex flex-col p-6 bg-stone-900 border border-stone-800 rounded-xl hover:border-orange-500 hover:shadow-xl hover:shadow-orange-900/10 transition-all duration-300">
                     <div class="flex items-center justify-between mb-3">
                         <div class="flex items-center gap-3">
                             <div class="p-3 bg-orange-500/10 text-orange-400 rounded-lg group-hover:bg-orange-600 group-hover:text-white transition-colors">
-                                <i class="fa-solid fa-chart-line text-xl"></i>
+                                <i class="fa-solid fa-fire text-xl"></i>
                             </div>
-                            <h3 class="text-lg font-bold text-white group-hover:text-orange-400 transition-colors">Analytics</h3>
+                            <h3 class="text-lg font-bold text-white group-hover:text-orange-400 transition-colors">Firebase</h3>
                         </div>
                         <i class="fa-solid fa-external-link-alt text-stone-700 group-hover:text-orange-500 transition-colors text-sm"></i>
                     </div>
+                    <p class="text-stone-400 text-sm">Database, auth, and hosting console</p>
+                </a>
+
+                <!-- Google Analytics -->
+                <a href="https://analytics.google.com/analytics/web/#/a359545509p494449748/reports/intelligenthome" target="_blank" rel="external noopener noreferrer" class="group relative flex flex-col p-6 bg-stone-900 border border-stone-800 rounded-xl hover:border-amber-500 hover:shadow-xl hover:shadow-amber-900/10 transition-all duration-300">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center gap-3">
+                            <div class="p-3 bg-amber-500/10 text-amber-400 rounded-lg group-hover:bg-amber-600 group-hover:text-white transition-colors">
+                                <i class="fa-solid fa-chart-line text-xl"></i>
+                            </div>
+                            <h3 class="text-lg font-bold text-white group-hover:text-amber-400 transition-colors">Analytics</h3>
+                        </div>
+                        <i class="fa-solid fa-external-link-alt text-stone-700 group-hover:text-amber-500 transition-colors text-sm"></i>
+                    </div>
                     <p class="text-stone-400 text-sm">Traffic and visitor statistics</p>
+                </a>
+
+                <!-- Discord -->
+                <a href="https://discord.com/channels/1450501228462215208" target="_blank" rel="noopener noreferrer" class="group relative flex flex-col p-6 bg-stone-900 border border-stone-800 rounded-xl hover:border-indigo-500 hover:shadow-xl hover:shadow-indigo-900/10 transition-all duration-300">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center gap-3">
+                            <div class="p-3 bg-indigo-500/10 text-indigo-400 rounded-lg group-hover:bg-indigo-600 group-hover:text-white transition-colors">
+                                <i class="fa-brands fa-discord text-xl"></i>
+                            </div>
+                            <h3 class="text-lg font-bold text-white group-hover:text-indigo-400 transition-colors">Discord</h3>
+                        </div>
+                        <i class="fa-solid fa-external-link-alt text-stone-700 group-hover:text-indigo-500 transition-colors text-sm"></i>
+                    </div>
+                    <p class="text-stone-400 text-sm">Band communication and coordination</p>
                 </a>
 
                 <!-- Search Console -->
@@ -468,20 +499,6 @@
                     <p class="text-stone-400 text-sm">Search performance and indexing</p>
                 </a>
 
-                <!-- MailerLite -->
-                <a href="https://dashboard.mailerlite.com/" target="_blank" rel="external noopener noreferrer" class="group relative flex flex-col p-6 bg-stone-900 border border-stone-800 rounded-xl hover:border-green-500 hover:shadow-xl hover:shadow-green-900/10 transition-all duration-300">
-                    <div class="flex items-center justify-between mb-3">
-                        <div class="flex items-center gap-3">
-                            <div class="p-3 bg-green-500/10 text-green-400 rounded-lg group-hover:bg-green-600 group-hover:text-white transition-colors">
-                                <i class="fa-solid fa-envelope text-xl"></i>
-                            </div>
-                            <h3 class="text-lg font-bold text-white group-hover:text-green-400 transition-colors">MailerLite</h3>
-                        </div>
-                        <i class="fa-solid fa-external-link-alt text-stone-700 group-hover:text-green-500 transition-colors text-sm"></i>
-                    </div>
-                    <p class="text-stone-400 text-sm">Email marketing and newsletters</p>
-                </a>
-
                 <!-- EmailJS -->
                 <a href="https://dashboard.emailjs.com/admin" target="_blank" rel="external noopener noreferrer" class="group relative flex flex-col p-6 bg-stone-900 border border-stone-800 rounded-xl hover:border-yellow-500 hover:shadow-xl hover:shadow-yellow-900/10 transition-all duration-300">
                     <div class="flex items-center justify-between mb-3">
@@ -494,6 +511,20 @@
                         <i class="fa-solid fa-external-link-alt text-stone-700 group-hover:text-yellow-500 transition-colors text-sm"></i>
                     </div>
                     <p class="text-stone-400 text-sm">Transactional emails and contact forms</p>
+                </a>
+
+                <!-- MailerLite -->
+                <a href="https://dashboard.mailerlite.com/" target="_blank" rel="external noopener noreferrer" class="group relative flex flex-col p-6 bg-stone-900 border border-stone-800 rounded-xl hover:border-green-500 hover:shadow-xl hover:shadow-green-900/10 transition-all duration-300">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center gap-3">
+                            <div class="p-3 bg-green-500/10 text-green-400 rounded-lg group-hover:bg-green-600 group-hover:text-white transition-colors">
+                                <i class="fa-solid fa-envelope text-xl"></i>
+                            </div>
+                            <h3 class="text-lg font-bold text-white group-hover:text-green-400 transition-colors">MailerLite</h3>
+                        </div>
+                        <i class="fa-solid fa-external-link-alt text-stone-700 group-hover:text-green-500 transition-colors text-sm"></i>
+                    </div>
+                    <p class="text-stone-400 text-sm">Email marketing and newsletters</p>
                 </a>
             </div>
         </div>
