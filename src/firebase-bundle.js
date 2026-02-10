@@ -2,7 +2,7 @@
 // This file initializes Firebase and exposes functions globally for inline scripts
 
 import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, doc, getDoc, getDocs, setDoc, updateDoc, deleteDoc, query, where, onSnapshot, writeBatch } from 'firebase/firestore';
+import { getFirestore, collection, doc, getDoc, getDocs, setDoc, updateDoc, deleteDoc, query, where, orderBy, onSnapshot, writeBatch } from 'firebase/firestore';
 import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged, setPersistence, browserLocalPersistence } from 'firebase/auth';
 
 // ============= ALLOWED EMAILS =============
@@ -210,8 +210,51 @@ const FirestoreService = {
   },
 
   async saveClient(client) {
+    const now = new Date().toISOString();
     const docRef = doc(db, 'clients', client.id);
-    await setDoc(docRef, { ...client, updatedAt: new Date().toISOString() });
+    await setDoc(docRef, { ...client, updatedAt: now, createdAt: client.createdAt || now });
+  },
+
+  async getClientDetails(clientId) {
+    const docRef = doc(db, 'clients', clientId);
+    const snapshot = await getDoc(docRef);
+    if (!snapshot.exists()) return null;
+    return { id: snapshot.id, ...snapshot.data() };
+  },
+
+  async getClientShows(clientId) {
+    const q = query(collection(db, 'shows'), where('clientId', '==', clientId));
+    const snapshot = await getDocs(q);
+    return snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+  },
+
+  async addActivityLog(clientId, logData) {
+    const now = new Date().toISOString();
+    const logId = logData.id || crypto.randomUUID();
+    const logRef = doc(db, 'clients', clientId, 'activityLogs', logId);
+    await setDoc(logRef, { id: logId, ...logData, timestamp: now });
+    const clientRef = doc(db, 'clients', clientId);
+    await updateDoc(clientRef, { lastInteraction: now, updatedAt: now });
+    return logId;
+  },
+
+  subscribeToActivityLogs(clientId, callback) {
+    const logsRef = collection(db, 'clients', clientId, 'activityLogs');
+    const q = query(logsRef, orderBy('timestamp', 'desc'));
+    return onSnapshot(q, (snapshot) => {
+      const logs = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+      callback(logs);
+    });
+  },
+
+  async deleteClient(clientId) {
+    const shows = await this.getClientShows(clientId);
+    if (shows.length > 0) {
+      return { deleted: false, reason: `Cannot delete: ${shows.length} show(s) are linked to this client. Remove or reassign them first.` };
+    }
+    const docRef = doc(db, 'clients', clientId);
+    await deleteDoc(docRef);
+    return { deleted: true };
   },
 
   // Setlists

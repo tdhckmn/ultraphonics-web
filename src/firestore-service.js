@@ -14,7 +14,8 @@ import {
   where,
   orderBy,
   onSnapshot,
-  writeBatch
+  writeBatch,
+  addDoc
 } from 'firebase/firestore';
 
 // Collection names
@@ -191,16 +192,101 @@ export function subscribeToClients(callback) {
 }
 
 /**
- * Save a client
+ * Save a client (create or update with merge)
  * @param {Object} client
  * @returns {Promise<void>}
  */
 export async function saveClient(client) {
+  const now = new Date().toISOString();
   const docRef = doc(db, COLLECTIONS.CLIENTS, client.id);
   await setDoc(docRef, {
     ...client,
-    updatedAt: new Date().toISOString()
+    updatedAt: now,
+    createdAt: client.createdAt || now
   });
+}
+
+/**
+ * Get a single client by ID
+ * @param {string} clientId
+ * @returns {Promise<Object|null>}
+ */
+export async function getClientDetails(clientId) {
+  const docRef = doc(db, COLLECTIONS.CLIENTS, clientId);
+  const snapshot = await getDoc(docRef);
+  if (!snapshot.exists()) return null;
+  return { id: snapshot.id, ...snapshot.data() };
+}
+
+/**
+ * Get all shows for a specific client
+ * @param {string} clientId
+ * @returns {Promise<Array>}
+ */
+export async function getClientShows(clientId) {
+  const q = query(
+    collection(db, COLLECTIONS.SHOWS),
+    where('clientId', '==', clientId)
+  );
+  const snapshot = await getDocs(q);
+  return snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+}
+
+/**
+ * Add an activity log to a client's sub-collection and update lastInteraction
+ * @param {string} clientId
+ * @param {Object} logData - { type, content, author, authorId, relatedShowId? }
+ * @returns {Promise<string>} The new log document ID
+ */
+export async function addActivityLog(clientId, logData) {
+  const now = new Date().toISOString();
+  const logId = logData.id || crypto.randomUUID();
+  const logRef = doc(db, COLLECTIONS.CLIENTS, clientId, 'activityLogs', logId);
+  await setDoc(logRef, {
+    id: logId,
+    ...logData,
+    timestamp: now
+  });
+
+  // Update parent client's lastInteraction
+  const clientRef = doc(db, COLLECTIONS.CLIENTS, clientId);
+  await updateDoc(clientRef, { lastInteraction: now, updatedAt: now });
+
+  return logId;
+}
+
+/**
+ * Get activity logs for a client with real-time updates
+ * @param {string} clientId
+ * @param {Function} callback - Called with array of logs on each update
+ * @returns {Function} Unsubscribe function
+ */
+export function subscribeToActivityLogs(clientId, callback) {
+  const logsRef = collection(db, COLLECTIONS.CLIENTS, clientId, 'activityLogs');
+  const q = query(logsRef, orderBy('timestamp', 'desc'));
+  return onSnapshot(q, (snapshot) => {
+    const logs = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+    callback(logs);
+  });
+}
+
+/**
+ * Delete a client (warns if shows are attached)
+ * @param {string} clientId
+ * @returns {Promise<{deleted: boolean, reason?: string}>}
+ */
+export async function deleteClient(clientId) {
+  // Check for attached shows
+  const shows = await getClientShows(clientId);
+  if (shows.length > 0) {
+    return {
+      deleted: false,
+      reason: `Cannot delete: ${shows.length} show(s) are linked to this client. Remove or reassign them first.`
+    };
+  }
+  const docRef = doc(db, COLLECTIONS.CLIENTS, clientId);
+  await deleteDoc(docRef);
+  return { deleted: true };
 }
 
 // ============= SETLISTS =============

@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Client Manager - Ultraphonics</title>
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="/assets/images/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/Ultraphonics-Spiral-512.png">
+    <link rel="manifest" href="/site.webmanifest">
+
+    <!-- Google Fonts - Montserrat -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Montserrat', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body, button, input, select, textarea, h1, h2, h3, h4, h5, h6, p, a, span:not([class*="fa-"]), div:not([class*="fa-"]) {
+            font-family: 'Montserrat', sans-serif !important;
+        }
+
+        .manager-container {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            grid-template-rows: 1fr;
+            gap: 1.5rem;
+            height: calc(100vh - 70px);
+            padding: 1.5rem;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 1023px) {
+            .manager-container {
+                display: flex;
+                flex-direction: column;
+                padding: 0.5rem;
+                height: calc(100vh - 70px);
+                overflow: hidden;
+            }
+            #clients-list {
+                flex: 1;
+                display: flex;
+            }
+            #clients-list.hidden-mobile {
+                display: none !important;
+            }
+            #client-detail {
+                flex: 1;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                display: none;
+                background: #1c1917;
+                z-index: 40;
+            }
+            #client-detail.active-mobile {
+                display: flex !important;
+            }
+        }
+
+        .client-item { cursor: pointer; transition: all 0.2s; }
+        .client-item:hover { background: rgba(20, 184, 166, 0.1); }
+        .client-item.selected { background: rgba(20, 184, 166, 0.2); border-left: 3px solid #14b8a6; }
+
+        .bg-accent-teal { background-color: #14b8a6; }
+        .text-accent-teal { color: #14b8a6; }
+        .border-accent-teal { border-color: #14b8a6; }
+        .hover\:bg-accent-teal:hover { background-color: #14b8a6; }
+
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .auth-spinner { animation: spin 1.5s linear infinite; }
+        .auth-overlay {
+            position: fixed; inset: 0; background: #0c0a09; z-index: 200;
+            display: flex; align-items: center; justify-content: center;
+            transition: opacity 0.3s ease-out;
+        }
+        .auth-overlay.fade-out { opacity: 0; pointer-events: none; }
+
+        /* Tab styles */
+        .crm-tab { cursor: pointer; transition: all 0.2s; }
+        .crm-tab.active { border-color: #14b8a6; color: #14b8a6; }
+        .crm-tab:not(.active) { border-color: transparent; color: #a8a29e; }
+        .crm-tab:not(.active):hover { color: #e7e5e4; }
+        .crm-tab-content { display: none; }
+        .crm-tab-content.active { display: block; }
+
+        /* Tag pill */
+        .tag-pill {
+            display: inline-flex; align-items: center; gap: 0.25rem;
+            padding: 0.25rem 0.75rem; border-radius: 9999px;
+            font-size: 0.75rem; font-weight: 600;
+            background: rgba(20, 184, 166, 0.15); color: #14b8a6;
+        }
+
+        /* Activity log timeline */
+        .log-entry { position: relative; padding-left: 1.5rem; }
+        .log-entry::before {
+            content: ''; position: absolute; left: 0; top: 0.5rem;
+            width: 0.5rem; height: 0.5rem; border-radius: 50%;
+            background: #14b8a6;
+        }
+        .log-entry::after {
+            content: ''; position: absolute; left: 0.1875rem; top: 1.25rem;
+            width: 1px; bottom: 0; background: #44403c;
+        }
+        .log-entry:last-child::after { display: none; }
+    </style>
+</head>
+<body class="bg-stone-950 text-stone-100 h-full overflow-hidden">
+
+    <!-- Top Bar -->
+    <header class="h-[70px] px-4 md:px-6 border-b border-stone-800 bg-stone-900 flex justify-between items-center shadow-md z-50 sticky top-0">
+        <div class="flex items-center gap-3 md:gap-4">
+            <div class="w-8 h-8 bg-gradient-to-br from-teal-400 to-teal-600 rounded flex items-center justify-center text-white font-bold flex-shrink-0">
+                <i class="fa-solid fa-address-book text-sm"></i>
+            </div>
+            <div>
+                <h1 class="text-base md:text-lg font-bold text-white tracking-wide"><span class="hidden md:inline">Client Manager</span><span class="md:hidden">Clients</span></h1>
+            </div>
+        </div>
+        <div class="flex items-center gap-2">
+            <button id="add-client-btn" class="text-xs px-3 py-2 bg-teal-900 border border-teal-500 text-teal-200 rounded-lg hover:bg-teal-800 transition-colors flex items-center gap-2" title="Add Client">
+                <i class="fa-solid fa-plus text-xs"></i>
+                <span class="hidden md:inline">Add Client</span>
+            </button>
+            <button id="settings-btn" class="text-stone-400 hover:text-white transition-colors p-2 rounded-lg hover:bg-stone-800" title="Settings">
+                <i class="fa-solid fa-gear"></i>
+            </button>
+            <a href="index.html" class="text-stone-400 hover:text-accent-teal text-sm transition ml-2 p-2">
+                <i class="fa-solid fa-arrow-left"></i>
+            </a>
+        </div>
+    </header>
+
+    <!-- Auth Loading Overlay -->
+    <div id="auth-loading" class="auth-overlay">
+        <div class="text-center">
+            <img src="/assets/images/Ultraphonics-Spiral-192.png" alt="Loading" class="h-16 w-auto mx-auto auth-spinner">
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="fixed inset-0 bg-stone-950 flex items-center justify-center z-[100] hidden">
+        <div id="login-form" class="bg-stone-900 w-full max-w-md mx-auto rounded-xl shadow-2xl border border-stone-700 overflow-hidden m-4">
+            <div class="p-6">
+                <div class="text-center mb-6">
+                    <img src="/assets/images/Ultraphonics-Spiral-192.png" alt="Ultraphonics" class="h-16 w-auto mx-auto mb-4">
+                    <h2 class="text-xl font-bold text-white">Admin Login</h2>
+                    <p class="text-stone-400 text-sm mt-1">Sign in to manage clients</p>
+                </div>
+                <div id="login-error" class="text-red-400 text-sm hidden mb-4 text-center"></div>
+                <button id="google-sign-in-btn"
+                    class="w-full px-4 py-3 bg-white rounded-lg text-gray-800 hover:bg-gray-100 font-semibold transition-colors flex items-center justify-center gap-3">
+                    <svg class="w-5 h-5" viewBox="0 0 24 24">
+                        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                        <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                        <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                    </svg>
+                    Sign in with Google
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[100] hidden">
+        <div class="bg-stone-900 w-full max-w-md mx-auto rounded-xl shadow-2xl border border-stone-700 overflow-hidden m-4">
+            <div class="p-6">
+                <div class="flex justify-between items-center pb-3 border-b border-stone-800">
+                    <p class="text-lg font-bold text-white">Admin Settings</p>
+                    <button id="close-settings" class="text-stone-400 hover:text-white transition-colors">
+                        <i class="fa-solid fa-times"></i>
+                    </button>
+                </div>
+                <div class="my-5">
+                    <div id="user-info" class="mb-5 p-4 bg-stone-800 rounded-lg">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-teal-600 rounded-full flex items-center justify-center">
+                                <i class="fa-solid fa-user text-white"></i>
+                            </div>
+                            <div>
+                                <div class="text-white font-semibold" id="user-email">Loading...</div>
+                                <div class="text-stone-400 text-xs">Signed in</div>
+                            </div>
+                        </div>
+                    </div>
+                    <button id="sign-out-btn" class="w-full px-4 py-3 bg-red-600/20 border border-red-600/50 rounded-lg text-red-400 hover:bg-red-600/30 font-semibold transition-colors flex items-center justify-center gap-2 mb-5">
+                        <i class="fa-solid fa-sign-out-alt"></i>
+                        <span>Sign Out</span>
+                    </button>
+                    <div class="border-t border-stone-800 pt-5">
+                        <button id="clear-cache-btn" class="w-full px-4 py-3 bg-stone-800 border border-stone-700 rounded-lg text-white hover:bg-stone-700 font-semibold transition-colors flex items-center justify-center gap-2">
+                            <i class="fas fa-sync-alt"></i>
+                            <span>Clear Cache & Reload</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-stone-800 bg-stone-900 px-6 py-4 flex justify-end">
+                <button id="close-settings-btn" class="px-6 py-3 bg-stone-700 rounded-lg text-white hover:bg-stone-600 font-bold transition-colors">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Client Modal -->
+    <div id="client-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[100] hidden">
+        <div class="bg-stone-900 w-full max-w-lg mx-auto rounded-xl shadow-2xl border border-stone-700 overflow-hidden m-4 max-h-[90vh] flex flex-col">
+            <div class="p-6 border-b border-stone-800 flex-shrink-0">
+                <div class="flex justify-between items-center">
+                    <h2 id="client-modal-title" class="text-lg font-bold text-white">Add Client</h2>
+                    <button id="close-client-modal" class="text-stone-400 hover:text-white transition-colors">
+                        <i class="fa-solid fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="p-6 overflow-y-auto flex-1">
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-semibold text-stone-300 mb-2">Client / Venue Name *</label>
+                        <input type="text" id="modal-client-name" class="w-full px-4 py-3 bg-stone-800 border border-stone-700 rounded-lg text-white focus:outline-none focus:border-accent-teal" placeholder="Grand Hotel Mackinac">
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-semibold text-stone-300 mb-2">Type</label>
+                            <select id="modal-client-type" class="w-full px-4 py-3 bg-stone-800 border border-stone-700 rounded-lg text-white focus:outline-none focus:border-accent-teal">
+                                <option value="Venue">Venue</option>
+                                <option value="Planner">Planner</option>
+                                <option value="Private">Private</option>
+                                <option value="Corporate">Corporate</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-stone-300 mb-2">Status</label>
+                            <select id="modal-client-status" class="w-full px-4 py-3 bg-stone-800 border border-stone-700 rounded-lg text-white focus:outline-none focus:border-accent-teal">
+                                <option value="Lead">Lead</option>
+                                <option value="Active">Active</option>
+                                <option value="Past">Past</option>
+                                <option value="Do Not Book">Do Not Book</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-stone-300 mb-2">Contact Name</label>
+                        <input type="text" id="modal-contact-name" class="w-full px-4 py-3 bg-stone-800 border border-stone-700 rounded-lg text-white focus:outline-none focus:border-accent-teal" placeholder="Sarah Smith">
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-semibold text-stone-300 mb-2">Email</label>
+                            <input type="email" id="modal-client-email" class="w-full px-4 py-3 bg-stone-800 border border-stone-700 rounded-lg text-white focus:outline-none focus:border-accent-teal" placeholder="sarah@venue.com">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-stone-300 mb-2">Phone</label>
+                            <input type="tel" id="modal-client-phone" class="w-full px-4 py-3 bg-stone-800 border border-stone-700 rounded-lg text-white focus:outline-none focus:border-accent-teal" placeholder="555-0123">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-stone-300 mb-2">Website</label>
+                        <input type="url" id="modal-client-website" class="w-full px-4 py-3 bg-stone-800 border border-stone-700 rounded-lg text-white focus:outline-none focus:border-accent-teal" placeholder="https://...">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-stone-300 mb-2">Address</label>
+                        <input type="text" id="modal-client-address" class="w-full px-4 py-3 bg-stone-800 border border-stone-700 rounded-lg text-white focus:outline-none focus:border-accent-teal" placeholder="123 Main St, Mackinac Island, MI">
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-semibold text-stone-300 mb-2">Default Rate ($)</label>
+                            <div class="flex items-center gap-2">
+                                <span class="text-stone-400">$</span>
+                                <input type="number" id="modal-client-rate" min="0" step="1" class="flex-1 px-4 py-3 bg-stone-800 border border-stone-700 rounded-lg text-white focus:outline-none focus:border-accent-teal" placeholder="3500">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-stone-300 mb-2">Payment Terms</label>
+                            <select id="modal-payment-terms" class="w-full px-4 py-3 bg-stone-800 border border-stone-700 rounded-lg text-white focus:outline-none focus:border-accent-teal">
+                                <option value="">Select...</option>
+                                <option value="Net 30">Net 30</option>
+                                <option value="Day of Show">Day of Show</option>
+                                <option value="Deposit Required">Deposit Required</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-stone-300 mb-2">Venue / Logistics Details</label>
+                        <textarea id="modal-venue-details" rows="3" class="w-full px-4 py-3 bg-stone-800 border border-stone-700 rounded-lg text-white focus:outline-none focus:border-accent-teal resize-y" placeholder="Load-in via dock. Power requires 50ft extension."></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-stone-300 mb-2">Tags (comma separated)</label>
+                        <input type="text" id="modal-client-tags" class="w-full px-4 py-3 bg-stone-800 border border-stone-700 rounded-lg text-white focus:outline-none focus:border-accent-teal" placeholder="Good Food, High Budget, Strict Sound Limit">
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-stone-800 bg-stone-900 px-6 py-4 flex justify-end gap-3 flex-shrink-0">
+                <button id="cancel-client-modal" class="px-4 py-2 bg-stone-700 rounded-lg text-white hover:bg-stone-600 font-semibold transition-colors">Cancel</button>
+                <button id="save-client-modal" class="px-4 py-2 bg-accent-teal rounded-lg text-white hover:bg-teal-600 font-semibold transition-colors flex items-center gap-2">
+                    <i class="fa-solid fa-check text-sm"></i> Save Client
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="manager-container">
+        <!-- Left Sidebar: Client List -->
+        <div id="clients-list" class="bg-stone-900 rounded-xl border border-stone-800 overflow-hidden flex flex-col">
+            <div class="p-4 border-b border-stone-800 space-y-3">
+                <input type="text" id="search-clients" placeholder="Search clients..." class="w-full px-4 py-2 bg-stone-800 border border-stone-700 rounded-lg text-white placeholder-stone-500 focus:outline-none focus:border-accent-teal">
+                <div class="flex gap-2">
+                    <select id="filter-status" class="flex-1 px-3 py-1.5 bg-stone-800 border border-stone-700 rounded-lg text-white text-xs focus:outline-none focus:border-accent-teal">
+                        <option value="">All Status</option>
+                        <option value="Lead">Leads</option>
+                        <option value="Active">Active</option>
+                        <option value="Past">Past</option>
+                        <option value="Do Not Book">Do Not Book</option>
+                    </select>
+                    <select id="filter-type" class="flex-1 px-3 py-1.5 bg-stone-800 border border-stone-700 rounded-lg text-white text-xs focus:outline-none focus:border-accent-teal">
+                        <option value="">All Types</option>
+                        <option value="Venue">Venue</option>
+                        <option value="Planner">Planner</option>
+                        <option value="Private">Private</option>
+                        <option value="Corporate">Corporate</option>
+                    </select>
+                </div>
+            </div>
+            <div id="clients-list-container" class="flex-1 overflow-y-auto">
+                <!-- Clients populated here -->
+            </div>
+            <div class="bg-stone-800 p-2 px-4 border-t border-stone-700 flex justify-center md:justify-between items-center z-20 flex-shrink-0">
+                <span id="clients-counter" class="text-accent-teal font-mono text-sm">0 clients</span>
+            </div>
+        </div>
+
+        <!-- Right: Client Detail -->
+        <div id="client-detail" class="bg-stone-900 rounded-xl border border-stone-800 overflow-hidden flex flex-col">
+            <!-- Empty State -->
+            <div id="empty-state" class="flex-1 flex items-center justify-center text-stone-500">
+                <div class="text-center">
+                    <i class="fa-solid fa-address-book text-6xl mb-4 opacity-20"></i>
+                    <p class="text-lg">Select a client to view details</p>
+                </div>
+            </div>
+
+            <!-- Client View -->
+            <div id="client-view" class="hidden flex-1 flex flex-col overflow-hidden">
+                <!-- Header -->
+                <div class="p-4 md:p-6 border-b border-stone-800 flex items-center justify-between flex-shrink-0">
+                    <div class="flex items-center gap-3 flex-1 min-w-0">
+                        <h2 class="text-xl md:text-2xl font-bold text-white truncate" id="client-title">Client</h2>
+                        <span id="client-status-badge" class="text-xs px-2 py-1 rounded-full font-semibold"></span>
+                    </div>
+                    <div class="flex items-center gap-1 md:gap-2 flex-shrink-0">
+                        <button id="create-show-btn" class="p-2 md:px-3 md:py-2 bg-stone-700 text-white rounded-lg hover:bg-stone-600 transition-colors flex items-center gap-2" title="Create Show">
+                            <i class="fa-solid fa-calendar-plus text-sm"></i>
+                            <span class="hidden md:inline text-sm font-semibold">New Show</span>
+                        </button>
+                        <button id="edit-client-btn" class="p-2 md:px-3 md:py-2 bg-accent-teal text-white rounded-lg hover:bg-teal-600 transition-colors flex items-center gap-2" title="Edit">
+                            <i class="fa-solid fa-pen text-sm"></i>
+                            <span class="hidden md:inline text-sm font-semibold">Edit</span>
+                        </button>
+                        <button id="delete-client-btn" class="p-2 md:px-3 md:py-2 bg-red-600 text-white rounded-lg hover:bg-red-500 transition-colors flex items-center gap-2" title="Delete">
+                            <i class="fa-solid fa-trash text-sm"></i>
+                            <span class="hidden md:inline text-sm font-semibold">Delete</span>
+                        </button>
+                        <button id="back-to-list-btn" class="lg:hidden p-2 text-stone-400 hover:text-white transition-colors ml-2" title="Close">
+                            <i class="fa-solid fa-xmark text-lg"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Tabs -->
+                <div class="border-b border-stone-800 flex-shrink-0">
+                    <div class="flex px-4 md:px-6">
+                        <button class="crm-tab active px-4 py-3 text-sm font-semibold border-b-2" data-tab="tab-profile">
+                            <i class="fa-solid fa-user mr-1.5"></i>Profile
+                        </button>
+                        <button class="crm-tab px-4 py-3 text-sm font-semibold border-b-2" data-tab="tab-financials">
+                            <i class="fa-solid fa-dollar-sign mr-1.5"></i>Financials
+                        </button>
+                        <button class="crm-tab px-4 py-3 text-sm font-semibold border-b-2" data-tab="tab-activity">
+                            <i class="fa-solid fa-comments mr-1.5"></i>Activity
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Tab Content -->
+                <div class="flex-1 overflow-y-auto">
+                    <!-- Tab 1: Profile & Logistics -->
+                    <div id="tab-profile" class="crm-tab-content active p-6">
+                        <div id="profile-content"></div>
+                    </div>
+
+                    <!-- Tab 2: Financials & History -->
+                    <div id="tab-financials" class="crm-tab-content p-6">
+                        <div id="financials-content"></div>
+                    </div>
+
+                    <!-- Tab 3: Activity Log -->
+                    <div id="tab-activity" class="crm-tab-content p-6">
+                        <div id="activity-content"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase Bundle -->
+    <script src="/dist/firebase-bundle.js"></script>
+
+    <script>
+        let clients = [];
+        let selectedClientId = null;
+        let isAuthenticated = false;
+        let editingClientId = null; // null = adding new, string = editing existing
+        let logsUnsubscribe = null; // cleanup for activity log listener
+
+        // ============= HELPERS =============
+
+        function generateUUID() {
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                const r = Math.random() * 16 | 0;
+                const v = c === 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
+            });
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        function formatDate(isoString) {
+            if (!isoString) return '';
+            const d = new Date(isoString);
+            return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        }
+
+        function formatDateTime(isoString) {
+            if (!isoString) return '';
+            const d = new Date(isoString);
+            return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit' });
+        }
+
+        function getStatusColor(status) {
+            switch (status) {
+                case 'Active': return 'bg-green-500/20 text-green-400';
+                case 'Lead': return 'bg-yellow-500/20 text-yellow-400';
+                case 'Past': return 'bg-stone-600/30 text-stone-400';
+                case 'Do Not Book': return 'bg-red-500/20 text-red-400';
+                default: return 'bg-green-500/20 text-green-400';
+            }
+        }
+
+        function getTypeIcon(type) {
+            switch (type) {
+                case 'Venue': return 'fa-building';
+                case 'Planner': return 'fa-clipboard-list';
+                case 'Private': return 'fa-user-tie';
+                case 'Corporate': return 'fa-briefcase';
+                default: return 'fa-building';
+            }
+        }
+
+        function getLogIcon(type) {
+            switch (type) {
+                case 'Call': return 'fa-phone';
+                case 'Email': return 'fa-envelope';
+                case 'Meeting': return 'fa-handshake';
+                case 'Note': return 'fa-sticky-note';
+                default: return 'fa-sticky-note';
+            }
+        }
+
+        // ============= DATA LOADING =============
+
+        async function loadClients() {
+            try {
+                FirestoreService.subscribeToClients((updatedClients) => {
+                    clients = updatedClients;
+                    renderClientsList();
+                    // Refresh detail if viewing
+                    if (selectedClientId) {
+                        const client = clients.find(c => c.id === selectedClientId);
+                        if (client) renderClientDetail(client);
+                    }
+                });
+            } catch (error) {
+                console.error('Error loading clients:', error);
+                clients = [];
+                renderClientsList();
+            }
+        }
+
+        // ============= CLIENT LIST =============
+
+        function renderClientsList() {
+            const container = document.getElementById('clients-list-container');
+            const search = document.getElementById('search-clients').value.toLowerCase();
+            const statusFilter = document.getElementById('filter-status').value;
+            const typeFilter = document.getElementById('filter-type').value;
+
+            let filtered = clients.filter(c => {
+                const name = (c.name || '').toLowerCase();
+                const contact = (c.contactName || '').toLowerCase();
+                const matchesSearch = name.includes(search) || contact.includes(search);
+                // Migration: default to Active/Venue for existing clients missing fields
+                const status = c.status || 'Active';
+                const type = c.type || 'Venue';
+                const matchesStatus = !statusFilter || status === statusFilter;
+                const matchesType = !typeFilter || type === typeFilter;
+                return matchesSearch && matchesStatus && matchesType;
+            });
+
+            // Sort alphabetically by name
+            filtered.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+
+            container.innerHTML = filtered.map(client => {
+                const isSelected = selectedClientId === client.id;
+                const status = client.status || 'Active';
+                const type = client.type || 'Venue';
+                const statusColor = getStatusColor(status);
+                const lastDate = client.lastInteraction ? formatDate(client.lastInteraction) : '';
+
+                return `
+                    <div class="client-item p-4 border-b border-stone-800 ${isSelected ? 'selected' : ''}" data-client-id="${client.id}">
+                        <div class="flex items-start justify-between gap-2">
+                            <div class="min-w-0 flex-1">
+                                <div class="font-bold text-white truncate">${escapeHtml(client.name)}</div>
+                                ${client.contactName ? `<div class="text-sm text-stone-400 truncate">${escapeHtml(client.contactName)}</div>` : ''}
+                            </div>
+                            <span class="text-[10px] px-2 py-0.5 rounded-full font-semibold flex-shrink-0 ${statusColor}">${status}</span>
+                        </div>
+                        <div class="flex items-center gap-2 mt-1">
+                            <span class="text-[10px] text-stone-500"><i class="fa-solid ${getTypeIcon(type)} mr-1"></i>${type}</span>
+                            ${lastDate ? `<span class="text-[10px] text-stone-600">&middot; ${lastDate}</span>` : ''}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            document.getElementById('clients-counter').textContent = `${filtered.length} client${filtered.length !== 1 ? 's' : ''}`;
+
+            // Click handlers
+            document.querySelectorAll('.client-item').forEach(item => {
+                item.addEventListener('click', () => selectClient(item.dataset.clientId));
+            });
+        }
+
+        // ============= CLIENT SELECTION =============
+
+        function selectClient(clientId) {
+            selectedClientId = clientId;
+
+            // Cleanup previous log listener
+            if (logsUnsubscribe) { logsUnsubscribe(); logsUnsubscribe = null; }
+
+            const url = new URL(window.location);
+            url.searchParams.set('client', clientId);
+            window.history.pushState({}, '', url);
+
+            renderClientsList();
+
+            const client = clients.find(c => c.id === clientId);
+            if (client) {
+                document.getElementById('empty-state').classList.add('hidden');
+                document.getElementById('client-view').classList.remove('hidden');
+                renderClientDetail(client);
+                // Reset to profile tab
+                switchTab('tab-profile');
+            }
+
+            // Mobile: show detail
+            if (window.innerWidth < 1024) {
+                document.getElementById('clients-list').classList.add('hidden-mobile');
+                document.getElementById('client-detail').classList.add('active-mobile');
+            }
+        }
+
+        function backToList() {
+            if (window.innerWidth < 1024) {
+                document.getElementById('clients-list').classList.remove('hidden-mobile');
+                document.getElementById('client-detail').classList.remove('active-mobile');
+            }
+        }
+
+        // ============= TABS =============
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.crm-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.crm-tab-content').forEach(c => c.classList.remove('active'));
+            document.querySelector(`.crm-tab[data-tab="${tabId}"]`).classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+
+            // Load tab-specific data
+            const client = clients.find(c => c.id === selectedClientId);
+            if (!client) return;
+
+            if (tabId === 'tab-financials') renderFinancials(client);
+            if (tabId === 'tab-activity') renderActivityLog(client);
+        }
+
+        // ============= CLIENT DETAIL RENDERING =============
+
+        function renderClientDetail(client) {
+            const status = client.status || 'Active';
+            const type = client.type || 'Venue';
+
+            document.getElementById('client-title').textContent = client.name || 'Unnamed Client';
+            const badge = document.getElementById('client-status-badge');
+            badge.textContent = status;
+            badge.className = `text-xs px-2 py-1 rounded-full font-semibold ${getStatusColor(status)}`;
+
+            renderProfile(client);
+
+            // Load the active tab's content
+            const activeTab = document.querySelector('.crm-tab.active');
+            if (activeTab) {
+                const tabId = activeTab.dataset.tab;
+                if (tabId === 'tab-financials') renderFinancials(client);
+                if (tabId === 'tab-activity') renderActivityLog(client);
+            }
+        }
+
+        // ---- Tab 1: Profile ----
+        function renderProfile(client) {
+            const type = client.type || 'Venue';
+            const tagsHtml = (client.tags && client.tags.length > 0)
+                ? client.tags.map(t => `<span class="tag-pill">${escapeHtml(t)}</span>`).join(' ')
+                : '<span class="text-stone-600">No tags</span>';
+
+            document.getElementById('profile-content').innerHTML = `
+                <div class="space-y-6 max-w-2xl">
+                    <!-- Contact Card -->
+                    <div class="bg-stone-800/50 rounded-lg p-5 space-y-4">
+                        <h3 class="text-sm font-bold text-stone-400 uppercase tracking-wider">Contact Info</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="text-xs text-stone-500 uppercase tracking-wide">Contact Name</label>
+                                <div class="text-white mt-1">${escapeHtml(client.contactName) || '<span class="text-stone-600">\u2014</span>'}</div>
+                            </div>
+                            <div>
+                                <label class="text-xs text-stone-500 uppercase tracking-wide">Type</label>
+                                <div class="text-white mt-1"><i class="fa-solid ${getTypeIcon(type)} mr-2 text-stone-400"></i>${type}</div>
+                            </div>
+                            <div>
+                                <label class="text-xs text-stone-500 uppercase tracking-wide">Email</label>
+                                <div class="mt-1">${client.email
+                                    ? `<a href="mailto:${escapeHtml(client.email)}" class="text-accent-teal hover:underline">${escapeHtml(client.email)}</a>`
+                                    : '<span class="text-stone-600">\u2014</span>'}</div>
+                            </div>
+                            <div>
+                                <label class="text-xs text-stone-500 uppercase tracking-wide">Phone</label>
+                                <div class="mt-1">${client.phone
+                                    ? `<a href="tel:${escapeHtml(client.phone)}" class="text-accent-teal hover:underline">${escapeHtml(client.phone)}</a>`
+                                    : '<span class="text-stone-600">\u2014</span>'}</div>
+                            </div>
+                        </div>
+                        ${client.website ? `
+                        <div>
+                            <label class="text-xs text-stone-500 uppercase tracking-wide">Website</label>
+                            <div class="mt-1"><a href="${escapeHtml(client.website)}" target="_blank" rel="noopener noreferrer" class="text-accent-teal hover:underline flex items-center gap-2">${escapeHtml(client.website)} <i class="fa-solid fa-external-link text-xs"></i></a></div>
+                        </div>` : ''}
+                        ${client.address ? `
+                        <div>
+                            <label class="text-xs text-stone-500 uppercase tracking-wide">Address</label>
+                            <div class="mt-1"><a href="https://maps.google.com/?q=${encodeURIComponent(client.address)}" target="_blank" rel="noopener noreferrer" class="text-accent-teal hover:underline">${escapeHtml(client.address)}</a></div>
+                        </div>` : ''}
+                    </div>
+
+                    <!-- Financial Defaults -->
+                    <div class="bg-stone-800/50 rounded-lg p-5 space-y-4">
+                        <h3 class="text-sm font-bold text-stone-400 uppercase tracking-wider">Rate & Terms</h3>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="text-xs text-stone-500 uppercase tracking-wide">Default Rate</label>
+                                <div class="text-lg text-white font-semibold mt-1">${client.defaultRate ? `<span class="text-green-400">$${client.defaultRate.toLocaleString()}</span>` : '<span class="text-stone-600">\u2014</span>'}</div>
+                            </div>
+                            <div>
+                                <label class="text-xs text-stone-500 uppercase tracking-wide">Payment Terms</label>
+                                <div class="text-white mt-1">${escapeHtml(client.paymentTerms) || '<span class="text-stone-600">\u2014</span>'}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Venue / Logistics Intel -->
+                    <div class="bg-stone-800/50 rounded-lg p-5 space-y-3">
+                        <h3 class="text-sm font-bold text-stone-400 uppercase tracking-wider">Venue / Logistics Intel</h3>
+                        <div class="text-white whitespace-pre-wrap text-sm leading-relaxed">${escapeHtml(client.venueDetails) || '<span class="text-stone-600">No logistics notes yet.</span>'}</div>
+                    </div>
+
+                    <!-- Tags -->
+                    <div class="bg-stone-800/50 rounded-lg p-5 space-y-3">
+                        <h3 class="text-sm font-bold text-stone-400 uppercase tracking-wider">Tags</h3>
+                        <div class="flex flex-wrap gap-2">${tagsHtml}</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // ---- Tab 2: Financials & History ----
+        async function renderFinancials(client) {
+            const content = document.getElementById('financials-content');
+            content.innerHTML = '<div class="text-center py-8"><i class="fa-solid fa-spinner fa-spin text-2xl text-stone-500"></i></div>';
+
+            try {
+                const shows = await FirestoreService.getClientShows(client.id);
+                // Sort by date descending
+                shows.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+                const totalRevenue = shows.reduce((sum, s) => sum + (s.payout || 0), 0);
+                const totalShows = shows.length;
+                const avgPayout = totalShows > 0 ? Math.round(totalRevenue / totalShows) : 0;
+
+                const showsRows = shows.map(show => {
+                    const date = new Date(show.date);
+                    const formattedDate = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                    return `
+                        <tr class="border-b border-stone-800 hover:bg-stone-800/50 cursor-pointer" onclick="window.open('show-manager.html?show=${show.id}', '_blank')">
+                            <td class="py-3 px-4 text-sm text-white">${formattedDate}</td>
+                            <td class="py-3 px-4 text-sm text-white">${escapeHtml(show.venue)}</td>
+                            <td class="py-3 px-4 text-sm ${show.payout ? 'text-green-400 font-semibold' : 'text-stone-600'}">${show.payout ? '$' + show.payout.toLocaleString() : '\u2014'}</td>
+                            <td class="py-3 px-4 text-sm">
+                                ${show.isPrivate ? '<span class="text-xs bg-stone-700 px-2 py-0.5 rounded">Private</span>' : '<span class="text-xs bg-teal-900/50 text-teal-400 px-2 py-0.5 rounded">Public</span>'}
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+
+                content.innerHTML = `
+                    <div class="space-y-6 max-w-3xl">
+                        <!-- Summary Cards -->
+                        <div class="grid grid-cols-3 gap-4">
+                            <div class="bg-stone-800/50 rounded-lg p-4 text-center">
+                                <div class="text-xs text-stone-500 uppercase tracking-wide mb-1">Total Revenue</div>
+                                <div class="text-xl font-bold text-green-400">$${totalRevenue.toLocaleString()}</div>
+                            </div>
+                            <div class="bg-stone-800/50 rounded-lg p-4 text-center">
+                                <div class="text-xs text-stone-500 uppercase tracking-wide mb-1">Total Shows</div>
+                                <div class="text-xl font-bold text-white">${totalShows}</div>
+                            </div>
+                            <div class="bg-stone-800/50 rounded-lg p-4 text-center">
+                                <div class="text-xs text-stone-500 uppercase tracking-wide mb-1">Avg Payout</div>
+                                <div class="text-xl font-bold text-white">$${avgPayout.toLocaleString()}</div>
+                            </div>
+                        </div>
+
+                        <!-- Shows Table -->
+                        <div>
+                            <h3 class="text-sm font-bold text-stone-400 uppercase tracking-wider mb-3">Show History</h3>
+                            ${shows.length > 0 ? `
+                            <div class="overflow-x-auto rounded-lg border border-stone-800">
+                                <table class="w-full">
+                                    <thead>
+                                        <tr class="bg-stone-800/70 text-xs text-stone-400 uppercase tracking-wider">
+                                            <th class="py-2 px-4 text-left">Date</th>
+                                            <th class="py-2 px-4 text-left">Venue</th>
+                                            <th class="py-2 px-4 text-left">Fee</th>
+                                            <th class="py-2 px-4 text-left">Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>${showsRows}</tbody>
+                                </table>
+                            </div>
+                            ` : '<p class="text-stone-500 text-sm">No shows linked to this client yet.</p>'}
+                        </div>
+                    </div>
+                `;
+            } catch (error) {
+                console.error('Error loading financials:', error);
+                content.innerHTML = '<p class="text-red-400">Failed to load financial data.</p>';
+            }
+        }
+
+        // ---- Tab 3: Activity Log ----
+        function renderActivityLog(client) {
+            const content = document.getElementById('activity-content');
+
+            // Setup input area first
+            content.innerHTML = `
+                <div class="space-y-6 max-w-2xl">
+                    <!-- Input Area -->
+                    <div class="bg-stone-800/50 rounded-lg p-4 space-y-3">
+                        <div class="flex gap-2 flex-wrap">
+                            <button class="log-type-btn text-xs px-3 py-1.5 rounded-full border border-stone-600 text-stone-300 hover:border-accent-teal hover:text-accent-teal transition-colors" data-type="Note">
+                                <i class="fa-solid fa-sticky-note mr-1"></i>Note
+                            </button>
+                            <button class="log-type-btn text-xs px-3 py-1.5 rounded-full border border-stone-600 text-stone-300 hover:border-accent-teal hover:text-accent-teal transition-colors" data-type="Call">
+                                <i class="fa-solid fa-phone mr-1"></i>Logged Call
+                            </button>
+                            <button class="log-type-btn text-xs px-3 py-1.5 rounded-full border border-stone-600 text-stone-300 hover:border-accent-teal hover:text-accent-teal transition-colors" data-type="Email">
+                                <i class="fa-solid fa-envelope mr-1"></i>Logged Email
+                            </button>
+                            <button class="log-type-btn text-xs px-3 py-1.5 rounded-full border border-stone-600 text-stone-300 hover:border-accent-teal hover:text-accent-teal transition-colors" data-type="Meeting">
+                                <i class="fa-solid fa-handshake mr-1"></i>Meeting
+                            </button>
+                        </div>
+                        <textarea id="log-input" rows="3" class="w-full px-4 py-3 bg-stone-800 border border-stone-700 rounded-lg text-white focus:outline-none focus:border-accent-teal resize-y text-sm" placeholder="Log a note, call, or email..."></textarea>
+                        <input type="hidden" id="log-type-value" value="Note">
+                        <div class="flex justify-between items-center">
+                            <span id="log-type-label" class="text-xs text-stone-500">Type: Note</span>
+                            <button id="submit-log-btn" class="px-4 py-2 bg-accent-teal text-white rounded-lg hover:bg-teal-600 font-semibold text-sm transition-colors flex items-center gap-2">
+                                <i class="fa-solid fa-plus text-xs"></i> Log Activity
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Timeline -->
+                    <div>
+                        <h3 class="text-sm font-bold text-stone-400 uppercase tracking-wider mb-4">Timeline</h3>
+                        <div id="activity-timeline">
+                            <div class="text-center py-4"><i class="fa-solid fa-spinner fa-spin text-stone-500"></i></div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Log type buttons
+            content.querySelectorAll('.log-type-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const type = btn.dataset.type;
+                    document.getElementById('log-type-value').value = type;
+                    document.getElementById('log-type-label').textContent = `Type: ${type}`;
+                    // Visual feedback
+                    content.querySelectorAll('.log-type-btn').forEach(b => {
+                        b.classList.remove('border-accent-teal', 'text-accent-teal');
+                        b.classList.add('border-stone-600', 'text-stone-300');
+                    });
+                    btn.classList.add('border-accent-teal', 'text-accent-teal');
+                    btn.classList.remove('border-stone-600', 'text-stone-300');
+                });
+            });
+
+            // Submit log
+            document.getElementById('submit-log-btn').addEventListener('click', submitActivityLog);
+
+            // Subscribe to real-time logs
+            if (logsUnsubscribe) { logsUnsubscribe(); }
+            logsUnsubscribe = FirestoreService.subscribeToActivityLogs(client.id, (logs) => {
+                renderTimeline(logs);
+            });
+        }
+
+        function renderTimeline(logs) {
+            const timeline = document.getElementById('activity-timeline');
+            if (!timeline) return;
+
+            if (logs.length === 0) {
+                timeline.innerHTML = '<p class="text-stone-500 text-sm">No activity logged yet. Add your first note above.</p>';
+                return;
+            }
+
+            timeline.innerHTML = logs.map(log => {
+                const icon = getLogIcon(log.type);
+                return `
+                    <div class="log-entry pb-4 mb-2">
+                        <div class="flex items-start gap-3">
+                            <div class="flex-1">
+                                <div class="flex items-center gap-2 mb-1">
+                                    <i class="fa-solid ${icon} text-xs text-stone-500"></i>
+                                    <span class="text-xs font-semibold text-stone-400">${escapeHtml(log.type || 'Note')}</span>
+                                    <span class="text-xs text-stone-600">&middot;</span>
+                                    <span class="text-xs text-stone-500">${formatDateTime(log.timestamp)}</span>
+                                    ${log.author ? `<span class="text-xs text-stone-600">&middot; ${escapeHtml(log.author)}</span>` : ''}
+                                </div>
+                                <div class="text-sm text-white whitespace-pre-wrap">${escapeHtml(log.content)}</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        async function submitActivityLog() {
+            if (!isAuthenticated) { alert('Please sign in.'); return; }
+
+            const input = document.getElementById('log-input');
+            const content = input.value.trim();
+            if (!content) { input.focus(); return; }
+
+            const type = document.getElementById('log-type-value').value;
+            const user = FirebaseAuth.getCurrentUser();
+
+            const btn = document.getElementById('submit-log-btn');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+
+            try {
+                await FirestoreService.addActivityLog(selectedClientId, {
+                    type,
+                    content,
+                    author: user.displayName || user.email,
+                    authorId: user.uid
+                });
+                input.value = '';
+            } catch (error) {
+                console.error('Error adding log:', error);
+                alert('Failed to save activity log.');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-plus text-xs"></i> Log Activity';
+            }
+        }
+
+        // ============= CLIENT MODAL (ADD / EDIT) =============
+
+        function openClientModal(clientId) {
+            editingClientId = clientId || null;
+            const modal = document.getElementById('client-modal');
+            const title = document.getElementById('client-modal-title');
+
+            if (editingClientId) {
+                title.textContent = 'Edit Client';
+                const client = clients.find(c => c.id === editingClientId);
+                if (client) {
+                    document.getElementById('modal-client-name').value = client.name || '';
+                    document.getElementById('modal-client-type').value = client.type || 'Venue';
+                    document.getElementById('modal-client-status').value = client.status || 'Active';
+                    document.getElementById('modal-contact-name').value = client.contactName || '';
+                    document.getElementById('modal-client-email').value = client.email || '';
+                    document.getElementById('modal-client-phone').value = client.phone || '';
+                    document.getElementById('modal-client-website').value = client.website || '';
+                    document.getElementById('modal-client-address').value = client.address || '';
+                    document.getElementById('modal-client-rate').value = client.defaultRate || '';
+                    document.getElementById('modal-payment-terms').value = client.paymentTerms || '';
+                    document.getElementById('modal-venue-details').value = client.venueDetails || '';
+                    document.getElementById('modal-client-tags').value = (client.tags || []).join(', ');
+                }
+            } else {
+                title.textContent = 'Add Client';
+                // Clear form
+                document.getElementById('modal-client-name').value = '';
+                document.getElementById('modal-client-type').value = 'Venue';
+                document.getElementById('modal-client-status').value = 'Lead';
+                document.getElementById('modal-contact-name').value = '';
+                document.getElementById('modal-client-email').value = '';
+                document.getElementById('modal-client-phone').value = '';
+                document.getElementById('modal-client-website').value = '';
+                document.getElementById('modal-client-address').value = '';
+                document.getElementById('modal-client-rate').value = '';
+                document.getElementById('modal-payment-terms').value = '';
+                document.getElementById('modal-venue-details').value = '';
+                document.getElementById('modal-client-tags').value = '';
+            }
+
+            modal.classList.remove('hidden');
+        }
+
+        function closeClientModal() {
+            document.getElementById('client-modal').classList.add('hidden');
+            editingClientId = null;
+        }
+
+        async function saveClientFromModal() {
+            if (!isAuthenticated) { alert('Please sign in.'); return; }
+
+            const name = document.getElementById('modal-client-name').value.trim();
+            if (!name) { alert('Client name is required.'); return; }
+
+            const tagsRaw = document.getElementById('modal-client-tags').value.trim();
+            const tags = tagsRaw ? tagsRaw.split(',').map(t => t.trim()).filter(Boolean) : [];
+            const rateValue = document.getElementById('modal-client-rate').value.trim();
+
+            const existingClient = editingClientId ? clients.find(c => c.id === editingClientId) : null;
+
+            const clientData = {
+                id: editingClientId || generateUUID(),
+                name,
+                type: document.getElementById('modal-client-type').value,
+                status: document.getElementById('modal-client-status').value,
+                contactName: document.getElementById('modal-contact-name').value.trim() || undefined,
+                email: document.getElementById('modal-client-email').value.trim() || undefined,
+                phone: document.getElementById('modal-client-phone').value.trim() || undefined,
+                website: document.getElementById('modal-client-website').value.trim() || undefined,
+                address: document.getElementById('modal-client-address').value.trim() || undefined,
+                defaultRate: rateValue ? parseInt(rateValue) : undefined,
+                paymentTerms: document.getElementById('modal-payment-terms').value || undefined,
+                venueDetails: document.getElementById('modal-venue-details').value.trim() || undefined,
+                tags: tags.length > 0 ? tags : undefined,
+                createdAt: existingClient?.createdAt || undefined,
+                lastInteraction: existingClient?.lastInteraction || undefined
+            };
+
+            const btn = document.getElementById('save-client-modal');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
+
+            try {
+                await FirestoreService.saveClient(clientData);
+                closeClientModal();
+                // Select the saved client
+                selectClient(clientData.id);
+            } catch (error) {
+                console.error('Error saving client:', error);
+                alert(`Failed to save client: ${error.message}`);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-check text-sm"></i> Save Client';
+            }
+        }
+
+        // ============= DELETE CLIENT =============
+
+        async function handleDeleteClient() {
+            if (!isAuthenticated) { alert('Please sign in.'); return; }
+            if (!selectedClientId) return;
+
+            const client = clients.find(c => c.id === selectedClientId);
+            if (!confirm(`Are you sure you want to delete "${client?.name}"?`)) return;
+
+            try {
+                const result = await FirestoreService.deleteClient(selectedClientId);
+                if (!result.deleted) {
+                    alert(result.reason);
+                    return;
+                }
+
+                selectedClientId = null;
+                if (logsUnsubscribe) { logsUnsubscribe(); logsUnsubscribe = null; }
+
+                const url = new URL(window.location);
+                url.searchParams.delete('client');
+                window.history.pushState({}, '', url);
+
+                document.getElementById('client-view').classList.add('hidden');
+                document.getElementById('empty-state').classList.remove('hidden');
+                renderClientsList();
+            } catch (error) {
+                console.error('Error deleting client:', error);
+                alert(`Failed to delete: ${error.message}`);
+            }
+        }
+
+        // ============= CREATE SHOW FOR CLIENT =============
+
+        function createShowForClient() {
+            if (!selectedClientId) return;
+            window.open(`show-manager.html?newshow=true&clientId=${selectedClientId}`, '_blank');
+        }
+
+        // ============= EVENT LISTENERS =============
+
+        document.getElementById('search-clients').addEventListener('input', () => renderClientsList());
+        document.getElementById('filter-status').addEventListener('change', () => renderClientsList());
+        document.getElementById('filter-type').addEventListener('change', () => renderClientsList());
+
+        document.getElementById('add-client-btn').addEventListener('click', () => openClientModal());
+        document.getElementById('edit-client-btn').addEventListener('click', () => openClientModal(selectedClientId));
+        document.getElementById('delete-client-btn').addEventListener('click', handleDeleteClient);
+        document.getElementById('create-show-btn').addEventListener('click', createShowForClient);
+        document.getElementById('back-to-list-btn').addEventListener('click', backToList);
+
+        // Client modal
+        document.getElementById('close-client-modal').addEventListener('click', closeClientModal);
+        document.getElementById('cancel-client-modal').addEventListener('click', closeClientModal);
+        document.getElementById('save-client-modal').addEventListener('click', saveClientFromModal);
+        document.getElementById('client-modal').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('client-modal')) closeClientModal();
+        });
+
+        // Tabs
+        document.querySelectorAll('.crm-tab').forEach(tab => {
+            tab.addEventListener('click', () => switchTab(tab.dataset.tab));
+        });
+
+        // ============= AUTH & SETTINGS =============
+
+        const loginModal = document.getElementById('login-modal');
+        const authLoading = document.getElementById('auth-loading');
+        const googleSignInBtn = document.getElementById('google-sign-in-btn');
+        const loginError = document.getElementById('login-error');
+
+        function showLoginForm() {
+            authLoading.classList.add('fade-out');
+            setTimeout(() => { authLoading.style.display = 'none'; loginModal.classList.remove('hidden'); }, 300);
+            loginError.classList.add('hidden');
+        }
+
+        function hideLoginModal() {
+            authLoading.classList.add('fade-out');
+            setTimeout(() => { authLoading.style.display = 'none'; }, 300);
+            loginModal.classList.add('hidden');
+        }
+
+        googleSignInBtn.addEventListener('click', async () => {
+            googleSignInBtn.disabled = true;
+            googleSignInBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Signing in...';
+            loginError.classList.add('hidden');
+            try {
+                await FirebaseAuth.loginWithGoogle();
+                hideLoginModal();
+            } catch (error) {
+                loginError.textContent = error.message || 'Sign in failed';
+                loginError.classList.remove('hidden');
+            } finally {
+                googleSignInBtn.disabled = false;
+                googleSignInBtn.innerHTML = `<svg class="w-5 h-5" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg> Sign in with Google`;
+            }
+        });
+
+        // Settings modal
+        const settingsModal = document.getElementById('settings-modal');
+        document.getElementById('settings-btn').addEventListener('click', () => {
+            const user = FirebaseAuth.getCurrentUser();
+            if (user) document.getElementById('user-email').textContent = user.email;
+            settingsModal.classList.remove('hidden');
+        });
+        document.getElementById('close-settings').addEventListener('click', () => settingsModal.classList.add('hidden'));
+        document.getElementById('close-settings-btn').addEventListener('click', () => settingsModal.classList.add('hidden'));
+        document.getElementById('sign-out-btn').addEventListener('click', async () => {
+            try { await FirebaseAuth.logout(); settingsModal.classList.add('hidden'); } catch (e) { console.error(e); }
+        });
+        document.getElementById('clear-cache-btn').addEventListener('click', () => {
+            const url = new URL(window.location);
+            url.searchParams.set('cachebust', Date.now());
+            window.location.href = url.toString();
+        });
+        settingsModal.addEventListener('click', (e) => { if (e.target === settingsModal) settingsModal.classList.add('hidden'); });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                if (!settingsModal.classList.contains('hidden')) settingsModal.classList.add('hidden');
+                if (!document.getElementById('client-modal').classList.contains('hidden')) closeClientModal();
+            }
+        });
+
+        // Auth state listener
+        FirebaseAuth.onAuthChange((user) => {
+            isAuthenticated = !!user;
+            if (user) { hideLoginModal(); } else { showLoginForm(); }
+        });
+
+        // ============= INIT =============
+
+        loadClients();
+
+        // Check for client parameter in URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const clientParam = urlParams.get('client');
+        if (clientParam) {
+            // Wait for clients to load then select
+            const checkInterval = setInterval(() => {
+                if (clients.length > 0 || FirebaseAuth.isAuthResolved()) {
+                    clearInterval(checkInterval);
+                    if (clients.find(c => c.id === clientParam)) {
+                        selectClient(clientParam);
+                    }
+                }
+            }, 200);
+        }
+    </script>
+
+</body>
+</html>
