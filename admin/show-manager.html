@@ -804,14 +804,17 @@
             show.endTime = document.getElementById('edit-end-time').value;
             show.isPrivate = document.getElementById('edit-is-private').checked;
             show.published = document.getElementById('edit-published').checked;
-            show.eventLink = document.getElementById('edit-event-link').value || undefined;
-            show.setlist = setlistValue || undefined;
-            show.itinerary = itineraryValue || undefined;
-            show.notes = notesValue || undefined;
-            show.personnel = personnel.length > 0 ? personnel : undefined;
-            show.eventHandler = eventHandlerValue || undefined;
-            show.clientId = clientValue || undefined;
-            show.payout = payoutValue ? parseInt(payoutValue) : undefined;
+
+            // Handle optional fields - delete if empty to avoid Firestore undefined errors
+            const eventLinkVal = document.getElementById('edit-event-link').value;
+            if (eventLinkVal) { show.eventLink = eventLinkVal; } else { delete show.eventLink; }
+            if (setlistValue) { show.setlist = setlistValue; } else { delete show.setlist; }
+            if (itineraryValue) { show.itinerary = itineraryValue; } else { delete show.itinerary; }
+            if (notesValue) { show.notes = notesValue; } else { delete show.notes; }
+            if (personnel.length > 0) { show.personnel = personnel; } else { delete show.personnel; }
+            if (eventHandlerValue) { show.eventHandler = eventHandlerValue; } else { delete show.eventHandler; }
+            if (clientValue) { show.clientId = clientValue; } else { delete show.clientId; }
+            if (payoutValue) { show.payout = parseInt(payoutValue); } else { delete show.payout; }
 
             // Save directly to Firestore
             const saveBtn = document.getElementById('save-edit-btn');
@@ -850,8 +853,7 @@
                 startTime: "8:00 PM",
                 endTime: "11:00 PM",
                 isPrivate: false,
-                published: false,
-                clientId: undefined
+                published: false
             };
 
             shows.unshift(newShow);
