@@ -842,8 +842,8 @@
             }
         }
 
-        // Add new show
-        function addNewShow() {
+        // Add new show (optionally with pre-selected client)
+        function addNewShow(clientId = null) {
             const newShow = {
                 id: generateUUID(),
                 date: new Date().toLocaleDateString('en-US'),
@@ -856,8 +856,36 @@
                 published: false
             };
 
+            // Pre-populate client if provided
+            if (clientId) {
+                const client = clients.find(c => c.id === clientId);
+                if (client) {
+                    newShow.clientId = clientId;
+                    // Use client name as default venue if it's a venue type
+                    if (client.type === 'Venue' && client.name) {
+                        newShow.venue = client.name;
+                    }
+                    // Pre-fill city/state from client address if available
+                    if (client.address) {
+                        const addressParts = client.address.split(',').map(p => p.trim());
+                        if (addressParts.length >= 2) {
+                            // Try to extract city and state from address
+                            const lastPart = addressParts[addressParts.length - 1];
+                            const secondLastPart = addressParts[addressParts.length - 2];
+                            // Check if last part looks like "MI 49770" or just "MI"
+                            const stateMatch = lastPart.match(/^([A-Z]{2})\s*\d*$/);
+                            if (stateMatch) {
+                                newShow.state = stateMatch[1];
+                                newShow.city = secondLastPart;
+                            } else if (addressParts.length >= 2) {
+                                newShow.city = secondLastPart;
+                            }
+                        }
+                    }
+                }
+            }
+
             shows.unshift(newShow);
-            hasUnsavedChanges = true;
             renderShowsList();
             selectShow(newShow.id);
             showEditMode();
@@ -1182,8 +1210,25 @@
 
         // Initialize - load data from Firestore
         loadSetlists();
-        loadClients();
-        loadShows();
+        loadClients().then(() => {
+            loadShows().then(() => {
+                // Check for newshow parameter in URL
+                const urlParams = new URLSearchParams(window.location.search);
+                const isNewShow = urlParams.get('newshow') === 'true';
+                const clientId = urlParams.get('clientId');
+
+                if (isNewShow) {
+                    // Clear the URL params after processing
+                    const url = new URL(window.location);
+                    url.searchParams.delete('newshow');
+                    url.searchParams.delete('clientId');
+                    window.history.replaceState({}, '', url);
+
+                    // Create new show with optional client pre-selected
+                    addNewShow(clientId || null);
+                }
+            });
+        });
     </script>
 
 </body>

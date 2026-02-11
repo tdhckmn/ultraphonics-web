@@ -344,6 +344,14 @@
                         <option value="Corporate">Corporate</option>
                     </select>
                 </div>
+                <div class="flex gap-2 items-center">
+                    <span class="text-xs text-stone-500">Sort:</span>
+                    <select id="sort-clients" class="flex-1 px-3 py-1.5 bg-stone-800 border border-stone-700 rounded-lg text-white text-xs focus:outline-none focus:border-accent-teal">
+                        <option value="name">Name (A-Z)</option>
+                        <option value="activity">Recent Activity</option>
+                        <option value="gig">Recent Gig</option>
+                    </select>
+                </div>
             </div>
             <div id="clients-list-container" class="flex-1 overflow-y-auto">
                 <!-- Clients populated here -->
@@ -435,6 +443,7 @@
         let isAuthenticated = false;
         let editingClientId = null; // null = adding new, string = editing existing
         let logsUnsubscribe = null; // cleanup for activity log listener
+        let clientLastShowDates = {}; // cache: clientId -> most recent show date
 
         // ============= HELPERS =============
 
@@ -507,11 +516,36 @@
                         const client = clients.find(c => c.id === selectedClientId);
                         if (client) renderClientDetail(client);
                     }
+                    // Load last show dates for sorting
+                    loadClientShowDates();
                 });
             } catch (error) {
                 console.error('Error loading clients:', error);
                 clients = [];
                 renderClientsList();
+            }
+        }
+
+        async function loadClientShowDates() {
+            try {
+                // Fetch all shows and compute most recent date per client
+                const shows = await FirestoreService.getShows();
+                clientLastShowDates = {};
+                shows.forEach(show => {
+                    if (show.clientId && show.date) {
+                        const showDate = new Date(show.date).getTime();
+                        const existing = clientLastShowDates[show.clientId] ? new Date(clientLastShowDates[show.clientId]).getTime() : 0;
+                        if (showDate > existing) {
+                            clientLastShowDates[show.clientId] = show.date;
+                        }
+                    }
+                });
+                // Re-render if sorting by gig
+                if (document.getElementById('sort-clients').value === 'gig') {
+                    renderClientsList();
+                }
+            } catch (error) {
+                console.error('Error loading show dates:', error);
             }
         }
 
@@ -522,6 +556,7 @@
             const search = document.getElementById('search-clients').value.toLowerCase();
             const statusFilter = document.getElementById('filter-status').value;
             const typeFilter = document.getElementById('filter-type').value;
+            const sortBy = document.getElementById('sort-clients').value;
 
             let filtered = clients.filter(c => {
                 const name = (c.name || '').toLowerCase();
@@ -535,8 +570,25 @@
                 return matchesSearch && matchesStatus && matchesType;
             });
 
-            // Sort alphabetically by name
-            filtered.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+            // Sort based on selected option
+            if (sortBy === 'activity') {
+                // Sort by most recent activity (descending), nulls last
+                filtered.sort((a, b) => {
+                    const aDate = a.lastInteraction ? new Date(a.lastInteraction).getTime() : 0;
+                    const bDate = b.lastInteraction ? new Date(b.lastInteraction).getTime() : 0;
+                    return bDate - aDate;
+                });
+            } else if (sortBy === 'gig') {
+                // Sort by most recent gig (descending), nulls last
+                filtered.sort((a, b) => {
+                    const aDate = clientLastShowDates[a.id] ? new Date(clientLastShowDates[a.id]).getTime() : 0;
+                    const bDate = clientLastShowDates[b.id] ? new Date(clientLastShowDates[b.id]).getTime() : 0;
+                    return bDate - aDate;
+                });
+            } else {
+                // Default: sort alphabetically by name
+                filtered.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+            }
 
             container.innerHTML = filtered.map(client => {
                 const isSelected = selectedClientId === client.id;
@@ -1066,6 +1118,7 @@
         document.getElementById('search-clients').addEventListener('input', () => renderClientsList());
         document.getElementById('filter-status').addEventListener('change', () => renderClientsList());
         document.getElementById('filter-type').addEventListener('change', () => renderClientsList());
+        document.getElementById('sort-clients').addEventListener('change', () => renderClientsList());
 
         document.getElementById('add-client-btn').addEventListener('click', () => openClientModal());
         document.getElementById('edit-client-btn').addEventListener('click', () => openClientModal(selectedClientId));
@@ -1162,13 +1215,15 @@
         if (clientParam) {
             // Wait for clients to load then select
             const checkInterval = setInterval(() => {
-                if (clients.length > 0 || FirebaseAuth.isAuthResolved()) {
+                if (clients.length > 0) {
                     clearInterval(checkInterval);
                     if (clients.find(c => c.id === clientParam)) {
                         selectClient(clientParam);
                     }
                 }
             }, 200);
+            // Timeout after 10 seconds to avoid infinite polling
+            setTimeout(() => clearInterval(checkInterval), 10000);
         }
     </script>
 
