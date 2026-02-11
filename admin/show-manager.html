@@ -287,15 +287,28 @@
             </div>
 
             <div id="show-view" class="hidden flex-1 flex flex-col overflow-hidden">
-                <div class="p-4 md:p-6 border-b border-stone-800 flex items-center justify-between flex-shrink-0">
-                    <div class="flex items-center gap-3 flex-1 min-w-0">
-                        <h2 class="text-xl md:text-2xl font-bold text-white truncate" id="show-title">Show Details</h2>
+                <div class="p-4 md:p-6 border-b border-stone-800 flex items-start justify-between flex-shrink-0 gap-3">
+                    <div class="flex-1 min-w-0" id="show-title">
+                        <h2 class="text-xl md:text-2xl font-bold text-white truncate">Show Details</h2>
                     </div>
                     <div class="flex items-center gap-1 md:gap-2 flex-shrink-0">
-                        <button id="download-cal-btn" class="p-2 md:px-3 md:py-2 bg-stone-700 text-white rounded-lg hover:bg-stone-600 transition-colors flex items-center gap-2" title="Download Calendar Event">
-                            <i class="fa-solid fa-calendar-plus text-sm"></i>
-                            <span class="hidden md:inline text-sm font-semibold">Calendar</span>
-                        </button>
+                        <div class="relative" id="cal-dropdown-wrapper">
+                            <button id="cal-dropdown-btn" class="p-2 md:px-3 md:py-2 bg-stone-700 text-white rounded-lg hover:bg-stone-600 transition-colors flex items-center gap-2" title="Calendar Options">
+                                <i class="fa-solid fa-calendar-plus text-sm"></i>
+                                <span class="hidden md:inline text-sm font-semibold">Calendar</span>
+                                <i class="fa-solid fa-chevron-down text-xs ml-1 hidden md:inline"></i>
+                            </button>
+                            <div id="cal-dropdown-menu" class="hidden absolute right-0 top-full mt-1 w-56 bg-stone-800 border border-stone-700 rounded-lg shadow-xl z-50 overflow-hidden">
+                                <button id="gcal-btn" class="w-full px-4 py-3 text-left text-sm text-white hover:bg-stone-700 transition-colors flex items-center gap-3">
+                                    <i class="fa-brands fa-google text-blue-400"></i>
+                                    Google Calendar
+                                </button>
+                                <button id="download-ics-btn" class="w-full px-4 py-3 text-left text-sm text-white hover:bg-stone-700 transition-colors flex items-center gap-3 border-t border-stone-700">
+                                    <i class="fa-solid fa-download text-stone-400"></i>
+                                    Download .ics File
+                                </button>
+                            </div>
+                        </div>
                         <button id="edit-btn" class="p-2 md:px-3 md:py-2 bg-accent-teal text-white rounded-lg hover:bg-teal-600 transition-colors flex items-center gap-2" title="Edit">
                             <i class="fa-solid fa-pen text-sm"></i>
                             <span class="hidden md:inline text-sm font-semibold">Edit</span>
@@ -519,6 +532,26 @@
             }
         }
 
+        // Personnel color map
+        const personnelColors = {
+            'Anthony': { bg: 'bg-teal-600', text: 'text-white' },
+            'Tom': { bg: 'bg-blue-600', text: 'text-white' },
+            'Lester': { bg: 'bg-amber-600', text: 'text-white' },
+            'David': { bg: 'bg-purple-600', text: 'text-white' },
+            'Shelley': { bg: 'bg-pink-600', text: 'text-white' },
+            'Kelsey': { bg: 'bg-emerald-600', text: 'text-white' }
+        };
+
+        function renderPersonnelBubbles(personnel) {
+            if (!personnel || personnel.length === 0) return '';
+            return `<div class="flex items-center gap-1.5 mt-1.5">
+                ${personnel.map(name => {
+                    const colors = personnelColors[name] || { bg: 'bg-stone-600', text: 'text-white' };
+                    return `<span class="${colors.bg} ${colors.text} w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold cursor-default" title="${name}">${name.charAt(0)}</span>`;
+                }).join('')}
+            </div>`;
+        }
+
         // Show view mode
         function showViewMode() {
             const show = shows.find(s => s.id === selectedShowId);
@@ -532,108 +565,142 @@
             const formattedDate = date.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 
             // Get client info
-            let clientName = '<span class="text-stone-600">—</span>';
-            let clientAddress = '<span class="text-stone-600">—</span>';
+            let clientName = '';
+            let clientAddress = '';
             if (show.clientId) {
                 const client = clients.find(c => c.id === show.clientId);
                 if (client) {
                     clientName = client.name;
                     if (client.address) {
-                        clientAddress = `<a href="https://maps.google.com/?q=${encodeURIComponent(client.address)}" target="_blank" rel="noopener noreferrer" class="text-accent-teal hover:underline">${client.address}</a>`;
+                        clientAddress = client.address;
                     }
                 }
             }
 
-            document.getElementById('show-title').textContent = show.venue;
+            // Personnel bubbles for the header
+            const personnelBubbles = renderPersonnelBubbles(show.personnel);
+
+            // Set title and personnel bubbles in header
+            document.getElementById('show-title').innerHTML = `
+                <h2 class="text-xl md:text-2xl font-bold text-white truncate">${show.venue}</h2>
+                ${personnelBubbles}
+            `;
+
+            // Status badges
+            const visibilityBadge = show.isPrivate
+                ? '<span class="px-2 py-0.5 bg-amber-900/50 text-amber-400 text-xs font-semibold rounded-full">Private</span>'
+                : '<span class="px-2 py-0.5 bg-stone-700 text-stone-300 text-xs font-semibold rounded-full">Public</span>';
+            const publishedBadge = show.published
+                ? '<span class="px-2 py-0.5 bg-green-900/50 text-green-400 text-xs font-semibold rounded-full">Published</span>'
+                : '<span class="px-2 py-0.5 bg-stone-700 text-stone-400 text-xs font-semibold rounded-full">Unpublished</span>';
+
             document.getElementById('show-details').innerHTML = `
-                <div class="space-y-6">
-                    <div>
-                        <label class="text-xs text-stone-500 uppercase tracking-wide">Date</label>
-                        <div class="text-lg text-white font-semibold">${formattedDate}</div>
+                <div class="space-y-4">
+                    <!-- Status Badges -->
+                    <div class="flex items-center gap-2">
+                        ${visibilityBadge}
+                        ${publishedBadge}
                     </div>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="text-xs text-stone-500 uppercase tracking-wide">Start Time</label>
-                            <div class="text-lg text-white">${show.startTime || '<span class="text-stone-600">—</span>'}</div>
+
+                    <!-- Date & Time Card -->
+                    <div class="bg-stone-800/50 rounded-lg p-4 space-y-3">
+                        <div class="flex items-center gap-3">
+                            <i class="fa-regular fa-calendar text-accent-teal text-lg"></i>
+                            <div class="text-lg text-white font-semibold">${formattedDate}</div>
                         </div>
-                        <div>
-                            <label class="text-xs text-stone-500 uppercase tracking-wide">End Time</label>
-                            <div class="text-lg text-white">${show.endTime || '<span class="text-stone-600">—</span>'}</div>
-                        </div>
-                    </div>
-                    <div>
-                        <label class="text-xs text-stone-500 uppercase tracking-wide">Client</label>
-                        <div class="text-lg text-white">${clientName}</div>
-                    </div>
-                    <div>
-                        <label class="text-xs text-stone-500 uppercase tracking-wide">Address</label>
-                        <div class="text-lg text-white">${clientAddress}</div>
-                    </div>
-                    <div>
-                        <label class="text-xs text-stone-500 uppercase tracking-wide">Location</label>
-                        <div class="text-lg text-white">${show.city && show.state ? `${show.city}, ${show.state}` : '<span class="text-stone-600">—</span>'}</div>
-                    </div>
-                    <div>
-                        <label class="text-xs text-stone-500 uppercase tracking-wide">Visibility</label>
-                        <div class="text-lg text-white">${show.isPrivate ? 'Private Event' : 'Public Event'}</div>
-                    </div>
-                    <div>
-                        <label class="text-xs text-stone-500 uppercase tracking-wide">Event Link</label>
-                        <div class="text-lg">
-                            ${show.eventLink ? `
-                                <a href="${show.eventLink}" target="_blank" rel="noopener noreferrer" class="text-accent-teal hover:underline flex items-center gap-2">
-                                    View Event <i class="fa-solid fa-external-link text-sm"></i>
-                                </a>
-                            ` : '<span class="text-stone-600">—</span>'}
+                        <div class="flex items-center gap-3 ml-8">
+                            <i class="fa-regular fa-clock text-stone-400 text-sm"></i>
+                            <div class="text-white">
+                                ${show.startTime || '—'} ${show.startTime && show.endTime ? '–' : ''} ${show.endTime || ''}
+                            </div>
                         </div>
                     </div>
-                    <div>
-                        <label class="text-xs text-stone-500 uppercase tracking-wide">Setlist</label>
-                        <div class="text-lg">
-                            ${show.setlist ? `
-                                <a href="setlist-manager.html?file=${show.setlist}.json" target="_blank" rel="noopener noreferrer" class="text-accent-teal hover:underline flex items-center gap-2">
-                                    ${show.setlist.replace('.json', '').replace(/_/g, ' ')} <i class="fa-solid fa-external-link text-sm"></i>
-                                </a>
-                            ` : '<span class="text-stone-600">—</span>'}
+
+                    <!-- Venue & Location Card -->
+                    <div class="bg-stone-800/50 rounded-lg p-4 space-y-3">
+                        ${clientName ? `
+                        <div class="flex items-center gap-3">
+                            <i class="fa-regular fa-building text-stone-400"></i>
+                            <div class="text-white font-medium">${clientName}</div>
+                        </div>` : ''}
+                        ${clientAddress ? `
+                        <div class="flex items-center gap-3">
+                            <i class="fa-solid fa-location-dot text-stone-400 text-sm"></i>
+                            <a href="https://maps.google.com/?q=${encodeURIComponent(clientAddress)}" target="_blank" rel="noopener noreferrer" class="text-accent-teal hover:underline text-sm">${clientAddress}</a>
+                        </div>` : ''}
+                        ${show.city && show.state ? `
+                        <div class="flex items-center gap-3">
+                            <i class="fa-solid fa-map-pin text-stone-400 text-sm"></i>
+                            <div class="text-stone-300 text-sm">${show.city}, ${show.state}</div>
+                        </div>` : ''}
+                    </div>
+
+                    <!-- Links & Details Card -->
+                    <div class="bg-stone-800/50 rounded-lg p-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <div>
+                                <label class="text-xs text-stone-500 uppercase tracking-wide">Event Link</label>
+                                <div class="mt-1">
+                                    ${show.eventLink ? `
+                                        <a href="${show.eventLink}" target="_blank" rel="noopener noreferrer" class="text-accent-teal hover:underline flex items-center gap-2 text-sm">
+                                            View Event <i class="fa-solid fa-external-link text-xs"></i>
+                                        </a>
+                                    ` : '<span class="text-stone-600 text-sm">—</span>'}
+                                </div>
+                            </div>
+                            <div>
+                                <label class="text-xs text-stone-500 uppercase tracking-wide">Setlist</label>
+                                <div class="mt-1">
+                                    ${show.setlist ? `
+                                        <a href="setlist-manager.html?file=${show.setlist}.json" target="_blank" rel="noopener noreferrer" class="text-accent-teal hover:underline flex items-center gap-2 text-sm">
+                                            ${show.setlist.replace('.json', '').replace(/_/g, ' ')} <i class="fa-solid fa-external-link text-xs"></i>
+                                        </a>
+                                    ` : '<span class="text-stone-600 text-sm">—</span>'}
+                                </div>
+                            </div>
+                            <div>
+                                <label class="text-xs text-stone-500 uppercase tracking-wide">Event Handler</label>
+                                <div class="text-white text-sm mt-1">${show.eventHandler || '<span class="text-stone-600">—</span>'}</div>
+                            </div>
                         </div>
                     </div>
-                    <div>
-                        <label class="text-xs text-stone-500 uppercase tracking-wide">Itinerary</label>
-                        <div class="text-lg text-white whitespace-pre-wrap">${show.itinerary || '<span class="text-stone-600">—</span>'}</div>
-                    </div>
-                    <div>
-                        <label class="text-xs text-stone-500 uppercase tracking-wide">Notes</label>
-                        <div class="text-lg text-white whitespace-pre-wrap">${show.notes || '<span class="text-stone-600">—</span>'}</div>
-                    </div>
-                    <div>
-                        <label class="text-xs text-stone-500 uppercase tracking-wide">Personnel</label>
-                        <div class="text-lg text-white">${show.personnel && show.personnel.length > 0 ? show.personnel.join(', ') : '<span class="text-stone-600">—</span>'}</div>
-                    </div>
-                    <div>
-                        <label class="text-xs text-stone-500 uppercase tracking-wide">Event Handler</label>
-                        <div class="text-lg text-white">${show.eventHandler || '<span class="text-stone-600">—</span>'}</div>
-                    </div>
-                    <div>
-                        <label class="text-xs text-stone-500 uppercase tracking-wide">Published on Website</label>
-                        <div class="text-lg text-white">${show.published ? 'Yes - Visible on website' : 'No - Internal only'}</div>
-                    </div>
-                    <div>
-                        <label class="text-xs text-stone-500 uppercase tracking-wide">Quote</label>
-                        <div class="text-lg">
-                            ${show.quoteId ? `
-                                <a href="quote-generator.html?show=${show.id}&quote=${show.quoteId}" target="_blank" rel="noopener noreferrer" class="text-accent-teal hover:underline flex items-center gap-2">
-                                    View/Edit Quote <i class="fa-solid fa-external-link text-sm"></i>
-                                </a>
-                            ` : `
-                                <a href="#" onclick="generateQuote(); return false;" class="text-accent-teal hover:underline flex items-center gap-2">
-                                    Generate Quote <i class="fa-solid fa-plus text-sm"></i>
-                                </a>
-                            `}
+
+                    <!-- Itinerary -->
+                    ${show.itinerary ? `
+                    <div class="bg-stone-800/50 rounded-lg p-4">
+                        <h3 class="text-xs text-stone-500 uppercase tracking-wide font-bold mb-2">Itinerary</h3>
+                        <div class="text-white text-sm whitespace-pre-wrap leading-relaxed">${show.itinerary}</div>
+                    </div>` : ''}
+
+                    <!-- Notes -->
+                    ${show.notes ? `
+                    <div class="bg-stone-800/50 rounded-lg p-4">
+                        <h3 class="text-xs text-stone-500 uppercase tracking-wide font-bold mb-2">Notes</h3>
+                        <div class="text-white text-sm whitespace-pre-wrap leading-relaxed">${show.notes}</div>
+                    </div>` : ''}
+
+                    <!-- Financial Card -->
+                    <div class="bg-stone-800/50 rounded-lg p-4">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="text-xs text-stone-500 uppercase tracking-wide">Payout</label>
+                                <div class="text-lg font-semibold mt-1 ${show.payout ? 'text-green-400' : 'text-stone-600'}">${show.payout ? `$${show.payout.toLocaleString()}` : '—'}</div>
+                            </div>
+                            <div>
+                                <label class="text-xs text-stone-500 uppercase tracking-wide">Quote</label>
+                                <div class="mt-1">
+                                    ${show.quoteId ? `
+                                        <a href="quote-generator.html?show=${show.id}&quote=${show.quoteId}" target="_blank" rel="noopener noreferrer" class="text-accent-teal hover:underline flex items-center gap-2 text-sm">
+                                            View/Edit Quote <i class="fa-solid fa-external-link text-xs"></i>
+                                        </a>
+                                    ` : `
+                                        <a href="#" onclick="generateQuote(); return false;" class="text-accent-teal hover:underline flex items-center gap-2 text-sm">
+                                            Generate Quote <i class="fa-solid fa-plus text-xs"></i>
+                                        </a>
+                                    `}
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div>
-                        <label class="text-xs text-stone-500 uppercase tracking-wide">Payout (Total)</label>
-                        <div class="text-lg text-white font-semibold ${show.payout ? 'text-green-400' : ''}">${show.payout ? `$${show.payout}` : '<span class="text-stone-600 font-normal">—</span>'}</div>
                     </div>
                 </div>
             `;
@@ -767,6 +834,60 @@
 
             // Attach change listeners after form is rendered
             attachChangeListeners();
+
+            // Auto-fill from client when client selection changes
+            document.getElementById('edit-client').addEventListener('change', (e) => {
+                const clientId = e.target.value;
+                if (!clientId) return;
+                const client = clients.find(c => c.id === clientId);
+                if (!client) return;
+
+                // Auto-fill venue name for venue-type clients
+                const venueInput = document.getElementById('edit-venue');
+                if (client.type === 'Venue' && client.name && (venueInput.value === 'New Venue' || !venueInput.value)) {
+                    venueInput.value = client.name;
+                }
+
+                // Auto-fill city/state from address
+                if (client.address) {
+                    const addressParts = client.address.split(',').map(p => p.trim());
+                    if (addressParts.length >= 2) {
+                        const lastPart = addressParts[addressParts.length - 1];
+                        const secondLastPart = addressParts[addressParts.length - 2];
+                        const stateMatch = lastPart.match(/^([A-Z]{2})\s*\d*$/);
+                        if (stateMatch) {
+                            document.getElementById('edit-state').value = stateMatch[1];
+                            document.getElementById('edit-city').value = secondLastPart;
+                        }
+                    }
+                }
+
+                // Auto-fill times (only if empty or at defaults)
+                const startInput = document.getElementById('edit-start-time');
+                const endInput = document.getElementById('edit-end-time');
+                if (!startInput.value || startInput.value === '8:00 PM') {
+                    startInput.value = client.defaultStartTime || '8:00 PM';
+                }
+                if (!endInput.value || endInput.value === '11:00 PM') {
+                    endInput.value = client.defaultEndTime || '11:00 PM';
+                }
+
+                // Auto-fill itinerary and notes (only if empty)
+                const itineraryInput = document.getElementById('edit-itinerary');
+                const notesInput = document.getElementById('edit-notes');
+                if (!itineraryInput.value && client.defaultItinerary) {
+                    itineraryInput.value = client.defaultItinerary;
+                }
+                if (!notesInput.value && client.defaultNotes) {
+                    notesInput.value = client.defaultNotes;
+                }
+
+                // Auto-fill payout from default rate (only if empty)
+                const payoutInput = document.getElementById('edit-payout');
+                if (!payoutInput.value && client.defaultRate) {
+                    payoutInput.value = client.defaultRate;
+                }
+            });
         }
 
         // Save edited show - saves directly to Firestore
@@ -869,10 +990,8 @@
                     if (client.address) {
                         const addressParts = client.address.split(',').map(p => p.trim());
                         if (addressParts.length >= 2) {
-                            // Try to extract city and state from address
                             const lastPart = addressParts[addressParts.length - 1];
                             const secondLastPart = addressParts[addressParts.length - 2];
-                            // Check if last part looks like "MI 49770" or just "MI"
                             const stateMatch = lastPart.match(/^([A-Z]{2})\s*\d*$/);
                             if (stateMatch) {
                                 newShow.state = stateMatch[1];
@@ -882,6 +1001,12 @@
                             }
                         }
                     }
+                    // Pre-fill times, itinerary, notes from client defaults
+                    newShow.startTime = client.defaultStartTime || '8:00 PM';
+                    newShow.endTime = client.defaultEndTime || '11:00 PM';
+                    if (client.defaultItinerary) newShow.itinerary = client.defaultItinerary;
+                    if (client.defaultNotes) newShow.notes = client.defaultNotes;
+                    if (client.defaultRate) newShow.payout = client.defaultRate;
                 }
             }
 
@@ -992,6 +1117,75 @@
             URL.revokeObjectURL(url);
         }
 
+        // Open Google Calendar with prefilled event
+        function openGoogleCalendar() {
+            const show = shows.find(s => s.id === selectedShowId);
+            if (!show) return;
+
+            // Get client info
+            let location = '';
+            let clientName = '';
+            if (show.clientId) {
+                const client = clients.find(c => c.id === show.clientId);
+                if (client) {
+                    clientName = client.name;
+                    if (client.address) location = client.address;
+                }
+            }
+            if (!location && show.city && show.state) {
+                location = `${show.city}, ${show.state}`;
+            }
+
+            // Parse date
+            const dateParts = show.date.split('/');
+            const month = dateParts[0].padStart(2, '0');
+            const day = dateParts[1].padStart(2, '0');
+            const year = dateParts[2];
+
+            // Parse times
+            function parseTime(timeStr) {
+                if (!timeStr) return null;
+                const match = timeStr.match(/(\d{1,2}):(\d{2})\s*(AM|PM)?/i);
+                if (!match) return null;
+                let hours = parseInt(match[1]);
+                const minutes = match[2];
+                const period = match[3]?.toUpperCase();
+                if (period === 'PM' && hours !== 12) hours += 12;
+                if (period === 'AM' && hours === 12) hours = 0;
+                return `${hours.toString().padStart(2, '0')}${minutes}00`;
+            }
+
+            const startTime = parseTime(show.startTime) || '200000';
+            const endTime = parseTime(show.endTime) || '230000';
+            const dates = `${year}${month}${day}T${startTime}/${year}${month}${day}T${endTime}`;
+
+            // Build description
+            const showManagerUrl = `${window.location.origin}/admin/show-manager.html?show=${show.id}`;
+            let details = `Show Details: ${showManagerUrl}`;
+            if (clientName) details += `\n\nClient: ${clientName}`;
+            if (show.itinerary) details += `\n\nItinerary:\n${show.itinerary}`;
+            if (show.notes) details += `\n\nNotes:\n${show.notes}`;
+            if (show.personnel && show.personnel.length > 0) details += `\n\nPersonnel: ${show.personnel.join(', ')}`;
+            if (show.eventHandler) details += `\nEvent Handler: ${show.eventHandler}`;
+            if (show.eventLink) details += `\n\nEvent Link: ${show.eventLink}`;
+
+            const params = new URLSearchParams({
+                action: 'TEMPLATE',
+                text: `Ultraphonics @ ${show.venue}`,
+                dates: dates,
+                details: details,
+                location: location
+            });
+
+            window.open(`https://calendar.google.com/calendar/render?${params.toString()}`, '_blank');
+        }
+
+        // Toggle calendar dropdown
+        function toggleCalDropdown() {
+            const menu = document.getElementById('cal-dropdown-menu');
+            menu.classList.toggle('hidden');
+        }
+
         // Back to list on mobile/tablet
         function backToList() {
             if (window.innerWidth < 1024) {
@@ -1070,7 +1264,16 @@
         });
         document.getElementById('delete-btn').addEventListener('click', deleteShow);
         document.getElementById('add-show-btn').addEventListener('click', addNewShow);
-        document.getElementById('download-cal-btn').addEventListener('click', downloadCalendarEvent);
+        document.getElementById('cal-dropdown-btn').addEventListener('click', toggleCalDropdown);
+        document.getElementById('gcal-btn').addEventListener('click', () => { toggleCalDropdown(); openGoogleCalendar(); });
+        document.getElementById('download-ics-btn').addEventListener('click', () => { toggleCalDropdown(); downloadCalendarEvent(); });
+        // Close calendar dropdown on outside click
+        document.addEventListener('click', (e) => {
+            const wrapper = document.getElementById('cal-dropdown-wrapper');
+            if (wrapper && !wrapper.contains(e.target)) {
+                document.getElementById('cal-dropdown-menu').classList.add('hidden');
+            }
+        });
         document.getElementById('back-to-list-btn').addEventListener('click', backToList);
         document.getElementById('back-to-list-btn-edit').addEventListener('click', backToList);
 

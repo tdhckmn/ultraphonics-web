@@ -307,6 +307,29 @@
                         <label class="block text-sm font-semibold text-stone-300 mb-2">Venue / Logistics Details</label>
                         <textarea id="modal-venue-details" rows="3" class="w-full px-4 py-3 bg-stone-800 border border-stone-700 rounded-lg text-white focus:outline-none focus:border-accent-teal resize-y" placeholder="Load-in via dock. Power requires 50ft extension."></textarea>
                     </div>
+                    <div class="border-t border-stone-700 pt-4 mt-4">
+                        <h3 class="text-sm font-bold text-stone-400 uppercase tracking-wider mb-3">Show Defaults</h3>
+                        <div class="space-y-4">
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-semibold text-stone-300 mb-2">Default Start Time</label>
+                                    <input type="text" id="modal-default-start-time" class="w-full px-4 py-3 bg-stone-800 border border-stone-700 rounded-lg text-white focus:outline-none focus:border-accent-teal" placeholder="8:00 PM">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold text-stone-300 mb-2">Default End Time</label>
+                                    <input type="text" id="modal-default-end-time" class="w-full px-4 py-3 bg-stone-800 border border-stone-700 rounded-lg text-white focus:outline-none focus:border-accent-teal" placeholder="11:00 PM">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-stone-300 mb-2">Default Itinerary</label>
+                                <textarea id="modal-default-itinerary" rows="3" class="w-full px-4 py-3 bg-stone-800 border border-stone-700 rounded-lg text-white focus:outline-none focus:border-accent-teal resize-y" placeholder="Load-in: 5:00 PM&#10;Soundcheck: 5:30 PM&#10;Doors: 7:00 PM"></textarea>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-stone-300 mb-2">Default Notes</label>
+                                <textarea id="modal-default-notes" rows="3" class="w-full px-4 py-3 bg-stone-800 border border-stone-700 rounded-lg text-white focus:outline-none focus:border-accent-teal resize-y" placeholder="Internal notes about working with this client..."></textarea>
+                            </div>
+                        </div>
+                    </div>
                     <div>
                         <label class="block text-sm font-semibold text-stone-300 mb-2">Tags (comma separated)</label>
                         <input type="text" id="modal-client-tags" class="w-full px-4 py-3 bg-stone-800 border border-stone-700 rounded-lg text-white focus:outline-none focus:border-accent-teal" placeholder="Good Food, High Budget, Strict Sound Limit">
@@ -758,6 +781,32 @@
                         </div>
                     </div>
 
+                    <!-- Show Defaults -->
+                    ${(client.defaultStartTime || client.defaultEndTime || client.defaultItinerary || client.defaultNotes) ? `
+                    <div class="bg-stone-800/50 rounded-lg p-5 space-y-4">
+                        <h3 class="text-sm font-bold text-stone-400 uppercase tracking-wider">Show Defaults</h3>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="text-xs text-stone-500 uppercase tracking-wide">Start Time</label>
+                                <div class="text-white mt-1">${escapeHtml(client.defaultStartTime) || '<span class="text-stone-600">\u2014</span>'}</div>
+                            </div>
+                            <div>
+                                <label class="text-xs text-stone-500 uppercase tracking-wide">End Time</label>
+                                <div class="text-white mt-1">${escapeHtml(client.defaultEndTime) || '<span class="text-stone-600">\u2014</span>'}</div>
+                            </div>
+                        </div>
+                        ${client.defaultItinerary ? `
+                        <div>
+                            <label class="text-xs text-stone-500 uppercase tracking-wide">Default Itinerary</label>
+                            <div class="text-white whitespace-pre-wrap text-sm leading-relaxed mt-1">${escapeHtml(client.defaultItinerary)}</div>
+                        </div>` : ''}
+                        ${client.defaultNotes ? `
+                        <div>
+                            <label class="text-xs text-stone-500 uppercase tracking-wide">Default Notes</label>
+                            <div class="text-white whitespace-pre-wrap text-sm leading-relaxed mt-1">${escapeHtml(client.defaultNotes)}</div>
+                        </div>` : ''}
+                    </div>` : ''}
+
                     <!-- Venue / Logistics Intel -->
                     <div class="bg-stone-800/50 rounded-lg p-5 space-y-3">
                         <h3 class="text-sm font-bold text-stone-400 uppercase tracking-wider">Venue / Logistics Intel</h3>
@@ -999,6 +1048,10 @@
                     document.getElementById('modal-client-rate').value = client.defaultRate || '';
                     document.getElementById('modal-payment-terms').value = client.paymentTerms || '';
                     document.getElementById('modal-venue-details').value = client.venueDetails || '';
+                    document.getElementById('modal-default-start-time').value = client.defaultStartTime || '';
+                    document.getElementById('modal-default-end-time').value = client.defaultEndTime || '';
+                    document.getElementById('modal-default-itinerary').value = client.defaultItinerary || '';
+                    document.getElementById('modal-default-notes').value = client.defaultNotes || '';
                     document.getElementById('modal-client-tags').value = (client.tags || []).join(', ');
                 }
             } else {
@@ -1015,6 +1068,10 @@
                 document.getElementById('modal-client-rate').value = '';
                 document.getElementById('modal-payment-terms').value = '';
                 document.getElementById('modal-venue-details').value = '';
+                document.getElementById('modal-default-start-time').value = '';
+                document.getElementById('modal-default-end-time').value = '';
+                document.getElementById('modal-default-itinerary').value = '';
+                document.getElementById('modal-default-notes').value = '';
                 document.getElementById('modal-client-tags').value = '';
             }
 
@@ -1051,6 +1108,10 @@
                 defaultRate: rateValue ? parseInt(rateValue) : undefined,
                 paymentTerms: document.getElementById('modal-payment-terms').value || undefined,
                 venueDetails: document.getElementById('modal-venue-details').value.trim() || undefined,
+                defaultStartTime: document.getElementById('modal-default-start-time').value.trim() || undefined,
+                defaultEndTime: document.getElementById('modal-default-end-time').value.trim() || undefined,
+                defaultItinerary: document.getElementById('modal-default-itinerary').value.trim() || undefined,
+                defaultNotes: document.getElementById('modal-default-notes').value.trim() || undefined,
                 tags: tags.length > 0 ? tags : undefined,
                 createdAt: existingClient?.createdAt || undefined,
                 lastInteraction: existingClient?.lastInteraction || undefined
