@@ -193,7 +193,24 @@ const FirestoreService = {
   async saveSong(song) {
     const songId = song.id || song.title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
     const docRef = doc(db, 'songs', songId);
-    await setDoc(docRef, { ...song, id: songId });
+    await setDoc(docRef, { ...song, id: songId, updatedAt: new Date().toISOString() });
+  },
+
+  async getSong(songId) {
+    const docRef = doc(db, 'songs', songId);
+    const snapshot = await getDoc(docRef);
+    if (!snapshot.exists()) return null;
+    return { id: snapshot.id, ...snapshot.data() };
+  },
+
+  async updateSong(songId, data) {
+    const docRef = doc(db, 'songs', songId);
+    await updateDoc(docRef, { ...data, updatedAt: new Date().toISOString() });
+  },
+
+  async deleteSong(songId) {
+    const docRef = doc(db, 'songs', songId);
+    await deleteDoc(docRef);
   },
 
   // Clients

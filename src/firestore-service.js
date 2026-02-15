@@ -164,8 +164,42 @@ export async function saveSong(song) {
   const docRef = doc(db, COLLECTIONS.SONGS, songId);
   await setDoc(docRef, {
     ...song,
-    id: songId
+    id: songId,
+    updatedAt: new Date().toISOString()
   });
+}
+
+/**
+ * Get a single song by ID
+ * @param {string} songId
+ * @returns {Promise<Object|null>}
+ */
+export async function getSong(songId) {
+  const docRef = doc(db, COLLECTIONS.SONGS, songId);
+  const snapshot = await getDoc(docRef);
+  if (!snapshot.exists()) return null;
+  return { id: snapshot.id, ...snapshot.data() };
+}
+
+/**
+ * Update a song (partial update)
+ * @param {string} songId
+ * @param {Object} data
+ * @returns {Promise<void>}
+ */
+export async function updateSong(songId, data) {
+  const docRef = doc(db, COLLECTIONS.SONGS, songId);
+  await updateDoc(docRef, { ...data, updatedAt: new Date().toISOString() });
+}
+
+/**
+ * Delete a song
+ * @param {string} songId
+ * @returns {Promise<void>}
+ */
+export async function deleteSong(songId) {
+  const docRef = doc(db, COLLECTIONS.SONGS, songId);
+  await deleteDoc(docRef);
 }
 
 // ============= CLIENTS =============
