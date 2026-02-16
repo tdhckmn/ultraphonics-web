@@ -1,4 +1,4 @@
-import { config } from '../content/config.js';
+import { config } from './config.js';
 import { initNavigation } from './navigation.js';
 import { initAnalytics } from './analytics.js';
 
@@ -8,7 +8,6 @@ import { initAnalytics } from './analytics.js';
  * - Analytics
  * - Footer Copyright
  * - Email Injection
- * - Page Titles/Leads (optional)
  * * @param {string} [pageKey] - Optional key ('contact', 'services', 'quote') to load specific page titles.
  */
 export function setupCommonElements(pageKey) {
@@ -41,24 +40,6 @@ export function setupCommonElements(pageKey) {
             }
         }
     });
-
-    // 5. Page Titles & Subtitles
-    if (pageKey && config.pages && config.pages[pageKey]) {
-        const pageConfig = config.pages[pageKey];
-        const titleEl = document.querySelector('.page-title');
-        const leadEl = document.querySelector('.page-lead');
-
-        if (titleEl && pageConfig.title) titleEl.textContent = pageConfig.title;
-        if (leadEl && pageConfig.lead) leadEl.textContent = pageConfig.lead;
-
-        // 6. Pre-Production Banner Logic
-        if (pageConfig.staging) {
-            const banner = document.createElement('div');
-            banner.className = 'pre-production-banner';
-            banner.textContent = 'PRE-PRODUCTION: THIS PAGE IS NOT PUBLIC';
-            document.body.prepend(banner);
-        }
-    }
 }
 
 // --- Date & Time Helpers ---

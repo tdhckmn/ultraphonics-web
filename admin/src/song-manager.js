@@ -48,7 +48,7 @@ function parseSongName(nameString) {
         artist: '',
         key: '',
         tags: [],
-        meta: { isDrop: false, capo: 0 }
+        meta: { isDrop: false, capo: 0, isEflat: false } // Added isEflat here
     };
 
     if (tokens.length <= 1) return result;
@@ -73,6 +73,9 @@ function parseSongName(nameString) {
             const capoMatch = token.match(/capo\s*(\d+)/i);
             result.meta.capo = capoMatch ? parseInt(capoMatch[1]) : 0;
             result.tags.push('Capo');
+        } else if (lower.includes('eb')) { // Added check for eflat
+            result.meta.isEflat = true;
+            result.tags.push('Eb');
         } else {
             artistTokens.push(token);
         }
@@ -161,6 +164,10 @@ function getSongEflat(song) {
     return song.eflat ?? false;
 }
 
+function getSongDropD(song) { // Added for Drop D
+    return song.dropD ?? false;
+}
+
 function getCapoOffset(song) {
     const capo = getSongCapo(song);
     if (isGuitarMode && capo !== 0) return -capo;
@@ -170,7 +177,7 @@ function getCapoOffset(song) {
 // ---- Lyric Parser ----
 
 function isSectionKeyword(text) {
-    // Match "Verse", "Verse 1", "Chorus 2", "Pre-Chorus", etc.
+    // Match "Intro", "Verse 1", "Chorus 2", "Pre-Chorus", etc.
     const normalized = text.trim().toLowerCase();
     return SECTION_KEYWORDS.some(kw => {
         if (normalized === kw) return true;
@@ -206,7 +213,7 @@ function parseLyrics(rawText, capoOffset) {
 
         // 2. Convert **Harmonies** → clickable spans
         processed = processed.replace(/\*\*(.*?)\*\*/g, (match, content) => {
-            return `<span class="harmony-section" onclick="openChartPDF()">${content}</span>`;
+            return `<span class="harmony-section" onclick="openChartPDF()">#${content}</span>`;
         });
 
         // 3. Parse [Brackets] — section anchors vs chords (above text)
@@ -307,12 +314,15 @@ function renderSongsList(filter = '') {
         const key = song.settings?.originalKey || song.key;
         const capo = getSongCapo(song);
         const eflat = getSongEflat(song);
+        const dropD = getSongDropD(song); // Get Drop D status
+
         const keyBadge = key
             ? `<span class="text-xs bg-green-900/50 text-green-400 px-2 py-0.5 rounded font-mono">${key}</span>`
             : '';
-        const eflatBadge = eflat
-            ? '<span class="text-xs bg-green-900/50 text-green-400 px-2 py-0.5 rounded">Eb</span>'
-            : '';
+        const tuningBadges = `
+            ${eflat ? '<span class="tuning-badge eb-tuning">Eb</span>' : ''}
+            ${dropD ? '<span class="tuning-badge drop-d">Drop D</span>' : ''}
+        `;
         const capoBadge = capo > 0
             ? `<span class="text-xs bg-amber-900/50 text-amber-400 px-2 py-0.5 rounded">Capo ${capo}</span>`
             : '';
@@ -329,7 +339,7 @@ function renderSongsList(filter = '') {
                     </div>
                     <div class="flex items-center gap-1 flex-shrink-0">
                         ${archivedBadge}
-                        ${eflatBadge}
+                        ${tuningBadges}
                         ${capoBadge}
                         ${keyBadge}
                     </div>
@@ -350,7 +360,7 @@ function renderSongsList(filter = '') {
 function selectSong(songId) {
     if (hasUnsavedChanges && selectedSongId !== songId) {
         if (!confirm('You have unsaved changes. Discard and select a different song?')) return;
-        hasUnsavedChanges = false;
+        hasUnavedChanges = false;
     }
 
     selectedSongId = songId;
@@ -382,6 +392,7 @@ function showViewMode() {
     const artist = song.artist || '';
     const capo = getSongCapo(song);
     const eflat = getSongEflat(song);
+    const dropD = getSongDropD(song); // Get Drop D status
     const originalKey = song.settings?.originalKey || song.key || '';
     const genre = song.genre || '';
 
@@ -418,8 +429,12 @@ function showViewMode() {
     const { html, sections, footnotes } = parseLyrics(song.lyrics || '', capoOffset);
 
     const displayKey = isGuitarMode && capo ? transposeChord(originalKey, -capo) : originalKey;
-    const tuningLabel = eflat ? 'Eb (Half-step down)' : 'Standard';
-    const tuningColor = eflat ? 'text-green-400' : 'text-white';
+    const tuningLabel = [];
+    if (eflat) tuningLabel.push('Eb (Half-step down)');
+    if (dropD) tuningLabel.push('Drop D');
+    if (tuningLabel.length === 0) tuningLabel.push('Standard');
+
+    const tuningColor = (eflat || dropD) ? 'text-green-400' : 'text-white';
     const modeLabel = capo > 0 ? (isGuitarMode ? `Capo (Fret ${capo})` : 'Concert') : 'Concert';
 
     document.getElementById('song-details').innerHTML = `
@@ -436,7 +451,7 @@ function showViewMode() {
                 </div>
                 <div>
                     <label class="text-xs text-stone-500 uppercase tracking-wide">Tuning</label>
-                    <div class="${tuningColor} font-semibold mt-0.5">${tuningLabel}</div>
+                    <div class="${tuningColor} font-semibold mt-0.5">${tuningLabel.join(', ')}</div>
                 </div>
                 <div>
                     <label class="text-xs text-stone-500 uppercase tracking-wide">Mode</label>
@@ -484,6 +499,7 @@ function showEditMode() {
     const title = song.title || song.name || '';
     const capo = getSongCapo(song);
     const eflat = getSongEflat(song);
+    const dropD = getSongDropD(song); // Get Drop D status
     const originalKey = song.settings?.originalKey || song.key || '';
     const displayKey = capo ? transposeChord(originalKey, -capo) : originalKey;
     const notes = song.notes ? (typeof song.notes === 'string' ? song.notes : song.notes.join('\n')) : '';
@@ -523,6 +539,12 @@ function showEditMode() {
                 <label class="flex items-center gap-3 cursor-pointer mt-2">
                     <input type="checkbox" id="edit-eflat" ${eflat ? 'checked' : ''} class="w-5 h-5 text-accent-green bg-stone-800 border-stone-700 rounded focus:ring-green-500 focus:ring-2 cursor-pointer">
                     <span class="text-sm font-semibold text-stone-300">Eb Tuning <span class="text-stone-500 font-normal">(Half-step down / Drop tuner pedal)</span></span>
+                </label>
+            </div>
+            <div>
+                <label class="flex items-center gap-3 cursor-pointer mt-2">
+                    <input type="checkbox" id="edit-dropd" ${dropD ? 'checked' : ''} class="w-5 h-5 text-indigo-500 bg-stone-800 border-stone-700 rounded focus:ring-indigo-500 focus:ring-2 cursor-pointer">
+                    <span class="text-sm font-semibold text-stone-300">Drop D Tuning</span>
                 </label>
             </div>
             <div>
@@ -587,6 +609,7 @@ async function saveSong() {
     }
 
     const eflat = document.getElementById('edit-eflat').checked;
+    const dropD = document.getElementById('edit-dropd').checked; // Get Drop D value
 
     const songData = {
         id: selectedSongId,
@@ -599,6 +622,7 @@ async function saveSong() {
         showOnWebsite: document.getElementById('edit-show-on-website').checked,
         capo: capo,
         eflat: eflat,
+        dropD: dropD, // Save Drop D status
         settings: {
             capo: capo,
             originalKey: originalKey,
@@ -682,6 +706,7 @@ function addNewSong() {
         lyrics: '',
         capo: 0,
         eflat: false,
+        dropD: false, // Default for new songs
         settings: { capo: 0, originalKey: '', displayKey: '' }
     };
 
@@ -883,6 +908,8 @@ function buildSongDocument(imported) {
         meta: parsed.meta,
         active: true,
         capo: parsed.meta.capo,
+        eflat: parsed.meta.isEflat, // Set eflat from parsed meta
+        dropD: parsed.meta.isDrop, // Set dropD from parsed meta
         // Populate settings for existing UI compatibility
         settings: {
             originalKey: parsed.key,
@@ -911,6 +938,8 @@ function showImportModal(diff) {
             tags: parsed.tags,
             meta: parsed.meta,
             capo: parsed.meta.capo,
+            eflat: parsed.meta.isEflat, // Set eflat from parsed meta
+            dropD: parsed.meta.isDrop, // Set dropD from parsed meta
             settings: {
                 originalKey: parsed.key,
                 capo: parsed.meta.capo,
@@ -1033,6 +1062,8 @@ async function executeSync() {
                 tags: u.tags,
                 meta: u.meta,
                 capo: u.capo,
+                eflat: u.eflat, // Include eflat in update
+                dropD: u.dropD, // Include dropD in update
                 settings: u.settings
             }
         }));
@@ -1093,6 +1124,24 @@ function setupDragAndDrop() {
     });
 }
 
+// ---- Product Navigation ----
+function setupProductNavigation() {
+    const ablesetLaunchLink = document.getElementById('ableset-launch-link');
+    if (ablesetLaunchLink) {
+        // Retrieve AbleSet URL from local storage or use a default
+        const storedAblesetUrl = localStorage.getItem('ableset_url') || 'http://192.168.1.243';
+        ablesetLaunchLink.href = storedAblesetUrl;
+        ablesetLaunchLink.target = '_blank';
+        ablesetLaunchLink.rel = 'noopener noreferrer';
+        // Add click event for analytics if needed
+        ablesetLaunchLink.addEventListener('click', () => {
+            console.log('Launching AbleSet:', storedAblesetUrl);
+            // trackEvent('ableset_launch', { url: storedAblesetUrl });
+        });
+    }
+}
+
+
 // ---- Navigation ----
 
 function backToList() {
@@ -1141,6 +1190,10 @@ function hideLoginModal() {
 }
 
 // ---- Event Listeners ----
+
+// Initial product navigation setup
+setupProductNavigation();
+
 
 // Search
 document.getElementById('search-songs').addEventListener('input', (e) => {

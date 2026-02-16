@@ -1,4 +1,3 @@
-import { config } from '../content/config.js';
 import { setupCommonElements } from './utils.js';
 import { trackEvent } from './analytics.js';
 
@@ -6,60 +5,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // 1. Setup Navigation, Footer, etc.
     setupCommonElements('mediaKit');
 
-    const mediaConfig = config.mediaKit || {};
-
-    // 2. Render Downloads
-    const downloadsContainer = document.getElementById('downloads-list');
-    if (downloadsContainer && mediaConfig.downloads) {
-        // Stack links vertically and center them
-        downloadsContainer.style.flexDirection = 'column';
-        downloadsContainer.style.alignItems = 'center';
-
-        mediaConfig.downloads.forEach(link => {
-            const a = document.createElement('a');
-            
-            // Determine URL: either direct 'url' or lookup in config.links via 'useLink'
-            let href = link.url;
-            if (link.useLink && config.links && config.links[link.useLink]) {
-                href = config.links[link.useLink];
-            }
-
-            a.href = href || '#';
-            a.textContent = link.label;
-            a.target = "_blank";
-            a.rel = "noopener noreferrer";
-            
-            // Make all buttons secondary (outline) style
-            a.className = 'button button-outline';
-            
-            // Stack styling: consistent width, centered text
-            a.style.width = '100%';
-            a.style.maxWidth = '350px';
-            a.style.textAlign = 'center';
-            a.style.margin = "0"; // CSS gap handles spacing
-
-            // Add analytics tracking
-            a.addEventListener('click', () => {
-                trackEvent('media_kit_download', {
-                    asset_type: link.label,
-                    asset_url: href
-                });
-            });
-
-            downloadsContainer.appendChild(a);
-        });
-    }
-
-    // 3. Render Audio Players
-    const audioContainer = document.getElementById('audio-list');
-    if (audioContainer && mediaConfig.audio) {
-        mediaConfig.audio.forEach((track, index) => {
-            const player = createAudioPlayer(track, index);
-            audioContainer.appendChild(player);
-        });
-    }
-
-    // 4. Song Selection Logic
+    // 2. Song Selection Logic
     const songListContainer = document.getElementById('song-list');
     const genreFilter = document.getElementById('genre-filter');
     
@@ -99,41 +45,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
             });
         }
-    }
-
-    // 5. Render Gallery
-    const galleryContainer = document.getElementById('gallery-list');
-    if (galleryContainer && mediaConfig.gallery) {
-        mediaConfig.gallery.forEach(image => {
-            const div = document.createElement('div');
-            div.className = 'gallery-item';
-            
-            const img = document.createElement('img');
-            img.src = image.src;
-            img.alt = image.alt;
-            img.loading = "lazy";
-
-            // Create Download Button
-            const downloadBtn = document.createElement('a');
-            downloadBtn.href = image.src;
-            downloadBtn.download = ''; // Triggers download behavior
-            downloadBtn.className = 'gallery-download-btn';
-            downloadBtn.innerHTML = '⇩'; 
-            downloadBtn.setAttribute('aria-label', 'Download image');
-            downloadBtn.title = 'Download';
-
-            // Add analytics tracking for image downloads
-            downloadBtn.addEventListener('click', () => {
-                trackEvent('gallery_image_download', {
-                    image_src: image.src,
-                    image_alt: image.alt
-                });
-            });
-
-            div.appendChild(img);
-            div.appendChild(downloadBtn);
-            galleryContainer.appendChild(div);
-        });
     }
 
     // Setup analytics for genre filter

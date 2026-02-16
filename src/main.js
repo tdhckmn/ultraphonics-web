@@ -1,4 +1,4 @@
-import { config } from '../content/config.js';
+import { config } from './config.js';
 import { trackEvent } from './analytics.js';
 import { initMailerLite } from './mailer-lite.js';
 import { 

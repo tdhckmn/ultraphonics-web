@@ -1,16 +1,21 @@
-import { config } from '../content/config.js';
 import { setupCommonElements } from './utils.js';
 
+const emailjsConfig = {
+    publicKey: "KhA8Z-PRCg69qMpWp",
+    serviceId: "service_eujinnf",
+    contactTemplateId: "template_o1lwsxk"
+};
+
 document.addEventListener('DOMContentLoaded', () => {
-    // Initialize common elements with 'contact' page key to load title/lead from config
+    // Initialize common elements
     setupCommonElements('contact');
 
     // --- Contact Form Specific Logic ---
 
     // 1. Initialize EmailJS
-    if (config.ids && config.ids.emailjs) {
+    if (emailjsConfig.publicKey) {
         emailjs.init({
-            publicKey: config.ids.emailjs.publicKey,
+            publicKey: emailjsConfig.publicKey,
         });
     }
 
@@ -23,8 +28,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const status = document.getElementById("form-status");
             const btn = document.getElementById("submit-btn");
             
-            if (!config.ids || !config.ids.emailjs || !config.ids.emailjs.serviceId) {
-                status.textContent = "Error: EmailJS not configured in content/config.js";
+            if (!emailjsConfig.serviceId) {
+                status.textContent = "Error: EmailJS not configured.";
                 status.classList.add("error");
                 return;
             }
@@ -35,12 +40,12 @@ document.addEventListener('DOMContentLoaded', () => {
             status.className = "form-status";
 
             emailjs.sendForm(
-                config.ids.emailjs.serviceId, 
-                config.ids.emailjs.contactTemplateId, 
+                emailjsConfig.serviceId, 
+                emailjsConfig.contactTemplateId, 
                 this
             )
             .then(() => {
-                status.textContent = "Thanks! We've received your message and will follow up soon.";
+                status.textContent = "Thanks! We\'ve received your message and will follow up soon.";
                 status.classList.add("success");
                 event.target.reset();
                 btn.textContent = "Message Sent";

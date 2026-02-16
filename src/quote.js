@@ -1,8 +1,13 @@
-import { config } from '../content/config.js';
 import { setupCommonElements } from './utils.js';
 
+const emailjsConfig = {
+    publicKey: "KhA8Z-PRCg69qMpWp",
+    serviceId: "service_eujinnf",
+    quoteTemplateId: "template_0i5n9gk"
+};
+
 document.addEventListener('DOMContentLoaded', () => {
-    // Initialize common elements with 'quote' page key
+    // Initialize common elements
     setupCommonElements('quote');
 
     // --- Quote Form Specific Logic ---
@@ -21,9 +26,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /* --- Initialize EmailJS --- */
-    if (config.ids && config.ids.emailjs) {
+    if (emailjsConfig.publicKey) {
         emailjs.init({
-            publicKey: config.ids.emailjs.publicKey,
+            publicKey: emailjsConfig.publicKey,
         });
     }
 
@@ -124,7 +129,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const status = document.getElementById("form-status");
         
-        if (!config.ids || !config.ids.emailjs || !config.ids.emailjs.serviceId) {
+        if (!emailjsConfig.serviceId) {
             status.textContent = "Error: EmailJS not configured.";
             status.classList.add("error");
             return;
@@ -136,8 +141,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Send via EmailJS
         emailjs.sendForm(
-            config.ids.emailjs.serviceId, 
-            config.ids.emailjs.quoteTemplateId, 
+            emailjsConfig.serviceId, 
+            emailjsConfig.quoteTemplateId, 
             this
         )
         .then(() => {
