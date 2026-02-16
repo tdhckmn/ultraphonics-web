@@ -792,6 +792,11 @@ function enterStageMode() {
 }
 
 function exitStageMode() {
+    const returnUrl = new URLSearchParams(window.location.search).get('return');
+    if (returnUrl) {
+        window.location.href = returnUrl;
+        return;
+    }
     document.getElementById('stage-mode').classList.add('hidden');
     document.getElementById('stage-mode').classList.remove('stage-light');
     document.body.style.overflow = '';
