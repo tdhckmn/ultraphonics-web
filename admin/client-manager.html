@@ -125,6 +125,16 @@
             width: 1px; bottom: 0; background: #44403c;
         }
         .log-entry:last-child::after { display: none; }
+
+        /* Show item styles */
+        .show-item { cursor: pointer; transition: all 0.2s; }
+        .show-item:hover { background: rgba(20, 184, 166, 0.1); }
+        .show-item.selected { background: rgba(20, 184, 166, 0.2); border-left: 3px solid #14b8a6; }
+
+        /* Sidebar tab styles */
+        .sidebar-tab { cursor: pointer; color: #a8a29e; border-bottom: 2px solid transparent; transition: all 0.2s; }
+        .sidebar-tab.active { color: #14b8a6; border-bottom-color: #14b8a6; }
+        .sidebar-tab:not(.active):hover { color: #e7e5e4; }
     </style>
 </head>
 <body class="bg-stone-950 text-stone-100 h-full overflow-hidden">
@@ -133,7 +143,7 @@
     <header class="h-[70px] px-4 md:px-6 border-b border-stone-800 bg-stone-900 flex justify-between items-center shadow-md z-50 sticky top-0">
         <div class="relative" id="admin-menu-container">
             <div class="flex items-center gap-3 md:gap-4 cursor-pointer" onclick="toggleAdminMenu()">
-                <div class="mode-icon w-8 h-8 bg-gradient-to-br from-teal-400 to-cyan-500 rounded flex items-center justify-center text-black flex-shrink-0">
+                <div id="header-mode-icon" class="mode-icon w-8 h-8 bg-gradient-to-br from-teal-400 to-cyan-500 rounded flex items-center justify-center text-black flex-shrink-0">
                     <i class="fas fa-address-book text-sm"></i>
                 </div>
                 <div>
@@ -167,9 +177,9 @@
             </div>
         </div>
         <div class="flex items-center gap-2">
-            <button id="add-client-btn" class="text-xs px-3 py-2 bg-teal-900 border border-teal-500 text-teal-200 rounded-lg hover:bg-teal-800 transition-colors flex items-center gap-2" title="Add Client">
+            <button id="add-entity-btn" class="text-xs px-3 py-2 bg-teal-900 border border-teal-500 text-teal-200 rounded-lg hover:bg-teal-800 transition-colors flex items-center gap-2" title="Add">
                 <i class="fa-solid fa-plus text-xs"></i>
-                <span class="hidden md:inline">Add Client</span>
+                <span class="hidden md:inline add-label">Add Client</span>
             </button>
             <button id="settings-btn" class="text-stone-400 hover:text-white transition-colors p-2 rounded-lg hover:bg-stone-800" title="Settings">
                 <i class="fa-solid fa-gear"></i>
@@ -376,7 +386,18 @@
     <div class="manager-container">
         <!-- Left Sidebar: Client List -->
         <div id="clients-list" class="bg-stone-900 rounded-xl border border-stone-800 overflow-hidden flex flex-col">
-            <div class="p-4 border-b border-stone-800 space-y-3">
+            <!-- Sidebar Tabs -->
+            <div class="flex border-b border-stone-800 flex-shrink-0">
+                <button id="sidebar-tab-clients" class="sidebar-tab active flex-1 py-3 text-sm font-semibold text-center">
+                    <i class="fa-solid fa-address-book mr-1.5"></i>Clients
+                </button>
+                <button id="sidebar-tab-shows" class="sidebar-tab flex-1 py-3 text-sm font-semibold text-center">
+                    <i class="fa-solid fa-calendar-days mr-1.5"></i>Shows
+                </button>
+            </div>
+
+            <!-- Client Filters -->
+            <div id="client-filters" class="p-4 border-b border-stone-800 space-y-3">
                 <input type="text" id="search-clients" placeholder="Search clients..." class="w-full px-4 py-2 bg-stone-800 border border-stone-700 rounded-lg text-white placeholder-stone-500 focus:outline-none focus:border-accent-teal">
                 <div class="flex gap-2">
                     <select id="filter-status" class="flex-1 px-3 py-1.5 bg-stone-800 border border-stone-700 rounded-lg text-white text-xs focus:outline-none focus:border-accent-teal">
@@ -397,17 +418,38 @@
                 <div class="flex gap-2 items-center">
                     <span class="text-xs text-stone-500">Sort:</span>
                     <select id="sort-clients" class="flex-1 px-3 py-1.5 bg-stone-800 border border-stone-700 rounded-lg text-white text-xs focus:outline-none focus:border-accent-teal">
-                        <option value="name">Name (A-Z)</option>
-                        <option value="activity">Recent Activity</option>
-                        <option value="gig">Recent Gig</option>
+                        <option value="name-asc">Name (A-Z)</option>
+                        <option value="name-desc">Name (Z-A)</option>
+                        <option value="contact-recent">Last Contact (Recent)</option>
+                        <option value="contact-oldest">Last Contact (Oldest)</option>
+                        <option value="show-soonest">Next Show (Soonest)</option>
+                        <option value="show-farthest">Next Show (Farthest)</option>
                     </select>
                 </div>
             </div>
+
+            <!-- Show Filters (hidden by default) -->
+            <div id="show-filters" class="p-4 border-b border-stone-800 space-y-3 hidden">
+                <input type="text" id="search-shows" placeholder="Search shows..." class="w-full px-4 py-2 bg-stone-800 border border-stone-700 rounded-lg text-white placeholder-stone-500 focus:outline-none focus:border-accent-teal">
+                <div class="flex gap-2">
+                    <select id="filter-year" class="flex-1 px-3 py-1.5 bg-stone-800 border border-stone-700 rounded-lg text-white text-xs focus:outline-none focus:border-accent-teal">
+                        <option value="">All Years</option>
+                    </select>
+                    <select id="sort-shows" class="flex-1 px-3 py-1.5 bg-stone-800 border border-stone-700 rounded-lg text-white text-xs focus:outline-none focus:border-accent-teal">
+                        <option value="date-asc">Date (Oldest First)</option>
+                        <option value="date-desc">Date (Newest First)</option>
+                    </select>
+                </div>
+            </div>
+
             <div id="clients-list-container" class="flex-1 overflow-y-auto">
                 <!-- Clients populated here -->
             </div>
+            <div id="shows-list-container" class="flex-1 overflow-y-auto hidden">
+                <!-- Shows populated here -->
+            </div>
             <div class="bg-stone-800 p-2 px-4 border-t border-stone-700 flex justify-center md:justify-between items-center z-20 flex-shrink-0">
-                <span id="clients-counter" class="text-accent-teal font-mono text-sm">0 clients</span>
+                <span id="sidebar-counter" class="text-accent-teal font-mono text-sm">0 clients</span>
             </div>
         </div>
 
@@ -423,7 +465,6 @@
 
             <!-- Client View -->
             <div id="client-view" class="hidden flex-1 flex flex-col overflow-hidden">
-                <!-- Header -->
                 <div class="p-4 md:p-6 border-b border-stone-800 flex items-center justify-between flex-shrink-0">
                     <div class="flex items-center gap-3 flex-1 min-w-0">
                         <h2 class="text-xl md:text-2xl font-bold text-white truncate" id="client-title">Client</h2>
@@ -447,8 +488,6 @@
                         </button>
                     </div>
                 </div>
-
-                <!-- Tabs -->
                 <div class="border-b border-stone-800 flex-shrink-0">
                     <div class="flex px-4 md:px-6">
                         <button class="crm-tab active px-4 py-3 text-sm font-semibold border-b-2" data-tab="tab-profile">
@@ -462,24 +501,72 @@
                         </button>
                     </div>
                 </div>
-
-                <!-- Tab Content -->
                 <div class="flex-1 overflow-y-auto">
-                    <!-- Tab 1: Profile & Logistics -->
-                    <div id="tab-profile" class="crm-tab-content active p-6">
-                        <div id="profile-content"></div>
-                    </div>
+                    <div id="tab-profile" class="crm-tab-content active p-6"><div id="profile-content"></div></div>
+                    <div id="tab-financials" class="crm-tab-content p-6"><div id="financials-content"></div></div>
+                    <div id="tab-activity" class="crm-tab-content p-6"><div id="activity-content"></div></div>
+                </div>
+            </div>
 
-                    <!-- Tab 2: Financials & History -->
-                    <div id="tab-financials" class="crm-tab-content p-6">
-                        <div id="financials-content"></div>
+            <!-- Show View -->
+            <div id="show-view" class="hidden flex-1 flex flex-col overflow-hidden">
+                <div class="p-4 md:p-6 border-b border-stone-800 flex items-start justify-between flex-shrink-0 gap-3">
+                    <div class="flex-1 min-w-0" id="show-title">
+                        <h2 class="text-xl md:text-2xl font-bold text-white truncate">Show Details</h2>
                     </div>
-
-                    <!-- Tab 3: Activity Log -->
-                    <div id="tab-activity" class="crm-tab-content p-6">
-                        <div id="activity-content"></div>
+                    <div class="flex items-center gap-1 md:gap-2 flex-shrink-0">
+                        <div class="relative" id="cal-dropdown-wrapper">
+                            <button id="cal-dropdown-btn" class="p-2 md:px-3 md:py-2 bg-stone-700 text-white rounded-lg hover:bg-stone-600 transition-colors flex items-center gap-2" title="Calendar Options">
+                                <i class="fa-solid fa-calendar-plus text-sm"></i>
+                                <span class="hidden md:inline text-sm font-semibold">Calendar</span>
+                                <i class="fa-solid fa-chevron-down text-xs ml-1 hidden md:inline"></i>
+                            </button>
+                            <div id="cal-dropdown-menu" class="hidden absolute right-0 top-full mt-1 w-56 bg-stone-800 border border-stone-700 rounded-lg shadow-xl z-50 overflow-hidden">
+                                <button id="gcal-btn" class="w-full px-4 py-3 text-left text-sm text-white hover:bg-stone-700 transition-colors flex items-center gap-3">
+                                    <i class="fa-brands fa-google text-blue-400"></i> Google Calendar
+                                </button>
+                                <button id="download-ics-btn" class="w-full px-4 py-3 text-left text-sm text-white hover:bg-stone-700 transition-colors flex items-center gap-3 border-t border-stone-700">
+                                    <i class="fa-solid fa-download text-stone-400"></i> Download .ics File
+                                </button>
+                            </div>
+                        </div>
+                        <button id="show-edit-btn" class="p-2 md:px-3 md:py-2 bg-accent-teal text-white rounded-lg hover:bg-teal-600 transition-colors flex items-center gap-2" title="Edit">
+                            <i class="fa-solid fa-pen text-sm"></i>
+                            <span class="hidden md:inline text-sm font-semibold">Edit</span>
+                        </button>
+                        <button id="show-delete-btn" class="p-2 md:px-3 md:py-2 bg-red-600 text-white rounded-lg hover:bg-red-500 transition-colors flex items-center gap-2" title="Delete">
+                            <i class="fa-solid fa-trash text-sm"></i>
+                            <span class="hidden md:inline text-sm font-semibold">Delete</span>
+                        </button>
+                        <button id="show-back-btn" class="lg:hidden p-2 text-stone-400 hover:text-white transition-colors ml-2" title="Close">
+                            <i class="fa-solid fa-xmark text-lg"></i>
+                        </button>
                     </div>
                 </div>
+                <div id="show-details" class="flex-1 overflow-y-auto p-6"></div>
+            </div>
+
+            <!-- Show Edit -->
+            <div id="show-edit" class="hidden flex-1 flex flex-col overflow-hidden">
+                <div class="p-4 md:p-6 border-b border-stone-800 flex items-center justify-between flex-shrink-0">
+                    <div class="flex items-center gap-3 flex-1 min-w-0">
+                        <h2 class="text-xl md:text-2xl font-bold text-white">Edit Show</h2>
+                    </div>
+                    <div class="flex items-center gap-1 md:gap-2 flex-shrink-0">
+                        <button id="save-edit-btn" class="p-2 md:px-3 md:py-2 bg-accent-teal text-white rounded-lg hover:bg-teal-600 transition-colors flex items-center gap-2" title="Save">
+                            <i class="fa-solid fa-check text-sm"></i>
+                            <span class="hidden md:inline text-sm font-semibold">Save</span>
+                        </button>
+                        <button id="cancel-edit-btn" class="p-2 md:px-3 md:py-2 bg-stone-700 text-white rounded-lg hover:bg-stone-600 transition-colors flex items-center gap-2" title="Cancel">
+                            <i class="fa-solid fa-times text-sm"></i>
+                            <span class="hidden md:inline text-sm font-semibold">Cancel</span>
+                        </button>
+                        <button id="show-edit-back-btn" class="lg:hidden p-2 text-stone-400 hover:text-white transition-colors ml-2" title="Close">
+                            <i class="fa-solid fa-xmark text-lg"></i>
+                        </button>
+                    </div>
+                </div>
+                <div id="show-form" class="flex-1 overflow-y-auto p-6"></div>
             </div>
         </div>
     </div>
@@ -488,12 +575,21 @@
     <script src="/dist/firebase-bundle.js"></script>
 
     <script>
+        // ============= STATE =============
         let clients = [];
         let selectedClientId = null;
         let isAuthenticated = false;
-        let editingClientId = null; // null = adding new, string = editing existing
-        let logsUnsubscribe = null; // cleanup for activity log listener
-        let clientLastShowDates = {}; // cache: clientId -> most recent show date
+        let editingClientId = null;
+        let logsUnsubscribe = null;
+        let clientNextShowDates = {};
+
+        let shows = [];
+        let selectedShowId = null;
+        let hasUnsavedChanges = false;
+        let originalShows = [];
+        let setlists = [];
+        let selectedYear = '';
+        let activeMode = 'clients';
 
         // ============= HELPERS =============
 
@@ -554,48 +650,186 @@
             }
         }
 
+        const personnelColors = {
+            'Anthony': { bg: 'bg-teal-600', text: 'text-white' },
+            'Tom': { bg: 'bg-blue-600', text: 'text-white' },
+            'Lester': { bg: 'bg-amber-600', text: 'text-white' },
+            'David': { bg: 'bg-purple-600', text: 'text-white' },
+            'Shelley': { bg: 'bg-pink-600', text: 'text-white' },
+            'Kelsey': { bg: 'bg-emerald-600', text: 'text-white' }
+        };
+
+        function renderPersonnelBubbles(personnel) {
+            if (!personnel || personnel.length === 0) return '';
+            return `<div class="flex items-center gap-1.5 mt-1.5">
+                ${personnel.map(name => {
+                    const colors = personnelColors[name] || { bg: 'bg-stone-600', text: 'text-white' };
+                    return `<span class="${colors.bg} ${colors.text} w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold cursor-default" title="${name}">${name.charAt(0)}</span>`;
+                }).join('')}
+            </div>`;
+        }
+
         // ============= DATA LOADING =============
 
         async function loadClients() {
             try {
                 FirestoreService.subscribeToClients((updatedClients) => {
                     clients = updatedClients;
-                    renderClientsList();
-                    // Refresh detail if viewing
+                    if (activeMode === 'clients') renderClientsList();
                     if (selectedClientId) {
                         const client = clients.find(c => c.id === selectedClientId);
                         if (client) renderClientDetail(client);
                     }
-                    // Load last show dates for sorting
-                    loadClientShowDates();
                 });
             } catch (error) {
                 console.error('Error loading clients:', error);
                 clients = [];
-                renderClientsList();
+                if (activeMode === 'clients') renderClientsList();
             }
         }
 
-        async function loadClientShowDates() {
+        async function loadShows() {
             try {
-                // Fetch all shows and compute most recent date per client
-                const shows = await FirestoreService.getShows();
-                clientLastShowDates = {};
-                shows.forEach(show => {
-                    if (show.clientId && show.date) {
-                        const showDate = new Date(show.date).getTime();
-                        const existing = clientLastShowDates[show.clientId] ? new Date(clientLastShowDates[show.clientId]).getTime() : 0;
-                        if (showDate > existing) {
-                            clientLastShowDates[show.clientId] = show.date;
+                shows = await FirestoreService.getShows();
+                shows = shows.map(show => {
+                    if (!show.id) show.id = generateUUID();
+                    return show;
+                });
+                originalShows = JSON.parse(JSON.stringify(shows));
+                populateYearFilter();
+                computeClientShowDates();
+                if (activeMode === 'shows') renderShowsList();
+            } catch (error) {
+                console.error('Error loading shows:', error);
+                shows = [];
+                originalShows = [];
+                if (activeMode === 'shows') renderShowsList();
+            }
+        }
+
+        async function loadSetlists() {
+            try {
+                const setlistDocs = await FirestoreService.getSetlists();
+                setlists = setlistDocs.map(doc => ({
+                    filename: doc.id,
+                    name: doc.name || doc.id.replace(/_/g, ' ')
+                }));
+            } catch (error) {
+                console.error('Error loading setlists:', error);
+                setlists = [];
+            }
+        }
+
+        function computeClientShowDates() {
+            const now = new Date();
+            now.setHours(0, 0, 0, 0);
+            clientNextShowDates = {};
+            shows.forEach(show => {
+                if (show.clientId && show.date) {
+                    const showDate = new Date(show.date);
+                    if (showDate >= now) {
+                        const existing = clientNextShowDates[show.clientId] ? new Date(clientNextShowDates[show.clientId]).getTime() : Infinity;
+                        if (showDate.getTime() < existing) {
+                            clientNextShowDates[show.clientId] = show.date;
                         }
                     }
-                });
-                // Re-render if sorting by gig
-                if (document.getElementById('sort-clients').value === 'gig') {
-                    renderClientsList();
                 }
-            } catch (error) {
-                console.error('Error loading show dates:', error);
+            });
+            const sortVal = document.getElementById('sort-clients').value;
+            if (sortVal.startsWith('show-')) renderClientsList();
+        }
+
+        function populateYearFilter() {
+            const years = new Set();
+            shows.forEach(show => {
+                const date = new Date(show.date);
+                years.add(date.getFullYear());
+            });
+            const yearFilter = document.getElementById('filter-year');
+            const sortedYears = Array.from(years).sort((a, b) => b - a);
+            const currentYear = new Date().getFullYear();
+            yearFilter.innerHTML = '<option value="">All Years</option>';
+            sortedYears.forEach(year => {
+                const option = document.createElement('option');
+                option.value = year;
+                option.textContent = year;
+                yearFilter.appendChild(option);
+            });
+            if (sortedYears.includes(currentYear)) {
+                selectedYear = currentYear.toString();
+                yearFilter.value = selectedYear;
+            }
+        }
+
+        // ============= MODE SWITCHING =============
+
+        function switchMode(mode) {
+            activeMode = mode;
+
+            // Update sidebar tabs
+            document.getElementById('sidebar-tab-clients').classList.toggle('active', mode === 'clients');
+            document.getElementById('sidebar-tab-shows').classList.toggle('active', mode === 'shows');
+
+            // Toggle filters
+            document.getElementById('client-filters').classList.toggle('hidden', mode !== 'clients');
+            document.getElementById('show-filters').classList.toggle('hidden', mode !== 'shows');
+
+            // Toggle list containers
+            document.getElementById('clients-list-container').classList.toggle('hidden', mode !== 'clients');
+            document.getElementById('shows-list-container').classList.toggle('hidden', mode !== 'shows');
+
+            // Hide all detail views, show empty state
+            document.getElementById('client-view').classList.add('hidden');
+            document.getElementById('show-view').classList.add('hidden');
+            document.getElementById('show-edit').classList.add('hidden');
+            document.getElementById('empty-state').classList.remove('hidden');
+
+            // Clear selections
+            selectedClientId = null;
+            selectedShowId = null;
+            hasUnsavedChanges = false;
+            if (logsUnsubscribe) { logsUnsubscribe(); logsUnsubscribe = null; }
+
+            // Update header
+            const title = document.getElementById('header-mode-title');
+            const icon = document.getElementById('header-mode-icon');
+            const addLabel = document.querySelector('#add-entity-btn .add-label');
+            if (mode === 'clients') {
+                title.textContent = 'Clients';
+                icon.innerHTML = '<i class="fas fa-address-book text-sm"></i>';
+                if (addLabel) addLabel.textContent = 'Add Client';
+            } else {
+                title.textContent = 'Shows';
+                icon.innerHTML = '<i class="fas fa-calendar-days text-sm"></i>';
+                if (addLabel) addLabel.textContent = 'Add Show';
+            }
+
+            // Update empty state
+            const emptyIcon = document.querySelector('#empty-state i');
+            const emptyText = document.querySelector('#empty-state p');
+            if (mode === 'clients') {
+                emptyIcon.className = 'fa-solid fa-address-book text-6xl mb-4 opacity-20';
+                emptyText.textContent = 'Select a client to view details';
+            } else {
+                emptyIcon.className = 'fa-solid fa-calendar-days text-6xl mb-4 opacity-20';
+                emptyText.textContent = 'Select a show to view or edit';
+            }
+
+            // Update URL
+            const url = new URL(window.location);
+            url.searchParams.set('mode', mode);
+            url.searchParams.delete('client');
+            url.searchParams.delete('show');
+            window.history.pushState({}, '', url);
+
+            // Re-render active list
+            if (mode === 'clients') renderClientsList();
+            else renderShowsList();
+
+            // Mobile: go back to list view
+            if (window.innerWidth < 1024) {
+                document.getElementById('clients-list').classList.remove('hidden-mobile');
+                document.getElementById('client-detail').classList.remove('active-mobile');
             }
         }
 
@@ -612,7 +846,6 @@
                 const name = (c.name || '').toLowerCase();
                 const contact = (c.contactName || '').toLowerCase();
                 const matchesSearch = name.includes(search) || contact.includes(search);
-                // Migration: default to Active/Venue for existing clients missing fields
                 const status = c.status || 'Active';
                 const type = c.type || 'Venue';
                 const matchesStatus = !statusFilter || status === statusFilter;
@@ -620,24 +853,41 @@
                 return matchesSearch && matchesStatus && matchesType;
             });
 
-            // Sort based on selected option
-            if (sortBy === 'activity') {
-                // Sort by most recent activity (descending), nulls last
-                filtered.sort((a, b) => {
-                    const aDate = a.lastInteraction ? new Date(a.lastInteraction).getTime() : 0;
-                    const bDate = b.lastInteraction ? new Date(b.lastInteraction).getTime() : 0;
-                    return bDate - aDate;
-                });
-            } else if (sortBy === 'gig') {
-                // Sort by most recent gig (descending), nulls last
-                filtered.sort((a, b) => {
-                    const aDate = clientLastShowDates[a.id] ? new Date(clientLastShowDates[a.id]).getTime() : 0;
-                    const bDate = clientLastShowDates[b.id] ? new Date(clientLastShowDates[b.id]).getTime() : 0;
-                    return bDate - aDate;
-                });
-            } else {
-                // Default: sort alphabetically by name
-                filtered.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+            // Sort
+            switch (sortBy) {
+                case 'name-desc':
+                    filtered.sort((a, b) => (b.name || '').localeCompare(a.name || ''));
+                    break;
+                case 'contact-recent':
+                    filtered.sort((a, b) => {
+                        const aD = a.lastInteraction ? new Date(a.lastInteraction).getTime() : 0;
+                        const bD = b.lastInteraction ? new Date(b.lastInteraction).getTime() : 0;
+                        return bD - aD;
+                    });
+                    break;
+                case 'contact-oldest':
+                    filtered.sort((a, b) => {
+                        const aD = a.lastInteraction ? new Date(a.lastInteraction).getTime() : Infinity;
+                        const bD = b.lastInteraction ? new Date(b.lastInteraction).getTime() : Infinity;
+                        return aD - bD;
+                    });
+                    break;
+                case 'show-soonest':
+                    filtered.sort((a, b) => {
+                        const aD = clientNextShowDates[a.id] ? new Date(clientNextShowDates[a.id]).getTime() : Infinity;
+                        const bD = clientNextShowDates[b.id] ? new Date(clientNextShowDates[b.id]).getTime() : Infinity;
+                        return aD - bD;
+                    });
+                    break;
+                case 'show-farthest':
+                    filtered.sort((a, b) => {
+                        const aD = clientNextShowDates[a.id] ? new Date(clientNextShowDates[a.id]).getTime() : 0;
+                        const bD = clientNextShowDates[b.id] ? new Date(clientNextShowDates[b.id]).getTime() : 0;
+                        return bD - aD;
+                    });
+                    break;
+                default: // name-asc
+                    filtered.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
             }
 
             container.innerHTML = filtered.map(client => {
@@ -664,11 +914,55 @@
                 `;
             }).join('');
 
-            document.getElementById('clients-counter').textContent = `${filtered.length} client${filtered.length !== 1 ? 's' : ''}`;
+            document.getElementById('sidebar-counter').textContent = `${filtered.length} client${filtered.length !== 1 ? 's' : ''}`;
 
-            // Click handlers
             document.querySelectorAll('.client-item').forEach(item => {
                 item.addEventListener('click', () => selectClient(item.dataset.clientId));
+            });
+        }
+
+        // ============= SHOW LIST =============
+
+        function renderShowsList() {
+            const container = document.getElementById('shows-list-container');
+            const search = document.getElementById('search-shows').value.toLowerCase();
+            const sortBy = document.getElementById('sort-shows').value;
+
+            let filtered = shows.filter(show => {
+                const searchText = `${show.venue} ${show.city} ${show.state} ${show.date}`.toLowerCase();
+                const matchesSearch = searchText.includes(search);
+                let matchesYear = true;
+                if (selectedYear) {
+                    const showDate = new Date(show.date);
+                    matchesYear = showDate.getFullYear().toString() === selectedYear;
+                }
+                return matchesSearch && matchesYear;
+            });
+
+            if (sortBy === 'date-desc') {
+                filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
+            } else {
+                filtered.sort((a, b) => new Date(a.date) - new Date(b.date));
+            }
+
+            container.innerHTML = filtered.map(show => {
+                const date = new Date(show.date);
+                const formattedDate = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                const isSelected = selectedShowId === show.id;
+                return `
+                    <div class="show-item p-4 border-b border-stone-800 ${isSelected ? 'selected' : ''}" data-show-id="${show.id}">
+                        <div class="font-bold text-white">${escapeHtml(show.venue)}</div>
+                        <div class="text-sm text-stone-400">${escapeHtml(show.city)}, ${escapeHtml(show.state)}</div>
+                        <div class="text-xs text-accent-teal mt-1">${formattedDate}</div>
+                        ${show.isPrivate ? '<span class="text-xs bg-stone-700 px-2 py-1 rounded mt-1 inline-block">Private</span>' : ''}
+                    </div>
+                `;
+            }).join('');
+
+            document.getElementById('sidebar-counter').textContent = `${filtered.length} event${filtered.length !== 1 ? 's' : ''}`;
+
+            document.querySelectorAll('.show-item').forEach(item => {
+                item.addEventListener('click', () => selectShow(item.dataset.showId));
             });
         }
 
@@ -676,12 +970,11 @@
 
         function selectClient(clientId) {
             selectedClientId = clientId;
-
-            // Cleanup previous log listener
             if (logsUnsubscribe) { logsUnsubscribe(); logsUnsubscribe = null; }
 
             const url = new URL(window.location);
             url.searchParams.set('client', clientId);
+            url.searchParams.set('mode', 'clients');
             window.history.pushState({}, '', url);
 
             renderClientsList();
@@ -689,13 +982,36 @@
             const client = clients.find(c => c.id === clientId);
             if (client) {
                 document.getElementById('empty-state').classList.add('hidden');
+                document.getElementById('show-view').classList.add('hidden');
+                document.getElementById('show-edit').classList.add('hidden');
                 document.getElementById('client-view').classList.remove('hidden');
                 renderClientDetail(client);
-                // Reset to profile tab
                 switchTab('tab-profile');
             }
 
-            // Mobile: show detail
+            if (window.innerWidth < 1024) {
+                document.getElementById('clients-list').classList.add('hidden-mobile');
+                document.getElementById('client-detail').classList.add('active-mobile');
+            }
+        }
+
+        // ============= SHOW SELECTION =============
+
+        function selectShow(showId) {
+            if (hasUnsavedChanges && selectedShowId !== showId) {
+                if (!confirm('You have unsaved changes. Discard and select a different show?')) return;
+            }
+            selectedShowId = showId;
+            hasUnsavedChanges = false;
+
+            const url = new URL(window.location);
+            url.searchParams.set('show', showId);
+            url.searchParams.set('mode', 'shows');
+            window.history.pushState({}, '', url);
+
+            renderShowsList();
+            showViewMode();
+
             if (window.innerWidth < 1024) {
                 document.getElementById('clients-list').classList.add('hidden-mobile');
                 document.getElementById('client-detail').classList.add('active-mobile');
@@ -867,7 +1183,7 @@
                     const date = new Date(show.date);
                     const formattedDate = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
                     return `
-                        <tr class="border-b border-stone-800 hover:bg-stone-800/50 cursor-pointer" onclick="window.open('show-manager.html?show=${show.id}', '_blank')">
+                        <tr class="border-b border-stone-800 hover:bg-stone-800/50 cursor-pointer" onclick="navigateToShow('${show.id}')">
                             <td class="py-3 px-4 text-sm text-white">${formattedDate}</td>
                             <td class="py-3 px-4 text-sm text-white">${escapeHtml(show.venue)}</td>
                             <td class="py-3 px-4 text-sm ${show.payout ? 'text-green-400 font-semibold' : 'text-stone-600'}">${show.payout ? '$' + show.payout.toLocaleString() : '\u2014'}</td>
@@ -1194,25 +1510,598 @@
             }
         }
 
-        // ============= CREATE SHOW FOR CLIENT =============
+        // ============= SHOW VIEW MODE =============
+
+        function showViewMode() {
+            const show = shows.find(s => s.id === selectedShowId);
+            if (!show) return;
+
+            document.getElementById('empty-state').classList.add('hidden');
+            document.getElementById('client-view').classList.add('hidden');
+            document.getElementById('show-edit').classList.add('hidden');
+            document.getElementById('show-view').classList.remove('hidden');
+
+            const date = new Date(show.date);
+            const formattedDate = date.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+
+            let clientName = '';
+            let clientAddress = '';
+            let clientId = '';
+            if (show.clientId) {
+                const client = clients.find(c => c.id === show.clientId);
+                if (client) {
+                    clientName = client.name;
+                    clientId = client.id;
+                    if (client.address) clientAddress = client.address;
+                }
+            }
+
+            const personnelBubbles = renderPersonnelBubbles(show.personnel);
+            document.getElementById('show-title').innerHTML = `
+                <h2 class="text-xl md:text-2xl font-bold text-white truncate">${escapeHtml(show.venue)}</h2>
+                ${personnelBubbles}
+            `;
+
+            const visibilityBadge = show.isPrivate
+                ? '<span class="px-2 py-0.5 bg-amber-900/50 text-amber-400 text-xs font-semibold rounded-full">Private</span>'
+                : '<span class="px-2 py-0.5 bg-stone-700 text-stone-300 text-xs font-semibold rounded-full">Public</span>';
+            const publishedBadge = show.published
+                ? '<span class="px-2 py-0.5 bg-green-900/50 text-green-400 text-xs font-semibold rounded-full">Published</span>'
+                : '<span class="px-2 py-0.5 bg-stone-700 text-stone-400 text-xs font-semibold rounded-full">Unpublished</span>';
+
+            document.getElementById('show-details').innerHTML = `
+                <div class="space-y-4">
+                    <div class="flex items-center gap-2">${visibilityBadge} ${publishedBadge}</div>
+
+                    <div class="bg-stone-800/50 rounded-lg p-4 space-y-3">
+                        <div class="flex items-center gap-3">
+                            <i class="fa-regular fa-calendar text-accent-teal text-lg"></i>
+                            <div class="text-lg text-white font-semibold">${formattedDate}</div>
+                        </div>
+                        <div class="flex items-center gap-3 ml-8">
+                            <i class="fa-regular fa-clock text-stone-400 text-sm"></i>
+                            <div class="text-white">${show.startTime || '\u2014'} ${show.startTime && show.endTime ? '\u2013' : ''} ${show.endTime || ''}</div>
+                        </div>
+                    </div>
+
+                    <div class="bg-stone-800/50 rounded-lg p-4 space-y-3">
+                        ${clientName ? `
+                        <div class="flex items-center gap-3">
+                            <i class="fa-regular fa-building text-stone-400"></i>
+                            <a href="#" onclick="navigateToClient('${clientId}'); return false;" class="text-accent-teal hover:underline font-medium">${escapeHtml(clientName)}</a>
+                        </div>` : ''}
+                        ${clientAddress ? `
+                        <div class="flex items-center gap-3">
+                            <i class="fa-solid fa-location-dot text-stone-400 text-sm"></i>
+                            <a href="https://maps.google.com/?q=${encodeURIComponent(clientAddress)}" target="_blank" rel="noopener noreferrer" class="text-accent-teal hover:underline text-sm">${escapeHtml(clientAddress)}</a>
+                        </div>` : ''}
+                        ${show.city && show.state ? `
+                        <div class="flex items-center gap-3">
+                            <i class="fa-solid fa-map-pin text-stone-400 text-sm"></i>
+                            <div class="text-stone-300 text-sm">${escapeHtml(show.city)}, ${escapeHtml(show.state)}</div>
+                        </div>` : ''}
+                    </div>
+
+                    <div class="bg-stone-800/50 rounded-lg p-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <div>
+                                <label class="text-xs text-stone-500 uppercase tracking-wide">Event Link</label>
+                                <div class="mt-1">${show.eventLink ? `<a href="${escapeHtml(show.eventLink)}" target="_blank" rel="noopener noreferrer" class="text-accent-teal hover:underline flex items-center gap-2 text-sm">View Event <i class="fa-solid fa-external-link text-xs"></i></a>` : '<span class="text-stone-600 text-sm">\u2014</span>'}</div>
+                            </div>
+                            <div>
+                                <label class="text-xs text-stone-500 uppercase tracking-wide">Setlist</label>
+                                <div class="mt-1">${show.setlist ? `<a href="setlist-manager.html?file=${show.setlist}.json" target="_blank" rel="noopener noreferrer" class="text-accent-teal hover:underline flex items-center gap-2 text-sm">${show.setlist.replace('.json', '').replace(/_/g, ' ')} <i class="fa-solid fa-external-link text-xs"></i></a>` : '<span class="text-stone-600 text-sm">\u2014</span>'}</div>
+                            </div>
+                            <div>
+                                <label class="text-xs text-stone-500 uppercase tracking-wide">Event Handler</label>
+                                <div class="text-white text-sm mt-1">${show.eventHandler || '<span class="text-stone-600">\u2014</span>'}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    ${show.itinerary ? `<div class="bg-stone-800/50 rounded-lg p-4"><h3 class="text-xs text-stone-500 uppercase tracking-wide font-bold mb-2">Itinerary</h3><div class="text-white text-sm whitespace-pre-wrap leading-relaxed">${escapeHtml(show.itinerary)}</div></div>` : ''}
+                    ${show.notes ? `<div class="bg-stone-800/50 rounded-lg p-4"><h3 class="text-xs text-stone-500 uppercase tracking-wide font-bold mb-2">Notes</h3><div class="text-white text-sm whitespace-pre-wrap leading-relaxed">${escapeHtml(show.notes)}</div></div>` : ''}
+
+                    <div class="bg-stone-800/50 rounded-lg p-4">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="text-xs text-stone-500 uppercase tracking-wide">Payout</label>
+                                <div class="text-lg font-semibold mt-1 ${show.payout ? 'text-green-400' : 'text-stone-600'}">${show.payout ? `$${show.payout.toLocaleString()}` : '\u2014'}</div>
+                            </div>
+                            <div>
+                                <label class="text-xs text-stone-500 uppercase tracking-wide">Quote</label>
+                                <div class="mt-1">${show.quoteId ? `<a href="quote-generator.html?show=${show.id}&quote=${show.quoteId}" target="_blank" rel="noopener noreferrer" class="text-accent-teal hover:underline flex items-center gap-2 text-sm">View/Edit Quote <i class="fa-solid fa-external-link text-xs"></i></a>` : `<a href="#" onclick="generateQuote(); return false;" class="text-accent-teal hover:underline flex items-center gap-2 text-sm">Generate Quote <i class="fa-solid fa-plus text-xs"></i></a>`}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // ============= SHOW EDIT MODE =============
+
+        function showEditMode() {
+            const show = shows.find(s => s.id === selectedShowId);
+            if (!show) return;
+
+            document.getElementById('show-view').classList.add('hidden');
+            document.getElementById('show-edit').classList.remove('hidden');
+
+            const dateParts = show.date.split('/');
+            const formattedDate = `${dateParts[2]}-${dateParts[0].padStart(2, '0')}-${dateParts[1].padStart(2, '0')}`;
+
+            document.getElementById('show-form').innerHTML = `
+                <div class="space-y-4 max-w-2xl">
+                    <div>
+                        <label class="block text-sm font-semibold text-stone-300 mb-2">Venue Name</label>
+                        <input type="text" id="edit-venue" value="${escapeHtml(show.venue)}" class="w-full px-4 py-3 bg-stone-800 border border-stone-700 rounded-lg text-white focus:outline-none focus:border-accent-teal">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-stone-300 mb-2">Client</label>
+                        <select id="edit-client" class="w-full px-4 py-3 bg-stone-800 border border-stone-700 rounded-lg text-white focus:outline-none focus:border-accent-teal">
+                            <option value="">Select client</option>
+                            ${clients.map(c => `<option value="${c.id}" ${show.clientId === c.id ? 'selected' : ''}>${escapeHtml(c.name)}</option>`).join('')}
+                        </select>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-semibold text-stone-300 mb-2">City</label>
+                            <input type="text" id="edit-city" value="${escapeHtml(show.city)}" class="w-full px-4 py-3 bg-stone-800 border border-stone-700 rounded-lg text-white focus:outline-none focus:border-accent-teal">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-stone-300 mb-2">State</label>
+                            <input type="text" id="edit-state" value="${escapeHtml(show.state)}" class="w-full px-4 py-3 bg-stone-800 border border-stone-700 rounded-lg text-white focus:outline-none focus:border-accent-teal">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-stone-300 mb-2">Date</label>
+                        <input type="date" id="edit-date" value="${formattedDate}" class="w-full px-4 py-3 bg-stone-800 border border-stone-700 rounded-lg text-white focus:outline-none focus:border-accent-teal">
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-semibold text-stone-300 mb-2">Start Time</label>
+                            <input type="text" id="edit-start-time" value="${escapeHtml(show.startTime || '')}" class="w-full px-4 py-3 bg-stone-800 border border-stone-700 rounded-lg text-white focus:outline-none focus:border-accent-teal" placeholder="8:00 PM">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-stone-300 mb-2">End Time</label>
+                            <input type="text" id="edit-end-time" value="${escapeHtml(show.endTime || '')}" class="w-full px-4 py-3 bg-stone-800 border border-stone-700 rounded-lg text-white focus:outline-none focus:border-accent-teal" placeholder="11:00 PM">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-stone-300 mb-2">Event Link (optional)</label>
+                        <input type="url" id="edit-event-link" value="${escapeHtml(show.eventLink || '')}" class="w-full px-4 py-3 bg-stone-800 border border-stone-700 rounded-lg text-white focus:outline-none focus:border-accent-teal" placeholder="https://...">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-stone-300 mb-2">Setlist (optional)</label>
+                        <select id="edit-setlist" class="w-full px-4 py-3 bg-stone-800 border border-stone-700 rounded-lg text-white focus:outline-none focus:border-accent-teal">
+                            <option value="">No setlist</option>
+                            ${setlists.map(sl => `<option value="${sl.filename}" ${show.setlist === sl.filename ? 'selected' : ''}>${escapeHtml(sl.name)}</option>`).join('')}
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-stone-300 mb-2">Itinerary (optional)</label>
+                        <textarea id="edit-itinerary" rows="4" class="w-full px-4 py-3 bg-stone-800 border border-stone-700 rounded-lg text-white focus:outline-none focus:border-accent-teal resize-y" placeholder="Load-in: 5:00 PM&#10;Soundcheck: 5:30 PM">${escapeHtml(show.itinerary || '')}</textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-stone-300 mb-2">Notes (optional)</label>
+                        <textarea id="edit-notes" rows="4" class="w-full px-4 py-3 bg-stone-800 border border-stone-700 rounded-lg text-white focus:outline-none focus:border-accent-teal resize-y" placeholder="Internal notes...">${escapeHtml(show.notes || '')}</textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-stone-300 mb-3">Personnel Assignment</label>
+                        <div class="space-y-2">
+                            ${['Anthony', 'Tom', 'Lester', 'David', 'Shelley', 'Kelsey'].map(member => `
+                                <label class="flex items-center gap-3 cursor-pointer">
+                                    <input type="checkbox" class="personnel-checkbox w-4 h-4 text-accent-teal bg-stone-800 border-stone-700 rounded focus:ring-accent-teal focus:ring-2 cursor-pointer" value="${member}" ${show.personnel && show.personnel.includes(member) ? 'checked' : ''}>
+                                    <span class="text-sm text-stone-300">${member}</span>
+                                </label>
+                            `).join('')}
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-stone-300 mb-2">Event Handler (optional)</label>
+                        <select id="edit-event-handler" class="w-full px-4 py-3 bg-stone-800 border border-stone-700 rounded-lg text-white focus:outline-none focus:border-accent-teal">
+                            <option value="">Select event handler</option>
+                            ${['Anthony', 'Tom', 'Lester', 'David', 'Shelley', 'Kelsey'].map(m => `<option value="${m}" ${show.eventHandler === m ? 'selected' : ''}>${m}</option>`).join('')}
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-stone-300 mb-2">Base Musician Payout (Total)</label>
+                        <div class="flex items-center gap-2">
+                            <span class="text-stone-400">$</span>
+                            <input type="number" id="edit-payout" value="${show.payout || ''}" min="0" step="1" class="flex-1 px-4 py-3 bg-stone-800 border border-stone-700 rounded-lg text-white focus:outline-none focus:border-accent-teal" placeholder="e.g., 1000">
+                        </div>
+                    </div>
+                    <div class="flex gap-6">
+                        <label class="flex items-center gap-3 cursor-pointer">
+                            <input type="checkbox" id="edit-is-private" ${show.isPrivate ? 'checked' : ''} class="w-5 h-5 text-accent-teal bg-stone-800 border-stone-700 rounded focus:ring-accent-teal focus:ring-2 cursor-pointer">
+                            <span class="text-sm font-semibold text-stone-300">Private Event</span>
+                        </label>
+                        <label class="flex items-center gap-3 cursor-pointer">
+                            <input type="checkbox" id="edit-published" ${show.published ? 'checked' : ''} class="w-5 h-5 text-accent-teal bg-stone-800 border-stone-700 rounded focus:ring-accent-teal focus:ring-2 cursor-pointer">
+                            <span class="text-sm font-semibold text-stone-300">Published on Website</span>
+                        </label>
+                    </div>
+                </div>
+            `;
+
+            attachChangeListeners();
+
+            // Auto-fill from client
+            document.getElementById('edit-client').addEventListener('change', (e) => {
+                const cId = e.target.value;
+                if (!cId) return;
+                const client = clients.find(c => c.id === cId);
+                if (!client) return;
+                const venueInput = document.getElementById('edit-venue');
+                if (client.type === 'Venue' && client.name && (venueInput.value === 'New Venue' || !venueInput.value)) venueInput.value = client.name;
+                if (client.address) {
+                    const parts = client.address.split(',').map(p => p.trim());
+                    if (parts.length >= 2) {
+                        const last = parts[parts.length - 1];
+                        const secondLast = parts[parts.length - 2];
+                        const stateMatch = last.match(/^([A-Z]{2})\s*\d*$/);
+                        if (stateMatch) { document.getElementById('edit-state').value = stateMatch[1]; document.getElementById('edit-city').value = secondLast; }
+                    }
+                }
+                const startInput = document.getElementById('edit-start-time');
+                const endInput = document.getElementById('edit-end-time');
+                if (!startInput.value || startInput.value === '8:00 PM') startInput.value = client.defaultStartTime || '8:00 PM';
+                if (!endInput.value || endInput.value === '11:00 PM') endInput.value = client.defaultEndTime || '11:00 PM';
+                const itInput = document.getElementById('edit-itinerary');
+                const notesInput = document.getElementById('edit-notes');
+                if (!itInput.value && client.defaultItinerary) itInput.value = client.defaultItinerary;
+                if (!notesInput.value && client.defaultNotes) notesInput.value = client.defaultNotes;
+                const payoutInput = document.getElementById('edit-payout');
+                if (!payoutInput.value && client.defaultRate) payoutInput.value = client.defaultRate;
+            });
+        }
+
+        function attachChangeListeners() {
+            const form = document.getElementById('show-form');
+            if (!form) return;
+            form.querySelectorAll('input, select, textarea').forEach(input => {
+                input.addEventListener('change', () => { hasUnsavedChanges = true; });
+                input.addEventListener('input', () => { hasUnsavedChanges = true; });
+            });
+        }
+
+        async function saveShowEdit() {
+            if (!isAuthenticated) { alert('Please sign in to save changes.'); return; }
+            const show = shows.find(s => s.id === selectedShowId);
+            if (!show) return;
+
+            const dateInput = document.getElementById('edit-date').value;
+            const dateParts = dateInput.split('-');
+            show.date = `${parseInt(dateParts[1])}/${parseInt(dateParts[2])}/${dateParts[0]}`;
+            show.venue = document.getElementById('edit-venue').value;
+            show.city = document.getElementById('edit-city').value;
+            show.state = document.getElementById('edit-state').value;
+            show.startTime = document.getElementById('edit-start-time').value;
+            show.endTime = document.getElementById('edit-end-time').value;
+            show.isPrivate = document.getElementById('edit-is-private').checked;
+            show.published = document.getElementById('edit-published').checked;
+
+            const eventLinkVal = document.getElementById('edit-event-link').value;
+            if (eventLinkVal) { show.eventLink = eventLinkVal; } else { delete show.eventLink; }
+            const setlistVal = document.getElementById('edit-setlist').value;
+            if (setlistVal) { show.setlist = setlistVal; } else { delete show.setlist; }
+            const itVal = document.getElementById('edit-itinerary').value.trim();
+            if (itVal) { show.itinerary = itVal; } else { delete show.itinerary; }
+            const notesVal = document.getElementById('edit-notes').value.trim();
+            if (notesVal) { show.notes = notesVal; } else { delete show.notes; }
+            const personnel = Array.from(document.querySelectorAll('.personnel-checkbox:checked')).map(cb => cb.value);
+            if (personnel.length > 0) { show.personnel = personnel; } else { delete show.personnel; }
+            const handlerVal = document.getElementById('edit-event-handler').value;
+            if (handlerVal) { show.eventHandler = handlerVal; } else { delete show.eventHandler; }
+            const clientVal = document.getElementById('edit-client').value;
+            if (clientVal) { show.clientId = clientVal; } else { delete show.clientId; }
+            const payoutVal = document.getElementById('edit-payout').value.trim();
+            if (payoutVal) { show.payout = parseInt(payoutVal); } else { delete show.payout; }
+
+            const saveBtn = document.getElementById('save-edit-btn');
+            saveBtn.disabled = true;
+            saveBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
+
+            try {
+                await FirestoreService.saveShowsBatch(shows);
+                originalShows = JSON.parse(JSON.stringify(shows));
+                hasUnsavedChanges = false;
+                saveBtn.innerHTML = '<i class="fa-solid fa-check"></i> Saved!';
+                setTimeout(() => {
+                    saveBtn.disabled = false;
+                    saveBtn.innerHTML = '<i class="fa-solid fa-check text-sm"></i><span class="hidden md:inline text-sm font-semibold">Save</span>';
+                }, 1500);
+                computeClientShowDates();
+                renderShowsList();
+                showViewMode();
+            } catch (error) {
+                console.error('Error saving show:', error);
+                alert(`Failed to save: ${error.message}`);
+                saveBtn.disabled = false;
+                saveBtn.innerHTML = '<i class="fa-solid fa-check text-sm"></i><span class="hidden md:inline text-sm font-semibold">Save</span>';
+            }
+        }
+
+        function addNewShow(clientId = null) {
+            const newShow = {
+                id: generateUUID(),
+                date: new Date().toLocaleDateString('en-US'),
+                venue: "New Venue", city: "City", state: "MI",
+                startTime: "8:00 PM", endTime: "11:00 PM",
+                isPrivate: false, published: false
+            };
+            if (clientId) {
+                const client = clients.find(c => c.id === clientId);
+                if (client) {
+                    newShow.clientId = clientId;
+                    if (client.type === 'Venue' && client.name) newShow.venue = client.name;
+                    if (client.address) {
+                        const parts = client.address.split(',').map(p => p.trim());
+                        if (parts.length >= 2) {
+                            const last = parts[parts.length - 1];
+                            const secondLast = parts[parts.length - 2];
+                            const stateMatch = last.match(/^([A-Z]{2})\s*\d*$/);
+                            if (stateMatch) { newShow.state = stateMatch[1]; newShow.city = secondLast; }
+                        }
+                    }
+                    newShow.startTime = client.defaultStartTime || '8:00 PM';
+                    newShow.endTime = client.defaultEndTime || '11:00 PM';
+                    if (client.defaultItinerary) newShow.itinerary = client.defaultItinerary;
+                    if (client.defaultNotes) newShow.notes = client.defaultNotes;
+                    if (client.defaultRate) newShow.payout = client.defaultRate;
+                }
+            }
+            shows.unshift(newShow);
+            renderShowsList();
+            selectShow(newShow.id);
+            showEditMode();
+        }
+
+        function generateQuote() {
+            const show = shows.find(s => s.id === selectedShowId);
+            if (!show) return;
+            window.open(`quote-generator.html?show=${show.id}&new=true`, '_blank');
+        }
+
+        // ============= CALENDAR =============
+
+        function downloadCalendarEvent() {
+            const show = shows.find(s => s.id === selectedShowId);
+            if (!show) return;
+            let location = '';
+            let clientName = '';
+            if (show.clientId) {
+                const client = clients.find(c => c.id === show.clientId);
+                if (client) { clientName = client.name; if (client.address) location = client.address; }
+            }
+            if (!location && show.city && show.state) location = `${show.city}, ${show.state}`;
+
+            const dp = show.date.split('/');
+            const month = dp[0].padStart(2, '0'), day = dp[1].padStart(2, '0'), year = dp[2];
+            function parseTime(ts) {
+                if (!ts) return null;
+                const m = ts.match(/(\d{1,2}):(\d{2})\s*(AM|PM)?/i);
+                if (!m) return null;
+                let h = parseInt(m[1]);
+                const period = m[3]?.toUpperCase();
+                if (period === 'PM' && h !== 12) h += 12;
+                if (period === 'AM' && h === 12) h = 0;
+                return `${h.toString().padStart(2, '0')}${m[2]}00`;
+            }
+            const st = parseTime(show.startTime) || '200000';
+            const et = parseTime(show.endTime) || '230000';
+            const dtStart = `${year}${month}${day}T${st}`;
+            const dtEnd = `${year}${month}${day}T${et}`;
+            const dtStamp = new Date().toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+
+            const showUrl = `${window.location.origin}/admin/client-manager.html?mode=shows&show=${show.id}`;
+            let desc = `Ultraphonics @ ${show.venue}`;
+            desc += `\\n\\nShow Details: ${showUrl}`;
+            if (clientName) desc += `\\n\\nClient: ${clientName}`;
+            if (show.startTime) desc += `\\nStart: ${show.startTime}`;
+            if (show.endTime) desc += `\\nEnd: ${show.endTime}`;
+            if (show.itinerary) desc += `\\n\\nItinerary:\\n${show.itinerary.replace(/\n/g, '\\n')}`;
+            if (show.notes) desc += `\\n\\nNotes:\\n${show.notes.replace(/\n/g, '\\n')}`;
+            if (show.personnel?.length > 0) desc += `\\n\\nPersonnel: ${show.personnel.join(', ')}`;
+            if (show.eventHandler) desc += `\\nEvent Handler: ${show.eventHandler}`;
+            if (show.eventLink) desc += `\\n\\nEvent Link: ${show.eventLink}`;
+
+            const ics = ['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Ultraphonics//Show Manager//EN','CALSCALE:GREGORIAN','METHOD:PUBLISH','BEGIN:VEVENT',
+                `UID:${show.id}@ultraphonicsmusic.com`,`DTSTAMP:${dtStamp}`,`DTSTART:${dtStart}`,`DTEND:${dtEnd}`,
+                `SUMMARY:Ultraphonics @ ${show.venue}`,`DESCRIPTION:${desc}`,location ? `LOCATION:${location}` : '',
+                'END:VEVENT','END:VCALENDAR'].filter(l => l).join('\r\n');
+
+            const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Ultraphonics_${show.venue.replace(/\s+/g, '_')}_${year}${month}${day}.ics`;
+            document.body.appendChild(a); a.click(); document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function openGoogleCalendar() {
+            const show = shows.find(s => s.id === selectedShowId);
+            if (!show) return;
+            let location = '';
+            let clientName = '';
+            if (show.clientId) {
+                const client = clients.find(c => c.id === show.clientId);
+                if (client) { clientName = client.name; if (client.address) location = client.address; }
+            }
+            if (!location && show.city && show.state) location = `${show.city}, ${show.state}`;
+
+            const dp = show.date.split('/');
+            const month = dp[0].padStart(2, '0'), day = dp[1].padStart(2, '0'), year = dp[2];
+            function parseTime(ts) {
+                if (!ts) return null;
+                const m = ts.match(/(\d{1,2}):(\d{2})\s*(AM|PM)?/i);
+                if (!m) return null;
+                let h = parseInt(m[1]);
+                const period = m[3]?.toUpperCase();
+                if (period === 'PM' && h !== 12) h += 12;
+                if (period === 'AM' && h === 12) h = 0;
+                return `${h.toString().padStart(2, '0')}${m[2]}00`;
+            }
+            const st = parseTime(show.startTime) || '200000';
+            const et = parseTime(show.endTime) || '230000';
+            const dates = `${year}${month}${day}T${st}/${year}${month}${day}T${et}`;
+
+            const showUrl = `${window.location.origin}/admin/client-manager.html?mode=shows&show=${show.id}`;
+            let details = `Show Details: ${showUrl}`;
+            if (clientName) details += `\n\nClient: ${clientName}`;
+            if (show.itinerary) details += `\n\nItinerary:\n${show.itinerary}`;
+            if (show.notes) details += `\n\nNotes:\n${show.notes}`;
+            if (show.personnel?.length > 0) details += `\n\nPersonnel: ${show.personnel.join(', ')}`;
+            if (show.eventHandler) details += `\nEvent Handler: ${show.eventHandler}`;
+            if (show.eventLink) details += `\n\nEvent Link: ${show.eventLink}`;
+
+            const params = new URLSearchParams({ action: 'TEMPLATE', text: `Ultraphonics @ ${show.venue}`, dates, details, location });
+            window.open(`https://calendar.google.com/calendar/render?${params.toString()}`, '_blank');
+        }
+
+        function toggleCalDropdown() {
+            document.getElementById('cal-dropdown-menu').classList.toggle('hidden');
+        }
+
+        // ============= DELETE SHOW =============
+
+        async function deleteShow() {
+            if (!confirm('Are you sure you want to delete this show?')) return;
+            if (!isAuthenticated) { alert('Please sign in to delete shows.'); return; }
+            try {
+                await FirestoreService.deleteShow(selectedShowId);
+                const idx = shows.findIndex(s => s.id === selectedShowId);
+                if (idx !== -1) shows.splice(idx, 1);
+                selectedShowId = null;
+                const url = new URL(window.location);
+                url.searchParams.delete('show');
+                window.history.pushState({}, '', url);
+                renderShowsList();
+                document.getElementById('show-view').classList.add('hidden');
+                document.getElementById('show-edit').classList.add('hidden');
+                document.getElementById('empty-state').classList.remove('hidden');
+                computeClientShowDates();
+            } catch (error) {
+                console.error('Error deleting show:', error);
+                alert(`Failed to delete show: ${error.message}`);
+            }
+        }
+
+        // ============= CROSS-LINKING NAVIGATION =============
+
+        function navigateToShow(showId) {
+            if (activeMode !== 'shows') {
+                activeMode = 'shows';
+                document.getElementById('sidebar-tab-clients').classList.remove('active');
+                document.getElementById('sidebar-tab-shows').classList.add('active');
+                document.getElementById('client-filters').classList.add('hidden');
+                document.getElementById('show-filters').classList.remove('hidden');
+                document.getElementById('clients-list-container').classList.add('hidden');
+                document.getElementById('shows-list-container').classList.remove('hidden');
+                document.getElementById('client-view').classList.add('hidden');
+                const title = document.getElementById('header-mode-title');
+                const icon = document.getElementById('header-mode-icon');
+                const addLabel = document.querySelector('#add-entity-btn .add-label');
+                title.textContent = 'Shows';
+                icon.innerHTML = '<i class="fas fa-calendar-days text-sm"></i>';
+                if (addLabel) addLabel.textContent = 'Add Show';
+                const emptyIcon = document.querySelector('#empty-state i');
+                const emptyText = document.querySelector('#empty-state p');
+                emptyIcon.className = 'fa-solid fa-calendar-days text-6xl mb-4 opacity-20';
+                emptyText.textContent = 'Select a show to view or edit';
+                selectedClientId = null;
+                if (logsUnsubscribe) { logsUnsubscribe(); logsUnsubscribe = null; }
+            }
+            selectShow(showId);
+        }
+
+        function navigateToClient(clientId) {
+            if (activeMode !== 'clients') {
+                activeMode = 'clients';
+                document.getElementById('sidebar-tab-shows').classList.remove('active');
+                document.getElementById('sidebar-tab-clients').classList.add('active');
+                document.getElementById('show-filters').classList.add('hidden');
+                document.getElementById('client-filters').classList.remove('hidden');
+                document.getElementById('shows-list-container').classList.add('hidden');
+                document.getElementById('clients-list-container').classList.remove('hidden');
+                document.getElementById('show-view').classList.add('hidden');
+                document.getElementById('show-edit').classList.add('hidden');
+                const title = document.getElementById('header-mode-title');
+                const icon = document.getElementById('header-mode-icon');
+                const addLabel = document.querySelector('#add-entity-btn .add-label');
+                title.textContent = 'Clients';
+                icon.innerHTML = '<i class="fas fa-address-book text-sm"></i>';
+                if (addLabel) addLabel.textContent = 'Add Client';
+                const emptyIcon = document.querySelector('#empty-state i');
+                const emptyText = document.querySelector('#empty-state p');
+                emptyIcon.className = 'fa-solid fa-address-book text-6xl mb-4 opacity-20';
+                emptyText.textContent = 'Select a client to view details';
+                selectedShowId = null;
+                hasUnsavedChanges = false;
+            }
+            selectClient(clientId);
+        }
 
         function createShowForClient() {
             if (!selectedClientId) return;
-            window.open(`show-manager.html?newshow=true&clientId=${selectedClientId}`, '_blank');
+            switchMode('shows');
+            setTimeout(() => addNewShow(selectedClientId), 100);
         }
 
         // ============= EVENT LISTENERS =============
 
+        // Client filters
         document.getElementById('search-clients').addEventListener('input', () => renderClientsList());
         document.getElementById('filter-status').addEventListener('change', () => renderClientsList());
         document.getElementById('filter-type').addEventListener('change', () => renderClientsList());
         document.getElementById('sort-clients').addEventListener('change', () => renderClientsList());
 
-        document.getElementById('add-client-btn').addEventListener('click', () => openClientModal());
+        // Show filters
+        document.getElementById('search-shows').addEventListener('input', () => renderShowsList());
+        document.getElementById('filter-year').addEventListener('change', (e) => { selectedYear = e.target.value; renderShowsList(); });
+        document.getElementById('sort-shows').addEventListener('change', () => renderShowsList());
+
+        // Sidebar tabs
+        document.getElementById('sidebar-tab-clients').addEventListener('click', () => switchMode('clients'));
+        document.getElementById('sidebar-tab-shows').addEventListener('click', () => switchMode('shows'));
+
+        // Header add button (dynamic)
+        document.getElementById('add-entity-btn').addEventListener('click', () => {
+            if (activeMode === 'clients') openClientModal();
+            else addNewShow();
+        });
+
+        // Client view buttons
         document.getElementById('edit-client-btn').addEventListener('click', () => openClientModal(selectedClientId));
         document.getElementById('delete-client-btn').addEventListener('click', handleDeleteClient);
         document.getElementById('create-show-btn').addEventListener('click', createShowForClient);
         document.getElementById('back-to-list-btn').addEventListener('click', backToList);
+
+        // Show view buttons
+        document.getElementById('show-edit-btn').addEventListener('click', showEditMode);
+        document.getElementById('show-delete-btn').addEventListener('click', deleteShow);
+        document.getElementById('show-back-btn').addEventListener('click', backToList);
+        document.getElementById('cal-dropdown-btn').addEventListener('click', toggleCalDropdown);
+        document.getElementById('gcal-btn').addEventListener('click', () => { toggleCalDropdown(); openGoogleCalendar(); });
+        document.getElementById('download-ics-btn').addEventListener('click', () => { toggleCalDropdown(); downloadCalendarEvent(); });
+
+        // Show edit buttons
+        document.getElementById('save-edit-btn').addEventListener('click', saveShowEdit);
+        document.getElementById('cancel-edit-btn').addEventListener('click', () => {
+            if (hasUnsavedChanges && !confirm('You have unsaved changes. Discard and cancel editing?')) return;
+            hasUnsavedChanges = false;
+            showViewMode();
+        });
+        document.getElementById('show-edit-back-btn').addEventListener('click', backToList);
+
+        // Close calendar dropdown on outside click
+        document.addEventListener('click', (e) => {
+            const wrapper = document.getElementById('cal-dropdown-wrapper');
+            if (wrapper && !wrapper.contains(e.target)) {
+                document.getElementById('cal-dropdown-menu').classList.add('hidden');
+            }
+        });
 
         // Client modal
         document.getElementById('close-client-modal').addEventListener('click', closeClientModal);
@@ -1222,7 +2111,7 @@
             if (e.target === document.getElementById('client-modal')) closeClientModal();
         });
 
-        // Tabs
+        // CRM Tabs
         document.querySelectorAll('.crm-tab').forEach(tab => {
             tab.addEventListener('click', () => switchTab(tab.dataset.tab));
         });
@@ -1293,41 +2182,96 @@
             if (user) { hideLoginModal(); } else { showLoginForm(); }
         });
 
-        // ============= INIT =============
+        // ============= BEFOREUNLOAD =============
 
-        loadClients();
+        window.addEventListener('beforeunload', (e) => {
+            if (hasUnsavedChanges) {
+                e.preventDefault();
+                e.returnValue = 'You have unsaved changes. Are you sure you want to leave?';
+                return e.returnValue;
+            }
+        });
 
-        // Check for client parameter in URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const clientParam = urlParams.get('client');
-        if (clientParam) {
-            // Wait for clients to load then select
-            const checkInterval = setInterval(() => {
-                if (clients.length > 0) {
-                    clearInterval(checkInterval);
-                    if (clients.find(c => c.id === clientParam)) {
-                        selectClient(clientParam);
-                    }
-                }
-            }, 200);
-            // Timeout after 10 seconds to avoid infinite polling
-            setTimeout(() => clearInterval(checkInterval), 10000);
+        // ============= ADMIN MENU =============
+
+        function toggleAdminMenu() {
+            document.getElementById('admin-menu').classList.toggle('hidden');
         }
-         function toggleAdminMenu() {
-            const menu = document.getElementById('admin-menu');
-            menu.classList.toggle('hidden');
-        }
-    
-        // Close the menu if clicking outside of it
         document.addEventListener('click', function(event) {
             const container = document.getElementById('admin-menu-container');
             if (container && !container.contains(event.target)) {
                 const menu = document.getElementById('admin-menu');
-                if (menu) {
-                    menu.classList.add('hidden');
-                }
+                if (menu) menu.classList.add('hidden');
             }
         });
+
+        // ============= INIT =============
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const modeParam = urlParams.get('mode');
+        const clientParam = urlParams.get('client');
+        const showParam = urlParams.get('show');
+        const isNewShow = urlParams.get('newshow') === 'true';
+        const newShowClientId = urlParams.get('clientId');
+
+        // Set initial mode without triggering switchMode (which clears URL params)
+        if (modeParam === 'shows') {
+            activeMode = 'shows';
+            document.getElementById('sidebar-tab-clients').classList.remove('active');
+            document.getElementById('sidebar-tab-shows').classList.add('active');
+            document.getElementById('client-filters').classList.add('hidden');
+            document.getElementById('show-filters').classList.remove('hidden');
+            document.getElementById('clients-list-container').classList.add('hidden');
+            document.getElementById('shows-list-container').classList.remove('hidden');
+            document.getElementById('header-mode-title').textContent = 'Shows';
+            document.getElementById('header-mode-icon').innerHTML = '<i class="fas fa-calendar-days text-sm"></i>';
+            const addLabel = document.querySelector('#add-entity-btn .add-label');
+            if (addLabel) addLabel.textContent = 'Add Show';
+            document.querySelector('#empty-state i').className = 'fa-solid fa-calendar-days text-6xl mb-4 opacity-20';
+            document.querySelector('#empty-state p').textContent = 'Select a show to view or edit';
+        }
+
+        // Load all data
+        loadClients();
+        loadSetlists();
+        loadShows().then(() => {
+            // Handle show URL params after shows load
+            if (showParam && activeMode === 'shows') {
+                if (shows.find(s => s.id === showParam)) selectShow(showParam);
+            }
+            if (isNewShow) {
+                if (activeMode !== 'shows') {
+                    activeMode = 'shows';
+                    document.getElementById('sidebar-tab-clients').classList.remove('active');
+                    document.getElementById('sidebar-tab-shows').classList.add('active');
+                    document.getElementById('client-filters').classList.add('hidden');
+                    document.getElementById('show-filters').classList.remove('hidden');
+                    document.getElementById('clients-list-container').classList.add('hidden');
+                    document.getElementById('shows-list-container').classList.remove('hidden');
+                    document.getElementById('header-mode-title').textContent = 'Shows';
+                    document.getElementById('header-mode-icon').innerHTML = '<i class="fas fa-calendar-days text-sm"></i>';
+                    const addLabel = document.querySelector('#add-entity-btn .add-label');
+                    if (addLabel) addLabel.textContent = 'Add Show';
+                    renderShowsList();
+                }
+                const url = new URL(window.location);
+                url.searchParams.delete('newshow');
+                url.searchParams.delete('clientId');
+                window.history.replaceState({}, '', url);
+                addNewShow(newShowClientId || null);
+            }
+        });
+
+        // Handle client URL params (wait for subscription to populate)
+        if (clientParam && activeMode === 'clients') {
+            const checkInterval = setInterval(() => {
+                if (clients.length > 0) {
+                    clearInterval(checkInterval);
+                    if (clients.find(c => c.id === clientParam)) selectClient(clientParam);
+                }
+            }, 200);
+            setTimeout(() => clearInterval(checkInterval), 10000);
+        }
     </script>
 
 </body>

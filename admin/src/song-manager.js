@@ -275,7 +275,12 @@ async function loadSongs() {
         // Check for song parameter in URL
         const urlParams = new URLSearchParams(window.location.search);
         const songId = urlParams.get('song');
-        if (songId) selectSong(songId);
+        if (songId) {
+            selectSong(songId);
+            if (urlParams.get('stage') === 'true') {
+                setTimeout(() => enterStageMode(), 100);
+            }
+        }
     } catch (error) {
         console.error('Error loading songs:', error);
         songs = [];

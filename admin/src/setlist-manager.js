@@ -604,6 +604,18 @@ function createSongElement(data, isSetlist) {
         const btn = div.querySelector('.add-btn');
         if (btn) btn.onclick = (e) => { e.stopPropagation(); addToSetlist(data); };
     }
+
+    // In view mode, make setlist songs clickable to open stage mode in song-manager
+    if (isSetlist && state.viewMode && !isSetMarker) {
+        div.style.cursor = 'pointer';
+        div.addEventListener('click', () => {
+            const returnUrl = state.currentFile
+                ? `setlist-manager.html?setlist=${state.currentFile}`
+                : 'setlist-manager.html';
+            window.location.href = `song-manager.html?song=${data.id}&stage=true&return=${encodeURIComponent(returnUrl)}`;
+        });
+    }
+
     return div;
 }
 
