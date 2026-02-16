@@ -6,7 +6,7 @@ let songs = [];
 let selectedSongId = null;
 let hasUnsavedChanges = false;
 let isAuthenticated = false;
-let isGuitarMode = true;
+let isGuitarMode = false;
 
 // ---- Constants ----
 const SECTION_KEYWORDS = [
@@ -19,7 +19,108 @@ const CHROMATIC = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', '
 const FLAT_TO_SHARP = { 'Db': 'C#', 'Eb': 'D#', 'Fb': 'E', 'Gb': 'F#', 'Ab': 'G#', 'Bb': 'A#', 'Cb': 'B' };
 const SHARP_TO_FLAT = { 'C#': 'Db', 'D#': 'Eb', 'F#': 'Gb', 'G#': 'Ab', 'A#': 'Bb' };
 
-const KEY_OPTIONS = ['C', 'C#', 'Db', 'D', 'D#', 'Eb', 'E', 'F', 'F#', 'Gb', 'G', 'G#', 'Ab', 'A', 'A#', 'Bb', 'B'];
+const KEY_OPTIONS = [
+    'C', 'Cm', 'C#', 'C#m', 'Db', 'Dbm',
+    'D', 'Dm', 'D#', 'D#m', 'Eb', 'Ebm',
+    'E', 'Em', 'F', 'Fm', 'F#', 'F#m',
+    'Gb', 'Gbm', 'G', 'Gm', 'G#', 'G#m',
+    'Ab', 'Abm', 'A', 'Am', 'A#', 'A#m',
+    'Bb', 'Bbm', 'B', 'Bm'
+];
+
+// Musical key heuristic — matches keys like "Eb", "F#m", "Bbm", "G"
+const MUSICAL_KEYS = [
+    'C', 'C#', 'Db', 'D', 'D#', 'Eb', 'E', 'F', 'F#', 'Gb', 'G', 'G#', 'Ab', 'A', 'A#', 'Bb', 'B',
+    'Cm', 'C#m', 'Dbm', 'Dm', 'D#m', 'Ebm', 'Em', 'Fm', 'F#m', 'Gbm', 'Gm', 'G#m', 'Abm', 'Am', 'A#m', 'Bbm', 'Bm'
+];
+
+// ---- Ableset Import: Name Parser ----
+
+function isMusicalKey(token) {
+    return MUSICAL_KEYS.includes(token.trim());
+}
+
+function parseSongName(nameString) {
+    const tokens = nameString.split(' - ').map(t => t.trim());
+
+    const result = {
+        title: tokens[0] || nameString,
+        artist: '',
+        key: '',
+        tags: [],
+        meta: { isDrop: false, capo: 0 }
+    };
+
+    if (tokens.length <= 1) return result;
+
+    // Check last token for musical key
+    const lastToken = tokens[tokens.length - 1];
+    if (isMusicalKey(lastToken)) {
+        result.key = lastToken;
+        tokens.pop();
+    }
+
+    // Process remaining tokens (skip first which is the title)
+    const middleTokens = tokens.slice(1);
+    const artistTokens = [];
+
+    for (const token of middleTokens) {
+        const lower = token.toLowerCase();
+        if (lower.includes('drop')) {
+            result.meta.isDrop = true;
+            result.tags.push('Drop');
+        } else if (lower.includes('capo')) {
+            const capoMatch = token.match(/capo\s*(\d+)/i);
+            result.meta.capo = capoMatch ? parseInt(capoMatch[1]) : 0;
+            result.tags.push('Capo');
+        } else {
+            artistTokens.push(token);
+        }
+    }
+
+    result.artist = artistTokens.join(', ');
+    if (result.key) result.tags.unshift(result.key);
+
+    return result;
+}
+
+// ---- Ableset Import: Diff Engine ----
+
+function compareSongLists(importList, dbSongs) {
+    const dbMap = new Map(dbSongs.map(s => [s.id, s]));
+    const importMap = new Map(importList.map(s => [s.id, s]));
+
+    const toCreate = [];
+    const toUpdate = [];
+    const toArchive = [];
+
+    // Check imported songs against DB
+    for (const imported of importList) {
+        const existing = dbMap.get(imported.id);
+        if (!existing) {
+            toCreate.push(imported);
+        } else {
+            // Compare Ableset-sourced metadata
+            const nameChanged = existing.originalName !== imported.lastKnownName;
+            const timeChanged = existing.duration !== imported.time;
+            if (nameChanged || timeChanged) {
+                toUpdate.push({ existing, imported });
+            }
+        }
+    }
+
+    // Only archive songs that were previously imported from Ableset (have originalName)
+    for (const dbSong of dbSongs) {
+        if (!importMap.has(dbSong.id) && dbSong.active !== false && dbSong.originalName) {
+            toArchive.push(dbSong);
+        }
+    }
+
+    return { toCreate, toUpdate, toArchive };
+}
+
+// ---- Ableset Import: Pending diff state ----
+let pendingDiff = null;
 
 // ---- Chord Transposition Engine ----
 
@@ -52,8 +153,16 @@ function transposeChord(chord, semitones) {
     return displayRoot + parsed.suffix;
 }
 
+function getSongCapo(song) {
+    return song.capo ?? song.settings?.capo ?? 0;
+}
+
+function getSongEflat(song) {
+    return song.eflat ?? false;
+}
+
 function getCapoOffset(song) {
-    const capo = song.settings?.capo || 0;
+    const capo = getSongCapo(song);
     if (isGuitarMode && capo !== 0) return -capo;
     return 0;
 }
@@ -100,17 +209,33 @@ function parseLyrics(rawText, capoOffset) {
             return `<span class="harmony-section" onclick="openChartPDF()">${content}</span>`;
         });
 
-        // 3. Parse [Brackets] — section anchors vs chords
-        processed = processed.replace(/\[([^\]]+)\]/g, (match, content) => {
-            if (isSectionKeyword(content)) {
-                const sectionId = 'section-' + content.toLowerCase().replace(/\s+/g, '-');
-                sections.push({ name: content, id: sectionId });
-                return `</div><div class="section-anchor" id="${sectionId}">${content}</div><div class="lyric-line">`;
+        // 3. Parse [Brackets] — section anchors vs chords (above text)
+        const segments = processed.split(/(\[[^\]]+\])/g);
+        let result = '';
+        for (let i = 0; i < segments.length; i++) {
+            const seg = segments[i];
+            const bracketMatch = seg.match(/^\[([^\]]+)\]$/);
+            if (bracketMatch) {
+                const content = bracketMatch[1];
+                if (isSectionKeyword(content)) {
+                    const sectionId = 'section-' + content.toLowerCase().replace(/\s+/g, '-');
+                    sections.push({ name: content, id: sectionId });
+                    result += `</div><div class="section-anchor" id="${sectionId}">${content}</div><div class="lyric-line">`;
+                } else {
+                    // Chord — pair with following text segment
+                    const transposed = capoOffset !== 0 ? transposeChord(content, capoOffset) : content;
+                    const next = i + 1 < segments.length ? segments[i + 1] : '';
+                    const isBracket = next.match(/^\[/);
+                    const followingText = (!isBracket && next) ? next : '';
+                    if (followingText) i++; // consume the text segment
+                    result += `<span class="cw"><span class="cn">${transposed}</span>${followingText}</span>`;
+                }
             } else {
-                const transposed = capoOffset !== 0 ? transposeChord(content, capoOffset) : content;
-                return `<span class="chord">${transposed}</span>`;
+                // Plain text (no chord above)
+                result += seg;
             }
-        });
+        }
+        processed = result;
 
         return processed;
     });
@@ -164,7 +289,11 @@ function renderSongsList(filter = '') {
         return searchText.includes(filter.toLowerCase());
     });
 
+    // Sort: active first, then archived, alphabetical within each group
     filtered.sort((a, b) => {
+        const aArchived = a.active === false;
+        const bArchived = b.active === false;
+        if (aArchived !== bArchived) return aArchived ? 1 : -1;
         const titleA = (a.title || a.name || '').toLowerCase();
         const titleB = (b.title || b.name || '').toLowerCase();
         return titleA.localeCompare(titleB);
@@ -174,19 +303,36 @@ function renderSongsList(filter = '') {
         const title = song.title || song.name || 'Untitled';
         const artist = song.artist || '';
         const isSelected = selectedSongId === song.id;
-        const key = song.settings?.originalKey;
+        const isArchived = song.active === false;
+        const key = song.settings?.originalKey || song.key;
+        const capo = getSongCapo(song);
+        const eflat = getSongEflat(song);
         const keyBadge = key
             ? `<span class="text-xs bg-green-900/50 text-green-400 px-2 py-0.5 rounded font-mono">${key}</span>`
             : '';
+        const eflatBadge = eflat
+            ? '<span class="text-xs bg-green-900/50 text-green-400 px-2 py-0.5 rounded">Eb</span>'
+            : '';
+        const capoBadge = capo > 0
+            ? `<span class="text-xs bg-amber-900/50 text-amber-400 px-2 py-0.5 rounded">Capo ${capo}</span>`
+            : '';
+        const archivedBadge = isArchived
+            ? '<span class="text-xs bg-red-900/50 text-red-400 px-2 py-0.5 rounded">Archived</span>'
+            : '';
 
         return `
-            <div class="song-item p-4 border-b border-stone-800 ${isSelected ? 'selected' : ''}" data-song-id="${song.id}">
+            <div class="song-item p-4 border-b border-stone-800 ${isSelected ? 'selected' : ''} ${isArchived ? 'opacity-50' : ''}" data-song-id="${song.id}">
                 <div class="flex items-center justify-between gap-2">
                     <div class="flex-1 min-w-0">
                         <div class="font-bold text-white truncate">${escapeHtml(title)}</div>
                         ${artist ? `<div class="text-sm text-stone-400 truncate">${escapeHtml(artist)}</div>` : ''}
                     </div>
-                    ${keyBadge}
+                    <div class="flex items-center gap-1 flex-shrink-0">
+                        ${archivedBadge}
+                        ${eflatBadge}
+                        ${capoBadge}
+                        ${keyBadge}
+                    </div>
                 </div>
             </div>
         `;
@@ -234,9 +380,13 @@ function showViewMode() {
 
     const title = song.title || song.name || 'Untitled';
     const artist = song.artist || '';
-    const capo = song.settings?.capo || 0;
-    const originalKey = song.settings?.originalKey || '';
+    const capo = getSongCapo(song);
+    const eflat = getSongEflat(song);
+    const originalKey = song.settings?.originalKey || song.key || '';
     const genre = song.genre || '';
+
+    // If no capo, force concert mode
+    if (capo === 0) isGuitarMode = false;
 
     document.getElementById('song-title-area').innerHTML = `
         <h2 class="text-xl md:text-2xl font-bold text-white truncate">${escapeHtml(title)}</h2>
@@ -251,13 +401,26 @@ function showViewMode() {
         chartBtn.classList.add('hidden');
     }
 
-    // Update pitch toggle label
-    document.getElementById('pitch-label').textContent = isGuitarMode ? 'Guitar' : 'Concert';
+    // Update pitch toggle label and disabled state
+    const pitchBtn = document.getElementById('pitch-toggle-btn');
+    const pitchLabel = document.getElementById('pitch-label');
+    if (capo === 0) {
+        pitchLabel.textContent = 'Concert';
+        pitchBtn.classList.add('opacity-50', 'cursor-not-allowed');
+        pitchBtn.disabled = true;
+    } else {
+        pitchLabel.textContent = isGuitarMode ? `Capo (Fret ${capo})` : 'Concert';
+        pitchBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+        pitchBtn.disabled = false;
+    }
 
     const capoOffset = getCapoOffset(song);
     const { html, sections, footnotes } = parseLyrics(song.lyrics || '', capoOffset);
 
     const displayKey = isGuitarMode && capo ? transposeChord(originalKey, -capo) : originalKey;
+    const tuningLabel = eflat ? 'Eb (Half-step down)' : 'Standard';
+    const tuningColor = eflat ? 'text-green-400' : 'text-white';
+    const modeLabel = capo > 0 ? (isGuitarMode ? `Capo (Fret ${capo})` : 'Concert') : 'Concert';
 
     document.getElementById('song-details').innerHTML = `
         <!-- Metadata -->
@@ -272,12 +435,12 @@ function showViewMode() {
                     <div class="text-white font-semibold mt-0.5">${capo || 'None'}</div>
                 </div>
                 <div>
-                    <label class="text-xs text-stone-500 uppercase tracking-wide">Genre</label>
-                    <div class="text-white font-semibold mt-0.5">${escapeHtml(genre) || 'N/A'}</div>
+                    <label class="text-xs text-stone-500 uppercase tracking-wide">Tuning</label>
+                    <div class="${tuningColor} font-semibold mt-0.5">${tuningLabel}</div>
                 </div>
                 <div>
                     <label class="text-xs text-stone-500 uppercase tracking-wide">Mode</label>
-                    <div class="text-accent-green font-semibold mt-0.5">${isGuitarMode ? 'Guitar (Capo)' : 'Concert'}</div>
+                    <div class="text-accent-green font-semibold mt-0.5">${modeLabel}</div>
                 </div>
             </div>
         </div>
@@ -319,8 +482,9 @@ function showEditMode() {
     document.getElementById('song-edit').classList.remove('hidden');
 
     const title = song.title || song.name || '';
-    const capo = song.settings?.capo || 0;
-    const originalKey = song.settings?.originalKey || '';
+    const capo = getSongCapo(song);
+    const eflat = getSongEflat(song);
+    const originalKey = song.settings?.originalKey || song.key || '';
     const displayKey = capo ? transposeChord(originalKey, -capo) : originalKey;
     const notes = song.notes ? (typeof song.notes === 'string' ? song.notes : song.notes.join('\n')) : '';
 
@@ -354,6 +518,12 @@ function showEditMode() {
                     <label class="block text-sm font-semibold text-stone-300 mb-2">Display Key</label>
                     <input type="text" id="edit-display-key" value="${displayKey}" readonly class="w-full px-4 py-3 bg-stone-700 border border-stone-600 rounded-lg text-stone-400 cursor-not-allowed">
                 </div>
+            </div>
+            <div>
+                <label class="flex items-center gap-3 cursor-pointer mt-2">
+                    <input type="checkbox" id="edit-eflat" ${eflat ? 'checked' : ''} class="w-5 h-5 text-accent-green bg-stone-800 border-stone-700 rounded focus:ring-green-500 focus:ring-2 cursor-pointer">
+                    <span class="text-sm font-semibold text-stone-300">Eb Tuning <span class="text-stone-500 font-normal">(Half-step down / Drop tuner pedal)</span></span>
+                </label>
             </div>
             <div>
                 <label class="block text-sm font-semibold text-stone-300 mb-2">Chart URL (PDF link)</label>
@@ -416,6 +586,8 @@ async function saveSong() {
         return;
     }
 
+    const eflat = document.getElementById('edit-eflat').checked;
+
     const songData = {
         id: selectedSongId,
         title: title,
@@ -425,6 +597,8 @@ async function saveSong() {
         chartUrl: document.getElementById('edit-chart-url').value.trim(),
         notes: document.getElementById('edit-notes').value.trim(),
         showOnWebsite: document.getElementById('edit-show-on-website').checked,
+        capo: capo,
+        eflat: eflat,
         settings: {
             capo: capo,
             originalKey: originalKey,
@@ -506,6 +680,8 @@ function addNewSong() {
         id: newId,
         title: 'New Song',
         lyrics: '',
+        capo: 0,
+        eflat: false,
         settings: { capo: 0, originalKey: '', displayKey: '' }
     };
 
@@ -545,7 +721,7 @@ window.scrollToFootnotes = scrollToFootnotes;
 
 let stageState = {
     fontSize: 20,
-    isGuitarMode: true,
+    isGuitarMode: false,
     theme: 'dark'
 };
 
@@ -553,7 +729,25 @@ function enterStageMode() {
     const song = songs.find(s => s.id === selectedSongId);
     if (!song) return;
 
-    stageState.isGuitarMode = isGuitarMode;
+    const capo = getSongCapo(song);
+    // If no capo, force concert mode
+    if (capo === 0) {
+        stageState.isGuitarMode = false;
+        isGuitarMode = false;
+    } else {
+        stageState.isGuitarMode = isGuitarMode;
+    }
+
+    // Disable/enable stage pitch toggle based on capo
+    const stagePitchBtn = document.getElementById('stage-pitch-toggle');
+    if (capo === 0) {
+        stagePitchBtn.classList.add('opacity-50', 'cursor-not-allowed');
+        stagePitchBtn.disabled = true;
+    } else {
+        stagePitchBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+        stagePitchBtn.disabled = false;
+    }
+
     renderStageLyrics(song);
 
     const stageEl = document.getElementById('stage-mode');
@@ -574,7 +768,7 @@ function exitStageMode() {
 }
 
 function renderStageLyrics(song) {
-    const capo = song.settings?.capo || 0;
+    const capo = getSongCapo(song);
     const offset = stageState.isGuitarMode && capo ? -capo : 0;
     const { html, sections, footnotes } = parseLyrics(song.lyrics || '', offset);
 
@@ -594,7 +788,9 @@ function renderStageLyrics(song) {
 }
 
 function updateStagePitchLabel() {
-    const label = stageState.isGuitarMode ? 'Guitar' : 'Concert';
+    const song = songs.find(s => s.id === selectedSongId);
+    const capo = song ? getSongCapo(song) : 0;
+    const label = stageState.isGuitarMode && capo > 0 ? `Capo (${capo})` : 'Concert';
     document.getElementById('stage-pitch-label').textContent = label;
 }
 
@@ -625,6 +821,277 @@ window.scrollToSection = function(sectionId) {
 // Expose for future external control
 window.enterStageMode = enterStageMode;
 window.exitStageMode = exitStageMode;
+
+// ---- Ableset Import: File Handling ----
+
+function handleFileImport(file) {
+    if (!file) return;
+
+    const validExts = ['.json', '.ableset'];
+    const ext = file.name.substring(file.name.lastIndexOf('.')).toLowerCase();
+
+    if (!validExts.includes(ext)) {
+        alert('Invalid file type. Please upload a .json or .ableset file.');
+        return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        try {
+            let parsed = JSON.parse(e.target.result);
+
+            // Handle wrapped format (e.g., { songs: [...] })
+            let importedSongs = parsed;
+            if (!Array.isArray(parsed)) {
+                if (parsed.songs && Array.isArray(parsed.songs)) {
+                    importedSongs = parsed.songs;
+                } else {
+                    alert('Invalid file format. Expected a JSON array of songs.');
+                    return;
+                }
+            }
+
+            // Validate minimum fields
+            const valid = importedSongs.every(s => s.id && s.lastKnownName !== undefined);
+            if (!valid) {
+                alert('Invalid Ableset format. Each song must have "id" and "lastKnownName" fields.');
+                return;
+            }
+
+            // Run diff engine against current songs
+            const diff = compareSongLists(importedSongs, songs);
+            showImportModal(diff);
+        } catch (err) {
+            console.error('Failed to parse import file:', err);
+            alert('Failed to parse file. Ensure it is valid JSON.');
+        }
+    };
+    reader.readAsText(file);
+}
+
+function buildSongDocument(imported) {
+    const parsed = parseSongName(imported.lastKnownName);
+    return {
+        id: imported.id,
+        title: parsed.title,
+        originalName: imported.lastKnownName,
+        artist: parsed.artist,
+        key: parsed.key,
+        bpm: 0,
+        duration: imported.time || 0,
+        tags: parsed.tags,
+        meta: parsed.meta,
+        active: true,
+        capo: parsed.meta.capo,
+        // Populate settings for existing UI compatibility
+        settings: {
+            originalKey: parsed.key,
+            capo: parsed.meta.capo,
+            displayKey: parsed.meta.capo && parsed.key ? transposeChord(parsed.key, -parsed.meta.capo) : parsed.key
+        }
+    };
+}
+
+function showImportModal(diff) {
+    pendingDiff = diff;
+    const modal = document.getElementById('import-modal');
+    const summary = document.getElementById('import-summary');
+
+    const createDocs = diff.toCreate.map(s => buildSongDocument(s));
+    const updateDocs = diff.toUpdate.map(u => {
+        const parsed = parseSongName(u.imported.lastKnownName);
+        return {
+            id: u.imported.id,
+            title: parsed.title,
+            originalTitle: u.existing.title || u.existing.originalName,
+            originalName: u.imported.lastKnownName,
+            artist: parsed.artist,
+            key: parsed.key,
+            duration: u.imported.time || 0,
+            tags: parsed.tags,
+            meta: parsed.meta,
+            capo: parsed.meta.capo,
+            settings: {
+                originalKey: parsed.key,
+                capo: parsed.meta.capo,
+                displayKey: parsed.meta.capo && parsed.key ? transposeChord(parsed.key, -parsed.meta.capo) : parsed.key
+            }
+        };
+    });
+
+    // Store processed data for executeSync
+    pendingDiff.createDocs = createDocs;
+    pendingDiff.updateDocs = updateDocs;
+
+    const totalOps = diff.toCreate.length + diff.toUpdate.length + diff.toArchive.length;
+
+    summary.innerHTML = `
+        <!-- Stats -->
+        <div class="grid grid-cols-3 gap-3 mb-5">
+            <div class="bg-green-900/30 border border-green-700/50 rounded-lg p-3 text-center">
+                <div class="text-2xl font-bold text-green-400">${diff.toCreate.length}</div>
+                <div class="text-xs text-green-300 font-semibold uppercase mt-1">To Add</div>
+            </div>
+            <div class="bg-blue-900/30 border border-blue-700/50 rounded-lg p-3 text-center">
+                <div class="text-2xl font-bold text-blue-400">${diff.toUpdate.length}</div>
+                <div class="text-xs text-blue-300 font-semibold uppercase mt-1">To Update</div>
+            </div>
+            <div class="bg-red-900/30 border border-red-700/50 rounded-lg p-3 text-center">
+                <div class="text-2xl font-bold text-red-400">${diff.toArchive.length}</div>
+                <div class="text-xs text-red-300 font-semibold uppercase mt-1">To Archive</div>
+            </div>
+        </div>
+
+        ${totalOps === 0 ? '<p class="text-stone-400 text-center py-4">Everything is already in sync. No changes needed.</p>' : ''}
+
+        <!-- Create List -->
+        ${diff.toCreate.length > 0 ? `
+        <div class="mb-4">
+            <h4 class="text-sm font-bold text-green-400 mb-2 flex items-center gap-2">
+                <i class="fa-solid fa-plus-circle"></i> New Songs
+            </h4>
+            <div class="space-y-1 max-h-40 overflow-y-auto">
+                ${createDocs.map(s => `
+                    <div class="flex items-center justify-between px-3 py-2 bg-stone-800 rounded text-sm">
+                        <span class="text-white truncate flex-1">${escapeHtml(s.title)}</span>
+                        ${s.artist ? `<span class="text-stone-400 text-xs ml-2 truncate">${escapeHtml(s.artist)}</span>` : ''}
+                        ${s.key ? `<span class="text-xs bg-green-900/50 text-green-400 px-2 py-0.5 rounded font-mono ml-2">${s.key}</span>` : ''}
+                    </div>
+                `).join('')}
+            </div>
+        </div>` : ''}
+
+        <!-- Update List -->
+        ${diff.toUpdate.length > 0 ? `
+        <div class="mb-4">
+            <h4 class="text-sm font-bold text-blue-400 mb-2 flex items-center gap-2">
+                <i class="fa-solid fa-pen-to-square"></i> Modified Songs
+            </h4>
+            <div class="space-y-1 max-h-40 overflow-y-auto">
+                ${updateDocs.map(s => `
+                    <div class="flex items-center justify-between px-3 py-2 bg-stone-800 rounded text-sm">
+                        <span class="text-white truncate flex-1">${escapeHtml(s.title)}</span>
+                        <span class="text-stone-500 text-xs ml-2">metadata changed</span>
+                    </div>
+                `).join('')}
+            </div>
+        </div>` : ''}
+
+        <!-- Archive List -->
+        ${diff.toArchive.length > 0 ? `
+        <div class="mb-4">
+            <h4 class="text-sm font-bold text-red-400 mb-2 flex items-center gap-2">
+                <i class="fa-solid fa-box-archive"></i> Songs to Archive
+            </h4>
+            <div class="space-y-1 max-h-40 overflow-y-auto">
+                ${diff.toArchive.map(s => `
+                    <div class="flex items-center justify-between px-3 py-2 bg-stone-800 rounded text-sm">
+                        <span class="text-white truncate flex-1">${escapeHtml(s.title || s.originalName || 'Untitled')}</span>
+                        <span class="text-red-400 text-xs ml-2">will be archived</span>
+                    </div>
+                `).join('')}
+            </div>
+        </div>` : ''}
+
+        <p class="text-stone-500 text-xs mt-3">
+            <i class="fa-solid fa-info-circle mr-1"></i>
+            Archived songs are not deleted — they are marked inactive and can be restored. Manually created songs are never archived.
+        </p>
+    `;
+
+    // Disable confirm if nothing to do
+    const confirmBtn = document.getElementById('confirm-sync-btn');
+    confirmBtn.disabled = totalOps === 0;
+    confirmBtn.classList.toggle('opacity-50', totalOps === 0);
+    confirmBtn.classList.toggle('cursor-not-allowed', totalOps === 0);
+
+    modal.classList.remove('hidden');
+}
+
+function closeImportModal() {
+    document.getElementById('import-modal').classList.add('hidden');
+    pendingDiff = null;
+}
+
+async function executeSync() {
+    if (!pendingDiff || !isAuthenticated) return;
+
+    const confirmBtn = document.getElementById('confirm-sync-btn');
+    confirmBtn.disabled = true;
+    confirmBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Syncing...';
+
+    try {
+        const creates = pendingDiff.createDocs || [];
+        const updates = (pendingDiff.updateDocs || []).map(u => ({
+            id: u.id,
+            data: {
+                title: u.title,
+                originalName: u.originalName,
+                artist: u.artist,
+                key: u.key,
+                duration: u.duration,
+                tags: u.tags,
+                meta: u.meta,
+                capo: u.capo,
+                settings: u.settings
+            }
+        }));
+        const archives = (pendingDiff.toArchive || []).map(s => s.id);
+
+        const count = await FirestoreService.syncSongsBatch(creates, updates, archives);
+
+        // Refresh song list
+        songs = await FirestoreService.getSongs();
+        renderSongsList(document.getElementById('search-songs').value);
+
+        closeImportModal();
+        alert(`Sync complete. ${count} operation(s) executed.`);
+    } catch (error) {
+        console.error('Sync failed:', error);
+        alert(`Sync failed: ${error.message}`);
+        confirmBtn.disabled = false;
+        confirmBtn.innerHTML = '<i class="fa-solid fa-sync"></i> Confirm Sync';
+    }
+}
+
+// ---- Ableset Import: Drag & Drop ----
+
+let dragCounter = 0;
+
+function setupDragAndDrop() {
+    const songsList = document.getElementById('songs-list');
+    const dropOverlay = document.getElementById('drop-overlay');
+
+    songsList.addEventListener('dragenter', (e) => {
+        e.preventDefault();
+        dragCounter++;
+        if (dragCounter === 1) {
+            dropOverlay.classList.remove('hidden');
+        }
+    });
+
+    songsList.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'copy';
+    });
+
+    songsList.addEventListener('dragleave', (e) => {
+        e.preventDefault();
+        dragCounter--;
+        if (dragCounter === 0) {
+            dropOverlay.classList.add('hidden');
+        }
+    });
+
+    songsList.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dragCounter = 0;
+        dropOverlay.classList.add('hidden');
+
+        const file = e.dataTransfer.files[0];
+        if (file) handleFileImport(file);
+    });
+}
 
 // ---- Navigation ----
 
@@ -710,6 +1177,8 @@ document.getElementById('delete-btn').addEventListener('click', deleteSong);
 
 // Pitch toggle (view mode)
 document.getElementById('pitch-toggle-btn').addEventListener('click', () => {
+    const song = songs.find(s => s.id === selectedSongId);
+    if (!song || getSongCapo(song) === 0) return;
     isGuitarMode = !isGuitarMode;
     showViewMode();
 });
@@ -729,10 +1198,11 @@ document.getElementById('font-size-slider').addEventListener('input', (e) => {
 
 // Stage pitch toggle
 document.getElementById('stage-pitch-toggle').addEventListener('click', () => {
+    const song = songs.find(s => s.id === selectedSongId);
+    if (!song || getSongCapo(song) === 0) return;
     stageState.isGuitarMode = !stageState.isGuitarMode;
     isGuitarMode = stageState.isGuitarMode;
     updateStagePitchLabel();
-    const song = songs.find(s => s.id === selectedSongId);
     if (song) renderStageLyrics(song);
 });
 
@@ -800,12 +1270,40 @@ document.getElementById('google-sign-in-btn').addEventListener('click', async ()
     }
 });
 
+// Import modal
+document.getElementById('close-import').addEventListener('click', closeImportModal);
+document.getElementById('cancel-import-btn').addEventListener('click', closeImportModal);
+document.getElementById('confirm-sync-btn').addEventListener('click', executeSync);
+document.getElementById('import-modal').addEventListener('click', (e) => {
+    if (e.target === document.getElementById('import-modal')) closeImportModal();
+});
+
+// Import from Ableset button (settings menu)
+document.getElementById('import-ableset-btn').addEventListener('click', () => {
+    closeSettingsModal();
+    document.getElementById('import-file-input').click();
+});
+
+// File input change
+document.getElementById('import-file-input').addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (file) handleFileImport(file);
+    e.target.value = ''; // Reset so same file can be re-selected
+});
+
+// Initialize drag and drop
+setupDragAndDrop();
+
 // Escape key handler
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
         // Exit stage mode first if active
         if (!document.getElementById('stage-mode').classList.contains('hidden')) {
             exitStageMode();
+            return;
+        }
+        if (!document.getElementById('import-modal').classList.contains('hidden')) {
+            closeImportModal();
             return;
         }
         if (!document.getElementById('settings-modal').classList.contains('hidden')) {

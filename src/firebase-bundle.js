@@ -213,6 +213,35 @@ const FirestoreService = {
     await deleteDoc(docRef);
   },
 
+  async syncSongsBatch(creates, updates, archives) {
+    const now = new Date().toISOString();
+    const ops = [];
+    for (const song of creates) {
+      ops.push({ id: song.id, data: { ...song, active: true, lastUpdated: now }, merge: false });
+    }
+    for (const update of updates) {
+      ops.push({ id: update.id, data: { ...update.data, active: true, lastUpdated: now }, merge: true });
+    }
+    for (const id of archives) {
+      ops.push({ id, data: { active: false, lastUpdated: now }, merge: true });
+    }
+    const BATCH_SIZE = 500;
+    for (let i = 0; i < ops.length; i += BATCH_SIZE) {
+      const chunk = ops.slice(i, i + BATCH_SIZE);
+      const batch = writeBatch(db);
+      for (const op of chunk) {
+        const docRef = doc(db, 'songs', op.id);
+        if (op.merge) {
+          batch.set(docRef, op.data, { merge: true });
+        } else {
+          batch.set(docRef, op.data);
+        }
+      }
+      await batch.commit();
+    }
+    return ops.length;
+  },
+
   // Clients
   async getClients() {
     const snapshot = await getDocs(collection(db, 'clients'));

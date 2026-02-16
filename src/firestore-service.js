@@ -202,6 +202,42 @@ export async function deleteSong(songId) {
   await deleteDoc(docRef);
 }
 
+/**
+ * Sync songs from Ableset import — atomic batch write
+ * @param {Array} creates - Full song documents to create
+ * @param {Array} updates - { id, data } objects to merge-update
+ * @param {Array} archives - Song IDs to set active: false
+ * @returns {Promise<number>} Total operations executed
+ */
+export async function syncSongsBatch(creates, updates, archives) {
+  const now = new Date().toISOString();
+  const ops = [];
+  for (const song of creates) {
+    ops.push({ id: song.id, data: { ...song, active: true, lastUpdated: now }, merge: false });
+  }
+  for (const update of updates) {
+    ops.push({ id: update.id, data: { ...update.data, active: true, lastUpdated: now }, merge: true });
+  }
+  for (const id of archives) {
+    ops.push({ id, data: { active: false, lastUpdated: now }, merge: true });
+  }
+  const BATCH_SIZE = 500;
+  for (let i = 0; i < ops.length; i += BATCH_SIZE) {
+    const chunk = ops.slice(i, i + BATCH_SIZE);
+    const batch = writeBatch(db);
+    for (const op of chunk) {
+      const docRef = doc(db, COLLECTIONS.SONGS, op.id);
+      if (op.merge) {
+        batch.set(docRef, op.data, { merge: true });
+      } else {
+        batch.set(docRef, op.data);
+      }
+    }
+    await batch.commit();
+  }
+  return ops.length;
+}
+
 // ============= CLIENTS =============
 
 /**
