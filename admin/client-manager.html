@@ -300,9 +300,22 @@
                             </select>
                         </div>
                     </div>
-                    <div>
-                        <label class="block text-sm font-semibold text-stone-300 mb-2">Contact Name</label>
-                        <input type="text" id="modal-contact-name" class="w-full px-4 py-3 bg-stone-800 border border-stone-700 rounded-lg text-white focus:outline-none focus:border-accent-teal" placeholder="Sarah Smith">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-semibold text-stone-300 mb-2">Contact Name</label>
+                            <input type="text" id="modal-contact-name" class="w-full px-4 py-3 bg-stone-800 border border-stone-700 rounded-lg text-white focus:outline-none focus:border-accent-teal" placeholder="Sarah Smith">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-stone-300 mb-2">Preferred Contact</label>
+                            <select id="modal-preferred-contact" class="w-full px-4 py-3 bg-stone-800 border border-stone-700 rounded-lg text-white focus:outline-none focus:border-accent-teal">
+                                <option value="">Unknown</option>
+                                <option value="Phone">Phone</option>
+                                <option value="Email">Email</option>
+                                <option value="Facebook">Facebook</option>
+                                <option value="Website">Website Form</option>
+                                <option value="In Person">In Person</option>
+                            </select>
+                        </div>
                     </div>
                     <div class="grid grid-cols-2 gap-4">
                         <div>
@@ -422,6 +435,8 @@
                         <option value="name-desc">Name (Z-A)</option>
                         <option value="contact-recent">Last Contact (Recent)</option>
                         <option value="contact-oldest">Last Contact (Oldest)</option>
+                        <option value="updated-recent">Last Updated (Recent)</option>
+                        <option value="updated-oldest">Last Updated (Oldest)</option>
                         <option value="show-soonest">Next Show (Soonest)</option>
                         <option value="show-farthest">Next Show (Farthest)</option>
                     </select>
@@ -591,6 +606,11 @@
         let selectedYear = '';
         let activeMode = 'clients';
 
+        // Expose migration to console immediately
+        window.migratePreferredContact = function() {
+            return _migratePreferredContact();
+        };
+
         // ============= HELPERS =============
 
         function generateUUID() {
@@ -637,6 +657,17 @@
                 case 'Private': return 'fa-user-tie';
                 case 'Corporate': return 'fa-briefcase';
                 default: return 'fa-building';
+            }
+        }
+
+        function getPreferredContactIcon(method) {
+            switch (method) {
+                case 'Phone': return 'fa-solid fa-phone';
+                case 'Email': return 'fa-solid fa-envelope';
+                case 'Facebook': return 'fa-brands fa-facebook';
+                case 'Website': return 'fa-solid fa-globe';
+                case 'In Person': return 'fa-solid fa-handshake';
+                default: return 'fa-solid fa-comment';
             }
         }
 
@@ -872,6 +903,20 @@
                         return aD - bD;
                     });
                     break;
+                case 'updated-recent':
+                    filtered.sort((a, b) => {
+                        const aD = a.updatedAt ? new Date(a.updatedAt).getTime() : 0;
+                        const bD = b.updatedAt ? new Date(b.updatedAt).getTime() : 0;
+                        return bD - aD;
+                    });
+                    break;
+                case 'updated-oldest':
+                    filtered.sort((a, b) => {
+                        const aD = a.updatedAt ? new Date(a.updatedAt).getTime() : Infinity;
+                        const bD = b.updatedAt ? new Date(b.updatedAt).getTime() : Infinity;
+                        return aD - bD;
+                    });
+                    break;
                 case 'show-soonest':
                     filtered.sort((a, b) => {
                         const aD = clientNextShowDates[a.id] ? new Date(clientNextShowDates[a.id]).getTime() : Infinity;
@@ -1083,6 +1128,12 @@
                             <div>
                                 <label class="text-xs text-stone-500 uppercase tracking-wide">Type</label>
                                 <div class="text-white mt-1"><i class="fa-solid ${getTypeIcon(type)} mr-2 text-stone-400"></i>${type}</div>
+                            </div>
+                            <div>
+                                <label class="text-xs text-stone-500 uppercase tracking-wide">Preferred Contact</label>
+                                <div class="text-white mt-1">${client.preferredContact
+                                    ? `<span class="inline-flex items-center gap-1.5"><i class="${getPreferredContactIcon(client.preferredContact)} text-accent-teal"></i>${escapeHtml(client.preferredContact)}</span>`
+                                    : '<span class="text-stone-600">\u2014</span>'}</div>
                             </div>
                             <div>
                                 <label class="text-xs text-stone-500 uppercase tracking-wide">Email</label>
@@ -1395,6 +1446,7 @@
                     document.getElementById('modal-default-end-time').value = client.defaultEndTime || '';
                     document.getElementById('modal-default-itinerary').value = client.defaultItinerary || '';
                     document.getElementById('modal-default-notes').value = client.defaultNotes || '';
+                    document.getElementById('modal-preferred-contact').value = client.preferredContact || '';
                     document.getElementById('modal-client-tags').value = (client.tags || []).join(', ');
                 }
             } else {
@@ -1415,6 +1467,7 @@
                 document.getElementById('modal-default-end-time').value = '';
                 document.getElementById('modal-default-itinerary').value = '';
                 document.getElementById('modal-default-notes').value = '';
+                document.getElementById('modal-preferred-contact').value = '';
                 document.getElementById('modal-client-tags').value = '';
             }
 
@@ -1444,6 +1497,7 @@
                 type: document.getElementById('modal-client-type').value,
                 status: document.getElementById('modal-client-status').value,
                 contactName: document.getElementById('modal-contact-name').value.trim() || undefined,
+                preferredContact: document.getElementById('modal-preferred-contact').value || undefined,
                 email: document.getElementById('modal-client-email').value.trim() || undefined,
                 phone: document.getElementById('modal-client-phone').value.trim() || undefined,
                 website: document.getElementById('modal-client-website').value.trim() || undefined,
@@ -2047,6 +2101,143 @@
             if (!selectedClientId) return;
             switchMode('shows');
             setTimeout(() => addNewShow(selectedClientId), 100);
+        }
+
+        // ============= MIGRATION: Preferred Contact + Move Notes to Activity =============
+        // Run from console: migratePreferredContact()
+        // Dry-run first:    migratePreferredContact(true)
+        async function _migratePreferredContact(dryRun = false) {
+            if (!isAuthenticated) { console.error('Sign in first.'); return; }
+
+            const INTERACTION_PATTERNS = [
+                /facebook messag/i, /cold messag/i, /cold called/i, /no response/i,
+                /emailed/i, /email given/i, /was told/i, /no follow-up/i,
+                /application through/i, /applied/i, /sent .* an email/i,
+                /reached out/i, /web-based submission/i, /booking through/i,
+                /responded/i, /^rejected/i
+            ];
+
+            function looksLikeInteractionNote(text) {
+                if (!text || !text.trim()) return false;
+                return INTERACTION_PATTERNS.some(p => p.test(text));
+            }
+
+            function detectPreferred(client) {
+                // 1. Tags "Contact via: X"
+                if (client.tags && client.tags.length > 0) {
+                    const contactTag = client.tags.find(t => t.toLowerCase().startsWith('contact via:'));
+                    if (contactTag) {
+                        const method = contactTag.split(':')[1].trim();
+                        if (['Phone', 'Email', 'Facebook'].includes(method)) return method;
+                        if (method.toLowerCase() === 'website') return 'Website';
+                    }
+                }
+                // 2. contactName = "Facebook" or "Website"
+                if (client.contactName) {
+                    const cn = client.contactName.trim().toLowerCase();
+                    if (cn === 'facebook') return 'Facebook';
+                    if (cn === 'website') return 'Website';
+                }
+                // 3. Notes patterns
+                const notes = ((client.defaultNotes || '') + ' ' + (client.venueDetails || '')).toLowerCase();
+                if (notes.includes('facebook messag') || notes.includes('cold messaged')) return 'Facebook';
+                if (notes.includes('emailed') || notes.includes('email given') || notes.includes('booking through email')) return 'Email';
+                if (notes.includes('cold called') || notes.includes('only responds to calls')) return 'Phone';
+                if (notes.includes('application through website') || notes.includes('web-based submission')) return 'Website';
+                return '';
+            }
+
+            let contactUpdated = 0, notesMovedCount = 0, skipped = 0;
+
+            for (const client of clients) {
+                let needsSave = false;
+                const changes = [];
+
+                // --- Preferred Contact ---
+                let preferred = client.preferredContact || '';
+                if (!preferred) {
+                    preferred = detectPreferred(client);
+                    if (preferred) {
+                        changes.push('preferredContact=' + preferred);
+                        contactUpdated++;
+                        needsSave = true;
+                    }
+                }
+
+                // --- Move interaction notes from defaultNotes to activity log ---
+                let defaultNotes = client.defaultNotes || '';
+                if (defaultNotes && looksLikeInteractionNote(defaultNotes)) {
+                    changes.push('defaultNotes -> activity');
+                    if (!dryRun) {
+                        await FirestoreService.addActivityLog(client.id, {
+                            type: 'Note',
+                            content: defaultNotes,
+                            author: 'Migrated from Default Notes'
+                        });
+                    }
+                    defaultNotes = '';
+                    needsSave = true;
+                    notesMovedCount++;
+                }
+
+                // --- Move interaction notes from venueDetails to activity log ---
+                let venueDetails = client.venueDetails || '';
+                if (venueDetails && looksLikeInteractionNote(venueDetails)) {
+                    changes.push('venueDetails -> activity');
+                    if (!dryRun) {
+                        await FirestoreService.addActivityLog(client.id, {
+                            type: 'Note',
+                            content: venueDetails,
+                            author: 'Migrated from Venue Details'
+                        });
+                    }
+                    venueDetails = '';
+                    needsSave = true;
+                    notesMovedCount++;
+                }
+
+                if (needsSave) {
+                    // Clean tags/contactName
+                    let tags = client.tags || [];
+                    tags = tags.filter(t => !t.toLowerCase().startsWith('contact via:'));
+                    let contactName = client.contactName;
+                    if (contactName && ['facebook', 'website'].includes(contactName.trim().toLowerCase())) {
+                        contactName = undefined;
+                    }
+
+                    const label = dryRun ? '[DRY RUN]' : '[SAVED]';
+                    console.log(label, client.name + ':', changes.join(', '));
+
+                    if (!dryRun) {
+                        const updatedClient = {
+                            ...client,
+                            preferredContact: preferred || undefined,
+                            defaultNotes: defaultNotes || undefined,
+                            venueDetails: venueDetails || undefined,
+                            tags: tags.length > 0 ? tags : undefined,
+                            contactName: contactName || undefined
+                        };
+                        try {
+                            await FirestoreService.saveClient(updatedClient);
+                        } catch (err) {
+                            console.error('FAILED:', client.name, err);
+                        }
+                    }
+                } else {
+                    skipped++;
+                }
+            }
+
+            console.log('--- Migration ' + (dryRun ? 'DRY RUN' : '') + ' Complete ---');
+            console.log('Preferred contact set:', contactUpdated);
+            console.log('Notes moved to activity:', notesMovedCount);
+            console.log('Skipped (no changes):', skipped);
+
+            if (!dryRun) {
+                const allClients = await FirestoreService.getClients();
+                clients = allClients;
+                renderClientsList();
+            }
         }
 
         // ============= EVENT LISTENERS =============
