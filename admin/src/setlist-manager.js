@@ -14,7 +14,7 @@ const state = {
     currentSetlistName: null, // Display name
     fileList: [],
     mobileTab: 'library',
-    viewMode: true,
+    viewMode: false,
     hasUnsavedChanges: false,
     originalSetlist: []
 };
@@ -257,25 +257,13 @@ function prepareSetlistForExport(setlist) {
 function markAsChanged() {
     if (state.viewMode) return;
     state.hasUnsavedChanges = true;
-    updateSaveButton();
+    updateUI();
 }
 
 function markAsSaved() {
     state.hasUnsavedChanges = false;
     state.originalSetlist = JSON.parse(JSON.stringify(state.setlist));
-    updateSaveButton();
-}
-
-function updateSaveButton() {
-    const saveBtn = document.getElementById('header-save-btn');
-    if (!saveBtn) return;
-
-    const connected = window.FirebaseAuth?.isAuthenticated();
-    if (state.hasUnsavedChanges && connected && !state.viewMode) {
-        saveBtn.classList.remove('hidden');
-    } else {
-        saveBtn.classList.add('hidden');
-    }
+    updateUI();
 }
 
 // --- VIEW MODE ---
@@ -287,21 +275,20 @@ window.toggleViewMode = () => {
     const btn = document.getElementById('btn-view-mode');
     const icon = document.getElementById('view-mode-icon');
     const text = document.getElementById('view-mode-text');
-    const headerTitle = document.getElementById('header-mode-title');
 
     if (state.viewMode) {
         icon.className = 'fas fa-edit';
         text.textContent = 'Edit';
-        btn.className = 'btn btn-secondary text-xs px-3 bg-[#422006] border border-[#fbbf24] text-[#fcd34d] hover:bg-[#3f3f46]';
-        headerTitle.textContent = 'Setlists';
-        document.title = 'Setlists - Ultraphonics';
+        btn.className = 'text-xs px-3 py-2 bg-[#422006] border border-[#fbbf24] text-[#fcd34d] rounded-lg hover:bg-[#5c2d0e] transition-colors flex items-center gap-2';
     } else {
         icon.className = 'fas fa-eye';
         text.textContent = 'View';
-        btn.className = 'btn btn-secondary text-xs px-3 bg-[#1e3a8a] border border-blue-500 text-blue-200 hover:bg-[#1e40af]';
-        headerTitle.textContent = 'Setlists';
-        document.title = 'Setlists - Ultraphonics';
+        btn.className = 'text-xs px-3 py-2 bg-[#1e3a8a] border border-blue-500 text-blue-200 rounded-lg hover:bg-[#1e40af] transition-colors flex items-center gap-2';
     }
+
+    // Update name input readonly state
+    const nameInput = document.getElementById('setlist-name-input');
+    if (nameInput) nameInput.readOnly = state.viewMode;
 
     if (librarySortable) librarySortable.option('disabled', state.viewMode);
     if (setlistSortable) setlistSortable.option('disabled', state.viewMode);
@@ -373,13 +360,7 @@ window.switchMobileTab = (tab) => {
     }
 };
 
-// --- TOOLBAR MENU ---
-
-window.toggleToolbarMenu = (e) => {
-    if (e) e.stopPropagation();
-    const menu = document.getElementById('toolbar-menu');
-    if (menu) menu.classList.toggle('hidden');
-};
+// --- TOOLBAR (legacy menu removed) ---
 
 // --- SHARE ---
 
@@ -389,9 +370,7 @@ window.shareSetlist = async () => {
     if (state.currentFile) {
         shareUrl.searchParams.set('setlist', state.currentFile);
     }
-    if (state.viewMode) {
-        shareUrl.searchParams.set('view', 'true');
-    }
+    shareUrl.searchParams.set('view', 'true');
     const url = shareUrl.toString();
 
     try {
@@ -404,8 +383,6 @@ window.shareSetlist = async () => {
             await navigator.clipboard.writeText(url);
             alert('Link copied to clipboard!');
         }
-        const menu = document.getElementById('toolbar-menu');
-        if (menu) menu.classList.add('hidden');
     } catch (err) {
         if (err.name !== 'AbortError') {
             console.error('Share failed:', err);
@@ -639,31 +616,45 @@ function addToSetlist(data) {
 // --- UI ---
 
 function updateUI() {
-    if (els.currentFilename) {
-        // Use the explicit name if available, otherwise the ID, otherwise Unsaved
-        const displayName = state.currentSetlistName || (state.currentFile ? state.currentFile : "(Unsaved)");
-        els.currentFilename.textContent = displayName;
+    const connected = window.FirebaseAuth?.isAuthenticated();
+    const nameInput = document.getElementById('setlist-name-input');
+    const saveBtn = document.getElementById('header-save-btn');
+    const newBtn = document.getElementById('new-setlist-btn');
+    const duplicateBtn = document.getElementById('duplicate-btn');
+
+    // Sync name input with state
+    if (nameInput) {
+        if (document.activeElement !== nameInput) {
+            nameInput.value = state.currentSetlistName || '';
+        }
+        nameInput.readOnly = state.viewMode;
     }
 
-    const connected = window.FirebaseAuth?.isAuthenticated();
-    const menuSaveBtn = document.getElementById('menu-btn-save');
-    const menuSaveAsBtn = document.getElementById('menu-btn-save-as');
-    const menuDuplicateBtn = document.getElementById('menu-btn-duplicate');
-    const toolbarMenuToggle = document.getElementById('toolbar-menu-toggle');
+    // Save button: visible in edit mode, disabled when no unsaved changes or not authenticated
+    if (saveBtn) {
+        if (state.viewMode) {
+            saveBtn.classList.add('hidden');
+        } else {
+            saveBtn.classList.remove('hidden');
+            saveBtn.disabled = !state.hasUnsavedChanges || !connected;
+        }
+    }
 
-    if (state.viewMode) {
-        if (toolbarMenuToggle) toolbarMenuToggle.style.display = 'none';
-    } else {
-        if (toolbarMenuToggle) toolbarMenuToggle.style.display = '';
-        if (menuSaveBtn) menuSaveBtn.disabled = !connected;
-        if (menuSaveAsBtn) menuSaveAsBtn.disabled = !connected;
-        // Show duplicate button only when a setlist is loaded and user is authenticated
-        if (menuDuplicateBtn) {
-            if (connected && state.currentFile) {
-                menuDuplicateBtn.classList.remove('hidden');
-            } else {
-                menuDuplicateBtn.classList.add('hidden');
-            }
+    // New button: visible in edit mode
+    if (newBtn) {
+        if (state.viewMode) {
+            newBtn.classList.add('hidden');
+        } else {
+            newBtn.classList.remove('hidden');
+        }
+    }
+
+    // Duplicate button: visible when a setlist is loaded, authenticated, and in edit mode
+    if (duplicateBtn) {
+        if (!state.viewMode && connected && state.currentFile) {
+            duplicateBtn.classList.remove('hidden');
+        } else {
+            duplicateBtn.classList.add('hidden');
         }
     }
 }
@@ -816,32 +807,44 @@ async function loadRemoteFile(fileObj) {
 // --- SAVING ---
 
 window.saveCurrent = async () => {
-    closeToolbarMenu();
-    if (!state.currentFile) return saveAs();
-    if (!confirm(`Save changes to "${state.currentSetlistName || state.currentFile}"?`)) return;
-    await performSave(state.currentFile, state.currentSetlistName);
-};
+    const nameInput = document.getElementById('setlist-name-input');
+    const name = (nameInput ? nameInput.value.trim() : '') || '';
 
-window.saveAs = async () => {
-    closeToolbarMenu();
-    const defaultName = state.currentSetlistName || "New Setlist";
-    const name = prompt("Setlist name:", defaultName);
-    if (!name) return;
-    
-    // Generate a new GUID for the setlist ID
-    const newId = generateGuid();
-    
-    // Pass new ID and Name to performSave
-    await performSave(newId, name);
+    if (!name) {
+        // Focus the input and highlight it
+        if (nameInput) {
+            nameInput.focus();
+            nameInput.classList.add('!border-red-500', '!ring-red-500');
+            setTimeout(() => nameInput.classList.remove('!border-red-500', '!ring-red-500'), 2000);
+        }
+        return;
+    }
+
+    if (state.currentFile) {
+        // Save to existing document
+        await performSave(state.currentFile, name);
+    } else {
+        // New setlist — generate a GUID
+        const newId = generateGuid();
+        await performSave(newId, name);
+    }
 };
 
 async function performSave(setlistId, setlistName) {
-    const displayName = setlistName || setlistId;
-    showLoader('main-loader', 'loader-text', true, `Saving ${displayName}...`);
+    const saveBtn = document.getElementById('header-save-btn');
+    const saveIcon = document.getElementById('save-btn-icon');
+    const saveText = document.getElementById('save-btn-text');
+
+    // Show saving state
+    if (saveBtn) {
+        saveBtn.disabled = true;
+        if (saveIcon) saveIcon.className = 'fa-solid fa-spinner fa-spin text-xs';
+        if (saveText) saveText.textContent = 'Saving...';
+    }
+
     try {
         const exportData = prepareSetlistForExport(state.setlist);
 
-        // Save using GUID as key, name stored in document data
         await saveSetlistToFirebase(setlistId, setlistName, exportData, {
             vocalAssignments: state.vocalAssignments,
             segues: state.segues
@@ -849,7 +852,7 @@ async function performSave(setlistId, setlistName) {
 
         state.currentFile = setlistId;
         state.currentSetlistName = setlistName;
-        
+
         // Update URL to the new ID
         const url = new URL(window.location);
         url.searchParams.set('setlist', setlistId);
@@ -858,28 +861,40 @@ async function performSave(setlistId, setlistName) {
         markAsSaved();
         updateUI();
         refreshFileList(true);
-        alert(`Saved "${displayName}"`);
+
+        // Show success feedback
+        if (saveBtn) {
+            if (saveIcon) saveIcon.className = 'fa-solid fa-check text-xs';
+            if (saveText) saveText.textContent = 'Saved!';
+            saveBtn.classList.remove('bg-green-900', 'border-green-500', 'text-green-200');
+            saveBtn.classList.add('bg-green-700', 'border-green-400', 'text-white');
+            setTimeout(() => {
+                if (saveIcon) saveIcon.className = 'fa-solid fa-check text-xs';
+                if (saveText) saveText.textContent = 'Save';
+                saveBtn.classList.remove('bg-green-700', 'border-green-400', 'text-white');
+                saveBtn.classList.add('bg-green-900', 'border-green-500', 'text-green-200');
+                updateUI();
+            }, 1500);
+        }
     } catch (err) {
         alert(`Save failed: ${err.message}`);
-    } finally {
-        showLoader('main-loader', null, false);
+        if (saveBtn) {
+            if (saveIcon) saveIcon.className = 'fa-solid fa-check text-xs';
+            if (saveText) saveText.textContent = 'Save';
+            updateUI();
+        }
     }
 }
 
 window.duplicateSetlist = async () => {
-    closeToolbarMenu();
     if (!state.currentFile) {
         alert("No setlist loaded to duplicate.");
         return;
     }
     const currentName = state.currentSetlistName || "Setlist";
-    const newName = prompt("Name for duplicate:", currentName + " Copy");
-    if (!newName) return;
-    
-    // Generate new GUID for the duplicate
+    const newName = currentName + " Copy";
     const newId = generateGuid();
 
-    // Save as new setlist
     showLoader('main-loader', 'loader-text', true, `Creating copy...`);
     try {
         const exportData = prepareSetlistForExport(state.setlist);
@@ -890,7 +905,11 @@ window.duplicateSetlist = async () => {
 
         state.currentFile = newId;
         state.currentSetlistName = newName;
-        
+
+        // Update inline name input
+        const nameInput = document.getElementById('setlist-name-input');
+        if (nameInput) nameInput.value = newName;
+
         // Update URL
         const url = new URL(window.location);
         url.searchParams.set('setlist', newId);
@@ -899,7 +918,6 @@ window.duplicateSetlist = async () => {
         markAsSaved();
         updateUI();
         refreshFileList(true);
-        alert(`Created "${newName}"`);
     } catch (err) {
         alert(`Duplicate failed: ${err.message}`);
     } finally {
@@ -926,33 +944,33 @@ window.filterLibrary = (type) => {
 };
 
 window.resetToNew = () => {
-    closeToolbarMenu();
-    const msg = state.hasUnsavedChanges
-        ? "You have unsaved changes. Discard and start new?"
-        : "Start a new setlist?";
-    if (confirm(msg)) {
-        state.setlist = [];
-        state.vocalAssignments = {};
-        state.segues = {};
-        state.currentFile = null;
-        state.currentSetlistName = null;
-
-        // Clear URL params
-        const url = new URL(window.location.origin + window.location.pathname);
-        window.history.replaceState({}, '', url);
-
-        markAsSaved();
-        renderSetlist();
-        refreshLibrary();
-        updateUI();
-        renderFileListSidebar(state.fileList);
+    if (state.hasUnsavedChanges) {
+        if (!confirm("You have unsaved changes. Discard and start new?")) return;
     }
-};
 
-function closeToolbarMenu() {
-    const menu = document.getElementById('toolbar-menu');
-    if (menu) menu.classList.add('hidden');
-}
+    state.setlist = [];
+    state.vocalAssignments = {};
+    state.segues = {};
+    state.currentFile = null;
+    state.currentSetlistName = null;
+
+    // Clear name input
+    const nameInput = document.getElementById('setlist-name-input');
+    if (nameInput) {
+        nameInput.value = '';
+        nameInput.focus();
+    }
+
+    // Clear URL params
+    const url = new URL(window.location.origin + window.location.pathname);
+    window.history.replaceState({}, '', url);
+
+    markAsSaved();
+    renderSetlist();
+    refreshLibrary();
+    updateUI();
+    renderFileListSidebar(state.fileList);
+};
 
 window.downloadSetlist = () => {
     if (state.setlist.length === 0) { alert("Setlist is empty."); return; }
@@ -1184,7 +1202,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         files: document.getElementById('file-list-sidebar'),
         setlist: document.getElementById('setlist-area'),
         emptyState: document.getElementById('empty-state'),
-        currentFilename: document.getElementById('current-filename'),
         stats: document.getElementById('setlist-stats'),
         folderPath: document.getElementById('folder-path-display'),
         panels: {
@@ -1221,14 +1238,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         searchInput.addEventListener('input', () => renderLibrary());
     }
 
-    // Close toolbar menu when clicking outside
-    document.addEventListener('click', (e) => {
-        const menu = document.getElementById('toolbar-menu');
-        const toggle = document.getElementById('toolbar-menu-toggle');
-        if (menu && toggle && !menu.contains(e.target) && !toggle.contains(e.target)) {
-            menu.classList.add('hidden');
-        }
-    });
+    // Name input handler — sync to state and mark as changed
+    const nameInput = document.getElementById('setlist-name-input');
+    if (nameInput) {
+        nameInput.addEventListener('input', () => {
+            state.currentSetlistName = nameInput.value.trim();
+            markAsChanged();
+        });
+    }
 
     // Warn before leaving with unsaved changes
     window.addEventListener('beforeunload', (e) => {
@@ -1242,9 +1259,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Handle URL parameters
     const urlParams = new URLSearchParams(window.location.search);
     const setlistParam = urlParams.get('setlist') || urlParams.get('file'); // Support legacy 'file' param
-    const editParam = urlParams.get('edit');
+    const viewParam = urlParams.get('view');
 
-    if (editParam === 'true' || editParam === '1') {
+    // Default is edit mode; switch to view if URL says so
+    if (viewParam === 'true' || viewParam === '1') {
         toggleViewMode();
     }
 

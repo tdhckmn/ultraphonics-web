@@ -75,7 +75,7 @@
         body.view-mode .btn-primary { background: #3b82f6; }
         body.view-mode .btn-primary:hover { background: #2563eb; }
         body.view-mode #setlist-stats { color: #3b82f6; }
-        body.view-mode #current-filename { color: #3b82f6; }
+        body.view-mode #setlist-name-input { color: #3b82f6; }
         body.view-mode .mode-icon-header { background: linear-gradient(135deg, #3b82f6, #6366f1) !important; }
         body.view-mode .song-item.segue-active { border-left: 4px solid #3b82f6; }
         /* Panel border */
@@ -113,7 +113,7 @@
         }
     </style>
 </head>
-<body class="bg-[#121212] view-mode">
+<body class="bg-[#121212]">
 
     <!-- Auth Loading Overlay -->
     <div id="auth-loading" class="auth-overlay">
@@ -163,16 +163,21 @@
             </div>
         </div>
         <div class="flex items-center gap-2">
-            <button onclick="saveCurrent()" id="header-save-btn" class="hidden btn text-xs px-3 bg-green-600 border border-green-500 text-white hover:bg-green-500" title="Save Changes">
-                <i class="fas fa-save"></i> <span class="hidden md:inline">Save</span>
+            <button onclick="resetToNew()" id="new-setlist-btn" class="text-xs px-3 py-2 bg-[#422006] border border-[#fbbf24] text-[#fcd34d] rounded-lg hover:bg-[#5c2d0e] transition-colors flex items-center gap-2" title="New Setlist">
+                <i class="fa-solid fa-plus text-xs"></i>
+                <span class="hidden md:inline">New</span>
             </button>
-            <button onclick="toggleViewMode()" id="btn-view-mode" class="btn btn-secondary text-xs px-3 bg-[#422006] border border-[#fbbf24] text-[#fcd34d] hover:bg-[#3f3f46]" title="Toggle Edit Mode">
-                <i class="fas fa-edit" id="view-mode-icon"></i> <span class="hidden md:inline" id="view-mode-text">Edit</span>
+            <button onclick="saveCurrent()" id="header-save-btn" class="text-xs px-3 py-2 bg-green-900 border border-green-500 text-green-200 rounded-lg hover:bg-green-800 transition-colors flex items-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed" disabled title="Save Setlist">
+                <i class="fa-solid fa-check text-xs" id="save-btn-icon"></i>
+                <span class="hidden md:inline" id="save-btn-text">Save</span>
+            </button>
+            <button onclick="toggleViewMode()" id="btn-view-mode" class="text-xs px-3 py-2 bg-[#1e3a8a] border border-blue-500 text-blue-200 rounded-lg hover:bg-[#1e40af] transition-colors flex items-center gap-2" title="Toggle View Mode">
+                <i class="fas fa-eye" id="view-mode-icon"></i> <span class="hidden md:inline" id="view-mode-text">View</span>
             </button>
             <a id="headerAblesetLink" href="#" target="_blank" onclick="return handleAblesetClick(event)" class="text-gray-400 hover:text-rose-400 transition-colors p-2 rounded-lg hover:bg-[#333]" title="Launch AbleSet">
                 <i class="fas fa-circle-play"></i>
             </a>
-            <button onclick="openSettings()" class="btn btn-secondary text-xs px-3" title="Settings">
+            <button onclick="openSettings()" class="text-gray-400 hover:text-white transition-colors p-2 rounded-lg hover:bg-[#333]" title="Settings">
                 <i class="fas fa-cog"></i>
             </button>
             <a href="index.html" id="back-link" class="text-gray-400 hover:text-[#fbbf24] text-sm transition ml-2 p-2">
@@ -247,41 +252,18 @@
             <!-- Toolbar -->
             <div class="panel-header !flex-row !justify-between !items-center !gap-2 !bg-[#181818] !p-2 md:!p-4 sticky top-0 z-10">
                 <div class="flex items-center gap-2 overflow-hidden flex-1">
-                    <div id="current-filename" class="text-[#fbbf24] font-medium text-sm truncate px-3 py-1.5 bg-[#222] rounded-lg border border-[#333] flex-1 text-center md:text-left">
-                        (Unsaved)
-                    </div>
+                    <input type="text" id="setlist-name-input" placeholder="Untitled Setlist" class="text-[#fbbf24] font-medium text-sm px-3 py-1.5 bg-[#222] rounded-lg border border-[#333] flex-1 text-center md:text-left focus:outline-none focus:border-[#fbbf24] focus:ring-1 focus:ring-[#fbbf24] placeholder-gray-600" maxlength="100">
                 </div>
                 <div class="flex items-center gap-0.5">
+                    <button onclick="duplicateSetlist()" id="duplicate-btn" class="hidden text-gray-400 hover:text-[#fbbf24] p-2.5 rounded-lg hover:bg-[#333] transition-colors" title="Duplicate">
+                        <i class="fas fa-copy text-base"></i>
+                    </button>
                     <button onclick="shareSetlist()" class="text-gray-400 hover:text-[#fbbf24] p-2.5 rounded-lg hover:bg-[#333] transition-colors" title="Share Link">
                         <i class="fas fa-share-nodes text-base"></i>
                     </button>
                     <button onclick="downloadSetlist()" class="text-gray-400 hover:text-[#fbbf24] p-2.5 rounded-lg hover:bg-[#333] transition-colors" title="Download">
                         <i class="fas fa-download text-base"></i>
                     </button>
-                    <div class="relative">
-                        <button onclick="toggleToolbarMenu(event)" id="toolbar-menu-toggle" class="text-gray-400 hover:text-[#fbbf24] p-2.5 rounded-lg hover:bg-[#333] transition-colors" title="More Options">
-                            <i class="fas fa-ellipsis-v text-base"></i>
-                        </button>
-                        <div id="toolbar-menu" class="hidden absolute right-0 top-full mt-2 w-52 bg-[#252525] border border-[#444] rounded-xl shadow-xl overflow-hidden z-50">
-                            <div class="px-3 py-2 text-xs text-gray-500 uppercase tracking-wider border-b border-[#333]">Setlist</div>
-                            <button onclick="resetToNew()" class="w-full flex items-center gap-3 px-4 py-3 text-sm text-gray-300 hover:bg-[#333] transition-colors">
-                                <i class="fas fa-plus w-4 text-center text-gray-500"></i>
-                                <span>New Setlist</span>
-                            </button>
-                            <button onclick="saveCurrent()" id="menu-btn-save" disabled class="w-full flex items-center gap-3 px-4 py-3 text-sm text-gray-300 hover:bg-[#333] transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
-                                <i class="fas fa-cloud-arrow-up w-4 text-center text-gray-500"></i>
-                                <span>Save</span>
-                            </button>
-                            <button onclick="saveAs()" id="menu-btn-save-as" disabled class="w-full flex items-center gap-3 px-4 py-3 text-sm text-gray-300 hover:bg-[#333] transition-colors border-b border-[#333] disabled:opacity-40 disabled:cursor-not-allowed">
-                                <i class="fas fa-clone w-4 text-center text-gray-500"></i>
-                                <span>Save As Copy</span>
-                            </button>
-                            <button onclick="duplicateSetlist()" id="menu-btn-duplicate" class="w-full flex items-center gap-3 px-4 py-3 text-sm text-gray-300 hover:bg-[#333] transition-colors hidden">
-                                <i class="fas fa-copy w-4 text-center text-gray-500"></i>
-                                <span>Duplicate</span>
-                            </button>
-                        </div>
-                    </div>
                 </div>
             </div>
             
