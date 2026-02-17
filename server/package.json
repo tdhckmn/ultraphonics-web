@@ -1,0 +1,17 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "ableset-bridge.js",
+  "scripts": {
+    "start": "node ableset-bridge.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "osc": "^2.4.5",
+    "ws": "^8.19.0"
+  }
+}

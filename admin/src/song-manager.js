@@ -8,6 +8,16 @@ let hasUnsavedChanges = false;
 let isAuthenticated = false;
 let isGuitarMode = false;
 
+// ---- AbleSet State ----
+let songNameMap = new Map(); // originalName → songId
+let ablesetEnabled = localStorage.getItem('ableset_enabled') !== 'false'; // default: enabled
+let ablesetAutoStage = localStorage.getItem('ableset_auto_stage') === 'true';
+let ablesetBridgeUrl = localStorage.getItem('ableset_bridge_url') || 'ws://localhost:8080';
+let ablesetBridgeConnected = false;
+let autoScrollPaused = false;
+let autoScrollResumeTimer = null;
+const AUTO_SCROLL_PAUSE_MS = 5000;
+
 // ---- Constants ----
 const SECTION_KEYWORDS = [
     'intro', 'verse', 'chorus', 'bridge', 'outro',
@@ -270,6 +280,7 @@ function generateUUID() {
 async function loadSongs() {
     try {
         songs = await FirestoreService.getSongs();
+        buildSongNameMap();
         renderSongsList();
 
         // Check for song parameter in URL
@@ -286,6 +297,29 @@ async function loadSongs() {
         songs = [];
         renderSongsList();
     }
+}
+
+// ---- AbleSet: Song Name Map ----
+
+function buildSongNameMap() {
+    songNameMap.clear();
+    for (const song of songs) {
+        if (song.originalName) {
+            songNameMap.set(song.originalName, song.id);
+        }
+    }
+    console.log(`[AbleSet] Song map built: ${songNameMap.size} entries`);
+}
+
+function findSongIdByName(ablesetName) {
+    // Direct match on originalName
+    if (songNameMap.has(ablesetName)) return songNameMap.get(ablesetName);
+    // Fallback: case-insensitive match
+    const lower = ablesetName.toLowerCase();
+    for (const [name, id] of songNameMap) {
+        if (name.toLowerCase() === lower) return id;
+    }
+    return null;
 }
 
 // ---- Song List Rendering ----
@@ -1384,12 +1418,223 @@ window.addEventListener('beforeunload', (e) => {
     }
 });
 
+// ---- AbleSet: Integration ----
+
+function initAbleSet() {
+    if (typeof AbleSetClient === 'undefined') {
+        console.warn('[AbleSet] Client not loaded');
+        return;
+    }
+
+    // Load settings into UI
+    const urlInput = document.getElementById('ableset-bridge-url');
+    if (urlInput) urlInput.value = ablesetBridgeUrl;
+    const autoStageCheck = document.getElementById('ableset-auto-stage');
+    if (autoStageCheck) autoStageCheck.checked = ablesetAutoStage;
+
+    // Song change handler
+    AbleSetClient.onSongChange(function (songName) {
+        if (!ablesetEnabled) return;
+        const songId = findSongIdByName(songName);
+        if (!songId) {
+            console.warn(`[AbleSet] Unknown song: "${songName}"`);
+            showAbleSetToast(`Unknown song: ${songName}`);
+            return;
+        }
+        if (songId === selectedSongId) return;
+        console.log(`[AbleSet] Switching to: "${songName}" → ${songId}`);
+        selectSong(songId);
+        // Auto-enter stage mode if configured and not already in it
+        const stageEl = document.getElementById('stage-mode');
+        if (ablesetAutoStage && stageEl.classList.contains('hidden')) {
+            setTimeout(() => enterStageMode(), 150);
+        }
+        // Re-render stage lyrics if already in stage mode
+        if (!stageEl.classList.contains('hidden')) {
+            const song = songs.find(s => s.id === songId);
+            if (song) renderStageLyrics(song);
+        }
+        // Reset auto-scroll pause on song change
+        autoScrollPaused = false;
+        clearTimeout(autoScrollResumeTimer);
+    });
+
+    // Progress handler (auto-scroll)
+    AbleSetClient.onProgress(function (progress) {
+        if (!ablesetEnabled) return;
+        updateStageProgressBar(progress);
+        if (autoScrollPaused) return;
+        autoScrollStage(progress);
+    });
+
+    // Playback handler
+    AbleSetClient.onPlaybackChange(function (isPlaying) {
+        // Show progress bar only when playing
+        const bar = document.getElementById('stage-progress-bar');
+        if (bar) {
+            if (isPlaying && ablesetEnabled) {
+                bar.classList.remove('hidden');
+            } else {
+                bar.classList.add('hidden');
+            }
+        }
+    });
+
+    // Connection handler
+    AbleSetClient.onConnectionChange(function (state) {
+        ablesetBridgeConnected = state.bridgeConnected;
+        updateAbleSetStatusDot();
+    });
+
+    // Connect
+    updateAbleSetStatusDot();
+    if (ablesetEnabled) {
+        AbleSetClient.connect(ablesetBridgeUrl);
+    }
+}
+
+// ---- AbleSet: Auto-Scroll ----
+
+function autoScrollStage(progress) {
+    const container = document.getElementById('stage-lyrics-scroll');
+    if (!container) return;
+    const stageEl = document.getElementById('stage-mode');
+    if (stageEl.classList.contains('hidden')) return;
+
+    const maxScroll = container.scrollHeight - container.clientHeight;
+    if (maxScroll <= 0) return;
+    const target = progress * maxScroll;
+    // Smooth lerp via scroll behavior
+    container.scrollTo({ top: target, behavior: 'smooth' });
+}
+
+function updateStageProgressBar(progress) {
+    const fill = document.getElementById('stage-progress-fill');
+    if (fill) fill.style.width = (progress * 100) + '%';
+}
+
+// Pause auto-scroll on manual user interaction
+function setupAutoScrollPauseDetection() {
+    const container = document.getElementById('stage-lyrics-scroll');
+    if (!container) return;
+
+    // Detect user-initiated scrolls
+    container.addEventListener('wheel', pauseAutoScroll, { passive: true });
+    container.addEventListener('touchstart', pauseAutoScroll, { passive: true });
+
+    function pauseAutoScroll() {
+        if (!ablesetEnabled) return;
+        autoScrollPaused = true;
+        clearTimeout(autoScrollResumeTimer);
+        autoScrollResumeTimer = setTimeout(function () {
+            autoScrollPaused = false;
+        }, AUTO_SCROLL_PAUSE_MS);
+    }
+}
+
+// ---- AbleSet: Status UI ----
+
+function updateAbleSetStatusDot() {
+    const dots = [
+        document.getElementById('ableset-status-dot'),
+        document.getElementById('ableset-settings-status-dot')
+    ];
+    const statusText = document.getElementById('ableset-settings-status-text');
+
+    let dotClass, text;
+    if (!ablesetEnabled) {
+        dotClass = 'ableset-dot-disabled';
+        text = 'Disabled';
+    } else if (ablesetBridgeConnected) {
+        dotClass = 'ableset-dot-connected';
+        text = 'Connected to AbleSet';
+    } else if (AbleSetClient && AbleSetClient.isConnected) {
+        dotClass = 'ableset-dot-connecting';
+        text = 'Bridge connected, waiting for AbleSet...';
+    } else {
+        dotClass = 'ableset-dot-disconnected';
+        text = 'Disconnected';
+    }
+
+    for (const dot of dots) {
+        if (!dot) continue;
+        dot.className = 'w-2 h-2 rounded-full flex-shrink-0 ' + dotClass;
+    }
+    if (statusText) statusText.textContent = text;
+}
+
+function showAbleSetToast(message) {
+    // Brief non-blocking notification
+    const existing = document.getElementById('ableset-toast');
+    if (existing) existing.remove();
+
+    const toast = document.createElement('div');
+    toast.id = 'ableset-toast';
+    toast.className = 'fixed bottom-4 left-1/2 -translate-x-1/2 bg-stone-800 border border-stone-600 text-stone-300 text-sm px-4 py-2 rounded-lg shadow-lg z-[300] transition-opacity duration-300';
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    setTimeout(() => { toast.style.opacity = '0'; }, 2500);
+    setTimeout(() => { toast.remove(); }, 3000);
+}
+
+// ---- AbleSet: Toggle & Settings ----
+
+function toggleAbleSet() {
+    ablesetEnabled = !ablesetEnabled;
+    localStorage.setItem('ableset_enabled', String(ablesetEnabled));
+    AbleSetClient.isEnabled = ablesetEnabled;
+
+    if (ablesetEnabled) {
+        AbleSetClient.resetSongState();
+        AbleSetClient.connect(ablesetBridgeUrl);
+        showAbleSetToast('AbleSet sync enabled');
+    } else {
+        showAbleSetToast('AbleSet sync disabled');
+        // Hide progress bar
+        const bar = document.getElementById('stage-progress-bar');
+        if (bar) bar.classList.add('hidden');
+    }
+    updateAbleSetStatusDot();
+}
+
+function saveAbleSetSettings() {
+    const urlInput = document.getElementById('ableset-bridge-url');
+    if (urlInput) {
+        const newUrl = urlInput.value.trim() || 'ws://localhost:8080';
+        if (newUrl !== ablesetBridgeUrl) {
+            ablesetBridgeUrl = newUrl;
+            localStorage.setItem('ableset_bridge_url', ablesetBridgeUrl);
+            // Reconnect with new URL
+            if (ablesetEnabled) {
+                AbleSetClient.disconnect();
+                AbleSetClient.connect(ablesetBridgeUrl);
+            }
+        }
+    }
+    const autoStageCheck = document.getElementById('ableset-auto-stage');
+    if (autoStageCheck) {
+        ablesetAutoStage = autoStageCheck.checked;
+        localStorage.setItem('ableset_auto_stage', String(ablesetAutoStage));
+    }
+}
+
+// AbleSet toggle button
+document.getElementById('ableset-toggle-btn').addEventListener('click', toggleAbleSet);
+
+// Save AbleSet settings when closing settings modal
+document.getElementById('close-settings').addEventListener('click', saveAbleSetSettings);
+document.getElementById('close-settings-btn').addEventListener('click', saveAbleSetSettings);
+
+// Setup auto-scroll pause detection
+setupAutoScrollPauseDetection();
+
 // ---- Auth State Listener ----
 FirebaseAuth.onAuthChange((user) => {
     isAuthenticated = !!user;
     if (user) {
         hideLoginModal();
         loadSongs();
+        initAbleSet();
     } else {
         showLoginForm();
     }
