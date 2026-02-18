@@ -15,7 +15,8 @@ import {
   orderBy,
   onSnapshot,
   writeBatch,
-  addDoc
+  addDoc,
+  deleteField
 } from 'firebase/firestore';
 
 // Collection names
@@ -213,13 +214,13 @@ export async function syncSongsBatch(creates, updates, archives) {
   const now = new Date().toISOString();
   const ops = [];
   for (const song of creates) {
-    ops.push({ id: song.id, data: { ...song, active: true, lastUpdated: now }, merge: false });
+    ops.push({ id: song.id, data: { ...song, active: true, updatedAt: now }, merge: false });
   }
   for (const update of updates) {
-    ops.push({ id: update.id, data: { ...update.data, active: true, lastUpdated: now }, merge: true });
+    ops.push({ id: update.id, data: { ...update.data, active: true, updatedAt: now }, merge: true });
   }
   for (const id of archives) {
-    ops.push({ id, data: { active: false, lastUpdated: now }, merge: true });
+    ops.push({ id, data: { active: false, updatedAt: now }, merge: true });
   }
   const BATCH_SIZE = 500;
   for (let i = 0; i < ops.length; i += BATCH_SIZE) {

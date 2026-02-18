@@ -9,7 +9,7 @@ let isAuthenticated = false;
 let isGuitarMode = false;
 
 // ---- AbleSet State ----
-let songNameMap = new Map(); // originalName → songId
+let songNameMap = new Map(); // ablesetName → songId
 let ablesetEnabled = localStorage.getItem('ableset_enabled') !== 'false'; // default: enabled
 let ablesetAutoStage = localStorage.getItem('ableset_auto_stage') === 'true';
 let ablesetBridgeUrl = localStorage.getItem('ableset_bridge_url') || 'ws://localhost:8080';
@@ -114,7 +114,7 @@ function compareSongLists(importList, dbSongs) {
             toCreate.push(imported);
         } else {
             // Compare Ableset-sourced metadata
-            const nameChanged = existing.originalName !== imported.lastKnownName;
+            const nameChanged = existing.ablesetName !== imported.lastKnownName;
             const timeChanged = existing.duration !== imported.time;
             if (nameChanged || timeChanged) {
                 toUpdate.push({ existing, imported });
@@ -122,9 +122,9 @@ function compareSongLists(importList, dbSongs) {
         }
     }
 
-    // Only archive songs that were previously imported from Ableset (have originalName)
+    // Only archive songs that were previously imported from Ableset (have ablesetName)
     for (const dbSong of dbSongs) {
-        if (!importMap.has(dbSong.id) && dbSong.active !== false && dbSong.originalName) {
+        if (!importMap.has(dbSong.id) && dbSong.active !== false && dbSong.ablesetName) {
             toArchive.push(dbSong);
         }
     }
@@ -167,7 +167,7 @@ function transposeChord(chord, semitones) {
 }
 
 function getSongCapo(song) {
-    return song.capo ?? song.settings?.capo ?? 0;
+    return song.capo || 0;
 }
 
 function getSongEflat(song) {
@@ -304,15 +304,15 @@ async function loadSongs() {
 function buildSongNameMap() {
     songNameMap.clear();
     for (const song of songs) {
-        if (song.originalName) {
-            songNameMap.set(song.originalName, song.id);
+        if (song.ablesetName) {
+            songNameMap.set(song.ablesetName, song.id);
         }
     }
     console.log(`[AbleSet] Song map built: ${songNameMap.size} entries`);
 }
 
 function findSongIdByName(ablesetName) {
-    // Direct match on originalName
+    // Direct match on ablesetName
     if (songNameMap.has(ablesetName)) return songNameMap.get(ablesetName);
     // Fallback: case-insensitive match
     const lower = ablesetName.toLowerCase();
@@ -350,7 +350,7 @@ function renderSongsList(filter = '') {
         const artist = song.artist || '';
         const isSelected = selectedSongId === song.id;
         const isArchived = song.active === false;
-        const key = song.settings?.originalKey || song.key;
+        const key = song.key;
         const capo = getSongCapo(song);
         const eflat = getSongEflat(song);
         const dropD = getSongDropD(song); // Get Drop D status
@@ -359,8 +359,8 @@ function renderSongsList(filter = '') {
             ? `<span class="text-xs bg-green-900/50 text-green-400 px-2 py-0.5 rounded font-mono">${key}</span>`
             : '';
         const tuningBadges = `
-            ${eflat ? '<span class="tuning-badge eb-tuning">Eb</span>' : ''}
-            ${dropD ? '<span class="tuning-badge drop-d">Drop D</span>' : ''}
+            ${eflat ? '<span class="text-xs bg-purple-900/50 text-purple-400 px-2 py-0.5 rounded">Eb</span>' : ''}
+            ${dropD ? '<span class="text-xs bg-indigo-900/50 text-indigo-400 px-2 py-0.5 rounded">Drop D</span>' : ''}
         `;
         const capoBadge = capo > 0
             ? `<span class="text-xs bg-amber-900/50 text-amber-400 px-2 py-0.5 rounded">Capo ${capo}</span>`
@@ -399,7 +399,7 @@ function renderSongsList(filter = '') {
 function selectSong(songId) {
     if (hasUnsavedChanges && selectedSongId !== songId) {
         if (!confirm('You have unsaved changes. Discard and select a different song?')) return;
-        hasUnavedChanges = false;
+        hasUnsavedChanges = false;
     }
 
     selectedSongId = songId;
@@ -432,7 +432,7 @@ function showViewMode() {
     const capo = getSongCapo(song);
     const eflat = getSongEflat(song);
     const dropD = getSongDropD(song); // Get Drop D status
-    const originalKey = song.settings?.originalKey || song.key || '';
+    const originalKey = song.key || '';
     const genre = song.genre || '';
 
     // If no capo, force concert mode
@@ -539,7 +539,7 @@ function showEditMode() {
     const capo = getSongCapo(song);
     const eflat = getSongEflat(song);
     const dropD = getSongDropD(song); // Get Drop D status
-    const originalKey = song.settings?.originalKey || song.key || '';
+    const originalKey = song.key || '';
     const displayKey = capo ? transposeChord(originalKey, -capo) : originalKey;
     const notes = song.notes ? (typeof song.notes === 'string' ? song.notes : song.notes.join('\n')) : '';
 
@@ -659,14 +659,10 @@ async function saveSong() {
         chartUrl: document.getElementById('edit-chart-url').value.trim(),
         notes: document.getElementById('edit-notes').value.trim(),
         showOnWebsite: document.getElementById('edit-show-on-website').checked,
+        key: originalKey,
         capo: capo,
         eflat: eflat,
-        dropD: dropD, // Save Drop D status
-        settings: {
-            capo: capo,
-            originalKey: originalKey,
-            displayKey: capo && originalKey ? transposeChord(originalKey, -capo) : originalKey
-        }
+        dropD: dropD
     };
 
     // Clean empty optional fields
@@ -745,8 +741,8 @@ function addNewSong() {
         lyrics: '',
         capo: 0,
         eflat: false,
-        dropD: false, // Default for new songs
-        settings: { capo: 0, originalKey: '', displayKey: '' }
+        dropD: false,
+        key: ''
     };
 
     songs.unshift(newSong);
@@ -943,23 +939,15 @@ function buildSongDocument(imported) {
     return {
         id: imported.id,
         title: parsed.title,
-        originalName: imported.lastKnownName,
+        ablesetName: imported.lastKnownName,
         artist: parsed.artist,
         key: parsed.key,
         bpm: 0,
         duration: imported.time || 0,
-        tags: parsed.tags,
-        meta: parsed.meta,
         active: true,
         capo: parsed.meta.capo,
-        eflat: parsed.meta.isEflat, // Set eflat from parsed meta
-        dropD: parsed.meta.isDrop, // Set dropD from parsed meta
-        // Populate settings for existing UI compatibility
-        settings: {
-            originalKey: parsed.key,
-            capo: parsed.meta.capo,
-            displayKey: parsed.meta.capo && parsed.key ? transposeChord(parsed.key, -parsed.meta.capo) : parsed.key
-        }
+        eflat: parsed.meta.isEflat,
+        dropD: parsed.meta.isDrop
     };
 }
 
@@ -974,21 +962,14 @@ function showImportModal(diff) {
         return {
             id: u.imported.id,
             title: parsed.title,
-            originalTitle: u.existing.title || u.existing.originalName,
-            originalName: u.imported.lastKnownName,
+            originalTitle: u.existing.title || u.existing.ablesetName,
+            ablesetName: u.imported.lastKnownName,
             artist: parsed.artist,
             key: parsed.key,
             duration: u.imported.time || 0,
-            tags: parsed.tags,
-            meta: parsed.meta,
             capo: parsed.meta.capo,
-            eflat: parsed.meta.isEflat, // Set eflat from parsed meta
-            dropD: parsed.meta.isDrop, // Set dropD from parsed meta
-            settings: {
-                originalKey: parsed.key,
-                capo: parsed.meta.capo,
-                displayKey: parsed.meta.capo && parsed.key ? transposeChord(parsed.key, -parsed.meta.capo) : parsed.key
-            }
+            eflat: parsed.meta.isEflat,
+            dropD: parsed.meta.isDrop
         };
     });
 
@@ -1059,7 +1040,7 @@ function showImportModal(diff) {
             <div class="space-y-1 max-h-40 overflow-y-auto">
                 ${diff.toArchive.map(s => `
                     <div class="flex items-center justify-between px-3 py-2 bg-stone-800 rounded text-sm">
-                        <span class="text-white truncate flex-1">${escapeHtml(s.title || s.originalName || 'Untitled')}</span>
+                        <span class="text-white truncate flex-1">${escapeHtml(s.title || s.ablesetName || 'Untitled')}</span>
                         <span class="text-red-400 text-xs ml-2">will be archived</span>
                     </div>
                 `).join('')}
@@ -1099,16 +1080,13 @@ async function executeSync() {
             id: u.id,
             data: {
                 title: u.title,
-                originalName: u.originalName,
+                ablesetName: u.ablesetName,
                 artist: u.artist,
                 key: u.key,
                 duration: u.duration,
-                tags: u.tags,
-                meta: u.meta,
                 capo: u.capo,
-                eflat: u.eflat, // Include eflat in update
-                dropD: u.dropD, // Include dropD in update
-                settings: u.settings
+                eflat: u.eflat,
+                dropD: u.dropD
             }
         }));
         const archives = (pendingDiff.toArchive || []).map(s => s.id);

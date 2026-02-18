@@ -14,7 +14,7 @@ const state = {
     currentSetlistName: null, // Display name
     fileList: [],
     mobileTab: 'library',
-    viewMode: false,
+    viewMode: true,
     hasUnsavedChanges: false,
     originalSetlist: []
 };
@@ -156,6 +156,12 @@ function showLoader(elId, textId, show, msg) {
     if (msg && txt) txt.innerHTML = `<i class="fas fa-sync fa-spin mr-2"></i> ${msg}`;
 }
 
+function extractSetLabel(name) {
+    // Extract just "Set N" from names like "SET 1 [TEAL]", "Set 2 (Blue)", "set3", etc.
+    const match = name.match(/^set\s*(\d+)/i);
+    return match ? `Set ${match[1]}` : name.replace(/\[.*?\]|\(.*?\)/g, '').trim();
+}
+
 function generateStats(setlistData) {
     if (!setlistData || setlistData.length === 0) return "0 items";
 
@@ -165,12 +171,11 @@ function generateStats(setlistData) {
 
     setlistData.forEach(item => {
         const name = item.lastKnownName || "";
-        const isSet = name.toLowerCase().startsWith('set');
+        const isSet = /^set\s*\d/i.test(name);
 
         if (isSet) {
             if (bufferName !== null) {
-                const setNumber = bufferName.toLowerCase().replace('set', '').trim();
-                report.push(`${setNumber}(${bufferCount})`);
+                report.push(`${extractSetLabel(bufferName)}(${bufferCount})`);
             } else if (bufferCount > 0) {
                 report.push(`Intro(${bufferCount})`);
             }
@@ -182,8 +187,7 @@ function generateStats(setlistData) {
     });
 
     if (bufferName !== null) {
-        const setNumber = bufferName.toLowerCase().replace('set', '').trim();
-        report.push(`${setNumber}(${bufferCount})`);
+        report.push(`${extractSetLabel(bufferName)}(${bufferCount})`);
     } else if (bufferCount > 0) {
         report.push(`Total(${bufferCount})`);
     }
@@ -277,18 +281,16 @@ window.toggleViewMode = () => {
     const text = document.getElementById('view-mode-text');
 
     if (state.viewMode) {
+        // Currently in view mode — button offers "Edit" (amber)
         icon.className = 'fas fa-edit';
         text.textContent = 'Edit';
         btn.className = 'text-xs px-3 py-2 bg-[#422006] border border-[#fbbf24] text-[#fcd34d] rounded-lg hover:bg-[#5c2d0e] transition-colors flex items-center gap-2';
     } else {
+        // Currently in edit mode — button offers "View" (blue)
         icon.className = 'fas fa-eye';
         text.textContent = 'View';
         btn.className = 'text-xs px-3 py-2 bg-[#1e3a8a] border border-blue-500 text-blue-200 rounded-lg hover:bg-[#1e40af] transition-colors flex items-center gap-2';
     }
-
-    // Update name input readonly state
-    const nameInput = document.getElementById('setlist-name-input');
-    if (nameInput) nameInput.readOnly = state.viewMode;
 
     if (librarySortable) librarySortable.option('disabled', state.viewMode);
     if (setlistSortable) setlistSortable.option('disabled', state.viewMode);
@@ -617,17 +619,14 @@ function addToSetlist(data) {
 
 function updateUI() {
     const connected = window.FirebaseAuth?.isAuthenticated();
-    const nameInput = document.getElementById('setlist-name-input');
+    const nameDisplay = document.getElementById('setlist-name-display');
     const saveBtn = document.getElementById('header-save-btn');
     const newBtn = document.getElementById('new-setlist-btn');
     const duplicateBtn = document.getElementById('duplicate-btn');
 
-    // Sync name input with state
-    if (nameInput) {
-        if (document.activeElement !== nameInput) {
-            nameInput.value = state.currentSetlistName || '';
-        }
-        nameInput.readOnly = state.viewMode;
+    // Sync name display with state
+    if (nameDisplay) {
+        nameDisplay.textContent = state.currentSetlistName || '(Unsaved)';
     }
 
     // Save button: visible in edit mode, disabled when no unsaved changes or not authenticated
@@ -646,6 +645,16 @@ function updateUI() {
             newBtn.classList.add('hidden');
         } else {
             newBtn.classList.remove('hidden');
+        }
+    }
+
+    // Rename button: visible in edit mode when a setlist is loaded
+    const renameBtn = document.getElementById('rename-btn');
+    if (renameBtn) {
+        if (!state.viewMode && state.currentFile) {
+            renameBtn.classList.remove('hidden');
+        } else {
+            renameBtn.classList.add('hidden');
         }
     }
 
@@ -807,24 +816,13 @@ async function loadRemoteFile(fileObj) {
 // --- SAVING ---
 
 window.saveCurrent = async () => {
-    const nameInput = document.getElementById('setlist-name-input');
-    const name = (nameInput ? nameInput.value.trim() : '') || '';
-
-    if (!name) {
-        // Focus the input and highlight it
-        if (nameInput) {
-            nameInput.focus();
-            nameInput.classList.add('!border-red-500', '!ring-red-500');
-            setTimeout(() => nameInput.classList.remove('!border-red-500', '!ring-red-500'), 2000);
-        }
-        return;
-    }
-
     if (state.currentFile) {
-        // Save to existing document
-        await performSave(state.currentFile, name);
+        // Save to existing document with current name
+        await performSave(state.currentFile, state.currentSetlistName);
     } else {
-        // New setlist — generate a GUID
+        // New setlist — prompt for name
+        const name = prompt("Setlist name:", "New Setlist");
+        if (!name) return;
         const newId = generateGuid();
         await performSave(newId, name);
     }
@@ -906,9 +904,9 @@ window.duplicateSetlist = async () => {
         state.currentFile = newId;
         state.currentSetlistName = newName;
 
-        // Update inline name input
-        const nameInput = document.getElementById('setlist-name-input');
-        if (nameInput) nameInput.value = newName;
+        // Update name display
+        const nameDisplay = document.getElementById('setlist-name-display');
+        if (nameDisplay) nameDisplay.textContent = newName;
 
         // Update URL
         const url = new URL(window.location);
@@ -923,6 +921,19 @@ window.duplicateSetlist = async () => {
     } finally {
         showLoader('main-loader', null, false);
     }
+};
+
+// --- RENAME ---
+
+window.renameSetlist = () => {
+    if (!state.currentFile) return;
+    const currentName = state.currentSetlistName || 'Setlist';
+    const newName = prompt('Rename setlist:', currentName);
+    if (!newName || newName === currentName) return;
+    state.currentSetlistName = newName;
+    const nameDisplay = document.getElementById('setlist-name-display');
+    if (nameDisplay) nameDisplay.textContent = newName;
+    markAsChanged();
 };
 
 // --- ACTIONS ---
@@ -954,12 +965,9 @@ window.resetToNew = () => {
     state.currentFile = null;
     state.currentSetlistName = null;
 
-    // Clear name input
-    const nameInput = document.getElementById('setlist-name-input');
-    if (nameInput) {
-        nameInput.value = '';
-        nameInput.focus();
-    }
+    // Reset name display
+    const nameDisplay = document.getElementById('setlist-name-display');
+    if (nameDisplay) nameDisplay.textContent = '(Unsaved)';
 
     // Clear URL params
     const url = new URL(window.location.origin + window.location.pathname);
@@ -1238,15 +1246,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         searchInput.addEventListener('input', () => renderLibrary());
     }
 
-    // Name input handler — sync to state and mark as changed
-    const nameInput = document.getElementById('setlist-name-input');
-    if (nameInput) {
-        nameInput.addEventListener('input', () => {
-            state.currentSetlistName = nameInput.value.trim();
-            markAsChanged();
-        });
-    }
-
     // Warn before leaving with unsaved changes
     window.addEventListener('beforeunload', (e) => {
         if (state.hasUnsavedChanges) {
@@ -1259,10 +1258,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Handle URL parameters
     const urlParams = new URLSearchParams(window.location.search);
     const setlistParam = urlParams.get('setlist') || urlParams.get('file'); // Support legacy 'file' param
-    const viewParam = urlParams.get('view');
+    const editParam = urlParams.get('edit');
 
-    // Default is edit mode; switch to view if URL says so
-    if (viewParam === 'true' || viewParam === '1') {
+    // Default is view mode; switch to edit if URL says so
+    if (editParam === 'true' || editParam === '1') {
         toggleViewMode();
     }
 

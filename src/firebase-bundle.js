@@ -2,7 +2,7 @@
 // This file initializes Firebase and exposes functions globally for inline scripts
 
 import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, doc, getDoc, getDocs, setDoc, updateDoc, deleteDoc, query, where, orderBy, onSnapshot, writeBatch } from 'firebase/firestore';
+import { getFirestore, collection, doc, getDoc, getDocs, setDoc, updateDoc, deleteDoc, query, where, orderBy, onSnapshot, writeBatch, deleteField } from 'firebase/firestore';
 import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged, setPersistence, browserLocalPersistence } from 'firebase/auth';
 
 // ============= ALLOWED EMAILS =============
@@ -217,13 +217,13 @@ const FirestoreService = {
     const now = new Date().toISOString();
     const ops = [];
     for (const song of creates) {
-      ops.push({ id: song.id, data: { ...song, active: true, lastUpdated: now }, merge: false });
+      ops.push({ id: song.id, data: { ...song, active: true, updatedAt: now }, merge: false });
     }
     for (const update of updates) {
-      ops.push({ id: update.id, data: { ...update.data, active: true, lastUpdated: now }, merge: true });
+      ops.push({ id: update.id, data: { ...update.data, active: true, updatedAt: now }, merge: true });
     }
     for (const id of archives) {
-      ops.push({ id, data: { active: false, lastUpdated: now }, merge: true });
+      ops.push({ id, data: { active: false, updatedAt: now }, merge: true });
     }
     const BATCH_SIZE = 500;
     for (let i = 0; i < ops.length; i += BATCH_SIZE) {
@@ -240,6 +240,24 @@ const FirestoreService = {
       await batch.commit();
     }
     return ops.length;
+  },
+
+  async normalizeSongsBatch(updates) {
+    const BATCH_SIZE = 500;
+    for (let i = 0; i < updates.length; i += BATCH_SIZE) {
+      const chunk = updates.slice(i, i + BATCH_SIZE);
+      const batch = writeBatch(db);
+      for (const op of chunk) {
+        const docRef = doc(db, 'songs', op.id);
+        const data = { ...op.set };
+        for (const field of (op.remove || [])) {
+          data[field] = deleteField();
+        }
+        batch.update(docRef, data);
+      }
+      await batch.commit();
+    }
+    return updates.length;
   },
 
   // Clients

@@ -75,7 +75,7 @@
         body.view-mode .btn-primary { background: #3b82f6; }
         body.view-mode .btn-primary:hover { background: #2563eb; }
         body.view-mode #setlist-stats { color: #3b82f6; }
-        body.view-mode #setlist-name-input { color: #3b82f6; }
+        body.view-mode #setlist-name-display { color: #3b82f6; }
         body.view-mode .mode-icon-header { background: linear-gradient(135deg, #3b82f6, #6366f1) !important; }
         body.view-mode .song-item.segue-active { border-left: 4px solid #3b82f6; }
         /* Panel border */
@@ -113,7 +113,7 @@
         }
     </style>
 </head>
-<body class="bg-[#121212]">
+<body class="bg-[#121212] view-mode">
 
     <!-- Auth Loading Overlay -->
     <div id="auth-loading" class="auth-overlay">
@@ -171,8 +171,8 @@
                 <i class="fa-solid fa-check text-xs" id="save-btn-icon"></i>
                 <span class="hidden md:inline" id="save-btn-text">Save</span>
             </button>
-            <button onclick="toggleViewMode()" id="btn-view-mode" class="text-xs px-3 py-2 bg-[#1e3a8a] border border-blue-500 text-blue-200 rounded-lg hover:bg-[#1e40af] transition-colors flex items-center gap-2" title="Toggle View Mode">
-                <i class="fas fa-eye" id="view-mode-icon"></i> <span class="hidden md:inline" id="view-mode-text">View</span>
+            <button onclick="toggleViewMode()" id="btn-view-mode" class="text-xs px-3 py-2 bg-[#422006] border border-[#fbbf24] text-[#fcd34d] rounded-lg hover:bg-[#5c2d0e] transition-colors flex items-center gap-2" title="Toggle View Mode">
+                <i class="fas fa-edit" id="view-mode-icon"></i> <span class="hidden md:inline" id="view-mode-text">Edit</span>
             </button>
             <a id="headerAblesetLink" href="#" target="_blank" onclick="return handleAblesetClick(event)" class="text-gray-400 hover:text-rose-400 transition-colors p-2 rounded-lg hover:bg-[#333]" title="Launch AbleSet">
                 <i class="fas fa-circle-play"></i>
@@ -252,7 +252,10 @@
             <!-- Toolbar -->
             <div class="panel-header !flex-row !justify-between !items-center !gap-2 !bg-[#181818] !p-2 md:!p-4 sticky top-0 z-10">
                 <div class="flex items-center gap-2 overflow-hidden flex-1">
-                    <input type="text" id="setlist-name-input" placeholder="Untitled Setlist" class="text-[#fbbf24] font-medium text-sm px-3 py-1.5 bg-[#222] rounded-lg border border-[#333] flex-1 text-center md:text-left focus:outline-none focus:border-[#fbbf24] focus:ring-1 focus:ring-[#fbbf24] placeholder-gray-600" maxlength="100">
+                    <span id="setlist-name-display" class="text-[#fbbf24] font-bold text-sm truncate flex-1 text-center md:text-left">(Unsaved)</span>
+                    <button onclick="renameSetlist()" id="rename-btn" class="hidden text-gray-400 hover:text-[#fbbf24] p-1.5 rounded-lg hover:bg-[#333] transition-colors flex-shrink-0" title="Rename">
+                        <i class="fas fa-pencil-alt text-xs"></i>
+                    </button>
                 </div>
                 <div class="flex items-center gap-0.5">
                     <button onclick="duplicateSetlist()" id="duplicate-btn" class="hidden text-gray-400 hover:text-[#fbbf24] p-2.5 rounded-lg hover:bg-[#333] transition-colors" title="Duplicate">
