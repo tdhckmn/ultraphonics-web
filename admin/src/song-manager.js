@@ -100,31 +100,44 @@ function parseSongName(nameString) {
 // ---- Ableset Import: Diff Engine ----
 
 function compareSongLists(importList, dbSongs) {
-    const dbMap = new Map(dbSongs.map(s => [s.id, s]));
-    const importMap = new Map(importList.map(s => [s.id, s]));
+    // Primary match: ablesetId field. Legacy fallback: doc id matches Ableset id.
+    const dbByAblesetId = new Map();
+    const dbByDocId = new Map();
+    for (const s of dbSongs) {
+        if (s.ablesetId) dbByAblesetId.set(s.ablesetId, s);
+        dbByDocId.set(s.id, s);
+    }
 
+    const matchedAblesetIds = new Set();
     const toCreate = [];
     const toUpdate = [];
     const toArchive = [];
 
-    // Check imported songs against DB
     for (const imported of importList) {
-        const existing = dbMap.get(imported.id);
+        // Try ablesetId match first, then legacy doc-id match
+        let existing = dbByAblesetId.get(imported.id);
+        let isLegacy = false;
+        if (!existing) {
+            existing = dbByDocId.get(imported.id);
+            if (existing) isLegacy = true;
+        }
+
         if (!existing) {
             toCreate.push(imported);
         } else {
-            // Compare Ableset-sourced metadata
+            matchedAblesetIds.add(imported.id);
             const nameChanged = existing.ablesetName !== imported.lastKnownName;
-            const timeChanged = existing.duration !== imported.time;
-            if (nameChanged || timeChanged) {
-                toUpdate.push({ existing, imported });
+            const timeChanged = existing.ablesetTime !== imported.time;
+            const skippedChanged = (existing.ablesetSkipped || false) !== (imported.skipped || false);
+            if (nameChanged || timeChanged || skippedChanged || isLegacy) {
+                toUpdate.push({ existing, imported, isLegacy });
             }
         }
     }
 
-    // Only archive songs that were previously imported from Ableset (have ablesetName)
+    // Archive songs that have ablesetId but are no longer in the import
     for (const dbSong of dbSongs) {
-        if (!importMap.has(dbSong.id) && dbSong.active !== false && dbSong.ablesetName) {
+        if (dbSong.ablesetId && !matchedAblesetIds.has(dbSong.ablesetId) && dbSong.active !== false) {
             toArchive.push(dbSong);
         }
     }
@@ -937,9 +950,13 @@ function handleFileImport(file) {
 function buildSongDocument(imported) {
     const parsed = parseSongName(imported.lastKnownName);
     return {
-        id: imported.id,
-        title: parsed.title,
+        // Ableset-owned fields
+        ablesetId: imported.id,
         ablesetName: imported.lastKnownName,
+        ablesetTime: imported.time || 0,
+        ablesetSkipped: imported.skipped || false,
+        // Auto-parsed initial values (editable by user, not overwritten on re-sync)
+        title: parsed.title,
         artist: parsed.artist,
         key: parsed.key,
         bpm: 0,
@@ -958,19 +975,18 @@ function showImportModal(diff) {
 
     const createDocs = diff.toCreate.map(s => buildSongDocument(s));
     const updateDocs = diff.toUpdate.map(u => {
-        const parsed = parseSongName(u.imported.lastKnownName);
-        return {
-            id: u.imported.id,
-            title: parsed.title,
-            originalTitle: u.existing.title || u.existing.ablesetName,
+        const updateData = {
+            firebaseId: u.existing.id,
+            displayTitle: u.existing.title || u.existing.ablesetName,
             ablesetName: u.imported.lastKnownName,
-            artist: parsed.artist,
-            key: parsed.key,
-            duration: u.imported.time || 0,
-            capo: parsed.meta.capo,
-            eflat: parsed.meta.isEflat,
-            dropD: parsed.meta.isDrop
+            ablesetTime: u.imported.time || 0,
+            ablesetSkipped: u.imported.skipped || false
         };
+        // Legacy migration: add ablesetId if this song was matched by doc ID
+        if (u.isLegacy) {
+            updateData.ablesetId = u.imported.id;
+        }
+        return updateData;
     });
 
     // Store processed data for executeSync
@@ -1024,8 +1040,8 @@ function showImportModal(diff) {
             <div class="space-y-1 max-h-40 overflow-y-auto">
                 ${updateDocs.map(s => `
                     <div class="flex items-center justify-between px-3 py-2 bg-stone-800 rounded text-sm">
-                        <span class="text-white truncate flex-1">${escapeHtml(s.title)}</span>
-                        <span class="text-stone-500 text-xs ml-2">metadata changed</span>
+                        <span class="text-white truncate flex-1">${escapeHtml(s.displayTitle)}</span>
+                        <span class="text-stone-500 text-xs ml-2">${s.ablesetId ? 'migration + ' : ''}ableset data changed</span>
                     </div>
                 `).join('')}
             </div>
@@ -1076,19 +1092,15 @@ async function executeSync() {
 
     try {
         const creates = pendingDiff.createDocs || [];
-        const updates = (pendingDiff.updateDocs || []).map(u => ({
-            id: u.id,
-            data: {
-                title: u.title,
+        const updates = (pendingDiff.updateDocs || []).map(u => {
+            const data = {
                 ablesetName: u.ablesetName,
-                artist: u.artist,
-                key: u.key,
-                duration: u.duration,
-                capo: u.capo,
-                eflat: u.eflat,
-                dropD: u.dropD
-            }
-        }));
+                ablesetTime: u.ablesetTime,
+                ablesetSkipped: u.ablesetSkipped
+            };
+            if (u.ablesetId) data.ablesetId = u.ablesetId;
+            return { id: u.firebaseId, data };
+        });
         const archives = (pendingDiff.toArchive || []).map(s => s.id);
 
         const count = await FirestoreService.syncSongsBatch(creates, updates, archives);
@@ -1105,6 +1117,29 @@ async function executeSync() {
         confirmBtn.disabled = false;
         confirmBtn.innerHTML = '<i class="fa-solid fa-sync"></i> Confirm Sync';
     }
+}
+
+// ---- Ableset Export ----
+
+function exportAblesetJson() {
+    const ablesetSongs = songs.filter(s => s.ablesetId);
+    if (ablesetSongs.length === 0) {
+        alert('No Ableset-sourced songs to export.');
+        return;
+    }
+    const exportData = ablesetSongs.map(s => ({
+        id: s.ablesetId,
+        lastKnownName: s.ablesetName || s.title,
+        time: s.ablesetTime || s.duration || 0,
+        skipped: s.ablesetSkipped || false
+    }));
+    const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `ableset-songs-${new Date().toISOString().split('T')[0]}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
 }
 
 // ---- Ableset Import: Drag & Drop ----
@@ -1224,6 +1259,7 @@ document.getElementById('search-songs').addEventListener('input', (e) => {
 
 // Add song
 document.getElementById('add-song-btn').addEventListener('click', addNewSong);
+document.getElementById('export-ableset-btn').addEventListener('click', exportAblesetJson);
 
 // Edit / Save / Cancel
 document.getElementById('edit-btn').addEventListener('click', showEditMode);

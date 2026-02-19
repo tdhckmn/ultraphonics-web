@@ -214,24 +214,27 @@ export async function syncSongsBatch(creates, updates, archives) {
   const now = new Date().toISOString();
   const ops = [];
   for (const song of creates) {
-    ops.push({ id: song.id, data: { ...song, active: true, updatedAt: now }, merge: false });
+    // Auto-generate doc ID for new songs (ablesetId is stored as a field, not as doc ID)
+    const autoRef = doc(collection(db, COLLECTIONS.SONGS));
+    ops.push({ ref: autoRef, data: { ...song, active: true, updatedAt: now }, merge: false });
   }
   for (const update of updates) {
-    ops.push({ id: update.id, data: { ...update.data, active: true, updatedAt: now }, merge: true });
+    const docRef = doc(db, COLLECTIONS.SONGS, update.id);
+    ops.push({ ref: docRef, data: { ...update.data, updatedAt: now }, merge: true });
   }
   for (const id of archives) {
-    ops.push({ id, data: { active: false, updatedAt: now }, merge: true });
+    const docRef = doc(db, COLLECTIONS.SONGS, id);
+    ops.push({ ref: docRef, data: { active: false, updatedAt: now }, merge: true });
   }
   const BATCH_SIZE = 500;
   for (let i = 0; i < ops.length; i += BATCH_SIZE) {
     const chunk = ops.slice(i, i + BATCH_SIZE);
     const batch = writeBatch(db);
     for (const op of chunk) {
-      const docRef = doc(db, COLLECTIONS.SONGS, op.id);
       if (op.merge) {
-        batch.set(docRef, op.data, { merge: true });
+        batch.set(op.ref, op.data, { merge: true });
       } else {
-        batch.set(docRef, op.data);
+        batch.set(op.ref, op.data);
       }
     }
     await batch.commit();
