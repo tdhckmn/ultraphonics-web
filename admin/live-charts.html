@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Live Charts - Ultraphonics</title>
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="/assets/images/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+
+    <!-- Google Fonts - Montserrat -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Montserrat', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body, button, input, select, textarea, h1, h2, h3, h4, h5, h6, p, a, span:not([class*="fa-"]), div:not([class*="fa-"]) {
+            font-family: 'Montserrat', sans-serif !important;
+        }
+
+        /* Teal accent colors */
+        .bg-accent-teal { background-color: #14b8a6; }
+        .text-accent-teal { color: #14b8a6; }
+        .border-accent-teal { border-color: #14b8a6; }
+        .hover\:bg-accent-teal:hover { background-color: #14b8a6; }
+
+        /* Connection status dots */
+        .status-dot-connected { background-color: #22c55e; box-shadow: 0 0 4px #22c55e; }
+        .status-dot-disconnected { background-color: #ef4444; }
+        @keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+        .status-dot-connecting { background-color: #eab308; animation: pulse-dot 1.5s ease-in-out infinite; }
+
+        /* Auth loading spinner */
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .auth-spinner {
+            animation: spin 1.5s linear infinite;
+        }
+        .auth-overlay {
+            position: fixed;
+            inset: 0;
+            background: #0c0a09;
+            z-index: 200;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.3s ease-out;
+        }
+        .auth-overlay.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="bg-stone-950 text-stone-100 h-full overflow-hidden">
+
+    <!-- Top Bar -->
+    <header class="h-[70px] px-4 md:px-6 border-b border-stone-800 bg-stone-900 flex justify-between items-center shadow-md z-50 sticky top-0">
+        <div class="relative" id="admin-menu-container">
+            <div class="flex items-center gap-3 md:gap-4 cursor-pointer" onclick="toggleAdminMenu()">
+                <div class="mode-icon w-8 h-8 bg-gradient-to-br from-purple-400 to-purple-600 rounded flex items-center justify-center text-black flex-shrink-0">
+                    <i class="fas fa-tablet-screen-button text-sm"></i>
+                </div>
+                <div>
+                    <h1 class="text-base md:text-lg font-bold text-white tracking-wide">Live Charts</h1>
+                </div>
+                <i class="fas fa-chevron-down text-gray-500 text-xs"></i>
+            </div>
+
+            <div id="admin-menu" class="hidden absolute left-0 top-full mt-2 w-64 bg-[#252525] border border-[#444] rounded-xl shadow-xl overflow-hidden z-50">
+                <a href="setlist-manager.html" class="flex items-center gap-4 px-4 py-3 text-white hover:bg-[#333]">
+                    <div class="mode-icon w-8 h-8 bg-gradient-to-br from-amber-400 to-amber-600 rounded flex items-center justify-center text-black flex-shrink-0">
+                        <span class="fa-stack" style="font-size: 0.8rem;">
+                            <i class="fas fa-list-ul fa-stack-1x"></i>
+                            <i class="fas fa-music fa-stack-1x" style="font-size: 0.5rem; margin-top: 6px; margin-left: 6px; color: rgba(0,0,0,0.7);"></i>
+                        </span>
+                    </div>
+                    <span class="font-semibold">Setlists</span>
+                </a>
+                <a href="song-manager.html" class="flex items-center gap-4 px-4 py-3 text-white hover:bg-[#333]">
+                     <div class="mode-icon w-8 h-8 bg-gradient-to-br from-green-400 to-green-600 rounded flex items-center justify-center text-black flex-shrink-0">
+                        <i class="fas fa-music text-sm"></i>
+                    </div>
+                    <span class="font-semibold">Songs</span>
+                </a>
+                <a href="client-manager.html" class="flex items-center gap-4 px-4 py-3 text-white hover:bg-[#333]">
+                    <div class="mode-icon w-8 h-8 bg-gradient-to-br from-teal-400 to-cyan-500 rounded flex items-center justify-center text-black flex-shrink-0">
+                        <i class="fas fa-address-book text-sm"></i>
+                    </div>
+                    <span class="font-semibold">Clients</span>
+                </a>
+                <a href="live-charts.html" class="flex items-center gap-4 px-4 py-3 text-white bg-[#333]">
+                    <div class="mode-icon w-8 h-8 bg-gradient-to-br from-purple-400 to-purple-600 rounded flex items-center justify-center text-black flex-shrink-0">
+                        <i class="fas fa-tablet-screen-button text-sm"></i>
+                    </div>
+                    <span class="font-semibold">Live Charts</span>
+                </a>
+            </div>
+        </div>
+        <div class="flex items-center gap-3">
+            <div class="flex items-center gap-2">
+                <span id="ws-status-text" class="text-xs text-stone-400 hidden md:inline">Connecting...</span>
+                <span id="ws-status-dot" class="w-2.5 h-2.5 rounded-full status-dot-connecting flex-shrink-0"></span>
+            </div>
+            <a href="index.html" class="text-stone-400 hover:text-purple-400 text-sm transition p-2">
+                <i class="fa-solid fa-arrow-left"></i>
+            </a>
+        </div>
+    </header>
+
+    <!-- Auth Loading Overlay -->
+    <div id="auth-loading" class="auth-overlay">
+        <div class="text-center">
+            <img src="/assets/images/Ultraphonics-Spiral-192.png" alt="Loading" class="h-16 w-auto mx-auto auth-spinner">
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="fixed inset-0 bg-stone-950 flex items-center justify-center z-[100] hidden">
+        <div id="login-form" class="bg-stone-900 w-full max-w-md mx-auto rounded-xl shadow-2xl border border-stone-700 overflow-hidden m-4">
+            <div class="p-6">
+                <div class="text-center mb-6">
+                    <img src="/assets/images/Ultraphonics-Spiral-192.png" alt="Ultraphonics" class="h-16 w-auto mx-auto mb-4">
+                    <h2 class="text-xl font-bold text-white">Admin Login</h2>
+                    <p class="text-stone-400 text-sm mt-1">Sign in to configure live charts</p>
+                </div>
+                <div id="login-error" class="text-red-400 text-sm hidden mb-4 text-center"></div>
+                <button id="google-sign-in-btn"
+                    class="w-full px-4 py-3 bg-white rounded-lg text-gray-800 hover:bg-gray-100 font-semibold transition-colors flex items-center justify-center gap-3">
+                    <svg class="w-5 h-5" viewBox="0 0 24 24">
+                        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                        <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                        <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                    </svg>
+                    Sign in with Google
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content: Embedded Live Viewer -->
+    <div class="h-[calc(100vh-70px)]">
+        <iframe
+            id="live-viewer-frame"
+            src="/live-viewer.html"
+            class="w-full h-full border-0"
+            title="Live Charts Viewer"
+        ></iframe>
+    </div>
+
+    <!-- Firebase Bundle -->
+    <script src="/dist/firebase-bundle.js"></script>
+    <script>
+        function toggleAdminMenu() {
+            const menu = document.getElementById('admin-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Close the menu if clicking outside of it
+        document.addEventListener('click', function(event) {
+            const container = document.getElementById('admin-menu-container');
+            if (container && !container.contains(event.target)) {
+                const menu = document.getElementById('admin-menu');
+                if (menu) {
+                    menu.classList.add('hidden');
+                }
+            }
+        });
+
+        // ===== WebSocket Connection Status =====
+        const wsStatusDot = document.getElementById('ws-status-dot');
+        const wsStatusText = document.getElementById('ws-status-text');
+        let ws = null;
+
+        function connectToWebSocket() {
+            const wsUrl = 'ws://' + window.location.hostname + ':8080';
+
+            try {
+                ws = new WebSocket(wsUrl);
+            } catch (err) {
+                console.error('[Live Charts] WebSocket creation failed:', err);
+                updateWsStatus('disconnected');
+                setTimeout(connectToWebSocket, 3000);
+                return;
+            }
+
+            ws.onopen = () => {
+                console.log('[Live Charts] Connected to bridge');
+                updateWsStatus('connected');
+            };
+
+            ws.onclose = () => {
+                console.log('[Live Charts] Disconnected from bridge');
+                updateWsStatus('disconnected');
+                ws = null;
+                setTimeout(connectToWebSocket, 3000);
+            };
+
+            ws.onerror = () => {
+                console.error('[Live Charts] WebSocket error');
+                updateWsStatus('disconnected');
+            };
+        }
+
+        function updateWsStatus(status) {
+            wsStatusDot.className = 'w-2.5 h-2.5 rounded-full flex-shrink-0';
+
+            switch (status) {
+                case 'connected':
+                    wsStatusDot.classList.add('status-dot-connected');
+                    if (wsStatusText) wsStatusText.textContent = 'Connected';
+                    break;
+                case 'connecting':
+                    wsStatusDot.classList.add('status-dot-connecting');
+                    if (wsStatusText) wsStatusText.textContent = 'Connecting...';
+                    break;
+                case 'disconnected':
+                    wsStatusDot.classList.add('status-dot-disconnected');
+                    if (wsStatusText) wsStatusText.textContent = 'Disconnected';
+                    break;
+            }
+        }
+
+        // Start WebSocket connection
+        updateWsStatus('connecting');
+        connectToWebSocket();
+
+        // ===== Auth Logic (matching song-manager.html pattern) =====
+        const authLoading = document.getElementById('auth-loading');
+        const loginModal = document.getElementById('login-modal');
+        const loginError = document.getElementById('login-error');
+        const googleSignInBtn = document.getElementById('google-sign-in-btn');
+
+        if (typeof window.FirebaseAuth !== 'undefined') {
+            window.FirebaseAuth.onAuthChange((user) => {
+                if (user) {
+                    // User is signed in - hide overlays
+                    authLoading.classList.add('fade-out');
+                    loginModal.classList.add('hidden');
+                    setTimeout(() => authLoading.remove(), 300);
+                } else {
+                    // User is signed out - show login
+                    authLoading.classList.add('fade-out');
+                    setTimeout(() => {
+                        authLoading.remove();
+                        loginModal.classList.remove('hidden');
+                    }, 300);
+                }
+            });
+
+            googleSignInBtn.addEventListener('click', async () => {
+                try {
+                    await window.FirebaseAuth.signInWithGoogle();
+                } catch (error) {
+                    console.error('Login error:', error);
+                    loginError.textContent = error.message;
+                    loginError.classList.remove('hidden');
+                }
+            });
+        } else {
+            console.error('FirebaseAuth not loaded');
+            authLoading.classList.add('fade-out');
+            setTimeout(() => authLoading.remove(), 300);
+        }
+    </script>
+
+</body>
+</html>

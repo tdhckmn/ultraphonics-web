@@ -1,28 +1,87 @@
 {
-  "name": "ultraphonics",
+  "name": "ultraphonics-live-hub",
   "version": "1.0.0",
-  "type": "module",
-  "description": "Ultraphonics Band Website",
-  "main": "index.js",
+  "type": "commonjs",
+  "description": "Live performance hub for Ultraphonics - syncs song charts with AbleSet in real-time for band members on tablets",
+  "main": "electron-main.js",
+  "author": "Ultraphonics",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/keepitultra/ultraphonics-web.git"
+  },
+  "homepage": "https://github.com/keepitultra/ultraphonics-web#readme",
   "scripts": {
+    "start": "electron .",
+    "start:electron": "electron .",
     "build": "esbuild src/firebase-bundle.js --bundle --outfile=dist/firebase-bundle.js --format=iife --global-name=UltraphonicsFirebase --minify",
     "build:dev": "esbuild src/firebase-bundle.js --bundle --outfile=dist/firebase-bundle.js --format=iife --global-name=UltraphonicsFirebase --sourcemap",
+    "build:icons": "bash scripts/prepare-icons.sh",
+    "build:electron": "npm run build && npm run build:icons && electron-builder",
+    "build:electron:mac": "npm run build && npm run build:icons && electron-builder --mac",
+    "build:electron:win": "npm run build && npm run build:icons && electron-builder --win",
+    "build:electron:linux": "npm run build && npm run build:icons && electron-builder --linux",
     "serve": "npm run build && npx firebase serve --only hosting",
     "preview": "npm run build && npx firebase hosting:channel:deploy preview",
     "deploy": "npm run build && npx firebase deploy --only hosting",
     "deploy:rules": "npx firebase deploy --only firestore:rules",
-    "migrate": "node scripts/migrate-to-firestore.js"
+    "migrate": "node scripts/migrate-to-firestore.js",
+    "kill-ports": "bash scripts/kill-ports.sh"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "ultraphonics",
+    "live-performance",
+    "ableset",
+    "music",
+    "charts",
+    "setlist"
+  ],
   "dependencies": {
-    "firebase": "^12.8.0"
+    "firebase": "^12.8.0",
+    "osc": "^2.4.5",
+    "ws": "^8.19.0",
+    "express": "^4.18.2",
+    "cors": "^2.8.5"
   },
   "devDependencies": {
     "esbuild": "^0.27.2",
     "firebase-admin": "^13.6.1",
-    "firebase-tools": "^15.5.1"
+    "firebase-tools": "^15.5.1",
+    "electron": "^28.1.0",
+    "electron-builder": "^24.9.1",
+    "concurrently": "^8.2.2"
   },
-  "packageManager": "yarn@1.22.22+sha1.ac34549e6aa8e7ead463a7407e1c7390f61a6610"
+  "packageManager": "yarn@1.22.22+sha1.ac34549e6aa8e7ead463a7407e1c7390f61a6610",
+  "build": {
+    "appId": "com.ultraphonics.livehub",
+    "productName": "Ultraphonics Live Hub",
+    "directories": {
+      "output": "dist-electron"
+    },
+    "files": [
+      "electron-main.js",
+      "server/**/*",
+      "src/**/*",
+      "admin/**/*",
+      "dist/**/*",
+      "assets/**/*",
+      "index.html",
+      "live-viewer.html",
+      "site.webmanifest",
+      "node_modules/**/*"
+    ],
+    "mac": {
+      "category": "public.app-category.music",
+      "icon": "build/icons/icon.icns",
+      "target": ["dmg", "zip"]
+    },
+    "win": {
+      "icon": "build/icons/icon.ico",
+      "target": ["nsis", "portable"]
+    },
+    "linux": {
+      "icon": "build/icons/icon.png",
+      "target": ["AppImage", "deb"]
+    }
+  }
 }

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Live Charts - Ultraphonics</title>
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="/assets/images/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/apple-touch-icon.png">
+
+    <!-- Google Fonts - Montserrat -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Montserrat', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body, button, input, select, textarea, h1, h2, h3, h4, h5, h6, p, a, span:not([class*="fa-"]), div:not([class*="fa-"]) {
+            font-family: 'Montserrat', sans-serif !important;
+        }
+
+        /* Green accent (matches stage mode) */
+        .bg-accent-green { background-color: #1DB954; }
+        .text-accent-green { color: #1DB954; }
+
+        /* Lyric Rendering (matching song-manager.html stage mode) */
+        .section-anchor {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background: rgba(28, 25, 23, 0.95);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid rgba(29, 185, 84, 0.3);
+            padding: 0.5rem 1rem;
+            margin: 1rem 0 0.5rem 0;
+            font-weight: 700;
+            color: #1DB954;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .chord {
+            color: #1DB954;
+            font-family: 'Courier New', monospace;
+            font-weight: 700;
+            font-size: 0.8em;
+        }
+        .harmony-section {
+            font-weight: 700;
+            color: #6EE7B7;
+        }
+        .footnote-marker {
+            color: #1DB954;
+            font-weight: 600;
+            margin: 0 1px;
+        }
+        .lyric-line {
+            line-height: 2.2;
+            white-space: pre-wrap;
+        }
+
+        /* Connection status dot */
+        .status-dot-connected { background-color: #22c55e; box-shadow: 0 0 4px #22c55e; }
+        .status-dot-disconnected { background-color: #ef4444; }
+        @keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+        .status-dot-connecting { background-color: #eab308; animation: pulse-dot 1.5s ease-in-out infinite; }
+
+        /* Loading spinner */
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .loading-spinner {
+            animation: spin 1.5s linear infinite;
+        }
+    </style>
+</head>
+<body class="bg-stone-950 text-stone-100 h-full overflow-hidden">
+
+    <!-- Main Container -->
+    <div class="h-full flex flex-col">
+        <!-- Progress Bar -->
+        <div id="progress-bar" class="h-[3px] bg-stone-800 flex-shrink-0 hidden">
+            <div id="progress-fill" class="h-full bg-accent-green transition-[width] duration-300 ease-linear" style="width: 0%"></div>
+        </div>
+
+        <!-- Song Title Header (shown when song is playing) -->
+        <div id="song-title-bar" class="hidden px-4 md:px-6 py-3 bg-stone-900/95 border-b border-stone-800">
+            <h1 id="song-title" class="text-lg md:text-xl font-bold text-white"></h1>
+        </div>
+
+        <!-- Lyrics/Chart Display -->
+        <div id="chart-container" class="flex-1 overflow-y-auto">
+            <div id="chart-content" class="max-w-4xl mx-auto px-6 md:px-12 py-8" style="font-size: 20px;">
+                <!-- Initial loading state -->
+                <div id="loading-state" class="text-center py-16">
+                    <i class="fas fa-music text-6xl text-stone-700 mb-4 loading-spinner"></i>
+                    <p class="text-xl text-stone-500">Connected to hub</p>
+                    <p class="text-sm text-stone-600 mt-2">Waiting for song selection in AbleSet...</p>
+                </div>
+
+                <!-- Song content will be dynamically inserted here -->
+                <div id="song-content" class="hidden"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase Bundle (for Firestore access) -->
+    <script src="/dist/firebase-bundle.js"></script>
+
+    <!-- Live Viewer Logic -->
+    <script src="/src/live-viewer.js"></script>
+
+</body>
+</html>

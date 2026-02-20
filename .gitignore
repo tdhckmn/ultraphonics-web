@@ -28,6 +28,16 @@ node_modules/
 Thumbs.db
 
 # --- Project Specific ---
-# Your current app stores GitHub config in localStorage, but if you 
+# Your current app stores GitHub config in localStorage, but if you
 # create local temp files for the Firestore migration, ignore them here:
 scripts/migration_temp/
+
+# --- Electron Build ---
+# Generated icons and distributables
+build/
+dist-electron/
+*.dmg
+*.zip
+*.exe
+*.AppImage
+*.deb
