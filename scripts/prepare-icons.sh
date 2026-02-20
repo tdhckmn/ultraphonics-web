@@ -70,21 +70,30 @@ else
     echo "  Install with: brew install imagemagick (macOS) or apt-get install imagemagick (Linux)"
 fi
 
-# Linux (.png) - just copy/resize the source
+# Linux (.png) - needs to be at least 256x256, preferably 512x512
 echo "Creating Linux icon (.png)..."
 if command -v sips &> /dev/null; then
+    # macOS - use sips
     sips -z 512 512 "$SOURCE_ICON" --out "$ICON_DIR/icon.png" 2>/dev/null
+    echo "✓ Created icon.png (512x512)"
 elif command -v magick &> /dev/null || command -v convert &> /dev/null; then
+    # ImageMagick - use convert/magick
     CONVERT_CMD="convert"
     if command -v magick &> /dev/null; then
         CONVERT_CMD="magick"
     fi
     $CONVERT_CMD "$SOURCE_ICON" -resize 512x512 "$ICON_DIR/icon.png"
+    echo "✓ Created icon.png (512x512)"
 else
-    # Fallback: just copy the source
+    # No image tools available - error out for Linux builds
+    echo "⚠ WARNING: No image conversion tools available!"
+    echo "  For Linux builds, icon.png must be at least 256x256"
+    echo "  Source icon is only 180x180 - build will fail"
+    echo "  Install ImageMagick: brew install imagemagick (macOS) or apt-get install imagemagick (Linux)"
+    # Copy anyway for local dev, but warn
     cp "$SOURCE_ICON" "$ICON_DIR/icon.png"
+    echo "✗ Created icon.png (180x180 - TOO SMALL FOR LINUX BUILD)"
 fi
-echo "✓ Created icon.png"
 
 echo ""
 echo "Icon preparation complete! Icons saved to $ICON_DIR/"
