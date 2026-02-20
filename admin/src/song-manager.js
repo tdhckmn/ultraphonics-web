@@ -1,5 +1,5 @@
 // ============= SONG MANAGER =============
-// Song Library with lyric rendering, chord transposition, and Stage Mode
+// Song Library with lyric rendering and chord transposition
 
 // ---- State ----
 let songs = [];
@@ -290,9 +290,6 @@ async function loadSongs() {
         const songId = urlParams.get('song');
         if (songId) {
             selectSong(songId);
-            if (urlParams.get('stage') === 'true') {
-                setTimeout(() => enterStageMode(), 100);
-            }
         }
     } catch (error) {
         console.error('Error loading songs:', error);
@@ -756,115 +753,6 @@ function scrollToFootnotes() {
 }
 window.scrollToFootnotes = scrollToFootnotes;
 
-// ---- Stage Mode ----
-
-let stageState = {
-    fontSize: 20,
-    isGuitarMode: false,
-    theme: 'dark'
-};
-
-function enterStageMode() {
-    const song = songs.find(s => s.id === selectedSongId);
-    if (!song) return;
-
-    const capo = getSongCapo(song);
-    // If no capo, force concert mode
-    if (capo === 0) {
-        stageState.isGuitarMode = false;
-        isGuitarMode = false;
-    } else {
-        stageState.isGuitarMode = isGuitarMode;
-    }
-
-    // Disable/enable stage pitch toggle based on capo
-    const stagePitchBtn = document.getElementById('stage-pitch-toggle');
-    if (capo === 0) {
-        stagePitchBtn.classList.add('opacity-50', 'cursor-not-allowed');
-        stagePitchBtn.disabled = true;
-    } else {
-        stagePitchBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-        stagePitchBtn.disabled = false;
-    }
-
-    renderStageLyrics(song);
-
-    const stageEl = document.getElementById('stage-mode');
-    stageEl.classList.remove('hidden');
-    document.body.style.overflow = 'hidden';
-
-    // Apply current state
-    document.getElementById('font-size-slider').value = stageState.fontSize;
-    document.getElementById('stage-lyrics').style.fontSize = stageState.fontSize + 'px';
-    updateStagePitchLabel();
-    updateStageThemeLabel();
-}
-
-function exitStageMode() {
-    const returnUrl = new URLSearchParams(window.location.search).get('return');
-    if (returnUrl) {
-        window.location.href = returnUrl;
-        return;
-    }
-    document.getElementById('stage-mode').classList.add('hidden');
-    document.getElementById('stage-mode').classList.remove('stage-light');
-    document.body.style.overflow = '';
-}
-
-function renderStageLyrics(song) {
-    const capo = getSongCapo(song);
-    const offset = stageState.isGuitarMode && capo ? -capo : 0;
-    const { html, sections, footnotes } = parseLyrics(song.lyrics || '', offset);
-
-    document.getElementById('stage-lyrics').innerHTML = html;
-
-    // Build section nav
-    const nav = document.getElementById('stage-section-nav');
-    if (sections.length > 0) {
-        nav.classList.remove('hidden');
-        nav.innerHTML = sections.map(s =>
-            `<button class="stage-section-btn px-3 py-1.5 bg-stone-800 text-stone-300 rounded-lg text-sm font-semibold hover:bg-green-900 hover:text-green-400 transition-colors whitespace-nowrap flex-shrink-0" onclick="window.scrollToSection('${s.id}')">${s.name}</button>`
-        ).join('');
-    } else {
-        nav.classList.add('hidden');
-        nav.innerHTML = '';
-    }
-}
-
-function updateStagePitchLabel() {
-    const song = songs.find(s => s.id === selectedSongId);
-    const capo = song ? getSongCapo(song) : 0;
-    const label = stageState.isGuitarMode && capo > 0 ? `Capo (${capo})` : 'Concert';
-    document.getElementById('stage-pitch-label').textContent = label;
-}
-
-function updateStageThemeLabel() {
-    const stageEl = document.getElementById('stage-mode');
-    const icon = document.getElementById('stage-theme-icon');
-    const label = document.getElementById('stage-theme-label');
-
-    if (stageState.theme === 'light') {
-        stageEl.classList.add('stage-light');
-        icon.className = 'fa-solid fa-sun';
-        label.textContent = 'Light';
-    } else {
-        stageEl.classList.remove('stage-light');
-        icon.className = 'fa-solid fa-moon';
-        label.textContent = 'Dark';
-    }
-}
-
-// Exposed globally for future Ableset WebSocket integration
-window.scrollToSection = function(sectionId) {
-    const el = document.getElementById(sectionId);
-    if (el) {
-        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-};
-
-// Expose for future external control
-window.enterStageMode = enterStageMode;
-window.exitStageMode = exitStageMode;
 
 // ---- Ableset Import: File Handling ----
 
@@ -1263,32 +1151,6 @@ document.getElementById('pitch-toggle-btn').addEventListener('click', () => {
 // Chart PDF
 document.getElementById('chart-pdf-btn').addEventListener('click', openChartPDF);
 
-// Stage mode
-document.getElementById('stage-mode-btn').addEventListener('click', enterStageMode);
-document.getElementById('exit-stage-btn').addEventListener('click', exitStageMode);
-
-// Stage font size
-document.getElementById('font-size-slider').addEventListener('input', (e) => {
-    stageState.fontSize = parseInt(e.target.value);
-    document.getElementById('stage-lyrics').style.fontSize = stageState.fontSize + 'px';
-});
-
-// Stage pitch toggle
-document.getElementById('stage-pitch-toggle').addEventListener('click', () => {
-    const song = songs.find(s => s.id === selectedSongId);
-    if (!song || getSongCapo(song) === 0) return;
-    stageState.isGuitarMode = !stageState.isGuitarMode;
-    isGuitarMode = stageState.isGuitarMode;
-    updateStagePitchLabel();
-    if (song) renderStageLyrics(song);
-});
-
-// Stage theme toggle
-document.getElementById('stage-theme-toggle').addEventListener('click', () => {
-    stageState.theme = stageState.theme === 'dark' ? 'light' : 'dark';
-    updateStageThemeLabel();
-});
-
 // Back to list (mobile)
 document.getElementById('back-to-list-btn').addEventListener('click', backToList);
 document.getElementById('back-to-list-btn-edit').addEventListener('click', backToList);
@@ -1374,11 +1236,6 @@ setupDragAndDrop();
 // Escape key handler
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
-        // Exit stage mode first if active
-        if (!document.getElementById('stage-mode').classList.contains('hidden')) {
-            exitStageMode();
-            return;
-        }
         if (!document.getElementById('import-modal').classList.contains('hidden')) {
             closeImportModal();
             return;

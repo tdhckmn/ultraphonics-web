@@ -141,38 +141,6 @@
             white-space: pre-wrap;
         }
 
-        /* Stage Mode */
-        #stage-mode {
-            font-family: 'Montserrat', sans-serif !important;
-        }
-        #stage-mode.stage-light {
-            background: #ffffff !important;
-            color: #1c1917 !important;
-        }
-        #stage-mode.stage-light .section-anchor {
-            background: rgba(255, 255, 255, 0.95);
-            color: #16a34a;
-            border-bottom-color: rgba(22, 163, 74, 0.3);
-        }
-        #stage-mode.stage-light .chord { color: #16a34a; }
-        #stage-mode.stage-light .harmony-section { color: #059669; }
-        #stage-mode.stage-light .footnote-marker { color: #16a34a; }
-        #stage-mode .stage-controls {
-            background: rgba(28, 25, 23, 0.95);
-            backdrop-filter: blur(8px);
-        }
-        #stage-mode.stage-light .stage-controls {
-            background: rgba(255, 255, 255, 0.95);
-            border-bottom-color: #e7e5e4;
-        }
-        #stage-mode.stage-light .stage-section-nav {
-            background: rgba(245, 245, 244, 0.95);
-            border-bottom-color: #e7e5e4;
-        }
-        #stage-mode.stage-light .stage-section-btn {
-            background: #e7e5e4;
-            color: #1c1917;
-        }
 
 
         /* Auth loading spinner */
@@ -335,43 +303,6 @@
         </div>
     </div>
 
-    <!-- Stage Mode Overlay -->
-    <div id="stage-mode" class="hidden fixed inset-0 bg-stone-950 text-stone-100 z-[200] flex flex-col">
-        <!-- AbleSet Progress Bar -->
-        <div id="stage-progress-bar" class="h-[3px] bg-stone-800 flex-shrink-0 hidden">
-            <div id="stage-progress-fill" class="h-full bg-accent-green transition-[width] duration-300 ease-linear" style="width: 0%"></div>
-        </div>
-        <!-- Controls Bar -->
-        <div class="stage-controls h-16 border-b border-stone-800 flex items-center justify-between px-4 md:px-6 flex-shrink-0">
-            <button id="exit-stage-btn" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-500 transition-colors text-sm font-semibold flex items-center gap-2">
-                <i class="fa-solid fa-xmark"></i> Exit
-            </button>
-            <div class="flex items-center gap-3 md:gap-4">
-                <!-- Font Size -->
-                <div class="flex items-center gap-2">
-                    <i class="fa-solid fa-text-height text-stone-400 text-sm hidden md:inline"></i>
-                    <input type="range" id="font-size-slider" min="14" max="40" value="20" class="w-20 md:w-32 accent-green-500">
-                </div>
-                <!-- Capo/Concert Toggle -->
-                <button id="stage-pitch-toggle" class="px-3 py-2 bg-stone-800 rounded-lg text-sm font-semibold hover:bg-stone-700 transition-colors flex items-center gap-2">
-                    <i class="fa-solid fa-guitar"></i> <span class="hidden md:inline" id="stage-pitch-label">Concert</span>
-                </button>
-                <!-- Theme Toggle -->
-                <button id="stage-theme-toggle" class="px-3 py-2 bg-stone-800 rounded-lg text-sm font-semibold hover:bg-stone-700 transition-colors flex items-center gap-2">
-                    <i class="fa-solid fa-moon" id="stage-theme-icon"></i> <span class="hidden md:inline" id="stage-theme-label">Dark</span>
-                </button>
-            </div>
-        </div>
-        <!-- Section Nav -->
-        <div id="stage-section-nav" class="stage-section-nav flex gap-2 px-4 md:px-6 py-2 bg-stone-900/90 backdrop-blur border-b border-stone-800 overflow-x-auto flex-shrink-0 hidden">
-        </div>
-        <!-- Lyrics Container -->
-        <div id="stage-lyrics-scroll" class="flex-1 overflow-y-auto">
-            <div id="stage-lyrics" class="max-w-4xl mx-auto px-6 md:px-12 py-8" style="font-size: 20px;">
-            </div>
-        </div>
-    </div>
-
     <!-- Import Summary Modal -->
     <div id="import-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[100] hidden">
         <div class="bg-stone-900 w-full max-w-lg mx-auto rounded-xl shadow-2xl border border-stone-700 overflow-hidden m-4 max-h-[80vh] flex flex-col">
@@ -435,10 +366,6 @@
                         <h2 class="text-xl md:text-2xl font-bold text-white truncate">Song Details</h2>
                     </div>
                     <div class="flex items-center gap-1 md:gap-2 flex-shrink-0">
-                        <button id="stage-mode-btn" class="p-2 md:px-3 md:py-2 bg-accent-green text-white rounded-lg hover:bg-green-600 transition-colors flex items-center gap-2" title="Stage Mode">
-                            <i class="fa-solid fa-expand text-sm"></i>
-                            <span class="hidden md:inline text-sm font-semibold">Stage</span>
-                        </button>
                         <button id="pitch-toggle-btn" class="p-2 md:px-3 md:py-2 bg-stone-700 text-white rounded-lg hover:bg-stone-600 transition-colors flex items-center gap-2" title="Toggle Pitch">
                             <i class="fa-solid fa-guitar text-sm"></i>
                             <span class="hidden md:inline text-sm font-semibold" id="pitch-label">Concert</span>
