@@ -12,14 +12,10 @@ The Ultraphonics Live Hub is a desktop app that runs on the drummer's laptop dur
 ### Installation (For Drummer)
 
 1. **Download the installer** from the [Releases](https://github.com/keepitultra/ultraphonics-web/releases) page:
-   - **macOS**: Download the `.dmg` file
-   - **Windows**: Download the `.exe` installer
-   - **Linux**: Download the `.AppImage` or `.deb` file
+   - Download the `.dmg` file for macOS
 
 2. **Install the app**:
-   - **macOS**: Open the `.dmg` and drag the app to Applications
-   - **Windows**: Run the `.exe` installer
-   - **Linux**: Make the `.AppImage` executable or install the `.deb` package
+   - Open the `.dmg` and drag the app to Applications
 
 3. **Configure AbleSet connection**:
    - Launch the app
@@ -71,22 +67,8 @@ npm install
 # Run in development
 npm run start:electron
 
-# Build installers for all platforms
-npm run build:electron
-
-# Build for specific platform
+# Build macOS installer
 npm run build:electron:mac
-npm run build:electron:win
-npm run build:electron:linux
-```
-
-**Note**: Building for Windows requires ImageMagick for icon conversion:
-```bash
-# macOS
-brew install imagemagick
-
-# Ubuntu/Debian
-sudo apt-get install imagemagick
 ```
 
 ### Project Structure
@@ -110,8 +92,8 @@ sudo apt-get install imagemagick
 ### GitHub Actions
 
 The repo includes automated builds via GitHub Actions. When you create a new tag (e.g., `v1.0.0`), it automatically:
-- Builds installers for macOS, Windows, and Linux
-- Creates a GitHub Release with all installers attached
+- Builds a macOS installer (.dmg and .zip)
+- Creates a GitHub Release with the installer attached
 
 To create a release:
 ```bash

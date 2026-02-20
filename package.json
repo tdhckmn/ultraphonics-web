@@ -4,7 +4,10 @@
   "type": "commonjs",
   "description": "Live performance hub for Ultraphonics - syncs song charts with AbleSet in real-time for band members on tablets",
   "main": "electron-main.js",
-  "author": "Ultraphonics",
+  "author": {
+    "name": "Ultraphonics",
+    "email": "info@ultraphonicsmusic.com"
+  },
   "license": "MIT",
   "repository": {
     "type": "git",

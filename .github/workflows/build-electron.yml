@@ -8,11 +8,8 @@ on:
 
 jobs:
   build:
-    name: Build ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [macos-latest, windows-latest, ubuntu-latest]
+    name: Build macOS
+    runs-on: macos-latest
 
     steps:
       - name: Checkout code
@@ -27,60 +24,24 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Install ImageMagick (Ubuntu)
-        if: matrix.os == 'ubuntu-latest'
-        run: sudo apt-get update && sudo apt-get install -y imagemagick
-
-      - name: Install ImageMagick (macOS)
-        if: matrix.os == 'macos-latest'
+      - name: Install ImageMagick
         run: brew install imagemagick
 
       - name: Build Firebase bundle
         run: npm run build
 
-      - name: Build Electron app (macOS)
-        if: matrix.os == 'macos-latest'
+      - name: Build Electron app
         run: npm run build:electron:mac
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build Electron app (Windows)
-        if: matrix.os == 'windows-latest'
-        run: npm run build:electron:win
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Build Electron app (Linux)
-        if: matrix.os == 'ubuntu-latest'
-        run: npm run build:electron:linux
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Upload artifacts (macOS)
-        if: matrix.os == 'macos-latest'
+      - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           name: macos-installer
           path: |
             dist-electron/*.dmg
             dist-electron/*.zip
-
-      - name: Upload artifacts (Windows)
-        if: matrix.os == 'windows-latest'
-        uses: actions/upload-artifact@v4
-        with:
-          name: windows-installer
-          path: |
-            dist-electron/*.exe
-
-      - name: Upload artifacts (Linux)
-        if: matrix.os == 'ubuntu-latest'
-        uses: actions/upload-artifact@v4
-        with:
-          name: linux-installer
-          path: |
-            dist-electron/*.AppImage
-            dist-electron/*.deb
 
   release:
     name: Create Release
@@ -89,16 +50,16 @@ jobs:
     if: startsWith(github.ref, 'refs/tags/')
 
     steps:
-      - name: Download all artifacts
+      - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
+          name: macos-installer
           path: artifacts
 
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
-          files: |
-            artifacts/**/*
+          files: artifacts/*
           draft: false
           prerelease: false
         env:
