@@ -1,6 +1,6 @@
 {
   "name": "ultraphonics-live-hub",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "type": "commonjs",
   "description": "Live performance hub for Ultraphonics - syncs song charts with AbleSet in real-time for band members on tablets",
   "main": "electron-main.js",
@@ -20,7 +20,7 @@
     "build": "esbuild src/firebase-bundle.js --bundle --outfile=dist/firebase-bundle.js --format=iife --global-name=UltraphonicsFirebase --minify",
     "build:dev": "esbuild src/firebase-bundle.js --bundle --outfile=dist/firebase-bundle.js --format=iife --global-name=UltraphonicsFirebase --sourcemap",
     "build:icons": "bash scripts/prepare-icons.sh",
-    "build:electron": "npm run build && npm run build:icons && electron-builder",
+    "package:mac": "npm run build && npm run build:icons && electron-builder --mac --publish never",
     "build:electron:mac": "npm run build && npm run build:icons && electron-builder --mac",
     "build:electron:win": "npm run build && npm run build:icons && electron-builder --win",
     "build:electron:linux": "npm run build && npm run build:icons && electron-builder --linux",
@@ -76,7 +76,10 @@
     "mac": {
       "category": "public.app-category.music",
       "icon": "build/icons/icon.icns",
-      "target": ["dmg", "zip"]
+      "target": ["dmg", "zip"],
+      "identity": null,
+      "hardenedRuntime": false,
+      "gatekeeperAssess": false
     },
     "win": {
       "icon": "build/icons/icon.ico",
